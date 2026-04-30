@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="About Dan Blumenau - perfectly bilingual French tutor in Horwich and Westhoughton. Living in Paris since 2011, working bilingually across entertainment and finance." />
+  <title>About Dan | FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:  '#003359',
+            navyD: '#002040',
+            rouge: '#C8102E',
+            rougeH:'#A50D25',
+            cyan:  '#4DD4F5',
+            sand:  '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+
+    .img-placeholder {
+      background: #EEF1F6;
+      border: 1px solid #C8D4E0;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #7A90A4;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+    .img-placeholder .ph-rule {
+      width: 32px;
+      height: 1px;
+      background: #B0C0CF;
+      margin-bottom: 0.25rem;
+    }
+    .img-placeholder .ph-label {
+      font-size: 0.65rem;
+      opacity: 0.6;
+      letter-spacing: 0.05em;
+    }
+
+    .img-placeholder-dark {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: rgba(255,255,255,0.35);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+    .img-placeholder-dark .ph-rule {
+      width: 32px;
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+      margin-bottom: 0.25rem;
+    }
+    .img-placeholder-dark .ph-label {
+      font-size: 0.65rem;
+      opacity: 0.5;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-link { transition: color 0.2s; }
+    .nav-link:hover { color: #C8102E; }
+    .active-link { color: #C8102E; font-weight: 600; }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #C8102E;
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</head>
+
+<body class="bg-white">
+
+  <!-- ===================== NAV ===================== -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
+      <a href="index.html" class="font-display text-2xl font-bold text-navy tracking-tight shrink-0">
+        Fluent<span class="text-rouge">ISH</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-500">
+        <a href="index.html"   class="nav-link">Home</a>
+        <a href="about.html"   class="nav-link active-link">About Dan</a>
+        <a href="method.html"  class="nav-link">How It Works</a>
+        <a href="pricing.html" class="nav-link">Pricing</a>
+      </nav>
+      <a href="pricing.html#booking"
+         class="hidden md:inline-block bg-rouge hover:bg-rougeH text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors duration-200 shrink-0">
+        Book Free Chat
+      </a>
+      <button id="menu-toggle" aria-label="Open menu" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+        <svg class="w-5 h-5 text-navy" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white px-6 py-5 flex flex-col gap-4 text-sm font-medium text-gray-700">
+      <a href="index.html"   class="py-1 hover:text-rouge transition-colors">Home</a>
+      <a href="about.html"   class="py-1 text-rouge font-semibold">About Dan</a>
+      <a href="method.html"  class="py-1 hover:text-rouge transition-colors">How It Works</a>
+      <a href="pricing.html" class="py-1 hover:text-rouge transition-colors">Pricing</a>
+      <a href="pricing.html#booking" class="mt-2 bg-rouge text-white text-center py-3 rounded-full font-semibold hover:bg-rougeH transition-colors">
+        Book Free Chat
+      </a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===================== PAGE HERO ===================== -->
+    <section class="bg-navy text-white py-24 md:py-32">
+      <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+        <div>
+          <p class="section-label" style="color:#4DD4F5;">About your tutor</p>
+          <h1 class="font-display text-5xl sm:text-6xl font-bold leading-tight mb-7">
+            Fifteen years<br/>in France.<br/>
+            <em class="text-rouge">Now on<br/>your doorstep.</em>
+          </h1>
+          <p class="text-blue-200 text-lg leading-relaxed max-w-xl">
+            Living in Paris and Bordeaux since 2011. Disney's English and French voice of
+            a well-known little blue alien for eight years. Fully bilingual through conversation
+            alone. And a very strong opinion on how French should, and should not, be taught.
+          </p>
+        </div>
+        <div class="aspect-[4/3] min-h-[300px] rounded-2xl overflow-hidden">
+          <!-- REPLACE: swap src for your image path -->
+          <img src="images/about-hero-paris.jpg" alt="Paris" class="w-full h-full object-cover" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== BIO INTRO ===================== -->
+    <section class="py-24 md:py-32">
+      <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
+        <div class="aspect-[3/4] min-h-[460px] rounded-2xl overflow-hidden md:sticky md:top-28">
+          <!-- REPLACE: swap src for your image path -->
+          <img src="images/about-bio-portrait.jpg" alt="Dan Blumenau" class="w-full h-full object-cover" />
+        </div>
+        <div>
+          <p class="section-label">The background</p>
+          <h2 class="font-display text-4xl font-bold text-navy leading-tight mb-7">
+            I didn't plan to become a French tutor.<br/>
+            <em>France had other ideas.</em>
+          </h2>
+          <p class="text-gray-600 leading-relaxed mb-5 text-lg">
+            I was good at French at school. Decent grades, solid enough. Then I moved to Paris
+            in 2011, and the first time someone actually spoke back to me at full speed, in real
+            French, I froze completely. I had a couple of months where I was genuinely scared
+            to open my mouth. So I do understand what that feels like.
+          </p>
+          <p class="text-gray-500 leading-relaxed mb-5">
+            What changed wasn't a course. It was one piece of advice someone gave me early on:
+            learn the accent first. Get the sounds right, and French people will respond to you
+            in French rather than switching immediately to English. So I worked on the accent.
+            And it worked. Once they started speaking back to me in French, I had no choice
+            but to keep up. That's how I became bilingual. Not through study. Through conversation.
+          </p>
+          <p class="text-gray-500 leading-relaxed mb-5">
+            I'm now fully bilingual in the proper sense. I can hold my own in arguments about
+            grammar with native French speakers, and occasionally win. That didn't come from a
+            classroom. It came from fifteen years of talking to people, in Paris and Bordeaux,
+            mostly over a coffee or a glass of something.
+          </p>
+          <p class="text-gray-500 leading-relaxed">
+            I've split my time between France and the UK for years, and recently moved to
+            Horwich while keeping my apartment in Paris. France is not somewhere I visit.
+            It's somewhere I live.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CREDENTIALS ===================== -->
+    <section class="bg-sand py-20">
+      <div class="max-w-7xl mx-auto px-6">
+        <p class="section-label text-center block">The credentials</p>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-navy text-center mb-14">
+          Not just "pretty good at French"
+        </h2>
+        <div class="grid md:grid-cols-3 gap-6">
+
+          <div class="bg-white rounded-2xl p-9 border border-gray-100 shadow-sm">
+            <p class="font-display text-3xl font-bold text-navy/10 mb-5 leading-none">01</p>
+            <h3 class="font-display text-lg font-bold text-navy mb-3">Paris and Bordeaux Since 2011</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">
+              Fifteen years of full immersion in French life, in two of the country's most
+              distinct cities. Not as a tourist, not on a scheme, but as someone who lives there,
+              works there, and has spent a decade and a half navigating the language as it is
+              actually used by actual people every day.
+            </p>
+          </div>
+
+          <div class="bg-white rounded-2xl p-9 border border-gray-100 shadow-sm">
+            <p class="font-display text-3xl font-bold text-navy/10 mb-5 leading-none">02</p>
+            <h3 class="font-display text-lg font-bold text-navy mb-3">The Disney Standard</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">
+              Disney cast Dan as the English and French voice of a well-known little blue alien
+              for eight years. He is the only person ever given that role in both languages.
+              The show was performed live in front of French audiences, which meant genuine
+              cultural fluency was not a bonus. It was a requirement.
+            </p>
+          </div>
+
+          <div class="bg-white rounded-2xl p-9 border border-gray-100 shadow-sm">
+            <p class="font-display text-3xl font-bold text-navy/10 mb-5 leading-none">03</p>
+            <h3 class="font-display text-lg font-bold text-navy mb-3">10+ Years Bilingual</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">
+              A decade working bilingually across entertainment and finance, sectors where
+              nuance, precision, and cultural fluency are not nice-to-haves but the actual job.
+              The French I teach is the French I have used professionally. All of it.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PARIS ===================== -->
+    <section class="py-24 md:py-32">
+      <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+        <div>
+          <p class="section-label">On living in France</p>
+          <h2 class="font-display text-4xl font-bold text-navy leading-tight mb-7">
+            Fifteen years in France taught me what no textbook covers.
+          </h2>
+          <p class="text-gray-600 leading-relaxed mb-5">
+            The single best piece of advice I ever received was this: learn the accent first.
+            Get the sounds right, and French people will speak back to you in French rather than
+            switching to English to put you out of your misery. That one insight changed everything.
+            It's where I start with every student.
+          </p>
+          <p class="text-gray-500 leading-relaxed mb-5">
+            Paris and Bordeaux are very different cities with very different rhythms. Living fully
+            in both has given me a feel for the language as it's actually spoken across France,
+            not just the textbook version, and not just one region's version. That breadth matters
+            when you're coaching someone for the real world.
+          </p>
+          <p class="text-gray-500 leading-relaxed mb-10">
+            And the method that worked for me is the method I use with students. Not a classroom.
+            Not an app. A conversation, over a coffee or a glass of something, with someone
+            who already knows the way through.
+          </p>
+          <blockquote class="border-l-2 border-rouge pl-6 text-gray-700 font-display italic text-xl leading-snug">
+            "Get the accent right and the whole thing opens up. People stop switching to English.
+            They talk to you like you belong there. And then you do."
+          </blockquote>
+          <p class="mt-3 text-xs text-gray-400 uppercase tracking-widest">Dan, Paris and Bordeaux since 2011</p>
+        </div>
+        <div class="aspect-[4/3] min-h-[300px] rounded-2xl overflow-hidden">
+          <!-- REPLACE: swap src for your image path -->
+          <img src="images/about-paris-scene.jpg" alt="Paris" class="w-full h-full object-cover" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== WHY I TEACH ===================== -->
+    <section class="bg-navy text-white py-24 md:py-32">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <p class="section-label" style="color:#4DD4F5;">Why I teach</p>
+        <h2 class="font-display text-4xl sm:text-5xl font-bold leading-tight mb-10">
+          Because the gap between "I did French at school"<br/>
+          and <em class="text-rouge">"I can speak French"</em> is fixable.
+        </h2>
+        <div class="space-y-6 text-blue-200 leading-relaxed text-lg max-w-2xl mx-auto text-left">
+          <p>
+            Because I've been exactly where most students are. I was good at French at school.
+            I moved to Paris. And the first time someone spoke back to me at real speed, I froze.
+            I had a couple of months of genuine fear about opening my mouth. That's not a
+            confidence issue. That's the natural result of never having learnt to hold a
+            real conversation.
+          </p>
+          <p>
+            What fixed it wasn't more study. It was conversation. Getting the accent right.
+            Getting people to respond to me in French. Then being forced to keep up, day after day,
+            until I didn't have to think about it anymore. That's the method. It's the only one
+            that has ever actually worked.
+          </p>
+          <p>
+            I teach it the way I learnt it: over a coffee or a glass of something,
+            one conversation at a time, with no textbook in sight. Every session is
+            one-to-one because there is no other way to do it properly.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CTA ===================== -->
+    <section class="py-24">
+      <div class="max-w-3xl mx-auto px-6 text-center">
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-navy mb-5">
+          Convinced? Let's have a chat.
+        </h2>
+        <p class="text-gray-400 mb-10 leading-relaxed">
+          Fifteen minutes, no commitment, no awkward sales pitch. Just a conversation about
+          where you'd like to get to, and whether I'm the right person to help.
+        </p>
+        <a href="pricing.html#booking"
+           class="inline-block bg-rouge hover:bg-rougeH text-white font-bold px-10 py-4 rounded-full text-lg transition-colors">
+          Book a Free 15-Min Chat
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="bg-navyD text-white pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-10 mb-12 pb-12 border-b border-white/10">
+        <div class="md:col-span-2">
+          <a href="index.html" class="font-display text-2xl font-bold text-white">
+            Fluent<span class="text-rouge">ISH</span>
+          </a>
+          <p class="mt-5 text-blue-300 text-sm leading-relaxed max-w-xs">
+            Bespoke 1-on-1 conversational French coaching for adults in Horwich
+            and Westhoughton, Bolton.
+          </p>
+          <p class="mt-4 text-blue-500 text-xs">Best learnt over a coffee. Or a glass of something.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Pages</h4>
+          <ul class="space-y-3 text-sm text-blue-300">
+            <li><a href="index.html"   class="hover:text-white transition-colors">Home</a></li>
+            <li><a href="about.html"   class="hover:text-white transition-colors">About Dan</a></li>
+            <li><a href="method.html"  class="hover:text-white transition-colors">How It Works</a></li>
+            <li><a href="pricing.html" class="hover:text-white transition-colors">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Get in Touch</h4>
+          <ul class="space-y-3 text-sm text-blue-300">
+            <li><a href="mailto:bonjour@fluentish.co.uk" class="hover:text-white transition-colors">bonjour@fluentish.co.uk</a></li>
+            <li class="text-blue-500 text-xs">Horwich &amp; Westhoughton, Bolton</li>
+            <li class="pt-1">
+              <a href="pricing.html#booking" class="inline-block bg-rouge hover:bg-rougeH text-white text-xs font-semibold px-5 py-2 rounded-full transition-colors">
+                Book Free Chat
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-500">
+        <p>&copy; 2026 FluentISH · All rights reserved</p>
+        <a href="privacy.html" class="hover:text-blue-300 transition-colors">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+  </script>
+
+</body>
+</html>
