@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dan Blumenau — bilingual professional with 15 years in France, Disney voice talent, and 10+ years working in French across finance and entertainment." />
+  <title>About Dan | FluentISH for Business</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:   '#003359',
+            navyD:  '#002040',
+            rouge:  '#C8102E',
+            rougeH: '#A50D25',
+            cyan:   '#4DD4F5',
+            sand:   '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+    .nav-link { transition: color 0.2s; }
+    .nav-link:hover { color: #C8102E; }
+    .active-link { color: #C8102E; font-weight: 600; }
+    .section-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #C8102E;
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</head>
+
+<body class="bg-white">
+
+  <!-- NAV -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
+      <a href="../index.html" class="font-display text-2xl font-bold text-navy tracking-tight shrink-0">
+        Fluent<span class="text-rouge">ISH</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-500">
+        <a href="index.html"    class="nav-link">For Business</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="pricing.html"  class="nav-link">Pricing</a>
+        <a href="about.html"    class="nav-link active-link">About Dan</a>
+      </nav>
+      <a href="pricing.html#booking"
+         class="hidden md:inline-block bg-rouge hover:bg-rougeH text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors duration-200 shrink-0">
+        Book a Discovery Call
+      </a>
+      <button id="menu-toggle" aria-label="Open menu" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+        <svg class="w-5 h-5 text-navy" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white px-6 py-5 flex flex-col gap-4 text-sm font-medium text-gray-700">
+      <a href="index.html"    class="py-1 hover:text-rouge transition-colors">For Business</a>
+      <a href="services.html" class="py-1 hover:text-rouge transition-colors">Services</a>
+      <a href="pricing.html"  class="py-1 hover:text-rouge transition-colors">Pricing</a>
+      <a href="about.html"    class="py-1 text-rouge font-semibold">About Dan</a>
+      <a href="pricing.html#booking" class="mt-2 bg-rouge text-white text-center py-3 rounded-full font-semibold hover:bg-rougeH transition-colors">
+        Book a Discovery Call
+      </a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="bg-navy text-white py-24 md:py-32">
+      <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-8 md:gap-16 items-center">
+        <div>
+          <p class="section-label" style="color:#4DD4F5;">Your French lead</p>
+          <h1 class="font-display text-5xl sm:text-6xl font-bold leading-tight mb-7">
+            Fifteen years<br/>in France.<br/>
+            <em class="text-rouge">Working in both.</em>
+          </h1>
+          <p class="text-blue-200 text-lg leading-relaxed max-w-lg">
+            I'm Dan Blumenau. I've been living and working bilingually in France since 2011.
+            I'm not a French teacher who also does business. I'm a bilingual professional
+            who also happens to teach.
+          </p>
+        </div>
+        <div class="aspect-[4/5] md:min-h-[420px] rounded-2xl overflow-hidden bg-white/5 border border-white/10 flex items-center justify-center">
+          <p class="text-white/30 text-xs uppercase tracking-widest">Dan Blumenau portrait</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREDENTIALS STRIP -->
+    <section class="bg-sand border-y border-stone-200">
+      <div class="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-center md:justify-between gap-5 text-xs tracking-widest uppercase font-semibold text-gray-400">
+        <span>Paris &amp; Bordeaux since 2011</span>
+        <span class="hidden md:block w-px h-3 bg-gray-300"></span>
+        <span>Disney voice talent — English &amp; French</span>
+        <span class="hidden md:block w-px h-3 bg-gray-300"></span>
+        <span>10+ years bilingual professional work</span>
+        <span class="hidden md:block w-px h-3 bg-gray-300"></span>
+        <span class="text-rouge">Finance &amp; entertainment</span>
+      </div>
+    </section>
+
+    <!-- BIO -->
+    <section class="py-24 md:py-32">
+      <div class="max-w-3xl mx-auto px-6">
+        <p class="section-label">Background</p>
+        <h2 class="font-display text-4xl font-bold text-navy mb-8">Not a translator. Not a tutor. A bilingual professional.</h2>
+        <div class="space-y-5 text-gray-600 leading-relaxed text-lg">
+          <p>
+            Most people who offer French language support to businesses come from one of two places:
+            they're qualified translators, or they're language teachers. I come from neither.
+          </p>
+          <p>
+            I moved to Paris in 2011. I've worked in France — in meetings, in negotiations,
+            in client relationships, in finance and in entertainment — as a fully bilingual
+            professional for over a decade. Not as someone who speaks French at work.
+            As someone for whom French is one of two working languages, with no hierarchy between them.
+          </p>
+          <p>
+            That's a different thing. And it's the thing that makes a fractional French lead
+            useful to a business rather than just a bilingual freelancer they've hired for a project.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- THREE CREDENTIALS -->
+    <section class="bg-navy text-white py-24 md:py-32">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <p class="section-label" style="color:#4DD4F5;">Why this matters for your business</p>
+          <h2 class="font-display text-4xl sm:text-5xl font-bold leading-tight">
+            Three things that set this apart.
+          </h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-10">
+            <p class="font-display text-5xl font-bold text-white/10 mb-4 leading-none">01</p>
+            <h3 class="font-display text-2xl font-bold mb-4">Disney standard, client-facing French</h3>
+            <p class="text-blue-200 text-sm leading-relaxed mb-4">
+              For eight years, Disney cast me as the English and French voice of a well-known
+              animated character. I am the only person ever given that role in both languages.
+            </p>
+            <p class="text-blue-200 text-sm leading-relaxed">
+              The show was live. The French audience was real. There is no more demanding
+              proof of bilingual fluency than performing live in both languages, professionally,
+              to an audience that will notice the difference.
+            </p>
+            <p class="mt-5 text-cyan text-xs font-semibold uppercase tracking-widest">
+              What this means for you: client-facing French that represents your business well
+            </p>
+          </div>
+
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-10">
+            <p class="font-display text-5xl font-bold text-white/10 mb-4 leading-none">02</p>
+            <h3 class="font-display text-2xl font-bold mb-4">10+ years working bilingually in business</h3>
+            <p class="text-blue-200 text-sm leading-relaxed mb-4">
+              Finance and entertainment. Both sectors. Both languages. Contracts, negotiations,
+              client relationships, internal communications — I've done all of it in French,
+              to the professional standard those sectors demand.
+            </p>
+            <p class="text-blue-200 text-sm leading-relaxed">
+              I understand what French business communication is trying to achieve, not just
+              what the words mean. That's the difference between translation and genuine
+              bilingual professional support.
+            </p>
+            <p class="mt-5 text-cyan text-xs font-semibold uppercase tracking-widest">
+              What this means for you: someone who understands business context, not just language
+            </p>
+          </div>
+
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-10">
+            <p class="font-display text-5xl font-bold text-white/10 mb-4 leading-none">03</p>
+            <h3 class="font-display text-2xl font-bold mb-4">Fifteen years embedded in France</h3>
+            <p class="text-blue-200 text-sm leading-relaxed mb-4">
+              Paris since 2011. Also Bordeaux. I maintain an apartment in Paris. I spend significant
+              time in France every year. This is not an academic relationship with French culture —
+              it's an active, current one.
+            </p>
+            <p class="text-blue-200 text-sm leading-relaxed">
+              French business norms change. Relationship expectations shift. What works in 2026
+              is not what worked in 2010. Being actively embedded means the advice and support
+              I give reflects how France actually operates now.
+            </p>
+            <p class="mt-5 text-cyan text-xs font-semibold uppercase tracking-widest">
+              What this means for you: current, lived cultural knowledge, not theory
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY FRACTIONAL -->
+    <section class="py-24 md:py-32">
+      <div class="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-8 md:gap-16 items-start">
+        <div>
+          <p class="section-label">Why fractional</p>
+          <h2 class="font-display text-4xl font-bold text-navy leading-tight mb-7">
+            You don't need forty hours a week of French.
+          </h2>
+          <p class="text-gray-600 leading-relaxed mb-5">
+            A full-time bilingual hire costs £40–55k before employer NI and benefits.
+            That's the right answer for a business running French operations daily.
+            It's the wrong answer for most Manchester SMEs.
+          </p>
+          <p class="text-gray-600 leading-relaxed mb-5">
+            What most businesses with French connections actually need is four to eight
+            hours a month, done properly — not an underskilled workaround, and not
+            the cost of a full-time headcount.
+          </p>
+          <p class="text-gray-600 leading-relaxed">
+            The fractional model exists because the need is real but part-time. You get
+            the bilingual professional. You don't pay for the hours you don't use.
+          </p>
+        </div>
+        <div class="space-y-4">
+          <div class="bg-sand rounded-2xl p-8 border border-stone-100">
+            <div class="flex justify-between items-center mb-2">
+              <span class="font-semibold text-navy text-sm">Full-time bilingual BDM</span>
+              <span class="text-gray-400 text-xs">£40–55k/year</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-gray-300 h-2 rounded-full" style="width:100%"></div>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">40 hours/week, most of which isn't French</p>
+          </div>
+          <div class="bg-sand rounded-2xl p-8 border border-stone-100">
+            <div class="flex justify-between items-center mb-2">
+              <span class="font-semibold text-navy text-sm">Translation agency (ad hoc)</span>
+              <span class="text-gray-400 text-xs">Variable, transactional</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div class="bg-gray-200 h-2 rounded-full" style="width:30%"></div>
+            </div>
+            <p class="text-xs text-gray-400 mt-2">Per document. No context. No relationship. No calls.</p>
+          </div>
+          <div class="bg-navy rounded-2xl p-8">
+            <div class="flex justify-between items-center mb-2">
+              <span class="font-semibold text-white text-sm">Fractional French Lead</span>
+              <span class="text-cyan text-xs font-bold">£500/month</span>
+            </div>
+            <div class="w-full bg-white/20 rounded-full h-2">
+              <div class="bg-rouge h-2 rounded-full" style="width:40%"></div>
+            </div>
+            <p class="text-xs text-blue-300 mt-2">~4 hours/month of active support. Embedded. Ongoing. Right-sized.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-rouge py-24">
+      <div class="max-w-4xl mx-auto px-6 text-center text-white">
+        <h2 class="font-display text-4xl sm:text-5xl font-bold mb-5">
+          Ready to talk?
+        </h2>
+        <p class="text-red-100 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+          A free 30-minute discovery call. Let's talk about your business, your French
+          connections, and whether a retainer makes sense.
+        </p>
+        <a href="pricing.html#booking"
+           class="inline-block bg-white text-rouge hover:bg-red-50 font-bold px-10 py-4 rounded-full text-lg transition-colors shadow-2xl">
+          Book a Discovery Call
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-navyD text-white pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-10 mb-12 pb-12 border-b border-white/10">
+        <div class="md:col-span-2">
+          <a href="../index.html" class="font-display text-2xl font-bold text-white">
+            Fluent<span class="text-rouge">ISH</span>
+          </a>
+          <p class="mt-5 text-blue-300 text-sm leading-relaxed max-w-xs">
+            Fractional French support for Greater Manchester businesses.
+            Available on monthly retainer.
+          </p>
+          <p class="mt-4 text-blue-500 text-xs">
+            Looking for personal French coaching?
+            <a href="../index.html" class="underline hover:text-blue-300 transition-colors">Visit fluentish.co.uk</a>
+          </p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">For Business</h4>
+          <ul class="space-y-3 text-sm text-blue-300">
+            <li><a href="index.html"    class="hover:text-white transition-colors">Overview</a></li>
+            <li><a href="services.html" class="hover:text-white transition-colors">Services</a></li>
+            <li><a href="pricing.html"  class="hover:text-white transition-colors">Pricing</a></li>
+            <li><a href="about.html"    class="hover:text-white transition-colors">About Dan</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Get in Touch</h4>
+          <ul class="space-y-3 text-sm text-blue-300">
+            <li><a href="mailto:bonjour@fluentish.co.uk" class="hover:text-white transition-colors">bonjour@fluentish.co.uk</a></li>
+            <li class="text-blue-500 text-xs">Greater Manchester</li>
+            <li class="pt-1">
+              <a href="pricing.html#booking" class="inline-block bg-rouge hover:bg-rougeH text-white text-xs font-semibold px-5 py-2 rounded-full transition-colors">
+                Book a Discovery Call
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-500">
+        <p>&copy; 2026 FluentISH · All rights reserved</p>
+        <a href="../privacy.html" class="hover:text-blue-300 transition-colors">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+  </script>
+
+</body>
+</html>
