@@ -43,6 +43,7 @@ function crmApp() {
 
     async selectLead(lead) {
       this.selectedLead = lead;
+      this.messages = [];
       this.replyText = '';
       await this.loadMessages(lead.id);
       this.$nextTick(() => this.scrollToBottom());
@@ -52,7 +53,9 @@ function crmApp() {
       try {
         const res = await fetch(`/api/leads/${leadId}/messages`);
         if (!res.ok) return;
-        this.messages = await res.json();
+        const msgs = await res.json();
+        if (this.selectedLead?.id !== leadId) return;
+        this.messages = msgs;
       } catch (err) {
         console.error('Failed to load messages:', err);
       }
@@ -62,9 +65,10 @@ function crmApp() {
       if (!this.replyText.trim() || this.sending || !this.selectedLead) return;
       this.sending = true;
       const body = this.replyText;
+      const leadId = this.selectedLead.id;
       this.replyText = '';
       try {
-        const res = await fetch(`/api/leads/${this.selectedLead.id}/send`, {
+        const res = await fetch(`/api/leads/${leadId}/send`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ body }),
@@ -73,6 +77,9 @@ function crmApp() {
           const err = await res.json().catch(() => ({}));
           alert('Send failed: ' + (err.detail || res.statusText));
           this.replyText = body; // restore on failure
+        } else {
+          await this.loadMessages(leadId);
+          this.$nextTick(() => this.scrollToBottom());
         }
       } catch (err) {
         console.error('Send error:', err);
@@ -85,13 +92,17 @@ function crmApp() {
     async sendTemplate(n) {
       if (this.sending || !this.selectedLead) return;
       this.sending = true;
+      const leadId = this.selectedLead.id;
       try {
-        const res = await fetch(`/api/leads/${this.selectedLead.id}/template/${n}`, {
+        const res = await fetch(`/api/leads/${leadId}/template/${n}`, {
           method: 'POST',
         });
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
           alert('Template send failed: ' + (err.detail || res.statusText));
+        } else {
+          await this.loadMessages(leadId);
+          this.$nextTick(() => this.scrollToBottom());
         }
       } catch (err) {
         console.error('Template send error:', err);
@@ -135,6 +146,7 @@ function crmApp() {
         } catch {
           return;
         }
+        this.sseConnected = true;
 
         if (data.type === 'new_message') {
           // Always refresh lead list (status badges + ordering)
