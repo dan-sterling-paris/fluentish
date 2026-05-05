@@ -137,6 +137,7 @@ function crmApp() {
 
     async selectLead(lead) {
       this.selectedLead = lead;
+      this.messages = [];
       this.showTemplates = false;
       this.replyText = '';
       await this.loadMessages(lead.id);
@@ -153,7 +154,9 @@ function crmApp() {
       try {
         const res = await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}/messages`);
         if (!res.ok) return;
-        this.messages = await res.json();
+        const msgs = await res.json();
+        if (this.selectedLead?.id !== leadId) return;
+        this.messages = msgs;
       } catch (e) {
         console.error('Failed to load messages:', e);
       }
@@ -263,8 +266,13 @@ function crmApp() {
 
     // ── Realtime ──────────────────────────────────────────────────────────
 
-    connectRealtime() {
+    async connectRealtime() {
       if (this._channel) this._channel.unsubscribe();
+
+      const { data: { session } } = await this._supabase.auth.getSession();
+      if (session?.access_token) {
+        this._supabase.realtime.setAuth(session.access_token);
+      }
 
       this._channel = this._supabase
         .channel('crm-changes')
