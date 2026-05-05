@@ -12,6 +12,11 @@ function crmApp() {
     config: { template_2: '', template_3: '' },
     _channel: null,
 
+    // Template editor
+    showTemplates: false,
+    templates: [],
+    savingTemplate: null,
+
     statuses: [
       { value: 'all',            label: 'All' },
       { value: 'new',            label: 'New' },
@@ -54,9 +59,16 @@ function crmApp() {
 
     async selectLead(lead) {
       this.selectedLead = lead;
+      this.showTemplates = false;
       this.replyText = '';
       await this.loadMessages(lead.id);
       this.$nextTick(() => this.scrollToBottom());
+    },
+
+    closeLead() {
+      this.selectedLead = null;
+      this.messages = [];
+      this.replyText = '';
     },
 
     async loadMessages(leadId) {
@@ -111,6 +123,22 @@ function crmApp() {
       }
     },
 
+    async deleteLead(leadId) {
+      if (!confirm('Delete this lead and all their messages? This cannot be undone.')) return;
+      try {
+        const res = await fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}`, { method: 'DELETE' });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          alert('Delete failed: ' + (err.error || res.statusText));
+          return;
+        }
+        this.closeLead();
+        await this.loadLeads();
+      } catch (e) {
+        console.error('Delete error:', e);
+      }
+    },
+
     async updateStatus(leadId, newStatus) {
       try {
         await fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}/status`, {
@@ -124,6 +152,38 @@ function crmApp() {
       }
     },
 
+    async openTemplates() {
+      this.showTemplates = true;
+      this.selectedLead = null;
+      try {
+        const res = await fetch(`${FUNCTION_BASE}/crm-api/templates`);
+        if (res.ok) this.templates = await res.json();
+      } catch (e) {
+        console.error('Failed to load templates:', e);
+      }
+    },
+
+    async saveTemplate(tmpl) {
+      this.savingTemplate = tmpl.key;
+      try {
+        const res = await fetch(`${FUNCTION_BASE}/crm-api/templates/${tmpl.key}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ body: tmpl.body }),
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          alert('Save failed: ' + (err.error || res.statusText));
+        } else {
+          await this.loadConfig();
+        }
+      } catch (e) {
+        console.error('Save template error:', e);
+      } finally {
+        this.savingTemplate = null;
+      }
+    },
+
     connectRealtime() {
       const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -134,17 +194,13 @@ function crmApp() {
         .on(
           'postgres_changes',
           { event: '*', schema: 'public', table: 'leads' },
-          () => {
-            // Any lead change — reload the sidebar
-            this.loadLeads();
-          }
+          () => { this.loadLeads(); }
         )
         .on(
           'postgres_changes',
           { event: 'INSERT', schema: 'public', table: 'messages' },
           (payload) => {
             const msg = payload.new;
-            // Append to open conversation if it belongs there
             if (this.selectedLead && msg.lead_id === this.selectedLead.id) {
               const alreadyHave = this.messages.some(m => m.id === msg.id);
               if (!alreadyHave) {
@@ -152,7 +208,6 @@ function crmApp() {
                 this.$nextTick(() => this.scrollToBottom());
               }
             }
-            // Reload leads to refresh status badges and ordering
             this.loadLeads();
           }
         )
@@ -190,6 +245,11 @@ function crmApp() {
         booked:         'bg-purple-100 text-purple-700',
       };
       return map[status] || 'bg-gray-100 text-gray-600';
+    },
+
+    templateLabel(key) {
+      const map = { sms_1: 'Initial message', sms_2: 'Follow-up 1', sms_3: 'Follow-up 2' };
+      return map[key] || key;
     },
   };
 }

@@ -51,7 +51,30 @@ async function sendSms(phone: string, body: string) {
 // ── Route handlers ────────────────────────────────────────────────────────────
 
 async function handleConfig() {
-  return json({ template_2: TEMPLATE_2, template_3: TEMPLATE_3 });
+  const supabase = db();
+  const { data } = await supabase.from("templates").select("key, body");
+  const map: Record<string, string> = {};
+  for (const row of data ?? []) map[row.key] = row.body;
+  return json({
+    template_2: map["sms_2"] ?? TEMPLATE_2,
+    template_3: map["sms_3"] ?? TEMPLATE_3,
+  });
+}
+
+async function handleListTemplates() {
+  const supabase = db();
+  const { data, error } = await supabase.from("templates").select("*").order("key");
+  if (error) return err(error.message, 500);
+  return json(data);
+}
+
+async function handleUpdateTemplate(key: string, req: Request) {
+  const supabase = db();
+  const { body: tmplBody } = await req.json();
+  if (!tmplBody?.trim()) return err("Body cannot be empty", 400);
+  const { error } = await supabase.from("templates").update({ body: tmplBody }).eq("key", key);
+  if (error) return err(error.message, 500);
+  return json({ ok: true });
 }
 
 async function handleListLeads(url: URL) {
@@ -96,14 +119,18 @@ async function handleSendMessage(leadId: string, req: Request) {
 async function handleSendTemplate(leadId: string, templateNum: string, req: Request) {
   const supabase = db();
   const n = parseInt(templateNum, 10);
-  const tmpl = n === 2 ? TEMPLATE_2 : n === 3 ? TEMPLATE_3 : null;
-  if (!tmpl) return err("Invalid template number (use 2 or 3)", 400);
+  const key = n === 2 ? "sms_2" : n === 3 ? "sms_3" : null;
+  if (!key) return err("Invalid template number (use 2 or 3)", 400);
+  const fallback = n === 2 ? TEMPLATE_2 : TEMPLATE_3;
+  const { data: tmplRow } = await supabase.from("templates").select("body").eq("key", key).single();
+  const tmpl = tmplRow?.body ?? fallback;
 
   const { data: lead, error: leadErr } = await supabase
     .from("leads").select("*").eq("id", leadId).single();
   if (leadErr || !lead) return err("Lead not found", 404);
 
-  const body = tmpl.replace("{name}", lead.name);
+  const firstName = lead.name.split(" ")[0];
+  const body = tmpl.replace("{name}", firstName);
   await sendSms(lead.phone, body);
 
   const { data: msg, error: msgErr } = await supabase
@@ -143,7 +170,7 @@ Deno.serve(async (req: Request) => {
 
   const url = new URL(req.url);
   // Strip the function prefix: /functions/v1/crm-api/...
-  const path = url.pathname.replace(/^\/functions\/v1\/crm-api/, "").replace(/\/$/, "") || "/";
+  const path = url.pathname.replace(/^\/crm-api/, "").replace(/\/$/, "") || "/";
 
   // GET /config
   if (req.method === "GET" && path === "/config") return handleConfig();
@@ -166,6 +193,22 @@ Deno.serve(async (req: Request) => {
   // PATCH /leads/:id/status
   const statusMatch = path.match(/^\/leads\/(\d+)\/status$/);
   if (req.method === "PATCH" && statusMatch) return handleUpdateStatus(statusMatch[1], req);
+
+  // DELETE /leads/:id
+  const deleteMatch = path.match(/^\/leads\/(\d+)$/);
+  if (req.method === "DELETE" && deleteMatch) {
+    const supabase = db();
+    const { error } = await supabase.from("leads").delete().eq("id", deleteMatch[1]);
+    if (error) return err(error.message, 500);
+    return json({ ok: true });
+  }
+
+  // GET /templates
+  if (req.method === "GET" && path === "/templates") return handleListTemplates();
+
+  // PATCH /templates/:key
+  const tmplKeyMatch = path.match(/^\/templates\/([^/]+)$/);
+  if (req.method === "PATCH" && tmplKeyMatch) return handleUpdateTemplate(tmplKeyMatch[1], req);
 
   return err("Not found", 404);
 });

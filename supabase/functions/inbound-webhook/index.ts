@@ -46,17 +46,13 @@ Deno.serve(async (req: Request) => {
     }
   }
 
-  let payload: { messages?: Array<{ from?: string; body?: string }> };
-  try {
-    payload = await req.json();
-  } catch {
-    return new Response(JSON.stringify({ error: "Invalid JSON" }), {
-      status: 400, headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
-    });
-  }
+  const rawBody = await req.text();
+  const params = new URLSearchParams(rawBody);
+  const fromPhone = normalizePhone(params.get("from") ?? "");
+  const body = (params.get("body") ?? "").trim();
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-  const messages = payload.messages ?? [];
+  const messages = fromPhone && body ? [{ from: fromPhone, body }] : [];
 
   for (const msg of messages) {
     const fromPhone = normalizePhone(msg.from ?? "");
