@@ -95,6 +95,10 @@ Deno.serve(async (_req: Request) => {
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
+  // Load sms_1 template from DB, fall back to env var
+  const { data: tmplRow } = await supabase.from("templates").select("body").eq("key", "sms_1").single();
+  const template1 = tmplRow?.body ?? TEMPLATE_1;
+
   let accessToken: string;
   try {
     accessToken = await getAccessToken();
@@ -151,7 +155,7 @@ Deno.serve(async (_req: Request) => {
 
       // Send initial SMS
       const firstName = name.split(" ")[0];
-      const smsBody = TEMPLATE_1.replace("{name}", firstName);
+      const smsBody = template1.replace("{name}", firstName);
       try {
         await sendSms(phone, smsBody);
         await supabase.from("messages")
