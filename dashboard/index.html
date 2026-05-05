@@ -15,6 +15,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      safelist: [
+        'bg-gray-100','text-gray-600',
+        'bg-blue-100','text-blue-700',
+        'bg-yellow-100','text-yellow-700',
+        'bg-purple-100','text-purple-700',
+        'bg-green-100','text-green-700',
+        'bg-red-100','text-red-500',
+      ],
       theme: {
         extend: {
           colors: {
@@ -55,6 +63,42 @@
 
 <body class="h-full bg-sand flex flex-col overflow-hidden" x-data="crmApp()" x-init="init()">
 
+  <!-- ── LOGIN SCREEN ───────────────────────────────────────────────────── -->
+  <div
+    x-show="!loggedIn"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-navy"
+  >
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-8 space-y-6">
+      <div class="text-center">
+        <p class="font-display text-3xl font-bold text-navy">Fluent<span class="text-rouge">ISH</span></p>
+        <p class="text-sm text-gray-400 mt-1">CRM</p>
+      </div>
+      <div class="space-y-4">
+        <input
+          x-model="loginEmail"
+          type="email"
+          placeholder="Email"
+          @keydown.enter="login()"
+          class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-navy focus:ring-2 focus:ring-navy/20"
+        />
+        <input
+          x-model="loginPassword"
+          type="password"
+          placeholder="Password"
+          @keydown.enter="login()"
+          class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-navy focus:ring-2 focus:ring-navy/20"
+        />
+        <p x-show="loginError" x-text="loginError" class="text-xs text-red-500 text-center"></p>
+        <button
+          @click="login()"
+          :disabled="loginLoading"
+          class="w-full bg-navy hover:bg-navyD disabled:opacity-50 text-white py-3 rounded-xl text-sm font-semibold transition-colors"
+          x-text="loginLoading ? 'Signing in…' : 'Sign in'"
+        ></button>
+      </div>
+    </div>
+  </div>
+
   <!-- ── HEADER ──────────────────────────────────────────────────────────── -->
   <header class="bg-navy text-white px-4 py-3 flex items-center justify-between shrink-0 shadow-md z-10">
     <div class="flex items-center gap-3">
@@ -79,6 +123,10 @@
         @click="openTemplates()"
         class="text-xs text-blue-200 hover:text-white transition-colors px-2 py-1 rounded hover:bg-white/10"
       >Templates</button>
+      <button
+        @click="logout()"
+        class="text-xs text-blue-200 hover:text-white transition-colors px-2 py-1 rounded hover:bg-white/10"
+      >Sign out</button>
       <span class="w-2 h-2 rounded-full transition-colors" :class="realtimeConnected ? 'bg-green-400' : 'bg-yellow-400 animate-pulse'"></span>
       <span class="text-xs text-blue-200" x-text="realtimeConnected ? 'Live' : 'Connecting…'"></span>
     </div>

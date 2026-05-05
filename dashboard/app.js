@@ -2,6 +2,15 @@
 
 function crmApp() {
   return {
+    // ── Auth ──────────────────────────────────────────────────────────────
+    loggedIn: false,
+    loginEmail: '',
+    loginPassword: '',
+    loginError: '',
+    loginLoading: false,
+    _supabase: null,
+
+    // ── CRM state ─────────────────────────────────────────────────────────
     leads: [],
     selectedLead: null,
     messages: [],
@@ -27,14 +36,81 @@ function crmApp() {
       { value: 'lost',        label: 'Lost' },
     ],
 
+    // ── Init ──────────────────────────────────────────────────────────────
+
     async init() {
+      this._supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      // Restore existing session
+      const { data: { session } } = await this._supabase.auth.getSession();
+      if (session) {
+        this.loggedIn = true;
+        await this._loadApp();
+      }
+
+      // Listen for auth state changes (e.g. token refresh, sign out)
+      this._supabase.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+          this.loggedIn = true;
+          await this._loadApp();
+        } else if (event === 'SIGNED_OUT') {
+          this.loggedIn = false;
+          this.leads = [];
+          this.selectedLead = null;
+          this.messages = [];
+          if (this._channel) { this._channel.unsubscribe(); this._channel = null; }
+        }
+      });
+    },
+
+    async _loadApp() {
       await Promise.all([this.loadConfig(), this.loadLeads()]);
       this.connectRealtime();
     },
 
+    // ── Auth actions ──────────────────────────────────────────────────────
+
+    async login() {
+      if (!this.loginEmail || !this.loginPassword) return;
+      this.loginLoading = true;
+      this.loginError = '';
+      const { error } = await this._supabase.auth.signInWithPassword({
+        email: this.loginEmail,
+        password: this.loginPassword,
+      });
+      this.loginLoading = false;
+      if (error) {
+        this.loginError = error.message;
+      }
+      // onAuthStateChange handles the rest
+    },
+
+    async logout() {
+      await this._supabase.auth.signOut();
+    },
+
+    async _token() {
+      const { data: { session } } = await this._supabase.auth.getSession();
+      return session?.access_token ?? '';
+    },
+
+    async _fetch(url, options = {}) {
+      const token = await this._token();
+      return fetch(url, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          ...(options.headers ?? {}),
+        },
+      });
+    },
+
+    // ── Data loading ──────────────────────────────────────────────────────
+
     async loadConfig() {
       try {
-        const res = await fetch(`${FUNCTION_BASE}/crm-api/config`);
+        const res = await this._fetch(`${FUNCTION_BASE}/crm-api/config`);
         if (res.ok) this.config = await res.json();
       } catch (e) {
         console.error('Failed to load config:', e);
@@ -46,7 +122,7 @@ function crmApp() {
         ? `${FUNCTION_BASE}/crm-api/leads`
         : `${FUNCTION_BASE}/crm-api/leads?status=${this.filterStatus}`;
       try {
-        const res = await fetch(url);
+        const res = await this._fetch(url);
         if (!res.ok) return;
         const fresh = await res.json();
         if (this.selectedLead) {
@@ -75,7 +151,7 @@ function crmApp() {
 
     async loadMessages(leadId) {
       try {
-        const res = await fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}/messages`);
+        const res = await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}/messages`);
         if (!res.ok) return;
         this.messages = await res.json();
       } catch (e) {
@@ -83,15 +159,16 @@ function crmApp() {
       }
     },
 
+    // ── Actions ───────────────────────────────────────────────────────────
+
     async sendReply() {
       if (!this.replyText.trim() || this.sending || !this.selectedLead) return;
       this.sending = true;
       const body = this.replyText;
       this.replyText = '';
       try {
-        const res = await fetch(`${FUNCTION_BASE}/crm-api/leads/${this.selectedLead.id}/send`, {
+        const res = await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${this.selectedLead.id}/send`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ body }),
         });
         if (!res.ok) {
@@ -111,7 +188,7 @@ function crmApp() {
       if (this.sending || !this.selectedLead) return;
       this.sending = true;
       try {
-        const res = await fetch(`${FUNCTION_BASE}/crm-api/leads/${this.selectedLead.id}/template/${n}`, {
+        const res = await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${this.selectedLead.id}/template/${n}`, {
           method: 'POST',
         });
         if (!res.ok) {
@@ -125,10 +202,22 @@ function crmApp() {
       }
     },
 
+    async updateStatus(leadId, newStatus) {
+      try {
+        await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}/status`, {
+          method: 'PATCH',
+          body: JSON.stringify({ status: newStatus }),
+        });
+        await this.loadLeads();
+      } catch (e) {
+        console.error('Status update failed:', e);
+      }
+    },
+
     async deleteLead(leadId) {
       if (!confirm('Delete this lead and all their messages? This cannot be undone.')) return;
       try {
-        const res = await fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}`, { method: 'DELETE' });
+        const res = await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}`, { method: 'DELETE' });
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
           alert('Delete failed: ' + (err.error || res.statusText));
@@ -141,24 +230,11 @@ function crmApp() {
       }
     },
 
-    async updateStatus(leadId, newStatus) {
-      try {
-        await fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}/status`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: newStatus }),
-        });
-        await this.loadLeads();
-      } catch (e) {
-        console.error('Status update failed:', e);
-      }
-    },
-
     async openTemplates() {
       this.showTemplates = true;
       this.selectedLead = null;
       try {
-        const res = await fetch(`${FUNCTION_BASE}/crm-api/templates`);
+        const res = await this._fetch(`${FUNCTION_BASE}/crm-api/templates`);
         if (res.ok) this.templates = await res.json();
       } catch (e) {
         console.error('Failed to load templates:', e);
@@ -168,9 +244,8 @@ function crmApp() {
     async saveTemplate(tmpl) {
       this.savingTemplate = tmpl.key;
       try {
-        const res = await fetch(`${FUNCTION_BASE}/crm-api/templates/${tmpl.key}`, {
+        const res = await this._fetch(`${FUNCTION_BASE}/crm-api/templates/${tmpl.key}`, {
           method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ body: tmpl.body }),
         });
         if (!res.ok) {
@@ -186,37 +261,33 @@ function crmApp() {
       }
     },
 
-    connectRealtime() {
-      const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // ── Realtime ──────────────────────────────────────────────────────────
 
+    connectRealtime() {
       if (this._channel) this._channel.unsubscribe();
 
-      this._channel = client
+      this._channel = this._supabase
         .channel('crm-changes')
-        .on(
-          'postgres_changes',
-          { event: '*', schema: 'public', table: 'leads' },
-          () => { this.loadLeads(); }
-        )
-        .on(
-          'postgres_changes',
-          { event: 'INSERT', schema: 'public', table: 'messages' },
-          (payload) => {
-            const msg = payload.new;
-            if (this.selectedLead && msg.lead_id === this.selectedLead.id) {
-              const alreadyHave = this.messages.some(m => m.id === msg.id);
-              if (!alreadyHave) {
-                this.messages.push(msg);
-                this.$nextTick(() => this.scrollToBottom());
-              }
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'leads' }, () => {
+          this.loadLeads();
+        })
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
+          const msg = payload.new;
+          if (this.selectedLead && msg.lead_id === this.selectedLead.id) {
+            const alreadyHave = this.messages.some(m => m.id === msg.id);
+            if (!alreadyHave) {
+              this.messages.push(msg);
+              this.$nextTick(() => this.scrollToBottom());
             }
-            this.loadLeads();
           }
-        )
+          this.loadLeads();
+        })
         .subscribe((status) => {
           this.realtimeConnected = status === 'SUBSCRIBED';
         });
     },
+
+    // ── Helpers ───────────────────────────────────────────────────────────
 
     scrollToBottom() {
       const el = document.getElementById('chat-messages');
@@ -226,17 +297,11 @@ function crmApp() {
     formatTime(iso) {
       const d = new Date(iso);
       const today = new Date();
-      const isToday =
-        d.getDate() === today.getDate() &&
+      const isToday = d.getDate() === today.getDate() &&
         d.getMonth() === today.getMonth() &&
         d.getFullYear() === today.getFullYear();
-
-      if (isToday) {
-        return d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-      }
-      return d.toLocaleDateString('en-GB', {
-        day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
-      });
+      if (isToday) return d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
     },
 
     badgeClass(status) {
