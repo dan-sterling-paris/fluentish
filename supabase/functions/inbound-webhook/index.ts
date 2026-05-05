@@ -76,8 +76,9 @@ Deno.serve(async (req: Request) => {
     }
 
     await supabase.from("leads")
-      .update({ status: "replied", updated_at: new Date().toISOString() })
-      .eq("id", lead.id);
+      .update({ status: "interested", updated_at: new Date().toISOString() })
+      .eq("id", lead.id)
+      .in("status", ["new", "contacted"]);
 
     await supabase.from("messages")
       .insert({ lead_id: lead.id, direction: "inbound", body });

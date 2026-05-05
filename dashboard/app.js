@@ -18,11 +18,13 @@ function crmApp() {
     savingTemplate: null,
 
     statuses: [
-      { value: 'all',            label: 'All' },
-      { value: 'new',            label: 'New' },
-      { value: 'auto_contacted', label: 'Auto-contacted' },
-      { value: 'replied',        label: 'Replied' },
-      { value: 'booked',         label: 'Booked' },
+      { value: 'all',         label: 'All' },
+      { value: 'new',         label: 'New' },
+      { value: 'contacted',   label: 'Contacted' },
+      { value: 'interested',  label: 'Interested' },
+      { value: 'call_booked', label: 'Call Booked' },
+      { value: 'enrolled',    label: 'Enrolled' },
+      { value: 'lost',        label: 'Lost' },
     ],
 
     async init() {
@@ -239,10 +241,12 @@ function crmApp() {
 
     badgeClass(status) {
       const map = {
-        new:            'bg-blue-100 text-blue-700',
-        auto_contacted: 'bg-yellow-100 text-yellow-700',
-        replied:        'bg-green-100 text-green-700',
-        booked:         'bg-purple-100 text-purple-700',
+        new:         'bg-gray-100 text-gray-600',
+        contacted:   'bg-blue-100 text-blue-700',
+        interested:  'bg-yellow-100 text-yellow-700',
+        call_booked: 'bg-purple-100 text-purple-700',
+        enrolled:    'bg-green-100 text-green-700',
+        lost:        'bg-red-100 text-red-500',
       };
       return map[status] || 'bg-gray-100 text-gray-600';
     },

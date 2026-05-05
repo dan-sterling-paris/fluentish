@@ -145,7 +145,7 @@ Deno.serve(async (_req: Request) => {
       // Insert lead
       const { data: lead, error: insertErr } = await supabase
         .from("leads")
-        .insert({ name, phone, status: "auto_contacted" })
+        .insert({ name, phone, status: "contacted" })
         .select("id").single();
 
       if (insertErr || !lead) {

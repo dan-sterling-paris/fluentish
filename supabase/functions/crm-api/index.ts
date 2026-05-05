@@ -137,11 +137,11 @@ async function handleSendTemplate(leadId: string, templateNum: string, req: Requ
     .from("messages").insert({ lead_id: leadId, direction: "outbound", body }).select().single();
   if (msgErr) return err(msgErr.message, 500);
 
-  if (lead.status === "new") {
-    await supabase.from("leads")
-      .update({ status: "auto_contacted", updated_at: new Date().toISOString() })
-      .eq("id", leadId);
-  }
+  // Advance to contacted if still new; set sms3_sent_at if this was template 3
+  const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
+  if (lead.status === "new") updates.status = "contacted";
+  if (n === 3) updates.sms3_sent_at = new Date().toISOString();
+  await supabase.from("leads").update(updates).eq("id", leadId);
 
   return json({ ok: true, message: msg });
 }
@@ -149,7 +149,7 @@ async function handleSendTemplate(leadId: string, templateNum: string, req: Requ
 async function handleUpdateStatus(leadId: string, req: Request) {
   const supabase = db();
   const { status } = await req.json();
-  const valid = ["new", "auto_contacted", "replied", "booked"];
+  const valid = ["new", "contacted", "interested", "call_booked", "enrolled", "lost"];
   if (!valid.includes(status)) return err("Invalid status", 400);
 
   const { error } = await supabase
