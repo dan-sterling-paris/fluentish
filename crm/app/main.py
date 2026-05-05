@@ -63,6 +63,19 @@ app.mount("/static", StaticFiles(directory=str(_base_dir.parent / "static")), na
 
 # ── Routes ───────────────────────────────────────────────────────────────────
 
+import subprocess as _subprocess
+
+def _git_rev() -> str:
+    try:
+        return _subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"], stderr=_subprocess.DEVNULL
+        ).decode().strip()
+    except Exception:
+        return "0"
+
+_APP_VERSION = _git_rev()
+
+
 @app.get("/")
 async def dashboard(request: Request, db: AsyncSession = Depends(get_db)):
     leads = await crud.get_all_leads(db)
@@ -73,6 +86,7 @@ async def dashboard(request: Request, db: AsyncSession = Depends(get_db)):
             "leads": leads,
             "template_2": settings.template_2,
             "template_3": settings.template_3,
+            "app_version": _APP_VERSION,
         },
     )
 
