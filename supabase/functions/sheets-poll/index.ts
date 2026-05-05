@@ -44,7 +44,7 @@ async function getAccessToken(): Promise<string> {
 }
 
 async function fetchSheetRows(accessToken: string): Promise<string[][]> {
-  const range = encodeURIComponent(`${SHEET_NAME}!A2:C`);
+  const range = encodeURIComponent(`${SHEET_NAME}!A2:Z`);
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}/values/${range}`;
   const resp = await fetch(url, {
     headers: { Authorization: `Bearer ${accessToken}` },
@@ -150,7 +150,8 @@ Deno.serve(async (_req: Request) => {
       }
 
       // Send initial SMS
-      const smsBody = TEMPLATE_1.replace("{name}", name);
+      const firstName = name.split(" ")[0];
+      const smsBody = TEMPLATE_1.replace("{name}", firstName);
       try {
         await sendSms(phone, smsBody);
         await supabase.from("messages")

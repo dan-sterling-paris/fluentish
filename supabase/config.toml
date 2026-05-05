@@ -1,7 +1,4 @@
 # Supabase project configuration
-# Fill in your project-ref from: https://supabase.com/dashboard/project/_/settings/general
-[project]
-project_id = "your-project-ref"
 
 [api]
 enabled = true
@@ -13,7 +10,7 @@ max_rows = 1000
 [db]
 port = 54322
 shadow_port = 54320
-major_version = 15
+major_version = 17
 
 [studio]
 enabled = true
@@ -48,4 +45,3 @@ verify_jwt = false
 # sheets-poll: runs every minute to ingest new leads from Google Sheets
 [functions.sheets-poll]
 verify_jwt = false
-schedule = "* * * * *"
