@@ -176,6 +176,7 @@
             </div>
             <div class="flex items-center gap-2 mt-0.5">
               <p class="text-xs text-gray-400 truncate" x-text="lead.phone"></p>
+              <p x-show="lead.last_message_at" class="text-xs text-gray-300 shrink-0" x-text="formatAge(lead.last_message_at)"></p>
               <span
                 x-show="lead.last_message_direction === 'inbound' && (Date.now() - new Date(lead.last_message_at)) < 86400000"
                 class="text-xs font-semibold text-green-600 bg-green-50 px-1.5 py-0.5 rounded shrink-0"
