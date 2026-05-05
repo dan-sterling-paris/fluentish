@@ -77,14 +77,30 @@ async function handleUpdateTemplate(key: string, req: Request) {
   return json({ ok: true });
 }
 
+const STATUS_PRIORITY: Record<string, number> = {
+  call_booked: 1,
+  interested:  2,
+  contacted:   3,
+  new:         4,
+  enrolled:    5,
+  lost:        6,
+};
+
 async function handleListLeads(url: URL) {
   const supabase = db();
   const status = url.searchParams.get("status");
-  let query = supabase.from("leads").select("*").order("updated_at", { ascending: false });
+  let query = supabase.from("leads").select("*");
   if (status && status !== "all") query = query.eq("status", status);
   const { data, error } = await query;
   if (error) return err(error.message, 500);
-  return json(data);
+  const sorted = (data ?? []).sort((a, b) => {
+    const pa = STATUS_PRIORITY[a.status] ?? 99;
+    const pb = STATUS_PRIORITY[b.status] ?? 99;
+    if (pa !== pb) return pa - pb;
+    // Within same status: most recently active first
+    return (b.updated_at ?? "").localeCompare(a.updated_at ?? "");
+  });
+  return json(sorted);
 }
 
 async function handleGetMessages(leadId: string) {
