@@ -1,17 +1,35 @@
 from datetime import datetime, timezone
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models import Lead, LeadStatus, Message
 
 
-async def get_all_leads(db: AsyncSession, status: str | None = None) -> list[Lead]:
-    stmt = select(Lead)
+async def get_all_leads(db: AsyncSession, status: str | None = None) -> list[dict]:
+    last_msg_sq = (
+        select(func.max(Message.sent_at))
+        .where(Message.lead_id == Lead.id)
+        .correlate(Lead)
+        .scalar_subquery()
+    )
+    stmt = select(Lead, last_msg_sq.label("last_message_at"))
     if status and status != "all":
         stmt = stmt.where(Lead.status == status)
     stmt = stmt.order_by(Lead.updated_at.desc())
     result = await db.execute(stmt)
-    return list(result.scalars().all())
+    rows = result.all()
+    return [
+        {
+            "id": lead.id,
+            "name": lead.name,
+            "phone": lead.phone,
+            "status": lead.status,
+            "created_at": lead.created_at,
+            "updated_at": lead.updated_at,
+            "last_message_at": last_message_at,
+        }
+        for lead, last_message_at in rows
+    ]
 
 
 async def get_lead_by_id(db: AsyncSession, lead_id: int) -> Lead | None:

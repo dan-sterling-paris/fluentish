@@ -20,6 +20,7 @@ class LeadOut(BaseModel):
     status: LeadStatus
     created_at: datetime
     updated_at: datetime
+    last_message_at: datetime | None = None
 
     model_config = {"from_attributes": True}
 
