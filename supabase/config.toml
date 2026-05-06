@@ -46,3 +46,8 @@ verify_jwt = false
 # sheets-poll: runs every minute to ingest new leads from Google Sheets
 [functions.sheets-poll]
 verify_jwt = false
+
+# stripe-webhook: receives checkout.session.completed from Stripe,
+# invites the customer to the portal, and marks their lead as enrolled
+[functions.stripe-webhook]
+verify_jwt = false
