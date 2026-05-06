@@ -27,6 +27,7 @@ file_size_limit = "50MiB"
 [auth]
 enabled = true
 site_url = "https://dan-sterling-paris.github.io/fluentish/dashboard/"
+additional_redirect_urls = ["https://gutihncfxjdyxulfwtgp.supabase.co/storage/v1/object/public/portal/index.html"]
 jwt_expiry = 3600
 enable_signup = false
 

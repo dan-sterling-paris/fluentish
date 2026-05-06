@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FluentISH — Student Portal</title>
+
+  <script>
+    const SUPABASE_URL      = 'https://gutihncfxjdyxulfwtgp.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd1dGlobmNmeGpkeXh1bGZ3dGdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MDQ1MTAsImV4cCI6MjA5MzQ4MDUxMH0.ZnWjJLSzoshYwszYC4FGS-ebhqyAKfe6Iag0AlUhPmI';
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:   '#003359',
+            navyD:  '#002040',
+            rouge:  '#C8102E',
+            rougeH: '#A50D25',
+            cyan:   '#4DD4F5',
+            sand:   '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <style>
+    [x-cloak] { display: none !important; }
+    body { font-family: 'Inter', system-ui, sans-serif; }
+  </style>
+</head>
+
+<body class="h-full bg-sand" x-data="portalApp()" x-init="init()">
+
+  <!-- ── AUTH GATE ──────────────────────────────────────────────────────────── -->
+  <div
+    x-show="!loggedIn"
+    x-cloak
+    class="fixed inset-0 z-50 flex items-center justify-center bg-navy"
+  >
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-4 p-8 space-y-6">
+      <div class="text-center">
+        <p class="font-display text-3xl font-bold text-navy">
+          Fluent<span class="text-rouge">ISH</span>
+        </p>
+        <p class="text-sm text-gray-400 mt-1">Student Portal</p>
+      </div>
+
+      <!-- Password-set mode — shown after clicking invite email link -->
+      <template x-if="needsPassword">
+        <div class="space-y-4">
+          <p class="text-sm text-gray-600 text-center">
+            Welcome! Set a password to activate your account.
+          </p>
+          <input
+            x-model="newPassword"
+            type="password"
+            placeholder="Choose a password"
+            class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-navy focus:ring-2 focus:ring-navy/20"
+          />
+          <input
+            x-model="confirmPassword"
+            type="password"
+            placeholder="Confirm password"
+            @keydown.enter="setPassword()"
+            class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-navy focus:ring-2 focus:ring-navy/20"
+          />
+          <p x-show="authError" x-text="authError" class="text-xs text-red-500 text-center"></p>
+          <button
+            @click="setPassword()"
+            :disabled="authLoading"
+            class="w-full bg-navy hover:bg-navyD disabled:opacity-50 text-white py-3 rounded-xl text-sm font-semibold transition-colors"
+            x-text="authLoading ? 'Setting password…' : 'Set password & sign in'"
+          ></button>
+        </div>
+      </template>
+
+      <!-- Sign-in mode — returning visitors -->
+      <template x-if="!needsPassword">
+        <div class="space-y-4">
+          <input
+            x-model="loginEmail"
+            type="email"
+            placeholder="Email"
+            class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-navy focus:ring-2 focus:ring-navy/20"
+          />
+          <input
+            x-model="loginPassword"
+            type="password"
+            placeholder="Password"
+            @keydown.enter="login()"
+            class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:border-navy focus:ring-2 focus:ring-navy/20"
+          />
+          <p x-show="authError" x-text="authError" class="text-xs text-red-500 text-center"></p>
+          <button
+            @click="login()"
+            :disabled="authLoading"
+            class="w-full bg-navy hover:bg-navyD disabled:opacity-50 text-white py-3 rounded-xl text-sm font-semibold transition-colors"
+            x-text="authLoading ? 'Signing in…' : 'Sign in'"
+          ></button>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- ── APP SHELL ──────────────────────────────────────────────────────────── -->
+  <div x-show="loggedIn" x-cloak class="min-h-full flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-navy text-white px-4 py-3 flex items-center justify-between shadow-md">
+      <p class="font-display text-xl font-bold tracking-tight">
+        Fluent<span class="text-rouge">ISH</span>
+      </p>
+      <div class="flex items-center gap-4">
+        <span class="text-sm text-blue-200" x-text="profile?.full_name || user?.email || ''"></span>
+        <button
+          @click="logout()"
+          class="text-xs text-blue-200 hover:text-white transition-colors px-2 py-1 rounded hover:bg-white/10"
+        >Sign out</button>
+      </div>
+    </header>
+
+    <!-- Tab bar -->
+    <nav class="bg-white border-b border-gray-200 px-4 flex gap-1">
+      <template x-for="tab in tabs" :key="tab.id">
+        <button
+          @click="activeTab = tab.id"
+          :class="activeTab === tab.id
+            ? 'border-b-2 border-rouge text-rouge font-semibold'
+            : 'text-gray-500 hover:text-navy'"
+          class="px-4 py-3 text-sm transition-colors"
+          x-text="tab.label"
+        ></button>
+      </template>
+    </nav>
+
+    <!-- Tab content -->
+    <main class="flex-1 max-w-2xl w-full mx-auto px-4 py-8 space-y-6">
+
+      <div x-show="loading" class="text-center py-16 text-gray-400 text-sm">Loading…</div>
+
+      <!-- ── PROFILE TAB ──────────────────────────────────────────────────── -->
+      <template x-if="!loading && activeTab === 'profile'">
+        <div class="space-y-4">
+          <h2 class="font-display text-2xl text-navy">My Profile</h2>
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-50">
+            <div class="px-6 py-4 flex justify-between items-center">
+              <span class="text-sm text-gray-500">Name</span>
+              <span class="text-sm font-medium text-navy" x-text="profile?.full_name || '—'"></span>
+            </div>
+            <div class="px-6 py-4 flex justify-between items-center">
+              <span class="text-sm text-gray-500">Email</span>
+              <span class="text-sm font-medium text-navy" x-text="profile?.email || user?.email || '—'"></span>
+            </div>
+            <div class="px-6 py-4 flex justify-between items-center">
+              <span class="text-sm text-gray-500">Phone</span>
+              <span class="text-sm font-medium text-navy" x-text="profile?.phone || '—'"></span>
+            </div>
+            <div class="px-6 py-4 flex justify-between items-center">
+              <span class="text-sm text-gray-500">French level</span>
+              <span
+                x-show="profile?.level"
+                class="text-xs font-semibold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full"
+                x-text="profile?.level"
+              ></span>
+              <span x-show="!profile?.level" class="text-sm text-gray-400">Not set</span>
+            </div>
+            <template x-if="profile?.notes">
+              <div class="px-6 py-4">
+                <p class="text-sm text-gray-500 mb-1">Notes from your tutor</p>
+                <p class="text-sm text-navy leading-relaxed" x-text="profile.notes"></p>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      <!-- ── LESSONS TAB ──────────────────────────────────────────────────── -->
+      <template x-if="!loading && activeTab === 'lessons'">
+        <div class="space-y-6">
+          <h2 class="font-display text-2xl text-navy">Lessons</h2>
+
+          <!-- Upcoming -->
+          <div>
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Upcoming</h3>
+            <p
+              x-show="upcomingLessons.length === 0"
+              class="text-sm text-gray-400 bg-white rounded-2xl px-6 py-8 text-center border border-gray-100"
+            >No upcoming lessons scheduled.</p>
+            <div class="space-y-3">
+              <template x-for="lesson in upcomingLessons" :key="lesson.id">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 px-6 py-4">
+                  <div class="flex items-start justify-between gap-4">
+                    <div>
+                      <p class="font-semibold text-navy" x-text="lesson.topic || 'Lesson'"></p>
+                      <p class="text-sm text-gray-500 mt-0.5" x-text="formatDateTime(lesson.scheduled_at)"></p>
+                      <p class="text-xs text-gray-400 mt-0.5" x-text="lesson.duration_mins + ' minutes'"></p>
+                    </div>
+                    <span
+                      :class="lessonStatusClass(lesson.status)"
+                      class="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 capitalize"
+                      x-text="lesson.status"
+                    ></span>
+                  </div>
+                  <template x-if="lesson.notes">
+                    <p class="text-sm text-gray-600 mt-3 pt-3 border-t border-gray-50" x-text="lesson.notes"></p>
+                  </template>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Past -->
+          <div>
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Past</h3>
+            <p
+              x-show="pastLessons.length === 0"
+              class="text-sm text-gray-400 bg-white rounded-2xl px-6 py-8 text-center border border-gray-100"
+            >No past lessons yet.</p>
+            <div class="space-y-3">
+              <template x-for="lesson in pastLessons" :key="lesson.id">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 px-6 py-4 opacity-70">
+                  <div class="flex items-start justify-between gap-4">
+                    <div>
+                      <p class="font-semibold text-navy" x-text="lesson.topic || 'Lesson'"></p>
+                      <p class="text-sm text-gray-500 mt-0.5" x-text="formatDateTime(lesson.scheduled_at)"></p>
+                      <p class="text-xs text-gray-400 mt-0.5" x-text="lesson.duration_mins + ' minutes'"></p>
+                    </div>
+                    <span
+                      :class="lessonStatusClass(lesson.status)"
+                      class="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 capitalize"
+                      x-text="lesson.status"
+                    ></span>
+                  </div>
+                  <template x-if="lesson.notes">
+                    <p class="text-sm text-gray-600 mt-3 pt-3 border-t border-gray-50" x-text="lesson.notes"></p>
+                  </template>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- ── RESOURCES TAB ────────────────────────────────────────────────── -->
+      <template x-if="!loading && activeTab === 'resources'">
+        <div class="space-y-4">
+          <h2 class="font-display text-2xl text-navy">Resources</h2>
+          <p
+            x-show="resources.length === 0"
+            class="text-sm text-gray-400 bg-white rounded-2xl px-6 py-8 text-center border border-gray-100"
+          >No resources yet — check back soon!</p>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <template x-for="res in resources" :key="res.id">
+              <a
+                :href="res.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="bg-white rounded-2xl shadow-sm border border-gray-100 px-5 py-4 hover:shadow-md hover:border-gray-200 transition-all block group"
+              >
+                <div class="flex items-start justify-between gap-2 mb-2">
+                  <p class="font-semibold text-navy text-sm group-hover:text-rouge transition-colors leading-snug" x-text="res.title"></p>
+                  <span
+                    :class="resourceTypeClass(res.resource_type)"
+                    class="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0 capitalize"
+                    x-text="res.resource_type"
+                  ></span>
+                </div>
+                <p x-show="res.description" class="text-xs text-gray-500 leading-relaxed" x-text="res.description"></p>
+              </a>
+            </template>
+          </div>
+        </div>
+      </template>
+
+    </main>
+  </div>
+
+  <script>
+  function portalApp() {
+    return {
+      // Auth
+      loggedIn: false,
+      needsPassword: false,
+      loginEmail: '',
+      loginPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+      authError: '',
+      authLoading: false,
+      user: null,
+      _sb: null,
+
+      // Data
+      loading: false,
+      profile: null,
+      lessons: [],
+      resources: [],
+
+      // UI
+      activeTab: 'profile',
+      tabs: [
+        { id: 'profile',   label: 'Profile' },
+        { id: 'lessons',   label: 'Lessons' },
+        { id: 'resources', label: 'Resources' },
+      ],
+
+      get upcomingLessons() {
+        const now = new Date();
+        return this.lessons
+          .filter(l => l.status === 'scheduled' || new Date(l.scheduled_at) >= now)
+          .sort((a, b) => new Date(a.scheduled_at) - new Date(b.scheduled_at));
+      },
+      get pastLessons() {
+        const now = new Date();
+        return this.lessons
+          .filter(l => l.status !== 'scheduled' && new Date(l.scheduled_at) < now)
+          .sort((a, b) => new Date(b.scheduled_at) - new Date(a.scheduled_at));
+      },
+
+      async init() {
+        this._sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // onAuthStateChange fires immediately with existing session and handles
+        // invite/recovery tokens in the URL hash automatically.
+        this._sb.auth.onAuthStateChange(async (event, session) => {
+          if (event === 'PASSWORD_RECOVERY') {
+            // Supabase fires this for both password-reset and invite-accept flows.
+            this.needsPassword = true;
+            this.user = session?.user ?? null;
+            return;
+          }
+          if (event === 'SIGNED_IN' && session) {
+            this.needsPassword = false;
+            this.user = session.user;
+            this.loggedIn = true;
+            await this._loadApp();
+          }
+          if (event === 'SIGNED_OUT') {
+            this.loggedIn = false;
+            this.needsPassword = false;
+            this.user = null;
+            this.profile = null;
+            this.lessons = [];
+            this.resources = [];
+          }
+        });
+
+        // Restore session for returning visitors (no URL hash token).
+        const { data: { session } } = await this._sb.auth.getSession();
+        if (session && !this.needsPassword) {
+          this.user = session.user;
+          this.loggedIn = true;
+          await this._loadApp();
+        }
+      },
+
+      async login() {
+        if (!this.loginEmail || !this.loginPassword) return;
+        this.authLoading = true;
+        this.authError = '';
+        const { error } = await this._sb.auth.signInWithPassword({
+          email: this.loginEmail,
+          password: this.loginPassword,
+        });
+        this.authLoading = false;
+        if (error) this.authError = error.message;
+        // onAuthStateChange handles the rest on success.
+      },
+
+      async setPassword() {
+        if (this.newPassword.length < 8) {
+          this.authError = 'Password must be at least 8 characters.';
+          return;
+        }
+        if (this.newPassword !== this.confirmPassword) {
+          this.authError = 'Passwords do not match.';
+          return;
+        }
+        this.authLoading = true;
+        this.authError = '';
+        const { error } = await this._sb.auth.updateUser({ password: this.newPassword });
+        this.authLoading = false;
+        if (error) {
+          this.authError = error.message;
+        } else {
+          this.needsPassword = false;
+          this.loggedIn = true;
+          await this._loadApp();
+        }
+      },
+
+      async logout() {
+        await this._sb.auth.signOut();
+      },
+
+      async _loadApp() {
+        this.loading = true;
+        try {
+          await Promise.all([
+            this._loadProfile(),
+            this._loadLessons(),
+            this._loadResources(),
+          ]);
+        } finally {
+          this.loading = false;
+        }
+      },
+
+      async _loadProfile() {
+        const { data } = await this._sb
+          .from('customer_profiles')
+          .select('*')
+          .eq('id', this.user.id)
+          .single();
+        this.profile = data;
+      },
+
+      async _loadLessons() {
+        const { data } = await this._sb
+          .from('lessons')
+          .select('*')
+          .eq('customer_id', this.user.id)
+          .order('scheduled_at', { ascending: true });
+        this.lessons = data ?? [];
+      },
+
+      async _loadResources() {
+        // RLS returns own + global rows; no client-side filter needed.
+        const { data } = await this._sb
+          .from('resources')
+          .select('*')
+          .order('created_at', { ascending: false });
+        this.resources = data ?? [];
+      },
+
+      formatDateTime(iso) {
+        return new Date(iso).toLocaleDateString('en-GB', {
+          weekday: 'short', day: 'numeric', month: 'short',
+          year: 'numeric', hour: '2-digit', minute: '2-digit',
+        });
+      },
+
+      lessonStatusClass(status) {
+        return {
+          scheduled:  'bg-blue-100 text-blue-700',
+          completed:  'bg-green-100 text-green-700',
+          cancelled:  'bg-red-100 text-red-500',
+        }[status] ?? 'bg-gray-100 text-gray-600';
+      },
+
+      resourceTypeClass(type) {
+        return {
+          pdf:        'bg-rouge/10 text-rouge',
+          vocabulary: 'bg-purple-100 text-purple-700',
+          link:       'bg-cyan/20 text-navy',
+        }[type] ?? 'bg-gray-100 text-gray-600';
+      },
+    };
+  }
+  </script>
+
+</body>
+</html>
