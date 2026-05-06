@@ -2,42 +2,9 @@
 -- Customer Portal — 20260506000000_customer_portal.sql
 -- ════════════════════════════════════════════════════════════════════════════
 
--- ── 1. Helper: identify portal customers ─────────────────────────────────────
--- security definer avoids RLS recursion when called from other tables' policies.
--- Must be created before customer_profiles so the tightened CRM policies can
--- reference it (even though customer_profiles doesn't exist yet, the function
--- body is not validated at CREATE time in PostgreSQL).
-create or replace function public.is_customer()
-returns boolean
-language sql
-security definer
-stable
-as $$
-  select exists (select 1 from public.customer_profiles where id = auth.uid())
-$$;
-
-
--- ── 2. Tighten CRM table RLS ──────────────────────────────────────────────────
--- Existing policies allow any authenticated user. Customers will also be
--- authenticated, so we restrict CRM tables to non-customer authenticated users.
-drop policy if exists "auth can read leads"     on leads;
-drop policy if exists "auth can read messages"  on messages;
-drop policy if exists "auth can read templates" on templates;
-
-create policy "crm admin can read leads"
-  on leads for select
-  using (auth.role() = 'authenticated' and not is_customer());
-
-create policy "crm admin can read messages"
-  on messages for select
-  using (auth.role() = 'authenticated' and not is_customer());
-
-create policy "crm admin can read templates"
-  on templates for select
-  using (auth.role() = 'authenticated' and not is_customer());
-
-
--- ── 3. customer_profiles ──────────────────────────────────────────────────────
+-- ── 1. customer_profiles ──────────────────────────────────────────────────────
+-- Created first so is_customer() can reference it (SQL functions validate
+-- table existence at creation time).
 create table public.customer_profiles (
   id          uuid        primary key references auth.users(id) on delete cascade,
   full_name   text        not null default '',
@@ -57,18 +24,50 @@ create policy "customer can read own profile"
   using (auth.uid() = id);
 
 
+-- ── 2. Helper: identify portal customers ─────────────────────────────────────
+-- security definer avoids RLS recursion when called from other tables' policies.
+create or replace function public.is_customer()
+returns boolean
+language sql
+security definer
+stable
+as $$
+  select exists (select 1 from public.customer_profiles where id = auth.uid())
+$$;
+
+
+-- ── 3. Tighten CRM table RLS ──────────────────────────────────────────────────
+-- Existing policies allow any authenticated user. Customers will also be
+-- authenticated, so we restrict CRM tables to non-customer authenticated users.
+drop policy if exists "auth can read leads"     on leads;
+drop policy if exists "auth can read messages"  on messages;
+drop policy if exists "auth can read templates" on templates;
+
+create policy "crm admin can read leads"
+  on leads for select
+  using (auth.role() = 'authenticated' and not is_customer());
+
+create policy "crm admin can read messages"
+  on messages for select
+  using (auth.role() = 'authenticated' and not is_customer());
+
+create policy "crm admin can read templates"
+  on templates for select
+  using (auth.role() = 'authenticated' and not is_customer());
+
+
 -- ── 4. lessons ────────────────────────────────────────────────────────────────
 create type lesson_status as enum ('scheduled', 'completed', 'cancelled');
 
 create table public.lessons (
-  id            bigserial   primary key,
-  customer_id   uuid        not null references public.customer_profiles(id) on delete cascade,
-  topic         text        not null default '',
-  scheduled_at  timestamptz not null,
-  duration_mins integer     not null default 60,
+  id            bigserial     primary key,
+  customer_id   uuid          not null references public.customer_profiles(id) on delete cascade,
+  topic         text          not null default '',
+  scheduled_at  timestamptz   not null,
+  duration_mins integer       not null default 60,
   notes         text,
   status        lesson_status not null default 'scheduled',
-  created_at    timestamptz not null default now()
+  created_at    timestamptz   not null default now()
 );
 
 alter table public.lessons enable row level security;
@@ -81,12 +80,12 @@ create policy "customer can read own lessons"
 
 -- ── 5. resources ──────────────────────────────────────────────────────────────
 create table public.resources (
-  id             bigserial primary key,
-  title          text      not null,
-  url            text      not null,
+  id             bigserial   primary key,
+  title          text        not null,
+  url            text        not null,
   description    text,
-  resource_type  text      not null default 'link', -- 'link' | 'pdf' | 'vocabulary'
-  customer_id    uuid      references public.customer_profiles(id) on delete set null,
+  resource_type  text        not null default 'link', -- 'link' | 'pdf' | 'vocabulary'
+  customer_id    uuid        references public.customer_profiles(id) on delete set null,
   -- null  = visible to ALL authenticated customers
   -- uuid  = private to that student only
   created_at     timestamptz not null default now()
