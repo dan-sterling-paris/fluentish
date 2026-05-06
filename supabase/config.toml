@@ -47,7 +47,7 @@ verify_jwt = false
 [functions.sheets-poll]
 verify_jwt = false
 
-# stripe-webhook: receives checkout.session.completed from Stripe,
-# invites the customer to the portal, and marks their lead as enrolled
-[functions.stripe-webhook]
+# calendly-webhook: receives invitee.created from Calendly; provisions a
+# customer portal account for paid bookings and marks their lead as enrolled
+[functions.calendly-webhook]
 verify_jwt = false

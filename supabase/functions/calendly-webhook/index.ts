@@ -1,21 +1,19 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
-const SUPABASE_URL             = Deno.env.get("SUPABASE_URL")!;
+const SUPABASE_URL              = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const STRIPE_WEBHOOK_SECRET    = Deno.env.get("STRIPE_WEBHOOK_SECRET")!;
+const CALENDLY_SIGNING_KEY      = Deno.env.get("CALENDLY_SIGNING_KEY")!;
 
-// Portal is hosted as a static file in Supabase Storage.
-// Invite emails will redirect here so the customer can set their password.
+// Invite emails redirect here so the customer can set their password.
 const PORTAL_URL = `${SUPABASE_URL}/storage/v1/object/public/portal/index.html`;
 
-// ── Stripe signature verification ─────────────────────────────────────────────
-// Implements https://stripe.com/docs/webhooks/signatures using Web Crypto API.
-async function verifyStripeSignature(
+// ── Signature verification ─────────────────────────────────────────────────────
+// Calendly uses the same t=..,v1=.. HMAC-SHA256 format as Stripe.
+async function verifySignature(
   rawBody: string,
   sigHeader: string,
   secret: string,
 ): Promise<boolean> {
-  // Parse "t=...,v1=...,v1=..." into { t: ["..."], v1: ["...", "..."] }
   const parts: Record<string, string[]> = {};
   for (const segment of sigHeader.split(",")) {
     const eq = segment.indexOf("=");
@@ -55,10 +53,10 @@ async function verifyStripeSignature(
 // ── Phone normalisation (same logic as inbound-webhook) ───────────────────────
 function normalizePhone(raw: string): string {
   let d = raw.replace(/[^\d+]/g, "");
-  if (d.startsWith("00"))                       d = "+" + d.slice(2);
+  if (d.startsWith("00"))                        d = "+" + d.slice(2);
   else if (d.startsWith("07") && d.length === 11) d = "+44" + d.slice(1);
   else if (d.startsWith("7")  && d.length === 10) d = "+44" + d;
-  else if (!d.startsWith("+"))                  d = "+" + d;
+  else if (!d.startsWith("+"))                   d = "+" + d;
   return d;
 }
 
@@ -69,43 +67,60 @@ Deno.serve(async (req: Request) => {
   }
 
   const rawBody   = await req.text();
-  const sigHeader = req.headers.get("stripe-signature") ?? "";
+  const sigHeader = req.headers.get("Calendly-Webhook-Signature") ?? "";
 
-  if (!await verifyStripeSignature(rawBody, sigHeader, STRIPE_WEBHOOK_SECRET)) {
-    console.error("stripe-webhook: invalid signature");
+  if (!await verifySignature(rawBody, sigHeader, CALENDLY_SIGNING_KEY)) {
+    console.error("calendly-webhook: invalid signature");
     return new Response("Invalid signature", { status: 400 });
   }
 
-  const event = JSON.parse(rawBody);
+  const body = JSON.parse(rawBody);
 
-  // Only act on completed checkouts — acknowledge everything else silently.
-  if (event.type !== "checkout.session.completed") {
+  // Acknowledge everything that isn't a new booking
+  if (body.event !== "invitee.created") {
     return new Response(JSON.stringify({ received: true }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   }
 
-  const session  = event.data.object;
-  const email    = session.customer_details?.email ?? session.customer_email ?? "";
-  const name     = session.customer_details?.name  ?? "";
-  const rawPhone = session.customer_details?.phone ?? "";
+  const invitee = body.payload;
+  const email   = invitee.email ?? "";
+  const name    = invitee.name  ?? "";
+
+  // Only provision a portal for paid bookings.
+  // Free discovery calls have payment === null; skip those.
+  const payment = invitee.payment;
+  if (!payment || payment.status !== "paid") {
+    console.log("calendly-webhook: free/unpaid booking — skipping portal for", email);
+    return new Response(JSON.stringify({ received: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 
   if (!email) {
-    console.error("stripe-webhook: no email in session", session.id);
+    console.error("calendly-webhook: no email in payload");
     return new Response(JSON.stringify({ received: true }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   }
+
+  // Extract phone from the "Your phone number" question (added to the event type)
+  const phoneQA  = (invitee.questions_and_answers ?? []).find(
+    (qa: { question: string }) => qa.question.toLowerCase().includes("phone"),
+  );
+  const rawPhone = phoneQA?.answer ?? "";
+  const phone    = rawPhone ? normalizePhone(rawPhone) : null;
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
   // ── 1. Invite customer to the portal ────────────────────────────────────────
   // inviteUserByEmail creates an auth.users row with invited_at set, which
   // triggers on_auth_user_invited → auto-creates their customer_profiles row.
-  // Stripe sends the invite email; the link redirects to PORTAL_URL where the
-  // customer sets a password on their first visit.
+  // Calendly sends an invite email; clicking the link lands on PORTAL_URL
+  // where the customer sets a password on their first visit.
   const { error: inviteError } = await supabase.auth.admin.inviteUserByEmail(
     email,
     { data: { full_name: name }, redirectTo: PORTAL_URL },
@@ -116,14 +131,13 @@ Deno.serve(async (req: Request) => {
     inviteError?.message?.toLowerCase().includes("user already exists");
 
   if (inviteError && !alreadyRegistered) {
-    console.error("stripe-webhook: invite failed for", email, inviteError.message);
-    // Still return 200 so Stripe doesn't retry — log and move on.
+    console.error("calendly-webhook: invite failed for", email, inviteError.message);
+    // Return 200 so Calendly doesn't retry endlessly — the error is logged.
   }
 
-  // ── 2. Update customer_profiles with name + phone ────────────────────────────
-  // The trigger creates the row; here we fill in any fields it couldn't set.
-  // For returning customers (alreadyRegistered) this also refreshes their info.
-  const phone = rawPhone ? normalizePhone(rawPhone) : null;
+  // ── 2. Fill in customer_profiles with name + phone ───────────────────────────
+  // The trigger creates the row; we patch in any fields it couldn't set.
+  // For returning customers this also refreshes their info.
   const profileUpdate: Record<string, string | null> = { email };
   if (name)  profileUpdate.full_name = name;
   if (phone) profileUpdate.phone     = phone;
@@ -134,11 +148,10 @@ Deno.serve(async (req: Request) => {
     .eq("email", email);
 
   if (profileError) {
-    console.error("stripe-webhook: profile update failed", email, profileError.message);
+    console.error("calendly-webhook: profile update failed", email, profileError.message);
   }
 
   // ── 3. Mark matching lead as enrolled ───────────────────────────────────────
-  // Match by phone if Stripe collected it; otherwise leave the lead as-is.
   if (phone) {
     await supabase
       .from("leads")
@@ -146,7 +159,11 @@ Deno.serve(async (req: Request) => {
       .eq("phone", phone);
   }
 
-  console.log("stripe-webhook: processed checkout for", email, alreadyRegistered ? "(existing user)" : "(new user)");
+  console.log(
+    "calendly-webhook: portal provisioned for",
+    email,
+    alreadyRegistered ? "(existing user)" : "(new user)",
+  );
 
   return new Response(JSON.stringify({ received: true }), {
     status: 200,
