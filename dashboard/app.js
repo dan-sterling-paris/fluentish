@@ -240,8 +240,7 @@ function crmApp() {
     async dismissReply(leadId) {
       try {
         await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}/dismiss-reply`, { method: 'PATCH' });
-        const lead = this.leads.find(l => l.id === leadId);
-        if (lead) lead.reply_dismissed_at = new Date().toISOString();
+        await this.loadLeads();
       } catch (e) {
         console.error('Dismiss reply error:', e);
       }
