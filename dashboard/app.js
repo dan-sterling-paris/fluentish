@@ -20,11 +20,19 @@ function crmApp() {
     realtimeConnected: false,
     config: { template_2: '', template_3: '' },
     _channel: null,
+    _tick: 0,
 
     // Template editor
     showTemplates: false,
     templates: [],
     savingTemplate: null,
+
+    // Ads
+    showAds: false,
+    adsLoading: false,
+    adsDateRange: 'last_7d',
+    adsData: null,
+    adsError: null,
 
     statuses: [
       { value: 'all',         label: 'All' },
@@ -47,6 +55,18 @@ function crmApp() {
         this.loggedIn = true;
         await this._loadApp();
       }
+
+      // Reconnect and refresh when tab becomes visible again
+      document.addEventListener('visibilitychange', async () => {
+        if (!document.hidden && this.loggedIn) {
+          this.connectRealtime();
+          this.loadLeads();
+          if (this.selectedLead) {
+            await this.loadMessages(this.selectedLead.id);
+            this.$nextTick(() => this.scrollToBottom());
+          }
+        }
+      });
 
       // Listen for auth state changes (e.g. token refresh, sign out)
       this._supabase.auth.onAuthStateChange(async (event, session) => {
@@ -178,6 +198,12 @@ function crmApp() {
           const err = await res.json().catch(() => ({}));
           alert('Send failed: ' + (err.error || res.statusText));
           this.replyText = body;
+        } else {
+          const { message } = await res.json();
+          if (message && !this.messages.some(m => m.id === message.id)) {
+            this.messages.push(message);
+            this.$nextTick(() => this.scrollToBottom());
+          }
         }
       } catch (e) {
         console.error('Send error:', e);
@@ -197,11 +223,27 @@ function crmApp() {
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
           alert('Template send failed: ' + (err.error || res.statusText));
+        } else {
+          const { message } = await res.json();
+          if (message && !this.messages.some(m => m.id === message.id)) {
+            this.messages.push(message);
+            this.$nextTick(() => this.scrollToBottom());
+          }
         }
       } catch (e) {
         console.error('Template send error:', e);
       } finally {
         this.sending = false;
+      }
+    },
+
+    async dismissReply(leadId) {
+      try {
+        await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}/dismiss-reply`, { method: 'PATCH' });
+        const lead = this.leads.find(l => l.id === leadId);
+        if (lead) lead.reply_dismissed_at = new Date().toISOString();
+      } catch (e) {
+        console.error('Dismiss reply error:', e);
       }
     },
 
@@ -233,8 +275,35 @@ function crmApp() {
       }
     },
 
+    async openAds() {
+      this.showAds = true;
+      this.showTemplates = false;
+      this.selectedLead = null;
+      await this.loadAdsData();
+    },
+
+    async loadAdsData() {
+      this.adsLoading = true;
+      this.adsError = null;
+      try {
+        const res = await this._fetch(`${FUNCTION_BASE}/meta-ads-api?date_preset=${this.adsDateRange}`);
+        const data = await res.json();
+        if (!res.ok) {
+          this.adsError = data.error || 'Failed to load ad data';
+        } else {
+          this.adsData = data;
+        }
+      } catch (e) {
+        console.error('Failed to load ads:', e);
+        this.adsError = 'Failed to load ad data';
+      } finally {
+        this.adsLoading = false;
+      }
+    },
+
     async openTemplates() {
       this.showTemplates = true;
+      this.showAds = false;
       this.selectedLead = null;
       try {
         const res = await this._fetch(`${FUNCTION_BASE}/crm-api/templates`);

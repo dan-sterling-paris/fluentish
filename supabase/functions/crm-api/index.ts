@@ -162,6 +162,16 @@ async function handleSendTemplate(leadId: string, templateNum: string, req: Requ
   return json({ ok: true, message: msg });
 }
 
+async function handleDismissReply(leadId: string) {
+  const supabase = db();
+  const { error } = await supabase
+    .from("leads")
+    .update({ reply_dismissed_at: new Date().toISOString() })
+    .eq("id", leadId);
+  if (error) return err(error.message, 500);
+  return json({ ok: true });
+}
+
 async function handleUpdateStatus(leadId: string, req: Request) {
   const supabase = db();
   const { status } = await req.json();
@@ -209,6 +219,10 @@ Deno.serve(async (req: Request) => {
   // PATCH /leads/:id/status
   const statusMatch = path.match(/^\/leads\/(\d+)\/status$/);
   if (req.method === "PATCH" && statusMatch) return handleUpdateStatus(statusMatch[1], req);
+
+  // PATCH /leads/:id/dismiss-reply
+  const dismissMatch = path.match(/^\/leads\/(\d+)\/dismiss-reply$/);
+  if (req.method === "PATCH" && dismissMatch) return handleDismissReply(dismissMatch[1]);
 
   // DELETE /leads/:id
   const deleteMatch = path.match(/^\/leads\/(\d+)$/);
