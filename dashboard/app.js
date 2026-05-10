@@ -237,6 +237,18 @@ function crmApp() {
       }
     },
 
+    async toggleFlag(leadId, flagged) {
+      try {
+        await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}/flag`, {
+          method: 'PATCH',
+          body: JSON.stringify({ flagged }),
+        });
+        await this.loadLeads();
+      } catch (e) {
+        console.error('Flag error:', e);
+      }
+    },
+
     async dismissReply(leadId) {
       try {
         await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}/dismiss-reply`, { method: 'PATCH' });

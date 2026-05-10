@@ -162,6 +162,18 @@ async function handleSendTemplate(leadId: string, templateNum: string, req: Requ
   return json({ ok: true, message: msg });
 }
 
+async function handleToggleFlag(leadId: string, req: Request) {
+  const supabase = db();
+  const { flagged } = await req.json();
+  if (typeof flagged !== "boolean") return err("flagged must be boolean", 400);
+  const { error } = await supabase
+    .from("leads")
+    .update({ flagged, updated_at: new Date().toISOString() })
+    .eq("id", leadId);
+  if (error) return err(error.message, 500);
+  return json({ ok: true });
+}
+
 async function handleDismissReply(leadId: string) {
   const supabase = db();
   const { error } = await supabase
@@ -223,6 +235,10 @@ Deno.serve(async (req: Request) => {
   // PATCH /leads/:id/dismiss-reply
   const dismissMatch = path.match(/^\/leads\/(\d+)\/dismiss-reply$/);
   if (req.method === "PATCH" && dismissMatch) return handleDismissReply(dismissMatch[1]);
+
+  // PATCH /leads/:id/flag
+  const flagMatch = path.match(/^\/leads\/(\d+)\/flag$/);
+  if (req.method === "PATCH" && flagMatch) return handleToggleFlag(flagMatch[1], req);
 
   // DELETE /leads/:id
   const deleteMatch = path.match(/^\/leads\/(\d+)$/);

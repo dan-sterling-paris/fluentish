@@ -1,0 +1,1 @@
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS flagged boolean NOT NULL DEFAULT false;
