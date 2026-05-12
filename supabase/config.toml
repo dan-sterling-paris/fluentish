@@ -51,3 +51,11 @@ verify_jwt = false
 # customer portal account for paid bookings and marks their lead as enrolled
 [functions.calendly-webhook]
 verify_jwt = false
+
+# drip-send: automated follow-up SMS sequence (runs every 5 minutes)
+# Sends follow-up 1 at 24h and follow-up 2 at 48h after lead creation,
+# adjusted to the next 08:00 UK if outside the 08:00–21:00 working window.
+# Halts automatically if the lead has replied (last_message_direction = 'inbound').
+[functions.drip-send]
+verify_jwt = false
+schedule = "*/5 * * * *"

@@ -18,9 +18,9 @@ function crmApp() {
     filterStatus: 'all',
     sending: false,
     realtimeConnected: false,
+    showLost: false,
     config: { template_2: '', template_3: '' },
     _channel: null,
-    _tick: 0,
 
     // Template editor
     showTemplates: false,
@@ -49,14 +49,12 @@ function crmApp() {
     async init() {
       this._supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      // Restore existing session
       const { data: { session } } = await this._supabase.auth.getSession();
       if (session) {
         this.loggedIn = true;
         await this._loadApp();
       }
 
-      // Reconnect and refresh when tab becomes visible again
       document.addEventListener('visibilitychange', async () => {
         if (!document.hidden && this.loggedIn) {
           this.connectRealtime();
@@ -68,7 +66,6 @@ function crmApp() {
         }
       });
 
-      // Listen for auth state changes (e.g. token refresh, sign out)
       this._supabase.auth.onAuthStateChange(async (event, session) => {
         if (event === 'SIGNED_IN' && session) {
           this.loggedIn = true;
@@ -86,6 +83,10 @@ function crmApp() {
     async _loadApp() {
       await Promise.all([this.loadConfig(), this.loadLeads()]);
       this.connectRealtime();
+      // Auto-reconnect if realtime drops
+      setInterval(() => {
+        if (!this.realtimeConnected && this.loggedIn) this.connectRealtime();
+      }, 30000);
     },
 
     // ── Auth actions ──────────────────────────────────────────────────────
@@ -99,10 +100,7 @@ function crmApp() {
         password: this.loginPassword,
       });
       this.loginLoading = false;
-      if (error) {
-        this.loginError = error.message;
-      }
-      // onAuthStateChange handles the rest
+      if (error) this.loginError = error.message;
     },
 
     async logout() {
@@ -155,6 +153,17 @@ function crmApp() {
       }
     },
 
+    // Leads shown in the sidebar — hides lost by default when filter is 'all'
+    visibleLeads() {
+      if (this.filterStatus !== 'all' || this.showLost) return this.leads;
+      return this.leads.filter(l => l.status !== 'lost');
+    },
+
+    hiddenLostCount() {
+      if (this.filterStatus !== 'all' || this.showLost) return 0;
+      return this.leads.filter(l => l.status === 'lost').length;
+    },
+
     async selectLead(lead) {
       this.selectedLead = lead;
       this.messages = [];
@@ -170,13 +179,29 @@ function crmApp() {
       this.replyText = '';
     },
 
+    // Merge new messages into the array by ID — prevents realtime/HTTP race condition
+    _upsertMessages(newMsgs) {
+      for (const msg of newMsgs) {
+        const idx = this.messages.findIndex(m => m.id === msg.id);
+        if (idx === -1) {
+          const pos = this.messages.findIndex(m => new Date(m.sent_at) > new Date(msg.sent_at));
+          if (pos === -1) this.messages.push(msg);
+          else this.messages.splice(pos, 0, msg);
+        } else {
+          this.messages[idx] = msg;
+        }
+      }
+    },
+
     async loadMessages(leadId) {
       try {
         const res = await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}/messages`);
         if (!res.ok) return;
         const msgs = await res.json();
         if (this.selectedLead?.id !== leadId) return;
-        this.messages = msgs;
+        // Upsert rather than replace — preserves optimistic/realtime messages
+        this._upsertMessages(msgs);
+        this.$nextTick(() => this.scrollToBottom());
       } catch (e) {
         console.error('Failed to load messages:', e);
       }
@@ -188,7 +213,11 @@ function crmApp() {
       if (!this.replyText.trim() || this.sending || !this.selectedLead) return;
       this.sending = true;
       const body = this.replyText;
+      const tempId = 'temp-' + Date.now();
+      // Push optimistically — shown immediately, no refresh needed
+      this.messages.push({ id: tempId, direction: 'outbound', body, sent_at: new Date().toISOString(), lead_id: this.selectedLead.id });
       this.replyText = '';
+      this.$nextTick(() => this.scrollToBottom());
       try {
         const res = await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${this.selectedLead.id}/send`, {
           method: 'POST',
@@ -196,17 +225,21 @@ function crmApp() {
         });
         if (!res.ok) {
           const err = await res.json().catch(() => ({}));
-          alert('Send failed: ' + (err.error || res.statusText));
+          this.messages = this.messages.filter(m => m.id !== tempId);
           this.replyText = body;
+          alert('Send failed: ' + (err.error || res.statusText));
         } else {
           const { message } = await res.json();
-          if (message && !this.messages.some(m => m.id === message.id)) {
-            this.messages.push(message);
-            this.$nextTick(() => this.scrollToBottom());
+          if (message) {
+            // Replace temp with confirmed server record
+            const idx = this.messages.findIndex(m => m.id === tempId);
+            if (idx !== -1) this.messages[idx] = message;
+            else this._upsertMessages([message]);
           }
         }
       } catch (e) {
         console.error('Send error:', e);
+        this.messages = this.messages.filter(m => m.id !== tempId);
         this.replyText = body;
       } finally {
         this.sending = false;
@@ -225,8 +258,8 @@ function crmApp() {
           alert('Template send failed: ' + (err.error || res.statusText));
         } else {
           const { message } = await res.json();
-          if (message && !this.messages.some(m => m.id === message.id)) {
-            this.messages.push(message);
+          if (message) {
+            this._upsertMessages([message]);
             this.$nextTick(() => this.scrollToBottom());
           }
         }
@@ -362,11 +395,8 @@ function crmApp() {
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
           const msg = payload.new;
           if (this.selectedLead && msg.lead_id === this.selectedLead.id) {
-            const alreadyHave = this.messages.some(m => m.id === msg.id);
-            if (!alreadyHave) {
-              this.messages.push(msg);
-              this.$nextTick(() => this.scrollToBottom());
-            }
+            this._upsertMessages([msg]);
+            this.$nextTick(() => this.scrollToBottom());
           }
           this.loadLeads();
         })
@@ -380,6 +410,11 @@ function crmApp() {
     scrollToBottom() {
       const el = document.getElementById('chat-messages');
       if (el) el.scrollTop = el.scrollHeight;
+    },
+
+    hasReplyBadge(lead) {
+      return lead.last_message_direction === 'inbound' &&
+        (!lead.reply_dismissed_at || new Date(lead.last_message_at) > new Date(lead.reply_dismissed_at));
     },
 
     formatAge(iso) {
