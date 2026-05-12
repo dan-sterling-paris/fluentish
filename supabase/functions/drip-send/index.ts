@@ -71,12 +71,12 @@ Deno.serve(async () => {
   const { data: leads, error } = await supabase
     .from("leads")
     .select("id, name, phone, created_at, last_message_direction, status, sms2_sent_at, sms3_sent_at")
-    .not("status", "in", '("interested","call_booked","enrolled","lost","paid")')
+    .not("status", "in", "(interested,call_booked,enrolled,lost)")
     .or("last_message_direction.is.null,last_message_direction.eq.outbound");
 
   if (error) {
     console.error("drip-send: query error", error);
-    return new Response("query error", { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 
   let sent = 0;
