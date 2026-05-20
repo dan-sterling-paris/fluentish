@@ -269,27 +269,27 @@
             <div x-show="!adsLoading && !adsError && adsData" class="grid grid-cols-2 md:grid-cols-3 gap-4">
               <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
                 <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Spend</p>
-                <p class="text-2xl font-bold text-navy mt-1.5" x-text="adsData ? '£' + parseFloat(adsData.spend).toFixed(2) : '—'"></p>
+                <p class="text-2xl font-bold text-navy mt-1.5" x-text="adsData ? '£' + parseFloat(adsData.spend).toFixed(2) : '-'"></p>
               </div>
               <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
                 <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Leads</p>
-                <p class="text-2xl font-bold text-navy mt-1.5" x-text="adsData ? adsData.leads : '—'"></p>
+                <p class="text-2xl font-bold text-navy mt-1.5" x-text="adsData ? adsData.leads : '-'"></p>
               </div>
               <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
                 <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Cost per Lead</p>
-                <p class="text-2xl font-bold text-navy mt-1.5" x-text="adsData ? (adsData.cost_per_lead ? '£' + parseFloat(adsData.cost_per_lead).toFixed(2) : '—') : '—'"></p>
+                <p class="text-2xl font-bold text-navy mt-1.5" x-text="adsData ? (adsData.cost_per_lead ? '£' + parseFloat(adsData.cost_per_lead).toFixed(2) : '-') : '-'"></p>
               </div>
               <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
                 <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Impressions</p>
-                <p class="text-2xl font-bold text-navy mt-1.5" x-text="adsData ? parseInt(adsData.impressions).toLocaleString() : '—'"></p>
+                <p class="text-2xl font-bold text-navy mt-1.5" x-text="adsData ? parseInt(adsData.impressions).toLocaleString() : '-'"></p>
               </div>
               <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
                 <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Reach</p>
-                <p class="text-2xl font-bold text-navy mt-1.5" x-text="adsData ? parseInt(adsData.reach).toLocaleString() : '—'"></p>
+                <p class="text-2xl font-bold text-navy mt-1.5" x-text="adsData ? parseInt(adsData.reach).toLocaleString() : '-'"></p>
               </div>
               <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
                 <p class="text-xs text-gray-400 font-medium uppercase tracking-wide">Clicks (CTR)</p>
-                <p class="text-2xl font-bold text-navy mt-1.5" x-text="adsData ? parseInt(adsData.clicks).toLocaleString() : '—'"></p>
+                <p class="text-2xl font-bold text-navy mt-1.5" x-text="adsData ? parseInt(adsData.clicks).toLocaleString() : '-'"></p>
                 <p class="text-xs text-gray-400 mt-0.5" x-text="adsData ? adsData.ctr + '%' : ''"></p>
               </div>
             </div>

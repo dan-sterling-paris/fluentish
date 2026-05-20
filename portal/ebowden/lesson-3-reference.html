@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elaine Bowden - Lesson 3 Reference Sheet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:  #003359;
+      --rouge: #C8102E;
+      --sand:  #F7F4EF;
+      --muted: #6B7280;
+      --border: #E5E1DA;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--sand);
+      color: var(--navy);
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 36px 40px 40px;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--rouge);
+      padding-bottom: 10px;
+      margin-bottom: 24px;
+    }
+    .header-brand {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .header-brand span { color: var(--rouge); }
+    .header-meta {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: right;
+      line-height: 1.6;
+    }
+    .header-meta strong {
+      display: block;
+      font-size: 13px;
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    /* ── Section title ── */
+    .section-title {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rouge);
+      margin-bottom: 10px;
+    }
+
+    /* ── Grid layout ── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .full-width { margin-bottom: 16px; }
+
+    /* ── Card ── */
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    /* ── Talk Back Toolkit ── */
+    .toolkit-table { width: 100%; border-collapse: collapse; }
+    .toolkit-table tr + tr td { border-top: 1px solid var(--border); }
+    .toolkit-table td { padding: 7px 0; vertical-align: top; }
+    .toolkit-table .fr {
+      font-weight: 600;
+      color: var(--navy);
+      width: 44%;
+      padding-right: 10px;
+    }
+    .toolkit-table .pron {
+      color: var(--muted);
+      font-style: italic;
+      font-size: 12px;
+      width: 28%;
+      padding-right: 10px;
+    }
+    .toolkit-table .en {
+      color: #374151;
+      font-size: 12px;
+    }
+    .ladder-note {
+      margin-top: 10px;
+      font-size: 11.5px;
+      color: var(--muted);
+      border-left: 3px solid var(--rouge);
+      padding-left: 8px;
+    }
+
+    /* ── Root phrases ── */
+    .root-block + .root-block { margin-top: 10px; }
+    .root-label {
+      font-weight: 700;
+      color: var(--navy);
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .root-label .pron {
+      font-weight: 400;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 11.5px;
+    }
+    .root-label .en {
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 11.5px;
+    }
+    .root-examples { list-style: none; }
+    .root-examples li {
+      font-size: 12.5px;
+      color: #374151;
+      padding: 2px 0 2px 10px;
+      border-left: 2px solid var(--border);
+      margin-top: 3px;
+    }
+    .root-examples li .en {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ── Natural Sound Kit ── */
+    .sound-group + .sound-group { margin-top: 10px; }
+    .sound-group-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .sound-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+    .pill {
+      background: var(--sand);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 12px;
+    }
+    .pill .fr { font-weight: 600; color: var(--navy); }
+    .pill .en { color: var(--muted); font-style: italic; font-size: 11px; }
+
+    /* ── Wow exchange ── */
+    .wow-card {
+      background: var(--navy);
+      border-radius: 12px;
+      padding: 16px 18px;
+      color: #fff;
+    }
+    .wow-card .section-title { color: #C8A0A8; }
+    .dialogue { display: flex; flex-direction: column; gap: 7px; }
+    .dialogue-line { display: flex; gap: 10px; align-items: flex-start; }
+    .speaker {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      min-width: 52px;
+      padding-top: 1px;
+      opacity: 0.6;
+    }
+    .speaker.elaine { color: #4DD4F5; opacity: 1; }
+    .line-text {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #fff;
+    }
+    .line-text em {
+      display: block;
+      font-style: italic;
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.55);
+      margin-top: 1px;
+    }
+    .wow-tip {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.6);
+    }
+    .wow-tip strong { color: #4DD4F5; }
+
+    /* ── Vocab review ── */
+    .vocab-cols {
+      columns: 2;
+      column-gap: 16px;
+    }
+    .vocab-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border);
+      break-inside: avoid;
+      font-size: 12.5px;
+    }
+    .vocab-item .fr { font-weight: 500; }
+    .vocab-item .pron { color: var(--muted); font-style: italic; font-size: 11.5px; flex: 1; text-align: center; }
+    .vocab-item .en { color: #374151; text-align: right; }
+
+    /* ── Magic phrase ── */
+    .magic-phrase {
+      background: #FFF5F6;
+      border: 1px solid #F0C0C8;
+      border-left: 4px solid var(--rouge);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 10px;
+    }
+    .magic-phrase .fr {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--navy);
+    }
+    .magic-phrase .pron {
+      font-size: 11.5px;
+      color: var(--muted);
+      font-style: italic;
+      margin: 1px 0 4px;
+    }
+    .magic-phrase .desc {
+      font-size: 12px;
+      color: #374151;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; font-size: 12px; }
+      .page { padding: 20px 24px; max-width: 100%; }
+      .card { box-shadow: none; }
+      .wow-card { - \1ebkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-brand">Fluent<span>ISH</span></div>
+    <div class="header-meta">
+      <strong>Elaine Bowden</strong>
+      Lesson 3 · Reference Sheet · 19 May 2026
+    </div>
+  </div>
+
+  <!-- Row 1: Talk Back Toolkit (full width) -->
+  <div class="full-width">
+    <div class="card">
+      <div class="section-title">The Talk Back Toolkit - when you don't understand</div>
+      <table class="toolkit-table">
+        <tr>
+          <td class="fr">Pardon&nbsp;?</td>
+          <td class="pron">par-don</td>
+          <td class="en">Didn't catch a word - your first reflex</td>
+        </tr>
+        <tr>
+          <td class="fr">Vous pouvez répéter&nbsp;?</td>
+          <td class="pron">voo poovay ray-pay-tay</td>
+          <td class="en">Can you repeat that?</td>
+        </tr>
+        <tr>
+          <td class="fr">Plus lentement s'il vous plaît</td>
+          <td class="pron">plue lon-tuh-mon</td>
+          <td class="en">More slowly please</td>
+        </tr>
+        <tr>
+          <td class="fr">Je ne comprends pas, désolée</td>
+          <td class="pron">zhe nuh com-pron pa</td>
+          <td class="en">I don't understand, sorry</td>
+        </tr>
+        <tr>
+          <td class="fr">C'est quoi en anglais&nbsp;?</td>
+          <td class="pron">say kwah on on-glay</td>
+          <td class="en">What's that in English? - last resort</td>
+        </tr>
+      </table>
+      <p class="ladder-note">You don't need to catch everything - just enough to respond. Use <strong>Pardon&nbsp;?</strong> early, before you're totally lost.</p>
+    </div>
+  </div>
+
+  <!-- Row 2: Root Phrases + Natural Sound Kit -->
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="section-title">Root Phrases</div>
+
+      <div class="root-block">
+        <div class="root-label">Vous avez…&nbsp;? <span class="pron">voo zavay</span> <span class="en">Do you have…?</span></div>
+        <ul class="root-examples">
+          <li>une table pour deux <span class="en">a table for two</span></li>
+          <li>une carte en anglais <span class="en">a menu in English</span></li>
+          <li>du vin blanc <span class="en">white wine</span></li>
+        </ul>
+      </div>
+
+      <div class="root-block">
+        <div class="root-label">Il y a…&nbsp;? <span class="pron">il ee ya</span> <span class="en">Is there…?</span></div>
+        <ul class="root-examples">
+          <li>un bus pour le centre-ville <span class="en">a bus to town</span></li>
+          <li>une terrasse <span class="en">a terrace</span></li>
+        </ul>
+      </div>
+
+      <div class="root-block">
+        <div class="root-label">Je suis… <span class="pron">zhe swee</span> <span class="en">I am…</span></div>
+        <ul class="root-examples">
+          <li>de Manchester <span class="en">from Manchester</span></li>
+          <li>infirmière <span class="en">a nurse</span></li>
+          <li>en vacances <span class="en">on holiday</span></li>
+          <li>carnivore <span class="en">a carnivore 🥩</span></li>
+        </ul>
+      </div>
+
+      <div class="magic-phrase">
+        <div class="fr">Je m'entraîne !</div>
+        <div class="pron">zhe mon-tren</div>
+        <div class="desc">I'm practising! - bolder than "j'apprends", sounds like someone who means business</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">The Natural Sound Kit</div>
+
+      <div class="sound-group">
+        <div class="sound-group-label">Reactions - show you're listening</div>
+        <div class="sound-pills">
+          <div class="pill"><span class="fr">Ah bon&nbsp;?</span> <span class="en">Oh really?</span></div>
+          <div class="pill"><span class="fr">Ah oui&nbsp;!</span> <span class="en">Oh yes!</span></div>
+          <div class="pill"><span class="fr">Exactement&nbsp;!</span> <span class="en">Exactly!</span></div>
+          <div class="pill"><span class="fr">Tout à fait&nbsp;!</span> <span class="en">Absolutely!</span></div>
+          <div class="pill"><span class="fr">C'est sympa&nbsp;!</span> <span class="en">That's nice!</span></div>
+          <div class="pill"><span class="fr">Parfait&nbsp;!</span> <span class="en">Perfect!</span></div>
+        </div>
+      </div>
+
+      <div class="sound-group">
+        <div class="sound-group-label">Sentence starters - buys thinking time</div>
+        <div class="sound-pills">
+          <div class="pill"><span class="fr">Alors…</span> <span class="en">So…</span></div>
+          <div class="pill"><span class="fr">Donc…</span> <span class="en">So / therefore…</span></div>
+          <div class="pill"><span class="fr">Eh bien…</span> <span class="en">Well…</span></div>
+        </div>
+      </div>
+
+      <div class="sound-group">
+        <div class="sound-group-label">Quick vocab - Lesson 2 review</div>
+        <div class="vocab-cols" style="margin-top:4px;">
+          <div class="vocab-item"><span class="fr">Une bière</span><span class="pron">byeah</span><span class="en">a beer</span></div>
+          <div class="vocab-item"><span class="fr">Une pinte</span><span class="pron">pant</span><span class="en">a pint</span></div>
+          <div class="vocab-item"><span class="fr">Un demi</span><span class="pron">duh-mee</span><span class="en">a half</span></div>
+          <div class="vocab-item"><span class="fr">Une seize</span><span class="pron">sehze</span><span class="en">a 1664</span></div>
+          <div class="vocab-item"><span class="fr">Gauche</span><span class="pron">goash</span><span class="en">left</span></div>
+          <div class="vocab-item"><span class="fr">Droite</span><span class="pron">drwaht</span><span class="en">right</span></div>
+          <div class="vocab-item"><span class="fr">En haut</span><span class="pron">on oh</span><span class="en">upstairs</span></div>
+          <div class="vocab-item"><span class="fr">En bas</span><span class="pron">on ba</span><span class="en">downstairs</span></div>
+          <div class="vocab-item"><span class="fr">Manchester</span><span class="pron">mon-chest-air</span><span class="en">Manchester</span></div>
+          <div class="vocab-item"><span class="fr">Edimbourg</span><span class="pron">ed-an-boor</span><span class="en">Edinburgh*</span></div>
+        </div>
+        <p style="font-size:10.5px;color:var(--muted);margin-top:6px;">* ma fille est à l'université d'Edimbourg - my daughter is at university in Edinburgh</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Row 3: The Wow Exchange (full width) -->
+  <div class="full-width">
+    <div class="wow-card">
+      <div class="section-title">The "Wow" Exchange - learn this one off by heart</div>
+      <div class="dialogue">
+        <div class="dialogue-line">
+          <span class="speaker">Waiter</span>
+          <span class="line-text">Votre français est très bien, Madame&nbsp;!<em>Your French is very good, Madam!</em></span>
+        </div>
+        <div class="dialogue-line">
+          <span class="speaker elaine">Elaine</span>
+          <span class="line-text">Merci&nbsp;! Je m'entraîne. Je suis de Manchester.<em>Thank you! I'm practising. I'm from Manchester.</em></span>
+        </div>
+        <div class="dialogue-line">
+          <span class="speaker">Waiter</span>
+          <span class="line-text">Ah, Manchester&nbsp;! Vous êtes ici en vacances&nbsp;?<em>Oh, Manchester! Are you here on holiday?</em></span>
+        </div>
+        <div class="dialogue-line">
+          <span class="speaker elaine">Elaine</span>
+          <span class="line-text">Oui, exactement&nbsp;! Je suis infirmière - \1'avais vraiment besoin de vacances&nbsp;!<em>Yes, exactly! I'm a nurse - \1 really needed a holiday!</em></span>
+        </div>
+      </div>
+      <div class="wow-tip"><strong>The laugh is the goal.</strong> That last line always lands - it's self-deprecating, universal, and completely human. That's the moment.</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

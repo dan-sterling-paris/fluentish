@@ -56,7 +56,7 @@
         <p class="text-sm text-gray-400 mt-1">Student Portal</p>
       </div>
 
-      <!-- Password-set mode — shown after clicking invite email link -->
+      <!-- Password-set mode: shown after clicking invite email link -->
       <template x-if="needsPassword">
         <div class="space-y-4">
           <p class="text-sm text-gray-600 text-center">
@@ -85,7 +85,7 @@
         </div>
       </template>
 
-      <!-- Sign-in mode — returning visitors -->
+      <!-- Sign-in mode: returning visitors -->
       <template x-if="!needsPassword">
         <div class="space-y-4">
           <input
@@ -156,15 +156,15 @@
           <div class="bg-white rounded-2xl shadow-sm border border-gray-100 divide-y divide-gray-50">
             <div class="px-6 py-4 flex justify-between items-center">
               <span class="text-sm text-gray-500">Name</span>
-              <span class="text-sm font-medium text-navy" x-text="profile?.full_name || '—'"></span>
+              <span class="text-sm font-medium text-navy" x-text="profile?.full_name || '-'"></span>
             </div>
             <div class="px-6 py-4 flex justify-between items-center">
               <span class="text-sm text-gray-500">Email</span>
-              <span class="text-sm font-medium text-navy" x-text="profile?.email || user?.email || '—'"></span>
+              <span class="text-sm font-medium text-navy" x-text="profile?.email || user?.email || '-'"></span>
             </div>
             <div class="px-6 py-4 flex justify-between items-center">
               <span class="text-sm text-gray-500">Phone</span>
-              <span class="text-sm font-medium text-navy" x-text="profile?.phone || '—'"></span>
+              <span class="text-sm font-medium text-navy" x-text="profile?.phone || '-'"></span>
             </div>
             <div class="px-6 py-4 flex justify-between items-center">
               <span class="text-sm text-gray-500">French level</span>
@@ -259,7 +259,7 @@
           <p
             x-show="resources.length === 0"
             class="text-sm text-gray-400 bg-white rounded-2xl px-6 py-8 text-center border border-gray-100"
-          >No resources yet — check back soon!</p>
+          >No resources yet, check back soon!</p>
           <div class="grid gap-3 sm:grid-cols-2">
             <template x-for="res in resources" :key="res.id">
               <a

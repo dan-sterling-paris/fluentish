@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Build French sentences interactively with the Beer Mat Sentence Builder from FluentISH. Pick a question word, subject, modal verb, and infinitive to assemble real French." />
+  <title>Beer Mat Sentence Builder | FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:   '#003359',
+            navyD:  '#002040',
+            rouge:  '#C8102E',
+            rougeH: '#A50D25',
+            cyan:   '#4DD4F5',
+            sand:   '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+
+    .nav-link { transition: color 0.2s; }
+    .nav-link:hover { color: #C8102E; }
+    .active-link { color: #C8102E; font-weight: 600; }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #C8102E;
+      margin-bottom: 1.25rem;
+    }
+
+    [x-cloak] { display: none !important; }
+
+    /* ── Beer mat: separate section cards ── */
+    .beer-mat {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .mat-row {
+      display: grid;
+      background: white;
+      border: 3px solid #003359;
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+    .mat-row-3 { grid-template-columns: repeat(3, 1fr); }
+    .mat-row-2 { grid-template-columns: repeat(2, 1fr); }
+    .mat-row-4 { grid-template-columns: repeat(4, 1fr); }
+
+    /* verb sub-grid sits inside the last mat-row which spans full width */
+    .mat-verb-grid {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: white;
+    }
+
+    .mat-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.1rem 0.5rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #003359;
+      background: white;
+      border-right: 2px solid #003359;
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+      user-select: none;
+      -webkit-user-select: none;
+      min-height: 3.5rem;
+    }
+    .mat-cell:last-child { border-right: none; }
+
+    /* verb cells are a touch smaller */
+    .mat-verb-grid .mat-cell {
+      font-size: 0.875rem;
+      min-height: 2.75rem;
+      border-bottom: 2px solid #003359;
+    }
+    /* remove bottom border from last row of verbs (rows of 4, so last 4 items) */
+    .mat-verb-grid .mat-cell:nth-last-child(-n+4) { border-bottom: none; }
+
+    .mat-cell:hover { background: #F7F4EF; }
+    .mat-cell.selected { background: #003359; color: white; }
+    .mat-cell.selected:hover { background: #002040; }
+
+    /* ── Sentence panel ── */
+    .sentence-panel {
+      background: #003359;
+      border-radius: 1.25rem;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.75rem;
+      min-height: 9.5rem;          /* reserves space so the mat doesn't jump */
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── Cell English gloss ── */
+    .cell-gloss {
+      display: block;
+      font-size: 0.7rem;
+      font-style: italic;
+      font-weight: 400;
+      color: #8a9ab0;
+      margin-top: 3px;
+    }
+    .mat-cell.selected .cell-gloss {
+      color: rgba(255,255,255,0.55);
+    }
+  </style>
+</head>
+
+<body class="bg-white">
+
+  <!-- ===================== NAV ===================== -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
+      <a href="index.html" class="font-display text-2xl font-bold text-navy tracking-tight shrink-0">
+        Fluent<span class="text-rouge">ISH</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-500">
+        <a href="index.html"   class="nav-link">Home</a>
+        <a href="about.html"   class="nav-link">About Dan</a>
+        <a href="method.html"  class="nav-link">How It Works</a>
+        <a href="pricing.html" class="nav-link">Pricing</a>
+        <a href="tools.html"   class="nav-link active-link">Tools</a>
+      </nav>
+      <a href="pricing.html#booking"
+         class="hidden md:inline-block bg-rouge hover:bg-rougeH text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors duration-200 shrink-0">
+        Book Free Chat
+      </a>
+      <button id="menu-toggle" aria-label="Open menu" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+        <svg class="w-5 h-5 text-navy" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white px-6 py-5 flex flex-col gap-4 text-sm font-medium text-gray-700">
+      <a href="index.html"   class="py-1 hover:text-rouge transition-colors">Home</a>
+      <a href="about.html"   class="py-1 hover:text-rouge transition-colors">About Dan</a>
+      <a href="method.html"  class="py-1 hover:text-rouge transition-colors">How It Works</a>
+      <a href="pricing.html" class="py-1 hover:text-rouge transition-colors">Pricing</a>
+      <a href="tools.html"   class="py-1 text-rouge font-semibold">Tools</a>
+      <a href="pricing.html#booking" class="mt-2 bg-rouge text-white text-center py-3 rounded-full font-semibold hover:bg-rougeH transition-colors">
+        Book Free Chat
+      </a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="bg-navy text-white py-16 md:py-20">
+      <div class="max-w-3xl mx-auto px-6 text-center">
+        <p class="section-label" style="color:#4DD4F5;">Interactive tool</p>
+        <h1 class="font-display text-4xl sm:text-5xl font-bold leading-tight mb-5">
+          Beer Mat<br/><em class="not-italic text-rouge">Sentence Builder</em>
+        </h1>
+        <p class="text-blue-200 text-lg leading-relaxed max-w-xl mx-auto">
+          This isn't designed to produce perfect French, and it's not trying to. It's a scaffold:
+          something to get a real sentence out of your mouth while your brain is still catching up.
+          Pick one from each row and you've got something genuinely usable. Not polished, not complex,
+          but the kind of thing a native speaker will understand immediately.
+          The question word is optional: leave it blank for a plain statement.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== TOOL ===================== -->
+    <section class="py-14 md:py-20 bg-sand">
+      <div class="max-w-2xl mx-auto px-6" x-data="beerMatApp()" x-cloak>
+
+        <!-- Sentence display -->
+        <div class="sentence-panel" style="flex-direction:column; align-items:stretch;">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <p x-show="!hasAnything"
+                 class="font-display text-lg italic"
+                 style="color: rgba(147,197,253,0.7);">
+                Tap the cells below to build your sentence&hellip;
+              </p>
+              <p x-show="hasAnything"
+                 x-text="sentence"
+                 class="font-display text-2xl sm:text-3xl font-bold text-white leading-snug">
+              </p>
+            </div>
+            <button x-show="hasAnything"
+                    @click="reset()"
+                    class="shrink-0 text-xs font-semibold uppercase tracking-widest px-4 py-2 rounded-full border transition-colors mt-1"
+                    style="color:rgba(147,197,253,0.8); border-color:rgba(255,255,255,0.18);"
+                    onmouseover="this.style.color='white'; this.style.borderColor='rgba(255,255,255,0.5)';"
+                    onmouseout="this.style.color='rgba(147,197,253,0.8)'; this.style.borderColor='rgba(255,255,255,0.18)';">
+              Clear
+            </button>
+          </div>
+          <p x-show="hasAnything && englishTranslation"
+             x-text="englishTranslation"
+             class="text-base font-medium mt-3 pt-3"
+             style="color:#4DD4F5; border-top:1px solid rgba(255,255,255,0.12);">
+          </p>
+        </div>
+
+        <!-- The beer mat -->
+        <div class="beer-mat">
+
+          <!-- Row 1: Question words (optional) -->
+          <div class="mat-row mat-row-3">
+            <template x-for="q in questions" :key="q">
+              <button @click="toggleQuestion(q)"
+                      :class="selectedQuestion === q ? 'mat-cell selected' : 'mat-cell'">
+                <span x-text="q"></span>
+                <span class="cell-gloss" x-text="questionGlosses[q]"></span>
+              </button>
+            </template>
+          </div>
+
+          <!-- Row 2: Subject pronouns -->
+          <div class="mat-row mat-row-2">
+            <template x-for="s in subjects" :key="s">
+              <button @click="toggleSubject(s)"
+                      :class="selectedSubject === s ? 'mat-cell selected' : 'mat-cell'">
+                <span x-text="s"></span>
+                <span class="cell-gloss" x-text="subjectGlosses[s]"></span>
+              </button>
+            </template>
+          </div>
+
+          <!-- Row 3: Modal verbs -->
+          <div class="mat-row mat-row-4">
+            <template x-for="modal in modals" :key="modal.id">
+              <button @click="toggleModal(modal.id)"
+                      :class="selectedModal === modal.id ? 'mat-cell selected' : 'mat-cell'">
+                <span x-text="modalDisplay(modal)"></span>
+                <span class="cell-gloss" x-text="modal.en"></span>
+              </button>
+            </template>
+          </div>
+
+          <!-- Row 4: Infinitives (4-column sub-grid) -->
+          <div class="mat-row">
+            <div class="mat-verb-grid">
+              <template x-for="v in verbs" :key="v">
+                <button @click="toggleVerb(v)"
+                        :class="selectedVerb === v ? 'mat-cell selected' : 'mat-cell'">
+                  <span x-text="v"></span>
+                  <span class="cell-gloss" x-text="verbGlosses[v]"></span>
+                </button>
+              </template>
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+    </section>
+
+    <!-- ===================== CTA ===================== -->
+    <section class="bg-rouge py-20 text-white text-center">
+      <div class="max-w-2xl mx-auto px-6">
+        <h2 class="font-display text-3xl sm:text-4xl font-bold mb-5">
+          Ready to speak real French?
+        </h2>
+        <p class="text-white/80 text-lg leading-relaxed mb-8">
+          A sentence builder is just the start. Book a free discovery call and find out what you can actually do.
+        </p>
+        <a href="pricing.html#booking"
+           class="inline-block bg-white text-rouge font-semibold text-base px-10 py-4 rounded-full hover:bg-sand transition-colors">
+          Book a Free 15-Min Chat
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="bg-navyD text-white pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-10 mb-12 pb-12 border-b border-white/10">
+        <div class="md:col-span-2">
+          <a href="index.html" class="font-display text-2xl font-bold text-white">
+            Fluent<span class="text-rouge">ISH</span>
+          </a>
+          <p class="mt-5 text-blue-300 text-sm leading-relaxed max-w-xs">
+            Bespoke 1-on-1 conversational French coaching for adults in Horwich
+            and Westhoughton, Bolton.
+          </p>
+          <p class="mt-4 text-blue-500 text-xs">Best learnt over a coffee. Or a glass of something.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Pages</h4>
+          <ul class="space-y-3 text-sm text-blue-300">
+            <li><a href="index.html"   class="hover:text-white transition-colors">Home</a></li>
+            <li><a href="about.html"   class="hover:text-white transition-colors">About Dan</a></li>
+            <li><a href="method.html"  class="hover:text-white transition-colors">How It Works</a></li>
+            <li><a href="pricing.html" class="hover:text-white transition-colors">Pricing</a></li>
+            <li><a href="tools.html"   class="hover:text-white transition-colors">Tools</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Get in Touch</h4>
+          <ul class="space-y-3 text-sm text-blue-300">
+            <li><a href="mailto:bonjour@fluentish.co.uk" class="hover:text-white transition-colors">bonjour@fluentish.co.uk</a></li>
+            <li class="text-blue-500 text-xs">Horwich &amp; Westhoughton, Bolton</li>
+            <li class="pt-1">
+              <a href="pricing.html#booking" class="inline-block bg-rouge hover:bg-rougeH text-white text-xs font-semibold px-5 py-2 rounded-full transition-colors">
+                Book Free Chat
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-500">
+        <p>&copy; 2026 FluentISH · All rights reserved</p>
+        <a href="privacy.html" class="hover:text-blue-300 transition-colors">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
+    function beerMatApp() {
+      return {
+
+        // ── State ──────────────────────────────────────────────────────
+        selectedQuestion: null,
+        selectedSubject:  null,
+        selectedModal:    null,
+        selectedVerb:     null,
+
+        // ── Data ───────────────────────────────────────────────────────
+        questions: ['Est-ce que', 'Qu\'est-ce que', 'Comment'],
+        questionGlosses: {
+          'Est-ce que':    'yes/no question',
+          "Qu'est-ce que": 'what...?',
+          'Comment':       'how...?',
+        },
+
+        subjects: ['Je', 'Tu'],
+        subjectGlosses: {
+          'Je': 'I',
+          'Tu': 'you',
+        },
+
+        modals: [
+          { id: 'peux', jeForm: 'Peux', tuForm: 'Peux', label: 'Peux',     en: 'can'       },
+          { id: 'veux', jeForm: 'Veux', tuForm: 'Veux', label: 'Veux',     en: 'want to'   },
+          { id: 'dois', jeForm: 'Dois', tuForm: 'Dois', label: 'Dois',     en: 'must'      },
+          { id: 'vais', jeForm: 'Vais', tuForm: 'Vas',  label: 'Vais/Vas', en: 'going to'  },
+        ],
+
+        verbs: [
+          'faire', 'aller', 'voir', 'venir', 'prendre',
+          'partir', 'dire', 'manger', 'boire', 'parler',
+          'comprendre', 'trouver', 'donner', 'aimer', 'regarder',
+          'apprendre', 'jouer', 'sortir', 'travailler', 'rentrer',
+        ],
+
+        // English glosses for the 20 infinitives
+        verbGlosses: {
+          faire:       'to do / make',
+          aller:       'to go',
+          voir:        'to see',
+          venir:       'to come',
+          prendre:     'to take',
+          partir:      'to leave',
+          dire:        'to say',
+          manger:      'to eat',
+          boire:       'to drink',
+          parler:      'to speak',
+          comprendre:  'to understand',
+          trouver:     'to find',
+          donner:      'to give',
+          aimer:       'to like / love',
+          regarder:    'to watch',
+          apprendre:   'to learn',
+          jouer:       'to play',
+          sortir:      'to go out',
+          travailler:  'to work',
+          rentrer:     'to go home',
+        },
+
+        // ── Computed helpers ───────────────────────────────────────────
+
+        modalDisplay(modal) {
+          if (!this.selectedSubject) return modal.label;
+          return this.selectedSubject === 'Je' ? modal.jeForm : modal.tuForm;
+        },
+
+        get activeModalForm() {
+          if (!this.selectedModal) return null;
+          const m = this.modals.find(m => m.id === this.selectedModal);
+          if (!m) return null;
+          // Default to je-form when no subject selected:avoids "Vais/Vas" appearing in sentence
+          const subject = this.selectedSubject || 'Je';
+          return subject === 'Je' ? m.jeForm : m.tuForm;
+        },
+
+        get sentence() {
+          const parts = [];
+          if (this.selectedQuestion) parts.push(this.selectedQuestion);
+          // Subject and modal are lowercased:they appear mid-sentence in French
+          if (this.selectedSubject)  parts.push(this.selectedSubject.toLowerCase());
+          if (this.activeModalForm)  parts.push(this.activeModalForm.toLowerCase());
+          if (this.selectedVerb)     parts.push(this.selectedVerb);
+          if (parts.length === 0) return '';
+          let s = parts.join(' ');
+          // Capitalise only the very first letter of the sentence
+          s = s.charAt(0).toUpperCase() + s.slice(1);
+          s += this.selectedQuestion ? '\u00a0?' : '.';
+          return s;
+        },
+
+        get hasAnything() {
+          return !!(this.selectedQuestion || this.selectedSubject ||
+                    this.selectedModal    || this.selectedVerb);
+        },
+
+        get englishTranslation() {
+          if (!this.selectedVerb) return '';
+          const gloss = this.verbGlosses[this.selectedVerb] || this.selectedVerb;
+          // Strip "to " prefix so the bare verb works after English modals
+          const v = gloss.replace(/^to /, '');
+          const subj = this.selectedSubject || 'Je'; // default je for partial states
+          const isTu = subj === 'Tu';
+          const m = this.selectedModal;
+          const q = this.selectedQuestion;
+
+          // Without a modal, just show the gloss
+          if (!m) return `"${this.selectedVerb}":${gloss}`;
+
+          let result;
+
+          if (!q) {
+            // Statement
+            if (m === 'peux') result = isTu ? `You can ${v}.`        : `I can ${v}.`;
+            if (m === 'veux') result = isTu ? `You want to ${v}.`    : `I want to ${v}.`;
+            if (m === 'dois') result = isTu ? `You must ${v}.`       : `I must ${v}.`;
+            if (m === 'vais') result = isTu ? `You're going to ${v}.`: `I'm going to ${v}.`;
+          } else if (q === 'Est-ce que') {
+            // Yes/no question:English uses inverted modal
+            if (m === 'peux') result = isTu ? `Can you ${v}?`          : `Can I ${v}?`;
+            if (m === 'veux') result = isTu ? `Do you want to ${v}?`   : `Do I want to ${v}?`;
+            if (m === 'dois') result = isTu ? `Do you have to ${v}?`   : `Do I have to ${v}?`;
+            if (m === 'vais') result = isTu ? `Are you going to ${v}?` : `Am I going to ${v}?`;
+          } else if (q === "Qu'est-ce que") {
+            // What question
+            if (m === 'peux') result = isTu ? `What can you ${v}?`          : `What can I ${v}?`;
+            if (m === 'veux') result = isTu ? `What do you want to ${v}?`   : `What do I want to ${v}?`;
+            if (m === 'dois') result = isTu ? `What do you have to ${v}?`   : `What do I have to ${v}?`;
+            if (m === 'vais') result = isTu ? `What are you going to ${v}?` : `What am I going to ${v}?`;
+          } else if (q === 'Comment') {
+            // How question
+            if (m === 'peux') result = isTu ? `How can you ${v}?`          : `How can I ${v}?`;
+            if (m === 'veux') result = isTu ? `How do you want to ${v}?`   : `How do I want to ${v}?`;
+            if (m === 'dois') result = isTu ? `How do you have to ${v}?`   : `How do I have to ${v}?`;
+            if (m === 'vais') result = isTu ? `How are you going to ${v}?` : `How am I going to ${v}?`;
+          }
+
+          return result || '';
+        },
+
+        // ── Handlers ──────────────────────────────────────────────────
+
+        toggleQuestion(q) {
+          this.selectedQuestion = this.selectedQuestion === q ? null : q;
+        },
+        toggleSubject(s) {
+          this.selectedSubject = this.selectedSubject === s ? null : s;
+        },
+        toggleModal(id) {
+          this.selectedModal = this.selectedModal === id ? null : id;
+        },
+        toggleVerb(v) {
+          this.selectedVerb = this.selectedVerb === v ? null : v;
+        },
+        reset() {
+          this.selectedQuestion = null;
+          this.selectedSubject  = null;
+          this.selectedModal    = null;
+          this.selectedVerb     = null;
+        },
+
+      };
+    }
+  </script>
+
+</body>
+</html>

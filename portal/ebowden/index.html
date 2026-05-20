@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elaine Bowden - FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:  '#003359',
+            navyD: '#002040',
+            rouge: '#C8102E',
+            cyan:  '#4DD4F5',
+            sand:  '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+    [x-cloak] { display: none !important; }
+
+    .tab-btn {
+      padding: 0.9rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-bottom: 3px solid transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
+      color: #6b7280;
+    }
+    .tab-btn:hover { color: #003359; }
+    .tab-btn.active { color: #003359; border-bottom-color: #003359; }
+
+    /* Vocab table rows */
+    .vocab-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.6rem 0;
+      align-items: baseline;
+    }
+    .vocab-row:last-child { border-bottom: none; }
+    .vocab-fr   { font-weight: 600; color: #003359; }
+    .vocab-pron { font-style: italic; color: #8a9ab0; font-size: 0.8rem; padding: 0 0.5rem; }
+    .vocab-en   { color: #6b7280; font-size: 0.85rem; }
+
+    /* Phrase rows */
+    .phrase-row {
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.75rem 0;
+    }
+    .phrase-row:last-child { border-bottom: none; }
+    .phrase-fr   { font-weight: 600; color: #003359; font-size: 0.95rem; }
+    .phrase-pron { font-style: italic; color: #8a9ab0; font-size: 0.78rem; margin-top: 1px; }
+    .phrase-en   { color: #6b7280; font-size: 0.85rem; margin-top: 2px; }
+
+    /* Dialogue */
+    .dialogue-row { display: flex; gap: 0.75rem; margin-bottom: 0.6rem; align-items: flex-start; }
+    .speaker-tag  {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 4px; white-space: nowrap; margin-top: 3px;
+      background: #003359; color: white; flex-shrink: 0;
+    }
+    .speaker-tag.elaine { background: #C8102E; }
+    .dialogue-fr   { font-weight: 500; color: #1a1a2e; }
+    .dialogue-en   { color: #8a9ab0; font-size: 0.82rem; margin-top: 2px; }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #C8102E; margin-bottom: 0.75rem; display: block;
+    }
+
+    /* Pill */
+    .sound-pill {
+      display: inline-flex; flex-direction: column; align-items: center;
+      background: #f8f9fb; border: 1px solid #e5e9ef; border-radius: 10px;
+      padding: 0.5rem 0.85rem; text-align: center;
+    }
+    .sound-pill .fr { font-weight: 700; color: #003359; font-size: 0.9rem; }
+    .sound-pill .en { color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+
+    /* Card */
+    .card { background: white; border: 1px solid #e8ecf0; border-radius: 1rem; padding: 1.5rem; }
+
+    /* Toolkit table */
+    .toolkit-row { display: grid; grid-template-columns: 1.2fr 1fr 1.4fr; gap: 0; border-bottom: 1px solid #f0f0f0; padding: 0.65rem 0; align-items: baseline; }
+    .toolkit-row:last-child { border-bottom: none; }
+
+    /* Lesson header strip */
+    .lesson-strip { background: #003359; color: white; border-radius: 0.75rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
+    .lesson-strip .num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #4DD4F5; }
+    .lesson-strip h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; margin-top: 2px; }
+    .lesson-strip .meta { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen" x-data="{ tab: 'all' }" x-cloak>
+
+  <!-- ── Header ── -->
+  <header class="bg-navy text-white">
+    <div class="max-w-4xl mx-auto px-6 py-6 flex items-end justify-between gap-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest" style="color:#4DD4F5;">FluentISH</p>
+        <h1 class="font-display text-2xl font-bold mt-1">Elaine's Course</h1>
+      </div>
+      <div class="text-right">
+        <p class="text-sm text-blue-200 font-medium">3 lessons</p>
+        <p class="text-xs text-blue-400 mt-0.5">Paris trip, June 2026</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Tab nav ── -->
+  <div class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-4xl mx-auto px-6 flex overflow-x-auto">
+      <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
+      <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
+      <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
+      <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
+    </div>
+  </div>
+
+  <main class="max-w-4xl mx-auto px-6 py-8 space-y-6">
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: EVERYTHING                           -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'all'" class="space-y-6">
+
+      <!-- Phrase Book -->
+      <div class="card">
+        <span class="section-label">Phrase Book</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-4">At the café</h3>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Bonjour Madame / Monsieur !</div>
+          <div class="phrase-pron">bon-zhoor ma-dam / muh-syur</div>
+          <div class="phrase-en">Hello Madam / Sir!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Pour deux s'il vous plaît.</div>
+          <div class="phrase-pron">poor duh see voo play</div>
+          <div class="phrase-en">A table for two, please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Pour combien s'il vous plaît ?</div>
+          <div class="phrase-pron">poor com-byan see voo play</div>
+          <div class="phrase-en">For how many, please? (waiter asking you)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est service à table ou au bar ?</div>
+          <div class="phrase-pron">say sair-vees ah tabl oo oh bar</div>
+          <div class="phrase-en">Is it table service or bar service?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">La carte s'il vous plaît.</div>
+          <div class="phrase-pron">la kart see voo play</div>
+          <div class="phrase-en">The menu, please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je prends un verre de vin s'il vous plaît.</div>
+          <div class="phrase-pron">zhe pron ahn verr duh van see voo play</div>
+          <div class="phrase-en">I'll have a glass of wine, please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Blanc s'il vous plaît. / Rouge s'il vous plaît.</div>
+          <div class="phrase-pron">blon / roozh see voo play</div>
+          <div class="phrase-en">White please. / Red please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je prends une bière s'il vous plaît.</div>
+          <div class="phrase-pron">zhe pron oon bee-yair see voo play</div>
+          <div class="phrase-en">I'll have a beer, please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je peux juste prendre un verre s'il vous plaît ?</div>
+          <div class="phrase-pron">zhe puh zhoost prondr ahn verr see voo play</div>
+          <div class="phrase-en">Can I just have a drink please? (if you don't want to eat)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Juste des verres si possible.</div>
+          <div class="phrase-pron">zhoost day verr see poss-eebl</div>
+          <div class="phrase-en">Just for drinks if possible.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai besoin de…</div>
+          <div class="phrase-pron">zhay b-zwan duh</div>
+          <div class="phrase-en">I need…</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Désolée, j'avais commandé…</div>
+          <div class="phrase-pron">day-zo-lay, zhavay com-on-day</div>
+          <div class="phrase-en">Sorry, I had ordered…</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Excusez-moi !</div>
+          <div class="phrase-pron">ex-koo-zay mwah</div>
+          <div class="phrase-en">Excuse me!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Pas de soucis !</div>
+          <div class="phrase-pron">pa duh soo-see</div>
+          <div class="phrase-en">No worries!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Un instant s'il vous plaît.</div>
+          <div class="phrase-pron">ahn an-ston see voo play</div>
+          <div class="phrase-en">One moment please.</div>
+        </div>
+
+        <h3 class="font-display text-lg font-bold text-navy mt-6 mb-4">About yourself</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis de Manchester.</div>
+          <div class="phrase-pron">zhe swee duh Mon-chest-air</div>
+          <div class="phrase-en">I'm from Manchester.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis infirmière.</div>
+          <div class="phrase-pron">zhe swee ahn-feer-myair</div>
+          <div class="phrase-en">I'm a nurse.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis en vacances.</div>
+          <div class="phrase-pron">zhe swee on va-konss</div>
+          <div class="phrase-en">I'm on holiday.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je m'entraîne !</div>
+          <div class="phrase-pron">zhe mon-tren</div>
+          <div class="phrase-en">I'm practising! (sounds like you mean business)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Ma fille est à l'université d'Edimbourg.</div>
+          <div class="phrase-pron">ma fee ay ah loo-nee-vair-see-tay day-dan-boor</div>
+          <div class="phrase-en">My daughter is at Edinburgh university.</div>
+        </div>
+      </div>
+
+      <!-- When you don't understand -->
+      <div class="card">
+        <span class="section-label">When You Don't Understand</span>
+        <p class="text-sm text-gray-400 mb-4 italic">Use these in order. Start with Pardon? before you're totally lost.</p>
+
+        <div class="toolkit-row">
+          <div class="vocab-fr">Pardon ?</div>
+          <div class="vocab-pron">par-don</div>
+          <div class="vocab-en">Didn't catch a word - your first reflex</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Vous pouvez répéter ?</div>
+          <div class="vocab-pron">voo poovay ray-pay-tay</div>
+          <div class="vocab-en">Can you repeat that?</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Plus lentement s'il vous plaît.</div>
+          <div class="vocab-pron">plue lon-tuh-mon</div>
+          <div class="vocab-en">More slowly please</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Je ne comprends pas, désolée.</div>
+          <div class="vocab-pron">zhe nuh com-pron pa, day-zo-lay</div>
+          <div class="vocab-en">I don't understand, sorry</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">C'est quoi en anglais ?</div>
+          <div class="vocab-pron">say kwah on on-glay</div>
+          <div class="vocab-en">What's that in English? (last resort)</div>
+        </div>
+      </div>
+
+      <!-- Root phrases -->
+      <div class="card">
+        <span class="section-label">Root Phrases — Expand These</span>
+        <p class="text-sm text-gray-400 mb-4 italic">Learn the stem, then add anything after it.</p>
+
+        <div class="space-y-4">
+          <div>
+            <div class="phrase-fr">Vous avez… ? <span class="text-gray-400 font-normal text-sm italic ml-2">voo zavay</span></div>
+            <div class="phrase-en mb-2">Do you have…?</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">une table pour deux</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">une carte en anglais</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">du vin blanc</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">Il y a… ? <span class="text-gray-400 font-normal text-sm italic ml-2">il ee ya</span></div>
+            <div class="phrase-en mb-2">Is there…?</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">un bus pour le centre-ville</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">une terrasse</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">Je suis… <span class="text-gray-400 font-normal text-sm italic ml-2">zhe swee</span></div>
+            <div class="phrase-en mb-2">I am…</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">de Manchester</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">infirmière</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">en vacances</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">carnivore</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vocabulary dictionary -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Drinks</h3>
+        <div class="vocab-row"><span class="vocab-fr">Une bière</span><span class="vocab-pron">byeah</span><span class="vocab-en">a beer</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une seize</span><span class="vocab-pron">sehze</span><span class="vocab-en">a 1664</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une pinte</span><span class="vocab-pron">pant</span><span class="vocab-en">a pint</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un demi</span><span class="vocab-pron">ahn duh-mee</span><span class="vocab-en">a half pint</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un verre de vin</span><span class="vocab-pron">ahn verr duh van</span><span class="vocab-en">a glass of wine</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un vin blanc</span><span class="vocab-pron">ahn van blon</span><span class="vocab-en">white wine</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un vin rouge</span><span class="vocab-pron">ahn van roozh</span><span class="vocab-en">red wine</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un vin sec</span><span class="vocab-pron">ahn van sek</span><span class="vocab-en">a dry wine</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un vin fruité</span><span class="vocab-pron">frwee-tay</span><span class="vocab-en">a fruity wine</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Directions &amp; Places</h3>
+        <div class="vocab-row"><span class="vocab-fr">Gauche</span><span class="vocab-pron">goash</span><span class="vocab-en">left</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Droite</span><span class="vocab-pron">drwaht</span><span class="vocab-en">right</span></div>
+        <div class="vocab-row"><span class="vocab-fr">En haut</span><span class="vocab-pron">on oh</span><span class="vocab-en">upstairs</span></div>
+        <div class="vocab-row"><span class="vocab-fr">En bas</span><span class="vocab-pron">on ba</span><span class="vocab-en">downstairs</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Au fond</span><span class="vocab-pron">o fon</span><span class="vocab-en">at the back</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le bus</span><span class="vocab-pron">buce</span><span class="vocab-en">the bus</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le train</span><span class="vocab-pron">tran</span><span class="vocab-en">the train</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Places &amp; People</h3>
+        <div class="vocab-row"><span class="vocab-fr">Edimbourg</span><span class="vocab-pron">ed-an-boor</span><span class="vocab-en">Edinburgh</span></div>
+        <div class="vocab-row"><span class="vocab-fr">L'Écosse</span><span class="vocab-pron">lay-koss</span><span class="vocab-en">Scotland</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Manchester</span><span class="vocab-pron">mon-chest-air</span><span class="vocab-en">Manchester</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Infirmière</span><span class="vocab-pron">ahn-feer-myair</span><span class="vocab-en">nurse</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une terrasse</span><span class="vocab-pron">tair-ass</span><span class="vocab-en">a terrace</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Useful single words</h3>
+        <div class="vocab-row"><span class="vocab-fr">Plutôt</span><span class="vocab-pron">ploo-toh</span><span class="vocab-en">rather / instead</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Préférez-vous</span><span class="vocab-pron">pray-fair-ay voo</span><span class="vocab-en">would you prefer</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Parfait !</span><span class="vocab-pron">par-fay</span><span class="vocab-en">perfect!</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Avec plaisir</span><span class="vocab-pron">avek play-zeer</span><span class="vocab-en">with pleasure</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Bien sûr</span><span class="vocab-pron">byan soor</span><span class="vocab-en">of course</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Tout de suite</span><span class="vocab-pron">toot sweet</span><span class="vocab-en">right away</span></div>
+      </div>
+
+      <!-- Natural Sound Kit -->
+      <div class="card">
+        <span class="section-label">Sounding Natural</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Reactions (show you're listening)</h3>
+        <div class="flex flex-wrap gap-2 mb-5">
+          <div class="sound-pill"><span class="fr">Ah bon ?</span><span class="en">Oh really?</span></div>
+          <div class="sound-pill"><span class="fr">Ah oui !</span><span class="en">Oh yes!</span></div>
+          <div class="sound-pill"><span class="fr">Exactement !</span><span class="en">Exactly!</span></div>
+          <div class="sound-pill"><span class="fr">Tout à fait !</span><span class="en">Absolutely!</span></div>
+          <div class="sound-pill"><span class="fr">C'est sympa !</span><span class="en">That's nice!</span></div>
+          <div class="sound-pill"><span class="fr">Parfait !</span><span class="en">Perfect!</span></div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Sentence starters (buys thinking time)</h3>
+        <div class="flex flex-wrap gap-2">
+          <div class="sound-pill"><span class="fr">Alors…</span><span class="en">So…</span></div>
+          <div class="sound-pill"><span class="fr">Donc…</span><span class="en">So / therefore…</span></div>
+          <div class="sound-pill"><span class="fr">Eh bien…</span><span class="en">Well…</span></div>
+        </div>
+      </div>
+
+      <!-- The Wow Exchange -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">The "Wow" Exchange - Learn This Off By Heart</span>
+        <p class="text-sm text-gray-400 italic mb-4">The laugh is the goal. This line always lands.</p>
+
+        <div class="space-y-3">
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div>
+              <div class="dialogue-fr">Votre français est très bien, Madame !</div>
+              <div class="dialogue-en">Your French is very good, Madam!</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div>
+              <div class="dialogue-fr">Merci ! Je m'entraîne. Je suis de Manchester.</div>
+              <div class="dialogue-en">Thank you! I'm practising. I'm from Manchester.</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div>
+              <div class="dialogue-fr">Ah, Manchester ! Vous êtes ici en vacances ?</div>
+              <div class="dialogue-en">Oh, Manchester! Are you here on holiday?</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div>
+              <div class="dialogue-fr">Oui, exactement ! Je suis infirmière - j'avais vraiment besoin de vacances !</div>
+              <div class="dialogue-en">Yes, exactly! I'm a nurse - I really needed a holiday!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /all -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 1                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l1'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 1 - 14 May 2026</div>
+        <h2>Ordering at a Parisian Café</h2>
+        <div class="meta">4 scenarios practiced - from simple to complex</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Four versions of the same situation: arriving at a café, asking about table vs bar service,
+          getting the menu, and ordering a drink. Each scenario added a little more pressure or
+          complexity - a rushed waiter, a nicer restaurant, a bar-service-only café.
+        </p>
+      </div>
+
+      <!-- Script 1 -->
+      <div class="card">
+        <span class="section-label">Scene 1 - Standard café</span>
+        <div class="space-y-3">
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">Bonjour Madame !</div><div class="dialogue-en">Hello Madam!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Bonjour Monsieur ! Pour deux s'il vous plaît ?</div><div class="dialogue-en">Hello Sir! A table for two please?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">Avec plaisir ! Suivez-moi ! Je vous installe !</div><div class="dialogue-en">With pleasure! Follow me! I'll get you seated!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Excusez-moi !</div><div class="dialogue-en">Excuse me!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">C'est service à table ou au bar s'il vous plaît ?</div><div class="dialogue-en">Is it table service or bar service please?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">C'est service à table madame.</div><div class="dialogue-en">It's table service, Madam.</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Merci. La carte s'il vous plaît ?</div><div class="dialogue-en">Thank you. The menu please?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">Bien sûr ! Qu'est-ce que je vous sers ?</div><div class="dialogue-en">Of course! What can I get you?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Un verre de vin s'il vous plaît !</div><div class="dialogue-en">A glass of wine please!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">Très bien ! Blanc ? Rouge ?</div><div class="dialogue-en">Very good! White? Red?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Blanc s'il vous plaît.</div><div class="dialogue-en">White please.</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">Très bien. Je vous apporte ça !</div><div class="dialogue-en">Very good. I'll bring that right over!</div></div></div>
+        </div>
+      </div>
+
+      <!-- Script 2 -->
+      <div class="card">
+        <span class="section-label">Scene 2 - Rushed waiter</span>
+        <p class="text-sm text-gray-400 italic mb-4">The waiter interrupts. Stay calm. Use Pas de soucis and Un instant.</p>
+        <div class="space-y-3">
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Bonjour Monsieur ! Pour deux, s'il vous plaît ?</div><div class="dialogue-en">Hello Sir! A table for two, please?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Excusez-moi !</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">Un instant, s'il vous plaît !</div><div class="dialogue-en">One moment, please!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Pas de soucis !</div><div class="dialogue-en">No worries!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">C'est service à table ou… ?</div><div class="dialogue-en">Is it table service or…?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">C'est service à table madame.</div><div class="dialogue-en">(interrupting) It's table service, Madam.</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Merci. La carte s'il vous plaît ?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Un instant s'il vous plaît !</div><div class="dialogue-en">One moment please! (buying thinking time)</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">Vous avez choisi ?</div><div class="dialogue-en">Have you chosen?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Un verre de vin s'il vous plaît ! Blanc s'il vous plaît.</div></div></div>
+        </div>
+      </div>
+
+      <!-- Script 3 -->
+      <div class="card">
+        <span class="section-label">Scene 3 - Nicer restaurant</span>
+        <p class="text-sm text-gray-400 italic mb-4">More polished language from the waiter. Notice the upgraded phrases.</p>
+        <div class="space-y-3">
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">Bonjour Madame ! Pour combien s'il vous plaît ?</div><div class="dialogue-en">Hello Madam! For how many please?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Pour deux !</div><div class="dialogue-en">For two!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">Je vous laisse choisir et je reviens dans quelques instants.</div><div class="dialogue-en">I'll leave you to choose and come back in a few moments.</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">Vous avez fait votre choix ?</div><div class="dialogue-en">Have you made your choice?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Oui merci ! Je prends un verre de vin s'il vous plaît !</div><div class="dialogue-en">Yes thank you! I'll have a glass of wine please!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">Parfait ! Je vous apporte ça !</div><div class="dialogue-en">Perfect! I'll bring that right over!</div></div></div>
+        </div>
+      </div>
+
+      <!-- Script 4 -->
+      <div class="card">
+        <span class="section-label">Scene 4 - Bar service only</span>
+        <p class="text-sm text-gray-400 italic mb-4">The answer is different this time. Listen, adapt, go to the bar.</p>
+        <div class="space-y-3">
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">C'est service à table ou au bar ?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Waiter</span><div><div class="dialogue-fr">Ici, c'est service au bar madame. Vous pouvez commander avec mon collègue au bar et il va vous servir.</div><div class="dialogue-en">Here it's bar service, Madam. You can order with my colleague at the bar and he'll serve you.</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Parfait ! Merci !</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Bonjour ! Je prends une bière s'il vous plaît ?</div><div class="dialogue-en">Hello! I'll have a beer please?</div></div></div>
+        </div>
+      </div>
+
+    </div><!-- /l1 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 2                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l2'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 2</div>
+        <h2>Drinks, Directions &amp; Vocabulary</h2>
+        <div class="meta">Stock phrases for bars and cafés + Edinburgh connection</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Stock Phrases</span>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je peux juste prendre un verre s'il vous plaît ?</div>
+          <div class="phrase-pron">zhe puh zhoost prondr ahn verr see voo play</div>
+          <div class="phrase-en">Can I just have a drink please? (useful when you don't want to eat)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Juste des verres si possible.</div>
+          <div class="phrase-pron">zhoost day verr see poss-eebl</div>
+          <div class="phrase-en">Just drinks if possible.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai besoin de…</div>
+          <div class="phrase-pron">zhay b-zwan duh</div>
+          <div class="phrase-en">I need…</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Désolée, j'avais commandé…</div>
+          <div class="phrase-pron">day-zo-lay, zhavay com-on-day</div>
+          <div class="phrase-en">Sorry, I had ordered…</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Vocabulary - Drinks</span>
+        <div class="vocab-row"><span class="vocab-fr">Une bière</span><span class="vocab-pron">byeah</span><span class="vocab-en">a beer</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une seize</span><span class="vocab-pron">sehze</span><span class="vocab-en">a 1664</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une pinte</span><span class="vocab-pron">pant</span><span class="vocab-en">a pint</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un demi</span><span class="vocab-pron">ahn duh-mee</span><span class="vocab-en">a half pint</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un vin sec</span><span class="vocab-pron">ahn van sek</span><span class="vocab-en">a dry wine</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un vin fruité</span><span class="vocab-pron">frwee-tay</span><span class="vocab-en">a fruity wine</span></div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Vocabulary - Directions</span>
+        <div class="vocab-row"><span class="vocab-fr">Gauche</span><span class="vocab-pron">goash</span><span class="vocab-en">left</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Droite</span><span class="vocab-pron">drwaht</span><span class="vocab-en">right</span></div>
+        <div class="vocab-row"><span class="vocab-fr">En haut</span><span class="vocab-pron">on oh</span><span class="vocab-en">upstairs</span></div>
+        <div class="vocab-row"><span class="vocab-fr">En bas</span><span class="vocab-pron">on ba</span><span class="vocab-en">downstairs</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Au fond</span><span class="vocab-pron">o fon</span><span class="vocab-en">at the back</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Préférez-vous</span><span class="vocab-pron">pray-fair-ay voo</span><span class="vocab-en">would you prefer</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Plutôt</span><span class="vocab-pron">ploo-toh</span><span class="vocab-en">rather / instead</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le bus</span><span class="vocab-pron">buce</span><span class="vocab-en">the bus</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le train</span><span class="vocab-pron">tran</span><span class="vocab-en">the train</span></div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Pronunciation Focus</span>
+        <div class="vocab-row"><span class="vocab-fr">Infirmière</span><span class="vocab-pron">ahn-feer-myair</span><span class="vocab-en">nurse</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Je prends</span><span class="vocab-pron">zhe pron</span><span class="vocab-en">I'll take / I'll have</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un verre de vin</span><span class="vocab-pron">ahn verr duh van</span><span class="vocab-en">a glass of wine</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Edimbourg</span><span class="vocab-pron">ed-an-boor</span><span class="vocab-en">Edinburgh</span></div>
+        <div class="vocab-row"><span class="vocab-fr">L'Écosse</span><span class="vocab-pron">lay-koss</span><span class="vocab-en">Scotland</span></div>
+      </div>
+
+    </div><!-- /l2 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 3                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l3'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 3</div>
+        <h2>When Things Go Wrong &amp; Sounding Real</h2>
+        <div class="meta">Talk Back Toolkit + Root Phrases + Natural Sound Kit</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">The Talk Back Toolkit</span>
+        <p class="text-sm text-gray-400 italic mb-4">Use these in order. Start with Pardon? the moment you lose the thread - before you're totally lost.</p>
+
+        <div class="toolkit-row">
+          <div class="vocab-fr">Pardon ?</div>
+          <div class="vocab-pron">par-don</div>
+          <div class="vocab-en">First reflex. You didn't catch a word.</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Vous pouvez répéter ?</div>
+          <div class="vocab-pron">voo poovay ray-pay-tay</div>
+          <div class="vocab-en">Can you repeat that?</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Plus lentement s'il vous plaît.</div>
+          <div class="vocab-pron">plue lon-tuh-mon see voo play</div>
+          <div class="vocab-en">More slowly please.</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Je ne comprends pas, désolée.</div>
+          <div class="vocab-pron">zhe nuh com-pron pa, day-zo-lay</div>
+          <div class="vocab-en">I don't understand, sorry.</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">C'est quoi en anglais ?</div>
+          <div class="vocab-pron">say kwah on on-glay</div>
+          <div class="vocab-en">What's that in English? (last resort)</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Root Phrases</span>
+        <p class="text-sm text-gray-400 italic mb-4">Learn the stem and you can say almost anything.</p>
+
+        <div class="space-y-5">
+          <div>
+            <div class="flex items-baseline gap-3">
+              <span class="vocab-fr text-lg">Vous avez… ?</span>
+              <span class="vocab-pron">voo zavay</span>
+              <span class="vocab-en">Do you have…?</span>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-2">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">une table pour deux</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">une carte en anglais</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">du vin blanc</span>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-100 pt-4">
+            <div class="flex items-baseline gap-3">
+              <span class="vocab-fr text-lg">Il y a… ?</span>
+              <span class="vocab-pron">il ee ya</span>
+              <span class="vocab-en">Is there…?</span>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-2">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">un bus pour le centre-ville</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">une terrasse</span>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-100 pt-4">
+            <div class="flex items-baseline gap-3">
+              <span class="vocab-fr text-lg">Je suis…</span>
+              <span class="vocab-pron">zhe swee</span>
+              <span class="vocab-en">I am…</span>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-2">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">de Manchester</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">infirmière</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">en vacances</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">carnivore</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 bg-navy text-white rounded-lg p-4">
+          <div class="text-lg font-bold">Je m'entraîne !</div>
+          <div class="text-sm italic text-blue-300 mt-0.5">zhe mon-tren</div>
+          <div class="text-sm text-blue-200 mt-1">I'm practising! Bolder than "j'apprends" - sounds like someone who means business.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">The Natural Sound Kit</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Reactions</h3>
+        <div class="flex flex-wrap gap-2 mb-5">
+          <div class="sound-pill"><span class="fr">Ah bon ?</span><span class="en">Oh really?</span></div>
+          <div class="sound-pill"><span class="fr">Ah oui !</span><span class="en">Oh yes!</span></div>
+          <div class="sound-pill"><span class="fr">Exactement !</span><span class="en">Exactly!</span></div>
+          <div class="sound-pill"><span class="fr">Tout à fait !</span><span class="en">Absolutely!</span></div>
+          <div class="sound-pill"><span class="fr">C'est sympa !</span><span class="en">That's nice!</span></div>
+          <div class="sound-pill"><span class="fr">Parfait !</span><span class="en">Perfect!</span></div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Sentence starters (buys thinking time)</h3>
+        <div class="flex flex-wrap gap-2">
+          <div class="sound-pill"><span class="fr">Alors…</span><span class="en">So…</span></div>
+          <div class="sound-pill"><span class="fr">Donc…</span><span class="en">So / therefore…</span></div>
+          <div class="sound-pill"><span class="fr">Eh bien…</span><span class="en">Well…</span></div>
+        </div>
+      </div>
+
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">The "Wow" Exchange - Learn This Off By Heart</span>
+        <p class="text-sm text-gray-400 italic mb-4">The laugh is the goal. It's self-deprecating, universal, completely human. That's the moment.</p>
+
+        <div class="space-y-3">
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div>
+              <div class="dialogue-fr">Votre français est très bien, Madame !</div>
+              <div class="dialogue-en">Your French is very good, Madam!</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div>
+              <div class="dialogue-fr">Merci ! Je m'entraîne. Je suis de Manchester.</div>
+              <div class="dialogue-en">Thank you! I'm practising. I'm from Manchester.</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div>
+              <div class="dialogue-fr">Ah, Manchester ! Vous êtes ici en vacances ?</div>
+              <div class="dialogue-en">Oh, Manchester! Are you here on holiday?</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div>
+              <div class="dialogue-fr">Oui, exactement ! Je suis infirmière - j'avais vraiment besoin de vacances !</div>
+              <div class="dialogue-en">Yes, exactly! I'm a nurse - I really needed a holiday!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /l3 -->
+
+
+  </main>
+
+  <footer class="max-w-4xl mx-auto px-6 py-8 mt-4 border-t border-gray-200">
+    <p class="text-xs text-gray-400 text-center">
+      FluentISH - Elaine's personal course portal.
+      <a href="lesson-3-reference.html" class="underline hover:text-navy transition-colors ml-2">Lesson 3 printable reference</a>
+    </p>
+  </footer>
+
+</body>
+</html>

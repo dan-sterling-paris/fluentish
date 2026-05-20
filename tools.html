@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Free interactive French learning tools from FluentISH. Build sentences, practise structures, and get a feel for the language before your first lesson." />
+  <title>French Learning Tools | FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:   '#003359',
+            navyD:  '#002040',
+            rouge:  '#C8102E',
+            rougeH: '#A50D25',
+            cyan:   '#4DD4F5',
+            sand:   '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+    .nav-link { transition: color 0.2s; }
+    .nav-link:hover { color: #C8102E; }
+    .active-link { color: #C8102E; font-weight: 600; }
+    .section-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #C8102E;
+      margin-bottom: 1.25rem;
+    }
+  </style>
+</head>
+
+<body class="bg-white">
+
+  <!-- ===================== NAV ===================== -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
+      <a href="index.html" class="font-display text-2xl font-bold text-navy tracking-tight shrink-0">
+        Fluent<span class="text-rouge">ISH</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-500">
+        <a href="index.html"   class="nav-link">Home</a>
+        <a href="about.html"   class="nav-link">About Dan</a>
+        <a href="method.html"  class="nav-link">How It Works</a>
+        <a href="pricing.html" class="nav-link">Pricing</a>
+        <a href="tools.html"   class="nav-link active-link">Tools</a>
+      </nav>
+      <a href="pricing.html#booking"
+         class="hidden md:inline-block bg-rouge hover:bg-rougeH text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors duration-200 shrink-0">
+        Book Free Chat
+      </a>
+      <button id="menu-toggle" aria-label="Open menu" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+        <svg class="w-5 h-5 text-navy" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white px-6 py-5 flex flex-col gap-4 text-sm font-medium text-gray-700">
+      <a href="index.html"   class="py-1 hover:text-rouge transition-colors">Home</a>
+      <a href="about.html"   class="py-1 hover:text-rouge transition-colors">About Dan</a>
+      <a href="method.html"  class="py-1 hover:text-rouge transition-colors">How It Works</a>
+      <a href="pricing.html" class="py-1 hover:text-rouge transition-colors">Pricing</a>
+      <a href="tools.html"   class="py-1 text-rouge font-semibold">Tools</a>
+      <a href="pricing.html#booking" class="mt-2 bg-rouge text-white text-center py-3 rounded-full font-semibold hover:bg-rougeH transition-colors">
+        Book Free Chat
+      </a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="bg-navy text-white py-16 md:py-20">
+      <div class="max-w-3xl mx-auto px-6 text-center">
+        <p class="section-label" style="color:#4DD4F5;">Free resources</p>
+        <h1 class="font-display text-4xl sm:text-5xl font-bold leading-tight mb-5">
+          Learning <em class="not-italic text-rouge">Tools</em>
+        </h1>
+        <p class="text-blue-200 text-lg leading-relaxed max-w-xl mx-auto">
+          A small set of interactive tools to help you get a feel for French
+          before, between, or alongside lessons. No sign-up, no fluff.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== TOOLS GRID ===================== -->
+    <section class="py-16 md:py-20 bg-sand">
+      <div class="max-w-4xl mx-auto px-6">
+
+        <div class="grid sm:grid-cols-2 gap-6">
+
+          <!-- Beer Mat Sentence Builder -->
+          <a href="beer-mat.html"
+             class="group bg-white rounded-2xl border border-stone-200 p-8 hover:border-navy hover:shadow-lg transition-all duration-200 flex flex-col">
+            <div class="flex items-start justify-between mb-5">
+              <span class="text-xs font-semibold uppercase tracking-widest text-rouge">Sentence structure</span>
+              <svg class="w-5 h-5 text-gray-300 group-hover:text-navy transition-colors shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </div>
+            <h2 class="font-display text-2xl font-bold text-navy mb-3 leading-snug">
+              Beer Mat Sentence Builder
+            </h2>
+            <p class="text-gray-500 text-sm leading-relaxed flex-1">
+              Pick one word from each row and assemble a real French sentence.
+              Covers the most useful question words, pronouns, modal verbs, and
+              the 20 most common infinitives. No grammar jargon required.
+            </p>
+            <p class="mt-6 text-sm font-semibold text-navy group-hover:text-rouge transition-colors">
+              Open tool &rarr;
+            </p>
+          </a>
+
+          <!-- Placeholder for future tools -->
+          <div class="bg-white rounded-2xl border border-dashed border-stone-300 p-8 flex flex-col items-center justify-center text-center min-h-48">
+            <p class="text-gray-300 text-xs font-semibold uppercase tracking-widest mb-2">Coming soon</p>
+            <p class="text-gray-400 text-sm leading-relaxed max-w-xs">
+              More tools are on the way. If there's something specific you'd find useful, drop Dan a message.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CTA ===================== -->
+    <section class="bg-rouge py-20 text-white text-center">
+      <div class="max-w-2xl mx-auto px-6">
+        <h2 class="font-display text-3xl sm:text-4xl font-bold mb-5">
+          Tools are a start. Conversation is the thing.
+        </h2>
+        <p class="text-white/80 text-lg leading-relaxed mb-8">
+          If you want to actually speak French, book a free 15-minute call and find out what working together looks like.
+        </p>
+        <a href="pricing.html#booking"
+           class="inline-block bg-white text-rouge font-semibold text-base px-10 py-4 rounded-full hover:bg-sand transition-colors">
+          Book a Free 15-Min Chat
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="bg-navyD text-white pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-10 mb-12 pb-12 border-b border-white/10">
+        <div class="md:col-span-2">
+          <a href="index.html" class="font-display text-2xl font-bold text-white">
+            Fluent<span class="text-rouge">ISH</span>
+          </a>
+          <p class="mt-5 text-blue-300 text-sm leading-relaxed max-w-xs">
+            Bespoke 1-on-1 conversational French coaching for adults in Horwich
+            and Westhoughton, Bolton.
+          </p>
+          <p class="mt-4 text-blue-500 text-xs">Best learnt over a coffee. Or a glass of something.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Pages</h4>
+          <ul class="space-y-3 text-sm text-blue-300">
+            <li><a href="index.html"   class="hover:text-white transition-colors">Home</a></li>
+            <li><a href="about.html"   class="hover:text-white transition-colors">About Dan</a></li>
+            <li><a href="method.html"  class="hover:text-white transition-colors">How It Works</a></li>
+            <li><a href="pricing.html" class="hover:text-white transition-colors">Pricing</a></li>
+            <li><a href="tools.html"   class="hover:text-white transition-colors">Tools</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Get in Touch</h4>
+          <ul class="space-y-3 text-sm text-blue-300">
+            <li><a href="mailto:bonjour@fluentish.co.uk" class="hover:text-white transition-colors">bonjour@fluentish.co.uk</a></li>
+            <li class="text-blue-500 text-xs">Horwich &amp; Westhoughton, Bolton</li>
+            <li class="pt-1">
+              <a href="pricing.html#booking" class="inline-block bg-rouge hover:bg-rougeH text-white text-xs font-semibold px-5 py-2 rounded-full transition-colors">
+                Book Free Chat
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-500">
+        <p>&copy; 2026 FluentISH &middot; All rights reserved</p>
+        <a href="privacy.html" class="hover:text-blue-300 transition-colors">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+  </script>
+
+</body>
+</html>
