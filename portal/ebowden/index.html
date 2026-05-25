@@ -121,7 +121,7 @@
         <h1 class="font-display text-2xl font-bold mt-1">Elaine's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">3 lessons</p>
+        <p class="text-sm text-blue-200 font-medium">4 lessons</p>
         <p class="text-xs text-blue-400 mt-0.5">Paris trip, June 2026</p>
       </div>
     </div>
@@ -134,6 +134,7 @@
       <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
       <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
       <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
+      <button @click="tab = 'l4'"   :class="tab === 'l4'   ? 'tab-btn active' : 'tab-btn'">Lesson 4</button>
     </div>
   </div>
 
@@ -360,6 +361,15 @@
         <div class="vocab-row"><span class="vocab-fr">Avec plaisir</span><span class="vocab-pron">avek play-zeer</span><span class="vocab-en">with pleasure</span></div>
         <div class="vocab-row"><span class="vocab-fr">Bien sûr</span><span class="vocab-pron">byan soor</span><span class="vocab-en">of course</span></div>
         <div class="vocab-row"><span class="vocab-fr">Tout de suite</span><span class="vocab-pron">toot sweet</span><span class="vocab-en">right away</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Encore !</span><span class="vocab-pron">on-kor</span><span class="vocab-en">again / another one - completely natural in a bar</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Plus <span style="font-weight:400;color:#8a9ab0;font-size:0.8rem">(pronounce the S)</span></span><span class="vocab-pron">ploos</span><span class="vocab-en">more (quantity)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Chais pas</span><span class="vocab-pron">shay pa</span><span class="vocab-en">dunno (Parisian "Je sais pas" - always with a shrug)</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Food &amp; At the Table</h3>
+        <div class="vocab-row"><span class="vocab-fr">Une planche</span><span class="vocab-pron">plonsh</span><span class="vocab-en">a board (cheese or meat platter)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une planche de fromage</span><span class="vocab-pron">plonsh duh from-azh</span><span class="vocab-en">a cheese board</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une planche mixte</span><span class="vocab-pron">plonsh meekst</span><span class="vocab-en">mixed board (cheese and meat)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un bout de pain</span><span class="vocab-pron">ahn boo duh pan</span><span class="vocab-en">a bit of bread (very natural - like "just throw me some bread")</span></div>
       </div>
 
       <!-- Natural Sound Kit -->
@@ -368,12 +378,14 @@
 
         <h3 class="font-display text-base font-bold text-navy mb-3">Reactions (show you're listening)</h3>
         <div class="flex flex-wrap gap-2 mb-5">
-          <div class="sound-pill"><span class="fr">Ah bon ?</span><span class="en">Oh really?</span></div>
+          <div class="sound-pill"><span class="fr">Ah bon ?</span><span class="en">Oh really? (always a question)</span></div>
           <div class="sound-pill"><span class="fr">Ah oui !</span><span class="en">Oh yes!</span></div>
           <div class="sound-pill"><span class="fr">Exactement !</span><span class="en">Exactly!</span></div>
           <div class="sound-pill"><span class="fr">Tout à fait !</span><span class="en">Absolutely!</span></div>
           <div class="sound-pill"><span class="fr">C'est sympa !</span><span class="en">That's nice!</span></div>
           <div class="sound-pill"><span class="fr">Parfait !</span><span class="en">Perfect!</span></div>
+          <div class="sound-pill"><span class="fr">Bah non / Bah si</span><span class="en">No way / Oh but yes!</span></div>
+          <div class="sound-pill"><span class="fr">Chais pas</span><span class="en">Dunno (+ shrug)</span></div>
         </div>
 
         <h3 class="font-display text-base font-bold text-navy mb-3">Sentence starters (buys thinking time)</h3>
@@ -734,12 +746,192 @@
     </div><!-- /l3 -->
 
 
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 4                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l4'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 4 - 25 May 2026</div>
+        <h2>Off Script - Fluency in the Wild</h2>
+        <div class="meta">Buying time + BANGS rule + the Plus trap + Parisian reactions</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          First real free-form conversation in French - no script. The focus was on tools to stay in French
+          when you get stuck rather than falling back to English: time-buying phrases, the BANGS adjective rule,
+          a key pronunciation trap with "plus", and the reactions that make you sound properly Parisian.
+        </p>
+      </div>
+
+      <!-- Buying Time Toolkit -->
+      <div class="card">
+        <span class="section-label">The Buying Time Toolkit</span>
+        <p class="text-sm text-gray-400 italic mb-4">Different from the Talk Back Toolkit. This one is for when you don't know a word - use these to stay in French rather than going silent or switching to English.</p>
+
+        <div class="toolkit-row">
+          <div class="vocab-fr">Comment on dit… ?</div>
+          <div class="vocab-pron">com-on on dee</div>
+          <div class="vocab-en">How does one say…? Ask for any word in French.</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">C'est quoi en français ?</div>
+          <div class="vocab-pron">say kwah on fron-say</div>
+          <div class="vocab-en">What's that in French?</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">C'est quoi en anglais ?</div>
+          <div class="vocab-pron">say kwah on on-glay</div>
+          <div class="vocab-en">What's that in English? (last resort if you draw a complete blank)</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Pour dire…</div>
+          <div class="vocab-pron">poor deer</div>
+          <div class="vocab-en">To say… (when reaching for a word mid-sentence)</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Donc…</div>
+          <div class="vocab-pron">donk</div>
+          <div class="vocab-en">So… (filler - buys thinking time. Dan uses it without thinking.)</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">[the puff]</div>
+          <div class="vocab-pron">pfff</div>
+          <div class="vocab-en">A legitimate French thinking noise. Use it freely.</div>
+        </div>
+
+        <p class="text-xs text-gray-400 italic mt-4">"Comment on dit…?" keeps the conversation in French and sounds completely natural - as if you're searching for the right word, not giving up.</p>
+      </div>
+
+      <!-- BANGS Rule -->
+      <div class="card">
+        <span class="section-label">The BANGS Rule</span>
+        <p class="text-sm text-gray-400 italic mb-4">Adjectives normally go after the noun in French - except for these five categories, which always go before.</p>
+
+        <div class="grid grid-cols-5 gap-2 mb-5">
+          <div class="bg-sand rounded-lg p-3 text-center">
+            <div class="font-bold text-navy text-lg">B</div>
+            <div class="text-xs text-gray-500 mt-1">Beauty<br><span class="italic">beau, joli</span></div>
+          </div>
+          <div class="bg-sand rounded-lg p-3 text-center">
+            <div class="font-bold text-navy text-lg">A</div>
+            <div class="text-xs text-gray-500 mt-1">Age<br><span class="italic">jeune, vieux</span></div>
+          </div>
+          <div class="bg-sand rounded-lg p-3 text-center">
+            <div class="font-bold text-navy text-lg">N</div>
+            <div class="text-xs text-gray-500 mt-1">Number<br><span class="italic">premier, deux</span></div>
+          </div>
+          <div class="bg-sand rounded-lg p-3 text-center">
+            <div class="font-bold text-navy text-lg">G</div>
+            <div class="text-xs text-gray-500 mt-1">Goodness<br><span class="italic">bon, mauvais</span></div>
+          </div>
+          <div class="bg-sand rounded-lg p-3 text-center">
+            <div class="font-bold text-navy text-lg">S</div>
+            <div class="text-xs text-gray-500 mt-1">Size<br><span class="italic">grand, petit</span></div>
+          </div>
+        </div>
+
+        <div class="space-y-2 mb-4">
+          <div class="vocab-row"><span class="vocab-fr">un grand vin</span><span class="vocab-pron"></span><span class="vocab-en">a great wine</span></div>
+          <div class="vocab-row"><span class="vocab-fr">un petit peu</span><span class="vocab-pron"></span><span class="vocab-en">a little bit</span></div>
+          <div class="vocab-row"><span class="vocab-fr">la première fois</span><span class="vocab-pron"></span><span class="vocab-en">the first time</span></div>
+          <div class="vocab-row"><span class="vocab-fr">un bon fromage</span><span class="vocab-pron"></span><span class="vocab-en">a good cheese</span></div>
+          <div class="vocab-row"><span class="vocab-fr">un bel homme</span><span class="vocab-pron"></span><span class="vocab-en">a handsome man ("beau" becomes "bel" before a vowel)</span></div>
+        </div>
+
+        <div class="bg-sand rounded-lg p-4">
+          <p class="text-xs font-semibold text-navy uppercase tracking-wide mb-1">Cultural anecdote</p>
+          <p class="text-sm text-gray-600">The First World War in French is <em>La Première Guerre mondiale</em> - fine. But the Second World War is <em>La Seconde Guerre mondiale</em>, not <em>deuxième</em>. In French, "second" implies it is the last in a series (no third will follow), while "deuxième" implies more could come. Using "seconde" is a subtle statement of hope. Ask a French person why - they'll love it.</p>
+        </div>
+      </div>
+
+      <!-- The Plus Trap -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">The Plus Trap - Important!</span>
+        <p class="text-sm text-gray-400 italic mb-4">Spelled identically. The S changes everything.</p>
+
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div class="bg-navy text-white rounded-lg p-4">
+            <div class="text-xl font-bold mb-1">Plus <span class="text-cyan text-base font-normal">(say the S)</span></div>
+            <div class="text-blue-300 text-sm italic mb-2">ploos</div>
+            <div class="text-sm">MORE.</div>
+            <div class="text-blue-200 text-sm mt-2 italic">"Je voudrais plus de fromage."<br>I'd like more cheese.</div>
+          </div>
+          <div class="bg-rouge text-white rounded-lg p-4">
+            <div class="text-xl font-bold mb-1">Plus <span class="text-red-200 text-base font-normal">(silent S)</span></div>
+            <div class="text-red-200 text-sm italic mb-2">plue</div>
+            <div class="text-sm">NO MORE.</div>
+            <div class="text-red-100 text-sm mt-2 italic">"Je ne veux plus de fromage."<br>I don't want any more cheese.</div>
+          </div>
+        </div>
+
+        <p class="text-sm text-gray-600">Tip: think of it as saying a fuller, longer word when you mean <em>more</em> - that way you'll naturally keep the S.</p>
+        <p class="text-sm text-gray-500 mt-2">"Encore !" for another round is actually more French than "plus" - unambiguous, and completely natural.</p>
+      </div>
+
+      <!-- Il y a expanded -->
+      <div class="card">
+        <span class="section-label">Il y a… - In the Wild</span>
+        <p class="text-sm text-gray-400 italic mb-4">You covered this in Lesson 3. Here's where it really earns its keep.</p>
+
+        <div class="space-y-2 mb-4">
+          <div class="vocab-row"><span class="vocab-fr">Il y a une table en terrasse ?</span><span class="vocab-pron"></span><span class="vocab-en">Is there a table on the terrace?</span></div>
+          <div class="vocab-row"><span class="vocab-fr">Il y a du paracétamol ?</span><span class="vocab-pron"></span><span class="vocab-en">Do you have paracetamol? (at a pharmacy)</span></div>
+          <div class="vocab-row"><span class="vocab-fr">Il y a un bus pour le centre-ville ?</span><span class="vocab-pron"></span><span class="vocab-en">Is there a bus to the city centre?</span></div>
+          <div class="vocab-row"><span class="vocab-fr">Il y a de la bière ?</span><span class="vocab-pron"></span><span class="vocab-en">Is there beer? (de la = feminine)</span></div>
+          <div class="vocab-row"><span class="vocab-fr">Il y a du pain ?</span><span class="vocab-pron"></span><span class="vocab-en">Is there bread? (du = masculine)</span></div>
+        </div>
+
+        <div class="bg-rouge rounded-lg p-3" style="background:#fff0f2; border: 1px solid #C8102E;">
+          <p class="text-xs font-semibold text-rouge uppercase tracking-wide mb-1">The warning</p>
+          <p class="text-sm text-gray-600">Don't use "Il y a…" when the thing is obviously right there in front of you. Walking into an empty restaurant and asking "Il y a une table ?" will get you a puzzled look.</p>
+        </div>
+      </div>
+
+      <!-- Parisian Slang -->
+      <div class="card">
+        <span class="section-label">Sounding Parisian</span>
+        <p class="text-sm text-gray-400 italic mb-4">Three things that signal you've been around.</p>
+
+        <div class="space-y-4">
+          <div class="border-b border-gray-100 pb-4">
+            <div class="flex items-baseline gap-3 mb-1">
+              <span class="vocab-fr text-lg">Chais pas</span>
+              <span class="vocab-pron">shay pa</span>
+            </div>
+            <p class="text-sm text-gray-600">Parisians almost never say the full "Je ne sais pas" in casual conversation. Always with a slight shrug and throw-away delivery. Do this once and they'll know you've been around.</p>
+          </div>
+
+          <div class="border-b border-gray-100 pb-4">
+            <div class="flex items-baseline gap-3 mb-1">
+              <span class="vocab-fr text-lg">Ah bon ?</span>
+              <span class="vocab-pron">a bon</span>
+            </div>
+            <p class="text-sm text-gray-600">Almost always a question - a touch of genuine surprise. A slight lift at the end. "Ah bon !" (statement) means agreement; "Ah bon ?" (question) means "Oh really?" Use the question version when something surprises you.</p>
+          </div>
+
+          <div>
+            <div class="flex items-baseline gap-3 mb-1">
+              <span class="vocab-fr text-lg">Bah non / Bah si</span>
+              <span class="vocab-pron">ba non / ba see</span>
+            </div>
+            <p class="text-sm text-gray-600">"Bah non" = no way / oh come on. "Bah si" = oh but yes! (used to contradict a negative - the French equivalent of "oh yes it is"). Not a warm or friendly sound - it's a bit confrontational. Save it for when you're mildly outraged or pushing back.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /l4 -->
+
+
   </main>
 
   <footer class="max-w-4xl mx-auto px-6 py-8 mt-4 border-t border-gray-200">
     <p class="text-xs text-gray-400 text-center">
       FluentISH - Elaine's personal course portal.
-      <a href="lesson-3-reference.html" class="underline hover:text-navy transition-colors ml-2">Lesson 3 printable reference</a>
+      <a href="lesson-3-reference.html" class="underline hover:text-navy transition-colors ml-2">Lesson 3 reference</a>
+      <a href="lesson-4-reference.html" class="underline hover:text-navy transition-colors ml-2">Lesson 4 reference</a>
     </p>
   </footer>
 

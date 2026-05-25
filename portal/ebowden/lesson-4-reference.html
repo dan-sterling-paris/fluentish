@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elaine Bowden - Lesson 4 Reference Sheet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:  #003359;
+      --rouge: #C8102E;
+      --sand:  #F7F4EF;
+      --muted: #6B7280;
+      --border: #E5E1DA;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--sand);
+      color: var(--navy);
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 36px 40px 40px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--rouge);
+      padding-bottom: 10px;
+      margin-bottom: 24px;
+    }
+    .header-brand {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .header-brand span { color: var(--rouge); }
+    .header-meta {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: right;
+      line-height: 1.6;
+    }
+    .header-meta strong {
+      display: block;
+      font-size: 13px;
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    /* Section title */
+    .section-title {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rouge);
+      margin-bottom: 10px;
+    }
+
+    /* Grid layout */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .full-width { margin-bottom: 16px; }
+
+    /* Card */
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    /* Toolkit table */
+    .toolkit-table { width: 100%; border-collapse: collapse; }
+    .toolkit-table tr + tr td { border-top: 1px solid var(--border); }
+    .toolkit-table td { padding: 7px 0; vertical-align: top; }
+    .toolkit-table .fr {
+      font-weight: 600;
+      color: var(--navy);
+      width: 38%;
+      padding-right: 10px;
+    }
+    .toolkit-table .pron {
+      color: var(--muted);
+      font-style: italic;
+      font-size: 12px;
+      width: 26%;
+      padding-right: 10px;
+    }
+    .toolkit-table .en {
+      color: #374151;
+      font-size: 12px;
+    }
+    .toolkit-note {
+      margin-top: 10px;
+      font-size: 11.5px;
+      color: var(--muted);
+      border-left: 3px solid var(--rouge);
+      padding-left: 8px;
+    }
+
+    /* BANGS grid */
+    .bangs-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .bangs-cell {
+      background: var(--sand);
+      border-radius: 8px;
+      padding: 6px 4px;
+      text-align: center;
+    }
+    .bangs-cell .letter {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--navy);
+      display: block;
+    }
+    .bangs-cell .label {
+      font-size: 10px;
+      color: var(--muted);
+      display: block;
+      margin-top: 2px;
+    }
+    .bangs-cell .example {
+      font-style: italic;
+      font-size: 10px;
+      color: #9CA3AF;
+      display: block;
+    }
+    .bangs-examples { border-collapse: collapse; width: 100%; }
+    .bangs-examples tr + tr td { border-top: 1px solid var(--border); }
+    .bangs-examples td { padding: 4px 0; font-size: 12.5px; }
+    .bangs-examples .fr { font-weight: 600; color: var(--navy); width: 55%; padding-right: 8px; }
+    .bangs-examples .en { color: var(--muted); font-style: italic; }
+    .anecdote-box {
+      background: var(--sand);
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-top: 10px;
+    }
+    .anecdote-box .label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 3px;
+    }
+    .anecdote-box p { font-size: 11.5px; color: #374151; }
+
+    /* Plus trap */
+    .plus-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .plus-more {
+      background: var(--navy);
+      color: #fff;
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .plus-none {
+      background: var(--rouge);
+      color: #fff;
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .plus-more .word, .plus-none .word {
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+    .plus-more .tag { font-size: 10px; color: #4DD4F5; }
+    .plus-none .tag { font-size: 10px; color: #F9A8B4; }
+    .plus-more .meaning { font-size: 12px; margin-top: 4px; }
+    .plus-none .meaning { font-size: 12px; margin-top: 4px; }
+    .plus-more .example { font-size: 11px; color: rgba(255,255,255,0.65); font-style: italic; margin-top: 4px; }
+    .plus-none .example { font-size: 11px; color: rgba(255,255,255,0.65); font-style: italic; margin-top: 4px; }
+    .plus-tip { font-size: 11.5px; color: var(--muted); }
+    .plus-tip strong { color: var(--navy); }
+
+    /* Parisian slang */
+    .slang-card {
+      background: var(--navy);
+      border-radius: 12px;
+      padding: 16px 18px;
+      color: #fff;
+    }
+    .slang-card .section-title { color: #C8A0A8; }
+    .slang-item { display: flex; gap: 14px; align-items: flex-start; }
+    .slang-item + .slang-item { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.12); }
+    .slang-fr {
+      font-weight: 700;
+      font-size: 16px;
+      color: #4DD4F5;
+      min-width: 110px;
+      flex-shrink: 0;
+    }
+    .slang-pron {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      font-style: italic;
+      margin-top: 2px;
+    }
+    .slang-desc {
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
+    }
+
+    /* Print */
+    @media print {
+      body { background: #fff; font-size: 12px; }
+      .page { padding: 20px 24px; max-width: 100%; }
+      .card { box-shadow: none; }
+      .slang-card { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .plus-more, .plus-none { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .bangs-cell { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-brand">Fluent<span>ISH</span></div>
+    <div class="header-meta">
+      <strong>Elaine Bowden</strong>
+      Lesson 4 &middot; Reference Sheet &middot; 25 May 2026
+    </div>
+  </div>
+
+  <!-- Row 1: Buying Time Toolkit (full width) -->
+  <div class="full-width">
+    <div class="card">
+      <div class="section-title">The Buying Time Toolkit - when you don't know a word</div>
+      <table class="toolkit-table">
+        <tr>
+          <td class="fr">Comment on dit&nbsp;?</td>
+          <td class="pron">com-on on dee</td>
+          <td class="en">How does one say&hellip;? Ask for any word in French - keeps you in the language</td>
+        </tr>
+        <tr>
+          <td class="fr">C'est quoi en fran&ccedil;ais&nbsp;?</td>
+          <td class="pron">say kwah on fron-say</td>
+          <td class="en">What's that in French?</td>
+        </tr>
+        <tr>
+          <td class="fr">C'est quoi en anglais&nbsp;?</td>
+          <td class="pron">say kwah on on-glay</td>
+          <td class="en">What's that in English? (last resort - if you draw a complete blank)</td>
+        </tr>
+        <tr>
+          <td class="fr">Pour dire&hellip;</td>
+          <td class="pron">poor deer</td>
+          <td class="en">To say&hellip; (reaching for a word mid-sentence)</td>
+        </tr>
+        <tr>
+          <td class="fr">Donc&hellip;</td>
+          <td class="pron">donk</td>
+          <td class="en">So&hellip; (filler - buys thinking time. Dan uses it without realising.)</td>
+        </tr>
+        <tr>
+          <td class="fr">[the puff]</td>
+          <td class="pron">pfff</td>
+          <td class="en">A legitimate French thinking noise. Use it freely.</td>
+        </tr>
+      </table>
+      <p class="toolkit-note">"Comment on dit&nbsp;?" sounds natural - as if you're reaching for the right word, not giving up. It keeps the conversation in French.</p>
+    </div>
+  </div>
+
+  <!-- Row 2: BANGS Rule + The Plus Trap -->
+  <div class="grid-2">
+
+    <div class="card">
+      <div class="section-title">The BANGS Rule</div>
+      <p style="font-size:11.5px;color:var(--muted);margin-bottom:8px;">Adjectives go after the noun in French - except these five categories, which always go before.</p>
+
+      <div class="bangs-grid">
+        <div class="bangs-cell">
+          <span class="letter">B</span>
+          <span class="label">Beauty</span>
+          <span class="example">beau, joli</span>
+        </div>
+        <div class="bangs-cell">
+          <span class="letter">A</span>
+          <span class="label">Age</span>
+          <span class="example">jeune, vieux</span>
+        </div>
+        <div class="bangs-cell">
+          <span class="letter">N</span>
+          <span class="label">Number</span>
+          <span class="example">premier, deux</span>
+        </div>
+        <div class="bangs-cell">
+          <span class="letter">G</span>
+          <span class="label">Goodness</span>
+          <span class="example">bon, mauvais</span>
+        </div>
+        <div class="bangs-cell">
+          <span class="letter">S</span>
+          <span class="label">Size</span>
+          <span class="example">grand, petit</span>
+        </div>
+      </div>
+
+      <table class="bangs-examples">
+        <tr><td class="fr">un grand vin</td><td class="en">a great wine</td></tr>
+        <tr><td class="fr">un petit peu</td><td class="en">a little bit</td></tr>
+        <tr><td class="fr">la premi&egrave;re fois</td><td class="en">the first time</td></tr>
+        <tr><td class="fr">un bon fromage</td><td class="en">a good cheese</td></tr>
+        <tr><td class="fr">un bel homme</td><td class="en">a handsome man (beau &rarr; bel before vowel)</td></tr>
+      </table>
+
+      <div class="anecdote-box">
+        <div class="label">Cultural anecdote</div>
+        <p>The Second World War is <em>La Seconde Guerre mondiale</em> - not <em>deuxi&egrave;me</em>. "Seconde" implies it is the last in a series. Ask a French person why - they'll love it.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">The Plus Trap</div>
+      <p style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">Spelled identically. The S changes everything.</p>
+
+      <div class="plus-grid">
+        <div class="plus-more">
+          <div class="word">Plus <span class="tag">(say the S)</span></div>
+          <div class="meaning">MORE</div>
+          <div class="example">"Je voudrais plus de fromage."<br>I'd like more cheese.</div>
+        </div>
+        <div class="plus-none">
+          <div class="word">Plus <span class="tag">(silent S)</span></div>
+          <div class="meaning">NO MORE</div>
+          <div class="example">"Je ne veux plus de fromage."<br>I don't want any more.</div>
+        </div>
+      </div>
+
+      <p class="plus-tip">Think of it as saying a <strong>fuller, longer word</strong> when you mean more - you'll keep the S naturally.</p>
+      <p class="plus-tip" style="margin-top:8px;">"Encore&nbsp;!" for another round is more French than "plus" - unambiguous and completely natural.</p>
+    </div>
+
+  </div>
+
+  <!-- Row 3: Parisian Slang (full width) -->
+  <div class="full-width">
+    <div class="slang-card">
+      <div class="section-title">Sounding Parisian - three things that signal you've been around</div>
+      <div>
+        <div class="slang-item">
+          <div>
+            <div class="slang-fr">Chais pas</div>
+            <div class="slang-pron">shay pa</div>
+          </div>
+          <div class="slang-desc">Dunno. Parisians almost never say the full "Je ne sais pas" in casual conversation. Always with a slight shrug and throw-away delivery. Do this once and they'll know you've been around.</div>
+        </div>
+        <div class="slang-item">
+          <div>
+            <div class="slang-fr">Ah bon&nbsp;?</div>
+            <div class="slang-pron">a bon</div>
+          </div>
+          <div class="slang-desc">Oh really? Almost always a question - a touch of genuine surprise. A slight lift at the end. "Ah bon&nbsp;!" means agreement; "Ah bon&nbsp;?" means surprise. Use the question version when something catches you off guard.</div>
+        </div>
+        <div class="slang-item">
+          <div>
+            <div class="slang-fr">Bah non / Bah si</div>
+            <div class="slang-pron">ba non / ba see</div>
+          </div>
+          <div class="slang-desc">"Bah non" = no way / oh come on. "Bah si" = oh but yes! (used to contradict a negative - the French "oh yes it is"). Not a warm or friendly sound - a little confrontational. Save it for when you're mildly outraged or pushing back.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
