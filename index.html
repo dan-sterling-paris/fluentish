@@ -483,5 +483,11 @@
     });
   </script>
 
+<script>
+document.addEventListener('click', function(e) {
+  var link = e.target.closest('a[href*="#booking"]');
+  if (link) fbq('track', 'Lead');
+});
+</script>
 </body>
 </html>

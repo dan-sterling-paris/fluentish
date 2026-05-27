@@ -261,16 +261,6 @@
         <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
         <!-- Calendly inline widget end -->
 
-        <!-- Track Calendly bookings as a Meta Pixel Schedule event -->
-        <script>
-        window.addEventListener('message', function(e) {
-          if (e.origin === 'https://calendly.com' &&
-              e.data.event === 'calendly.event_scheduled') {
-            fbq('track', 'Schedule');
-          }
-        });
-        </script>
-
         <p class="text-gray-400 text-sm">
           Prefer to email first?
           <a href="mailto:bonjour@fluentish.co.uk"
@@ -392,5 +382,11 @@
     });
   </script>
 
+<script>
+document.addEventListener('click', function(e) {
+  var link = e.target.closest('a[href*="#booking"]');
+  if (link) fbq('track', 'Lead');
+});
+</script>
 </body>
 </html>
