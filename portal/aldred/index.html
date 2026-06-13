@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rick &amp; Jen – FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:  '#003359',
+            navyD: '#002040',
+            rouge: '#C8102E',
+            cyan:  '#4DD4F5',
+            sand:  '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+
+    /* Vocab table rows */
+    .vocab-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.6rem 0;
+      align-items: baseline;
+    }
+    .vocab-row:last-child { border-bottom: none; }
+    .vocab-fr   { font-weight: 600; color: #003359; }
+    .vocab-pron { font-style: italic; color: #8a9ab0; font-size: 0.8rem; padding: 0 0.5rem; }
+    .vocab-en   { color: #6b7280; font-size: 0.85rem; }
+
+    /* Phrase rows */
+    .phrase-row {
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.75rem 0;
+    }
+    .phrase-row:last-child { border-bottom: none; }
+    .phrase-fr   { font-weight: 600; color: #003359; font-size: 0.95rem; }
+    .phrase-pron { font-style: italic; color: #8a9ab0; font-size: 0.78rem; margin-top: 1px; }
+    .phrase-en   { color: #6b7280; font-size: 0.85rem; margin-top: 2px; }
+
+    /* Dialogue */
+    .dialogue-row { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; align-items: flex-start; }
+    .dialogue-row:last-child { margin-bottom: 0; }
+    .speaker-tag {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 4px; white-space: nowrap; margin-top: 3px;
+      background: #003359; color: white; flex-shrink: 0;
+    }
+    .speaker-tag.jen { background: #C8102E; }
+    .dialogue-fr   { font-weight: 500; color: #1a1a2e; }
+    .dialogue-pron { font-style: italic; color: #8a9ab0; font-size: 0.78rem; margin-top: 1px; }
+    .dialogue-en   { color: #8a9ab0; font-size: 0.82rem; margin-top: 2px; }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #C8102E; margin-bottom: 0.75rem; display: block;
+    }
+
+    /* Pill */
+    .sound-pill {
+      display: inline-flex; flex-direction: column; align-items: center;
+      background: #f8f9fb; border: 1px solid #e5e9ef; border-radius: 10px;
+      padding: 0.5rem 0.85rem; text-align: center;
+    }
+    .sound-pill .fr   { font-weight: 700; color: #003359; font-size: 0.9rem; }
+    .sound-pill .pron { font-style: italic; color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+    .sound-pill .en   { color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+
+    /* Card */
+    .card { background: white; border: 1px solid #e8ecf0; border-radius: 1rem; padding: 1.5rem; }
+
+    /* Lesson header strip */
+    .lesson-strip { background: #003359; color: white; border-radius: 0.75rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
+    .lesson-strip .num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #4DD4F5; }
+    .lesson-strip h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; margin-top: 2px; }
+    .lesson-strip .meta { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
+
+    /* Scenario divider */
+    .scenario-divider {
+      border: none; border-top: 1px solid #f0f0f0; margin: 1.25rem 0;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-navy text-white">
+    <div class="max-w-3xl mx-auto px-6 py-6 flex items-end justify-between gap-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest" style="color:#4DD4F5;">FluentISH</p>
+        <h1 class="font-display text-2xl font-bold mt-1">Rick &amp; Jen</h1>
+      </div>
+      <div class="text-right">
+        <p class="text-sm text-blue-200 font-medium">Lesson 1</p>
+        <p class="text-xs text-blue-400 mt-0.5">The Basics</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-6 py-8 space-y-6">
+
+    <!-- Lesson strip -->
+    <div class="lesson-strip">
+      <div class="num">Lesson 1</div>
+      <h2>The Basics</h2>
+      <div class="meta">Key verbs &middot; Drinks &middot; Homophones &middot; Conversations</div>
+    </div>
+
+    <!-- Key Phrases -->
+    <div class="card">
+      <span class="section-label">Key Phrases</span>
+
+      <div class="phrase-row">
+        <div class="phrase-fr">Je veux</div>
+        <div class="phrase-pron">zhuh vuh</div>
+        <div class="phrase-en">I want</div>
+      </div>
+
+      <div class="phrase-row">
+        <div class="phrase-fr">Je prends</div>
+        <div class="phrase-pron">zhuh prohn</div>
+        <div class="phrase-en">I'll take / I'll have</div>
+      </div>
+
+      <div class="phrase-row">
+        <div class="phrase-fr">Je suis</div>
+        <div class="phrase-pron">zhuh swee</div>
+        <div class="phrase-en">I am</div>
+      </div>
+
+      <div class="phrase-row">
+        <div class="phrase-fr">Laissez-moi présenter</div>
+        <div class="phrase-pron">leh-say mwa pray-zon-tay</div>
+        <div class="phrase-en">Let me introduce</div>
+      </div>
+    </div>
+
+    <!-- Sound-alikes -->
+    <div class="card">
+      <span class="section-label">Sound-alikes &mdash; all pronounced &ldquo;may&rdquo;</span>
+      <div class="flex flex-wrap gap-3">
+        <div class="sound-pill">
+          <span class="fr">mes</span>
+          <span class="pron">may</span>
+          <span class="en">my</span>
+        </div>
+        <div class="sound-pill">
+          <span class="fr">mais</span>
+          <span class="pron">may</span>
+          <span class="en">but</span>
+        </div>
+        <div class="sound-pill">
+          <span class="fr">mai</span>
+          <span class="pron">may</span>
+          <span class="en">May</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vocabulary -->
+    <div class="card">
+      <span class="section-label">Vocabulary</span>
+
+      <h3 class="font-display text-base font-bold text-navy mb-3">Drinks</h3>
+      <div class="vocab-row">
+        <span class="vocab-fr">Bière</span>
+        <span class="vocab-pron">byair</span>
+        <span class="vocab-en">Beer</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Vin</span>
+        <span class="vocab-pron">van</span>
+        <span class="vocab-en">Wine</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Vin sec</span>
+        <span class="vocab-pron">van sek</span>
+        <span class="vocab-en">Dry wine</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Vin fruité</span>
+        <span class="vocab-pron">van frwee-tay</span>
+        <span class="vocab-en">Sweet / fruity wine</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Café</span>
+        <span class="vocab-pron">ka-fay</span>
+        <span class="vocab-en">Coffee</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Thé</span>
+        <span class="vocab-pron">tay</span>
+        <span class="vocab-en">Tea</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Tisane</span>
+        <span class="vocab-pron">tee-zan</span>
+        <span class="vocab-en">Herbal tea</span>
+      </div>
+
+      <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Words that rhyme</h3>
+      <div class="vocab-row">
+        <span class="vocab-fr">Pain</span>
+        <span class="vocab-pron">pan</span>
+        <span class="vocab-en">Bread</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Main</span>
+        <span class="vocab-pron">man</span>
+        <span class="vocab-en">Hand</span>
+      </div>
+
+      <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Useful words</h3>
+      <div class="vocab-row">
+        <span class="vocab-fr">Marche</span>
+        <span class="vocab-pron">marsh</span>
+        <span class="vocab-en">Step</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Marcher</span>
+        <span class="vocab-pron">mar-shay</span>
+        <span class="vocab-en">To walk</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Chéri</span>
+        <span class="vocab-pron">shay-ree</span>
+        <span class="vocab-en">Darling (to a man)</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Chérie</span>
+        <span class="vocab-pron">shay-ree</span>
+        <span class="vocab-en">Darling (to a woman)</span>
+      </div>
+    </div>
+
+    <!-- Dialogues -->
+    <div class="card">
+      <span class="section-label">Conversations we practised</span>
+
+      <!-- Scenario 1 -->
+      <h3 class="font-display text-base font-bold text-navy mb-3">1 &mdash; Something to drink?</h3>
+
+      <div class="dialogue-row">
+        <span class="speaker-tag">Rick</span>
+        <div>
+          <div class="dialogue-fr">Ch&eacute;rie, tu veux quelque chose &agrave; boire&nbsp;?</div>
+          <div class="dialogue-pron">shay-ree, too vuh kelk shoze ah bwar&nbsp;?</div>
+          <div class="dialogue-en">Darling, do you want something to drink?</div>
+        </div>
+      </div>
+
+      <div class="dialogue-row">
+        <span class="speaker-tag jen">Jen</span>
+        <div>
+          <div class="dialogue-fr">Oui, un verre de vin blanc sec&nbsp;! Et toi&nbsp;?</div>
+          <div class="dialogue-pron">wee, un vair duh van blon sek&nbsp;! ay twa&nbsp;?</div>
+          <div class="dialogue-en">Yes, a glass of dry white wine! And you?</div>
+        </div>
+      </div>
+
+      <div class="dialogue-row">
+        <span class="speaker-tag">Rick</span>
+        <div>
+          <div class="dialogue-fr">Je prends une bi&egrave;re&nbsp;!</div>
+          <div class="dialogue-pron">zhuh prohn oon byair&nbsp;!</div>
+          <div class="dialogue-en">I'll have a beer!</div>
+        </div>
+      </div>
+
+      <hr class="scenario-divider" />
+
+      <!-- Scenario 2 -->
+      <h3 class="font-display text-base font-bold text-navy mb-3">2 &mdash; Walking the dog</h3>
+
+      <div class="dialogue-row">
+        <span class="speaker-tag">Rick</span>
+        <div>
+          <div class="dialogue-fr">Ch&eacute;rie, je vais promener le chien. Tu viens&nbsp;?</div>
+          <div class="dialogue-pron">shay-ree, zhuh vay prom-nay luh shyen. too vyen&nbsp;?</div>
+          <div class="dialogue-en">Darling, I'm going to walk the dog. Coming?</div>
+        </div>
+      </div>
+
+      <div class="dialogue-row">
+        <span class="speaker-tag jen">Jen</span>
+        <div>
+          <div class="dialogue-fr">Bah non, je fais le m&eacute;nage.</div>
+          <div class="dialogue-pron">bah non, zhuh fay luh may-nazh.</div>
+          <div class="dialogue-en">No, I'm doing the housework.</div>
+        </div>
+      </div>
+
+      <div class="dialogue-row">
+        <span class="speaker-tag">Rick</span>
+        <div>
+          <div class="dialogue-fr">OK&nbsp;!</div>
+          <div class="dialogue-pron">oh-kay&nbsp;!</div>
+          <div class="dialogue-en">OK!</div>
+        </div>
+      </div>
+
+      <hr class="scenario-divider" />
+
+      <!-- Scenario 3 -->
+      <h3 class="font-display text-base font-bold text-navy mb-3">3 &mdash; Going for drinks</h3>
+
+      <div class="dialogue-row">
+        <span class="speaker-tag jen">Jen</span>
+        <div>
+          <div class="dialogue-fr">Ch&eacute;ri, on ira boire des verres ou quoi&nbsp;?</div>
+          <div class="dialogue-pron">shay-ree, on ee-ra bwar day vair oo kwa&nbsp;?</div>
+          <div class="dialogue-en">Darling, shall we go for drinks or what?</div>
+        </div>
+      </div>
+
+      <div class="dialogue-row">
+        <span class="speaker-tag">Rick</span>
+        <div>
+          <div class="dialogue-fr">Bah ouais&nbsp;!</div>
+          <div class="dialogue-pron">bah way&nbsp;!</div>
+          <div class="dialogue-en">Yeah, course!</div>
+        </div>
+      </div>
+
+      <div class="dialogue-row">
+        <span class="speaker-tag jen">Jen</span>
+        <div>
+          <div class="dialogue-fr">Parfait&nbsp;!</div>
+          <div class="dialogue-pron">par-fay&nbsp;!</div>
+          <div class="dialogue-en">Perfect!</div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="max-w-3xl mx-auto px-6 py-8 text-center text-xs text-gray-400">
+    &copy; FluentISH &mdash; Rick &amp; Jen &mdash; Lesson 1
+  </footer>
+
+</body>
+</html>
