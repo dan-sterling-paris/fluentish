@@ -121,7 +121,7 @@
         <h1 class="font-display text-2xl font-bold mt-1">Elaine's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">5 lessons</p>
+        <p class="text-sm text-blue-200 font-medium">6 lessons</p>
         <p class="text-xs text-blue-400 mt-0.5">Paris trip, June 2026</p>
       </div>
     </div>
@@ -136,6 +136,7 @@
       <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
       <button @click="tab = 'l4'"   :class="tab === 'l4'   ? 'tab-btn active' : 'tab-btn'">Lesson 4</button>
       <button @click="tab = 'l5'"   :class="tab === 'l5'   ? 'tab-btn active' : 'tab-btn'">Lesson 5</button>
+      <button @click="tab = 'l6'"   :class="tab === 'l6'   ? 'tab-btn active' : 'tab-btn'">Lesson 6 ✦</button>
     </div>
   </div>
 
@@ -1302,6 +1303,336 @@
       </div>
 
     </div><!-- /l5 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 6 — THE FINAL LESSON          -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l6'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 6 — The Final Lesson</div>
+        <h2>Paris Ready</h2>
+        <div class="meta">Everything you've built · Four connected scenes · The mindset to take with you</div>
+      </div>
+
+      <!-- What you've built -->
+      <div class="card">
+        <span class="section-label">What You've Built Across 5 Lessons</span>
+        <p class="text-sm text-gray-500 italic mb-4">You have more French than you realise. Here's the evidence.</p>
+
+        <div class="space-y-3">
+          <div class="flex gap-3 items-start">
+            <span class="text-xs font-bold text-navy bg-sand px-2 py-1 rounded whitespace-nowrap">L1</span>
+            <p class="text-sm text-gray-700">Ask for a table, handle table vs bar service, order drinks, manage a rushed waiter — including when they interrupt you mid-sentence.</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-xs font-bold text-navy bg-sand px-2 py-1 rounded whitespace-nowrap">L2</span>
+            <p class="text-sm text-gray-700">Name every drink you might want. Give left, right, upstairs, downstairs, at the back. Talk about Manchester, Edinburgh, being a nurse, being on holiday.</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-xs font-bold text-navy bg-sand px-2 py-1 rounded whitespace-nowrap">L3</span>
+            <p class="text-sm text-gray-700">Recover from any difficult moment. Deploy the full Talk Back Toolkit. Use root phrases. Sound natural with reactions and sentence starters. Pull off the Wow Exchange.</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-xs font-bold text-navy bg-sand px-2 py-1 rounded whitespace-nowrap">L4</span>
+            <p class="text-sm text-gray-700">Stay in French when you're stuck. Use <em>Comment on dit…</em> to ask for any word. Deploy <em>Chais pas</em>, <em>Ah bon ?</em> and <em>Bah non</em> like a local.</p>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-xs font-bold text-navy bg-sand px-2 py-1 rounded whitespace-nowrap">L5</span>
+            <p class="text-sm text-gray-700">Navigate a fromagerie from walking in to paying. Shop at any market. Handle getting around, asking for help, emergencies, and paying by card or cash.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- The 5 non-negotiables -->
+      <div class="card" style="border-color: #003359; border-width: 2px;">
+        <span class="section-label">Your 5 Non-Negotiables</span>
+        <p class="text-sm text-gray-500 italic mb-4">If you only take five things to Paris, take these. They keep you in French no matter what happens.</p>
+
+        <div class="space-y-0">
+          <div class="toolkit-row">
+            <div class="vocab-fr">Pardon ?</div>
+            <div class="vocab-pron">par-don</div>
+            <div class="vocab-en">First reflex when you lose the thread. Buy a second.</div>
+          </div>
+          <div class="toolkit-row">
+            <div class="vocab-fr">Comment on dit… ?</div>
+            <div class="vocab-pron">com-on on dee</div>
+            <div class="vocab-en">Ask for any word you don't know. Stays in French. Sounds natural.</div>
+          </div>
+          <div class="toolkit-row">
+            <div class="vocab-fr">Je m'entraîne !</div>
+            <div class="vocab-pron">zhe mon-tren</div>
+            <div class="vocab-en">The magic phrase. Delivers a laugh, changes the whole dynamic.</div>
+          </div>
+          <div class="toolkit-row">
+            <div class="vocab-fr">Alors… / Donc…</div>
+            <div class="vocab-pron">a-lor / donk</div>
+            <div class="vocab-en">Thinking time. Completely natural. Dan uses them without thinking.</div>
+          </div>
+          <div class="toolkit-row">
+            <div class="vocab-fr">Plus lentement s'il vous plaît.</div>
+            <div class="vocab-pron">plue lon-tuh-mon see voo play</div>
+            <div class="vocab-en">The circuit breaker. Ask for this and they will slow right down.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Identity stack -->
+      <div class="card">
+        <span class="section-label">Your Identity in French — Know These Cold</span>
+        <p class="text-sm text-gray-500 italic mb-4">This is your conversation starter, your Wow Exchange, and your escape hatch all in one. When in doubt, introduce yourself.</p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis de Manchester.</div>
+          <div class="phrase-pron">zhe swee duh Mon-chest-air</div>
+          <div class="phrase-en">I'm from Manchester.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis infirmière.</div>
+          <div class="phrase-pron">zhe swee ahn-feer-myair</div>
+          <div class="phrase-en">I'm a nurse.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis en vacances.</div>
+          <div class="phrase-pron">zhe swee on va-konss</div>
+          <div class="phrase-en">I'm on holiday.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'avais vraiment besoin de vacances !</div>
+          <div class="phrase-pron">zhavay vray-mon buh-zwan duh va-konss</div>
+          <div class="phrase-en">I really needed a holiday! (the line that always gets a laugh)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je m'entraîne !</div>
+          <div class="phrase-pron">zhe mon-tren</div>
+          <div class="phrase-en">I'm practising! (close with this — lands every time)</div>
+        </div>
+      </div>
+
+      <!-- Scene 1: The café -->
+      <div class="card">
+        <span class="section-label">Scene 1 — The Café: Everything Clicking</span>
+        <p class="text-sm text-gray-400 italic mb-4">This is five lessons working together. Notice how the tools appear without you having to think about them — table question, the order, the identity stack, the Wow Exchange landing.</p>
+        <div class="space-y-3">
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Bonjour monsieur !</div><div class="dialogue-en">Hello, sir!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div><div class="dialogue-fr">Bonjour madame ! Pour combien ?</div><div class="dialogue-en">Hello, Madam! For how many?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Pour une, s'il vous plaît.</div><div class="dialogue-en">For one, please.</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div><div class="dialogue-fr">Bien sûr, par ici !</div><div class="dialogue-en">Of course, this way!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Merci ! La carte s'il vous plaît ?</div><div class="dialogue-en">Thank you! The menu please?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div><div class="dialogue-fr">Voilà madame. Vous avez choisi ?</div><div class="dialogue-en">Here you are, Madam. Have you chosen?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Oui ! Je prends un café et une planche de fromage s'il vous plaît.</div><div class="dialogue-en">Yes! I'll have a coffee and a cheese board please.</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div><div class="dialogue-fr">Parfait ! Vous êtes ici en vacances, madame ?</div><div class="dialogue-en">Perfect! Are you here on holiday, Madam?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Oui ! Je suis de Manchester — je suis infirmière, j'avais vraiment besoin de vacances !</div><div class="dialogue-en">Yes! I'm from Manchester — I'm a nurse, I really needed a holiday!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div><div class="dialogue-fr">Ah, Manchester ! Votre français est très bien, madame !</div><div class="dialogue-en">Oh, Manchester! Your French is very good, Madam!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Merci ! Je m'entraîne !</div><div class="dialogue-en">Thank you! I'm practising!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div><div class="dialogue-fr">Avec plaisir, madame !</div><div class="dialogue-en">My pleasure, Madam!</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 2: Directions -->
+      <div class="card">
+        <span class="section-label">Scene 2 — Getting Directions</span>
+        <p class="text-sm text-gray-400 italic mb-4">Short and functional. The trick is to repeat the directions back — it confirms you understood, and gives you a second to process.</p>
+        <div class="space-y-3">
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Excusez-moi monsieur — où est le marché s'il vous plaît ?</div><div class="dialogue-en">Excuse me, sir — where is the market please?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Stranger</span>
+            <div><div class="dialogue-fr">Le marché ? C'est tout droit, puis à gauche.</div><div class="dialogue-en">The market? Straight on, then left.</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Tout droit, puis à gauche. C'est loin ?</div><div class="dialogue-en">Straight on, then left. Is it far?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Stranger</span>
+            <div><div class="dialogue-fr">Non, cinq minutes à pied.</div><div class="dialogue-en">No, five minutes on foot.</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Parfait ! Merci beaucoup !</div><div class="dialogue-en">Perfect! Thank you very much!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Stranger</span>
+            <div><div class="dialogue-fr">Bonne journée !</div><div class="dialogue-en">Have a good day!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Bonne journée !</div><div class="dialogue-en">Have a good day!</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 3: Fromagerie fluent -->
+      <div class="card">
+        <span class="section-label">Scene 3 — The Fromagerie: The Fluent Version</span>
+        <p class="text-sm text-gray-400 italic mb-4">You've done this scene before. Notice how much shorter and more natural it feels now — because you know it. That's the difference between learning and having.</p>
+        <div class="space-y-3">
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Bonjour !</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Bonjour madame ! Je vous aide ?</div><div class="dialogue-en">Hello, Madam! Can I help you?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Oui ! J'aimerais un peu de fromage — celui-là, je peux goûter ?</div><div class="dialogue-en">Yes! I'd like a little cheese — that one, can I taste?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Avec plaisir !</div><div class="dialogue-en">With pleasure!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Mmm — très bon ! Une petite tranche s'il vous plaît.</div><div class="dialogue-en">Mmm — very good! A small slice please.</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Comme ça ?</div><div class="dialogue-en">Like this?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Un peu plus — parfait ! C'est tout merci. Par carte s'il vous plaît.</div><div class="dialogue-en">A little more — perfect! That's everything thanks. By card please.</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Ça fera sept euros, madame.</div><div class="dialogue-en">That'll be seven euros, Madam.</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Parfait, merci !</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Bonne journée madame !</div><div class="dialogue-en">Have a good day, Madam!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Bonne journée !</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 4: Recovery -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Scene 4 — When It Goes Wrong: The Recovery in Action</span>
+        <p class="text-sm text-gray-400 italic mb-4">This is the scene people dread most. Here's the thing — you have every tool you need. Watch how it unfolds when you trust the toolkit.</p>
+        <div class="space-y-3">
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Excusez-moi ! Je voudrais commander s'il vous plaît.</div><div class="dialogue-en">Excuse me! I'd like to order please.</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div>
+              <div class="dialogue-fr">Bien sûr — vous voulez quelque chose à grignoter d'abord ?</div>
+              <div class="dialogue-en">[speaks quickly] Of course — would you like something to nibble on first?</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Pardon ?</div><div class="dialogue-en">Sorry? (first reflex — buys a second)</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div><div class="dialogue-fr">Un petit snack, avant votre repas ?</div><div class="dialogue-en">A little snack, before your meal?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Vous pouvez répéter plus lentement s'il vous plaît ?</div><div class="dialogue-en">Can you repeat that more slowly please?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div><div class="dialogue-fr">Un… petit… snack… avant… votre… repas ?</div><div class="dialogue-en">[slows right down] A… little… snack… before… your… meal?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Ah ! Non merci — je prends directement un verre de vin blanc sec s'il vous plaît !</div><div class="dialogue-en">Ah! No thank you — I'll go straight for a glass of dry white wine please!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Waiter</span>
+            <div><div class="dialogue-fr">Parfait madame !</div><div class="dialogue-en">Perfect, Madam!</div></div>
+          </div>
+        </div>
+        <div class="mt-4 bg-sand rounded-lg p-3">
+          <p class="text-xs font-semibold text-navy uppercase tracking-wide mb-1">What just happened</p>
+          <p class="text-sm text-gray-600">Pardon bought a second. Vous pouvez répéter slowed things down. And the answer came. That is the toolkit working exactly as it should. You don't need to understand everything — you need to stay calm and use what you have.</p>
+        </div>
+      </div>
+
+      <!-- Send-off -->
+      <div class="card" style="background: #003359; color: white; border: none;">
+        <span class="section-label" style="color: #4DD4F5;">Bon voyage, Elaine.</span>
+        <h3 class="font-display text-xl font-bold mb-3" style="color: white;">Your French is ready. So are you.</h3>
+        <p class="text-sm mb-3" style="color: rgba(255,255,255,0.75);">
+          You don't need perfect French. You need functional French — and you have it.
+          Parisians respond to effort, and you've put in the effort. You know how to order,
+          how to introduce yourself, how to taste cheese and reject it politely,
+          how to ask for directions, and how to recover when something goes wrong.
+        </p>
+        <p class="text-sm mb-4" style="color: rgba(255,255,255,0.75);">
+          The moment someone says <em>"Votre français est très bien !"</em> — and they will —
+          you know exactly what to say. Je m'entraîne. Get the laugh. Let Paris do the rest.
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <div class="sound-pill" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2);">
+            <span class="fr" style="color: #4DD4F5;">Bon courage !</span>
+            <span class="en" style="color: rgba(255,255,255,0.5);">Good luck!</span>
+          </div>
+          <div class="sound-pill" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2);">
+            <span class="fr" style="color: #4DD4F5;">Bon voyage !</span>
+            <span class="en" style="color: rgba(255,255,255,0.5);">Have a great trip!</span>
+          </div>
+          <div class="sound-pill" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2);">
+            <span class="fr" style="color: #4DD4F5;">Profitez bien !</span>
+            <span class="en" style="color: rgba(255,255,255,0.5);">Enjoy every moment!</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /l6 -->
 
 
   </main>
