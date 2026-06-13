@@ -121,7 +121,7 @@
         <h1 class="font-display text-2xl font-bold mt-1">Elaine's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">4 lessons</p>
+        <p class="text-sm text-blue-200 font-medium">5 lessons</p>
         <p class="text-xs text-blue-400 mt-0.5">Paris trip, June 2026</p>
       </div>
     </div>
@@ -135,6 +135,7 @@
       <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
       <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
       <button @click="tab = 'l4'"   :class="tab === 'l4'   ? 'tab-btn active' : 'tab-btn'">Lesson 4</button>
+      <button @click="tab = 'l5'"   :class="tab === 'l5'   ? 'tab-btn active' : 'tab-btn'">Lesson 5</button>
     </div>
   </div>
 
@@ -370,6 +371,28 @@
         <div class="vocab-row"><span class="vocab-fr">Une planche de fromage</span><span class="vocab-pron">plonsh duh from-azh</span><span class="vocab-en">a cheese board</span></div>
         <div class="vocab-row"><span class="vocab-fr">Une planche mixte</span><span class="vocab-pron">plonsh meekst</span><span class="vocab-en">mixed board (cheese and meat)</span></div>
         <div class="vocab-row"><span class="vocab-fr">Un bout de pain</span><span class="vocab-pron">ahn boo duh pan</span><span class="vocab-en">a bit of bread (very natural - like "just throw me some bread")</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">At the Fromagerie</h3>
+        <div class="vocab-row"><span class="vocab-fr">Le fromage</span><span class="vocab-pron">luh from-azh</span><span class="vocab-en">the cheese</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Du fromage</span><span class="vocab-pron">doo from-azh</span><span class="vocab-en">some cheese</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une tranche</span><span class="vocab-pron">oon tronsh</span><span class="vocab-en">a slice</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un morceau</span><span class="vocab-pron">un mor-soh</span><span class="vocab-en">a piece</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Goûter</span><span class="vocab-pron">goo-tay</span><span class="vocab-en">to taste</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Lequel / Laquelle ?</span><span class="vocab-pron">luh-kel / la-kel</span><span class="vocab-en">which one? (masc / fem)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Celui-là</span><span class="vocab-pron">suh-lwee-la</span><span class="vocab-en">that one (masc)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Celle-ci</span><span class="vocab-pron">sel-see</span><span class="vocab-en">this one (fem)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">C'est très bon !</span><span class="vocab-pron">say treh bon</span><span class="vocab-en">it's very good!</span></div>
+        <div class="vocab-row"><span class="vocab-fr">C'est pas pour moi !</span><span class="vocab-pron">say pa poor mwa</span><span class="vocab-en">it's not for me!</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un peu plus</span><span class="vocab-pron">un puh ploos</span><span class="vocab-en">a little more</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un peu moins</span><span class="vocab-pron">un puh mwan</span><span class="vocab-en">a little less</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Avec ceci ?</span><span class="vocab-pron">avek suh-see</span><span class="vocab-en">anything else? / with this?</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Paying</h3>
+        <div class="vocab-row"><span class="vocab-fr">Par carte</span><span class="vocab-pron">par kart</span><span class="vocab-en">by card</span></div>
+        <div class="vocab-row"><span class="vocab-fr">En espèces</span><span class="vocab-pron">on es-pess</span><span class="vocab-en">in cash</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La monnaie</span><span class="vocab-pron">la mon-ay</span><span class="vocab-en">change / coins</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Des pièces</span><span class="vocab-pron">day pyess</span><span class="vocab-en">coins</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Ça fera…</span><span class="vocab-pron">sa fuh-ra</span><span class="vocab-en">that'll be…</span></div>
       </div>
 
       <!-- Natural Sound Kit -->
@@ -430,6 +453,33 @@
               <div class="dialogue-en">Yes, exactly! I'm a nurse - I really needed a holiday!</div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Fromagerie dialogue -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">The Fromagerie Scene — Learn This Off By Heart</span>
+        <p class="text-sm text-gray-400 italic mb-4">The key moments: tasting boldly, reacting honestly, and nailing the quantity back and forth.</p>
+        <div class="space-y-3">
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Bonjour !</div><div class="dialogue-en">Hello!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Server</span><div><div class="dialogue-fr">Bonjour !</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">J'aimerais un peu de fromage français, s'il vous plaît !</div><div class="dialogue-en">I'd like a little French cheese, please!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Server</span><div><div class="dialogue-fr">Pas de soucis. Lequel madame ?</div><div class="dialogue-en">No problem. Which one, Madam?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Celui-là — je peux goûter un petit morceau ?</div><div class="dialogue-en">That one — can I taste a small piece?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Server</span><div><div class="dialogue-fr">Avec plaisir !</div><div class="dialogue-en">With pleasure!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Ah, c'est pas pour moi !</div><div class="dialogue-en">Ah, that's not for me!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Server</span><div><div class="dialogue-fr">Peut-être celui-là.</div><div class="dialogue-en">Perhaps that one.</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Ah, très bon !</div><div class="dialogue-en">Ah, very good!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Server</span><div><div class="dialogue-fr">Parfait. Vous voulez combien ?</div><div class="dialogue-en">Perfect. How much would you like?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Une petite tranche, s'il vous plaît.</div><div class="dialogue-en">A small slice, please.</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Server</span><div><div class="dialogue-fr">Comme ça ?</div><div class="dialogue-en">Like this?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Un peu moins.</div><div class="dialogue-en">A little less.</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Server</span><div><div class="dialogue-fr">Comme ça ?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">Un peu plus. Parfait !</div><div class="dialogue-en">A little more. Perfect!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Server</span><div><div class="dialogue-fr">Parfait. Avec ceci ?</div><div class="dialogue-en">Anything else?</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">C'est tout, merci !</div><div class="dialogue-en">That's everything, thanks!</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag">Server</span><div><div class="dialogue-fr">Très bien. Ça fera dix euros, madame.</div><div class="dialogue-en">Very good. That'll be ten euros, Madam.</div></div></div>
+          <div class="dialogue-row"><span class="speaker-tag elaine">Elaine</span><div><div class="dialogue-fr">OK, par carte s'il vous plaît.</div><div class="dialogue-en">OK, by card please.</div></div></div>
         </div>
       </div>
 
@@ -923,6 +973,335 @@
       </div>
 
     </div><!-- /l4 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 5                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l5'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 5</div>
+        <h2>Paris — Markets, Cheese &amp; Paying</h2>
+        <div class="meta">Paris survival phrases · At the fromagerie · Full scene</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Ahead of your Paris trip, this lesson was all about practical French — navigating a market or
+          fromagerie from start to finish: tasting, pointing, negotiating quantity, and paying.
+          You also built a Paris survival phrase list so you have the language for whatever comes up.
+        </p>
+      </div>
+
+      <!-- Useful Paris phrases -->
+      <div class="card">
+        <span class="section-label">Useful Phrases for Paris</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Getting around</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Où est… ?</div>
+          <div class="phrase-pron">oo ay</div>
+          <div class="phrase-en">Where is…?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je cherche…</div>
+          <div class="phrase-pron">zhuh shersh</div>
+          <div class="phrase-en">I'm looking for…</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est loin ?</div>
+          <div class="phrase-pron">say lwan</div>
+          <div class="phrase-en">Is it far?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Tout droit.</div>
+          <div class="phrase-pron">too drwa</div>
+          <div class="phrase-en">Straight ahead.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">À gauche. / À droite.</div>
+          <div class="phrase-pron">ah goash / ah drwaht</div>
+          <div class="phrase-en">To the left. / To the right.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Où est le métro le plus proche ?</div>
+          <div class="phrase-pron">oo ay luh may-tro luh ploos prosh</div>
+          <div class="phrase-en">Where is the nearest metro?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Un ticket s'il vous plaît.</div>
+          <div class="phrase-pron">un tee-kay see voo play</div>
+          <div class="phrase-en">One ticket please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Quelle direction pour… ?</div>
+          <div class="phrase-pron">kel dee-rek-syon poor</div>
+          <div class="phrase-en">Which direction for…?</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Shopping &amp; markets</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je regarde, merci.</div>
+          <div class="phrase-pron">zhuh ruh-gard, mair-see</div>
+          <div class="phrase-en">Just looking, thank you.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est combien ?</div>
+          <div class="phrase-pron">say com-byan</div>
+          <div class="phrase-en">How much is this?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Ça fait combien en tout ?</div>
+          <div class="phrase-pron">sa fay com-byan on too</div>
+          <div class="phrase-en">How much is that altogether?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je prends celui-là.</div>
+          <div class="phrase-pron">zhuh pron suh-lwee-la</div>
+          <div class="phrase-en">I'll take that one.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est tout, merci !</div>
+          <div class="phrase-pron">say too, mair-see</div>
+          <div class="phrase-en">That's everything, thank you!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Par carte s'il vous plaît.</div>
+          <div class="phrase-pron">par kart see voo play</div>
+          <div class="phrase-en">By card please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">En espèces s'il vous plaît.</div>
+          <div class="phrase-pron">on es-pess see voo play</div>
+          <div class="phrase-en">In cash please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est pour offrir.</div>
+          <div class="phrase-pron">say poor oh-freer</div>
+          <div class="phrase-en">It's a gift.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Restaurants &amp; cafés</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">L'addition s'il vous plaît.</div>
+          <div class="phrase-pron">la-dee-syon see voo play</div>
+          <div class="phrase-en">The bill please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Est-ce qu'il y a une terrasse ?</div>
+          <div class="phrase-pron">es keel ee ya oon tair-ass</div>
+          <div class="phrase-en">Is there a terrace?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis allergique à…</div>
+          <div class="phrase-pron">zhuh swee a-lair-zheek ah</div>
+          <div class="phrase-en">I'm allergic to…</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est sans gluten ?</div>
+          <div class="phrase-pron">say son gloo-ten</div>
+          <div class="phrase-en">Is it gluten-free?</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">When you need help</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Où sont les toilettes ?</div>
+          <div class="phrase-pron">oo son lay twa-let</div>
+          <div class="phrase-en">Where are the toilets?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Vous parlez anglais ?</div>
+          <div class="phrase-pron">voo par-lay on-glay</div>
+          <div class="phrase-en">Do you speak English?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Est-ce que vous pouvez m'aider ?</div>
+          <div class="phrase-pron">es kuh voo poovay may-day</div>
+          <div class="phrase-en">Can you help me?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai perdu mon…</div>
+          <div class="phrase-pron">zhay pair-doo mon</div>
+          <div class="phrase-en">I've lost my…</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis perdue.</div>
+          <div class="phrase-pron">zhuh swee pair-doo</div>
+          <div class="phrase-en">I'm lost.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Appelez le SAMU !</div>
+          <div class="phrase-pron">ap-lay luh sa-moo</div>
+          <div class="phrase-en">Call an ambulance! (SAMU is the French emergency medical service)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Appelez la police !</div>
+          <div class="phrase-pron">ap-lay la po-lees</div>
+          <div class="phrase-en">Call the police!</div>
+        </div>
+      </div>
+
+      <!-- Cheese vocabulary -->
+      <div class="card">
+        <span class="section-label">Vocabulary — At the Fromagerie</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">The basics</h3>
+        <div class="vocab-row"><span class="vocab-fr">Le fromage</span><span class="vocab-pron">luh from-azh</span><span class="vocab-en">the cheese</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Du fromage</span><span class="vocab-pron">doo from-azh</span><span class="vocab-en">some cheese (partitive — "du" = de + le)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une tranche</span><span class="vocab-pron">oon tronsh</span><span class="vocab-en">a slice</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un morceau</span><span class="vocab-pron">un mor-soh</span><span class="vocab-en">a piece</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Goûter</span><span class="vocab-pron">goo-tay</span><span class="vocab-en">to taste</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Pointing &amp; choosing</h3>
+        <div class="vocab-row"><span class="vocab-fr">Lequel ?</span><span class="vocab-pron">luh-kel</span><span class="vocab-en">which one? (masculine)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Laquelle ?</span><span class="vocab-pron">la-kel</span><span class="vocab-en">which one? (feminine)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Celui-là</span><span class="vocab-pron">suh-lwee-la</span><span class="vocab-en">that one (masculine)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Celle-ci</span><span class="vocab-pron">sel-see</span><span class="vocab-en">this one (feminine)</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Reactions &amp; quantity</h3>
+        <div class="vocab-row"><span class="vocab-fr">C'est très bon !</span><span class="vocab-pron">say treh bon</span><span class="vocab-en">it's very good!</span></div>
+        <div class="vocab-row"><span class="vocab-fr">C'est pas pour moi !</span><span class="vocab-pron">say pa poor mwa</span><span class="vocab-en">it's not for me!</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un peu plus</span><span class="vocab-pron">un puh ploos</span><span class="vocab-en">a little more</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un peu moins</span><span class="vocab-pron">un puh mwan</span><span class="vocab-en">a little less</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Avec ceci ?</span><span class="vocab-pron">avek suh-see</span><span class="vocab-en">anything else with this?</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Paying</h3>
+        <div class="vocab-row"><span class="vocab-fr">Par carte</span><span class="vocab-pron">par kart</span><span class="vocab-en">by card</span></div>
+        <div class="vocab-row"><span class="vocab-fr">En espèces</span><span class="vocab-pron">on es-pess</span><span class="vocab-en">in cash</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La monnaie</span><span class="vocab-pron">la mon-ay</span><span class="vocab-en">change / coins</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Des pièces</span><span class="vocab-pron">day pyess</span><span class="vocab-en">coins</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Ça fera…</span><span class="vocab-pron">sa fuh-ra</span><span class="vocab-en">that'll be…</span></div>
+      </div>
+
+      <!-- Main scene -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">The Scene — Buying Cheese</span>
+        <p class="text-sm text-gray-400 italic mb-4">The tasting rejection is the best moment — lean into it. "C'est pas pour moi !" with a shrug is very French.</p>
+        <div class="space-y-3">
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Bonjour !</div><div class="dialogue-en">Hello!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Bonjour !</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div>
+              <div class="dialogue-fr">J'aimerais un peu de fromage français, s'il vous plaît !</div>
+              <div class="dialogue-en">I'd like a little French cheese, please!</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div>
+              <div class="dialogue-fr">Pas de soucis. Lequel madame ?</div>
+              <div class="dialogue-en">No problem. Which one, Madam?</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div>
+              <div class="dialogue-fr">Celui-là — je peux goûter un petit morceau ?</div>
+              <div class="dialogue-en">That one — can I taste a small piece?</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Avec plaisir !</div><div class="dialogue-en">With pleasure!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Ah, c'est pas pour moi !</div><div class="dialogue-en">Ah, that's not for me!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Peut-être celui-là.</div><div class="dialogue-en">Perhaps that one.</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Ah, très bon !</div><div class="dialogue-en">Ah, very good!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div>
+              <div class="dialogue-fr">Parfait. Vous voulez combien ?</div>
+              <div class="dialogue-en">Perfect. How much would you like?</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div>
+              <div class="dialogue-fr">Une petite tranche, s'il vous plaît.</div>
+              <div class="dialogue-en">A small slice, please.</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Comme ça ?</div><div class="dialogue-en">Like this?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Un peu moins.</div><div class="dialogue-en">A little less.</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Comme ça ?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Un peu plus. Parfait !</div><div class="dialogue-en">A little more. Perfect!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Parfait. Avec ceci ?</div><div class="dialogue-en">Anything else?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">C'est tout, merci !</div><div class="dialogue-en">That's everything, thanks!</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div>
+              <div class="dialogue-fr">Très bien. Ça fera dix euros, madame.</div>
+              <div class="dialogue-en">Very good. That'll be ten euros, Madam.</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">OK, par carte s'il vous plaît.</div><div class="dialogue-en">OK, by card please.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alternative ending -->
+      <div class="card" style="border: 1px dashed #C8102E;">
+        <span class="section-label">Alternative Ending — Paying in Cash</span>
+        <p class="text-sm text-gray-400 italic mb-4">From "Ça fera dix euros…" — swap the final lines.</p>
+        <div class="space-y-3">
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">OK, en espèces s'il vous plaît.</div><div class="dialogue-en">OK, in cash please.</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Vous avez la monnaie ?</div><div class="dialogue-en">Do you have the right change?</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag elaine">Elaine</span>
+            <div><div class="dialogue-fr">Oui, j'ai des pièces.</div><div class="dialogue-en">Yes, I have coins.</div></div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag">Server</span>
+            <div><div class="dialogue-fr">Super !</div><div class="dialogue-en">Great!</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /l5 -->
 
 
   </main>
