@@ -19,6 +19,7 @@ function crmApp() {
     sending: false,
     realtimeConnected: false,
     showLost: false,
+    showArchived: false,
     config: { template_2: '', template_3: '' },
     _channel: null,
 
@@ -153,15 +154,22 @@ function crmApp() {
       }
     },
 
-    // Leads shown in the sidebar — hides lost by default when filter is 'all'
+    // Leads shown in the sidebar — hides lost and archived by default
     visibleLeads() {
-      if (this.filterStatus !== 'all' || this.showLost) return this.leads;
-      return this.leads.filter(l => l.status !== 'lost');
+      let list = this.leads;
+      if (!this.showArchived) list = list.filter(l => !l.archived_at);
+      if (this.filterStatus === 'all' && !this.showLost) list = list.filter(l => l.status !== 'lost');
+      return list;
     },
 
     hiddenLostCount() {
       if (this.filterStatus !== 'all' || this.showLost) return 0;
       return this.leads.filter(l => l.status === 'lost').length;
+    },
+
+    hiddenArchivedCount() {
+      if (this.showArchived) return 0;
+      return this.leads.filter(l => l.archived_at).length;
     },
 
     async selectLead(lead) {
@@ -279,6 +287,18 @@ function crmApp() {
         await this.loadLeads();
       } catch (e) {
         console.error('Flag error:', e);
+      }
+    },
+
+    async toggleArchive(leadId, archived) {
+      try {
+        await this._fetch(`${FUNCTION_BASE}/crm-api/leads/${leadId}/archive`, {
+          method: 'PATCH',
+          body: JSON.stringify({ archived }),
+        });
+        await this.loadLeads();
+      } catch (e) {
+        console.error('Archive error:', e);
       }
     },
 

@@ -174,6 +174,18 @@ async function handleToggleFlag(leadId: string, req: Request) {
   return json({ ok: true });
 }
 
+async function handleToggleArchive(leadId: string, req: Request) {
+  const supabase = db();
+  const { archived } = await req.json();
+  if (typeof archived !== "boolean") return err("archived must be boolean", 400);
+  const { error } = await supabase
+    .from("leads")
+    .update({ archived_at: archived ? new Date().toISOString() : null, updated_at: new Date().toISOString() })
+    .eq("id", leadId);
+  if (error) return err(error.message, 500);
+  return json({ ok: true });
+}
+
 async function handleDismissReply(leadId: string) {
   const supabase = db();
   const { error } = await supabase
@@ -239,6 +251,10 @@ Deno.serve(async (req: Request) => {
   // PATCH /leads/:id/flag
   const flagMatch = path.match(/^\/leads\/(\d+)\/flag$/);
   if (req.method === "PATCH" && flagMatch) return handleToggleFlag(flagMatch[1], req);
+
+  // PATCH /leads/:id/archive
+  const archiveMatch = path.match(/^\/leads\/(\d+)\/archive$/);
+  if (req.method === "PATCH" && archiveMatch) return handleToggleArchive(archiveMatch[1], req);
 
   // DELETE /leads/:id
   const deleteMatch = path.match(/^\/leads\/(\d+)$/);

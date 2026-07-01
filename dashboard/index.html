@@ -207,6 +207,16 @@
           x-text="showLost ? 'Hide lost leads' : (hiddenLostCount() > 0 ? `Show ${hiddenLostCount()} lost lead${hiddenLostCount() === 1 ? '' : 's'}` : 'No lost leads')"
         ></button>
       </div>
+
+      <!-- Show archived toggle -->
+      <div class="px-4 py-2.5 border-t border-gray-100 shrink-0">
+        <button
+          @click="showArchived = !showArchived"
+          class="text-xs transition-colors"
+          :class="hiddenArchivedCount() > 0 || showArchived ? 'text-gray-400 hover:text-gray-600' : 'text-gray-200 cursor-default'"
+          x-text="showArchived ? 'Hide archived' : (hiddenArchivedCount() > 0 ? `Show ${hiddenArchivedCount()} archived` : 'No archived conversations')"
+        ></button>
+      </div>
     </aside>
 
     <!-- ── MAIN PANEL ─────────────────────────────────────────────────────
@@ -334,6 +344,12 @@
                 :class="selectedLead.flagged ? 'bg-red-50 text-rouge' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'"
                 class="text-xs px-2.5 py-1 rounded-full font-semibold transition-colors"
                 x-text="selectedLead.flagged ? '⚑ Flagged' : '⚑'"
+              ></button>
+              <button
+                @click="toggleArchive(selectedLead.id, !selectedLead.archived_at)"
+                :class="selectedLead.archived_at ? 'bg-yellow-50 text-yellow-700' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'"
+                class="text-xs px-2.5 py-1 rounded-full font-semibold transition-colors"
+                x-text="selectedLead.archived_at ? 'Restore' : 'Archive'"
               ></button>
               <button
                 @click="deleteLead(selectedLead.id)"
