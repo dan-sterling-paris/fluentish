@@ -251,12 +251,28 @@
           Choose a slot below and we'll have a quick, no-pressure chat about your goals
           and whether FluentISH is the right fit.
         </p>
-        <p class="text-gray-400 text-sm mb-10">
+        <p class="text-gray-400 text-sm mb-8">
           No credit card. No obligation. No follow-up emails if you decide it's not for you.
         </p>
 
+        <!-- Age consent -->
+        <div class="max-w-md mx-auto mb-8 text-left bg-sand border border-stone-200 rounded-2xl p-5">
+          <label for="age-consent" class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="age-consent" class="mt-1 w-4 h-4 shrink-0 accent-rouge" required />
+            <span class="text-sm text-gray-600 leading-relaxed">
+              I confirm that I am <strong class="text-navy">18 years of age or older</strong>.
+              FluentISH coaching is offered to adult students only.
+            </span>
+          </label>
+          <p id="age-consent-warning" class="hidden text-rouge text-xs mt-2">
+            Please confirm you're 18 or older to book a chat. If you're under 18, please have a parent or guardian get in touch instead.
+          </p>
+        </div>
+
         <!-- Calendly inline widget -->
-        <div class="calendly-inline-widget" data-url="https://calendly.com/fluentish/free-15-minute-chat" style="min-width:320px;height:700px;"></div>
+        <div id="calendly-wrapper" class="relative opacity-40 pointer-events-none transition-opacity" aria-disabled="true">
+          <div class="calendly-inline-widget" data-url="https://calendly.com/fluentish/free-15-minute-chat" style="min-width:320px;height:700px;"></div>
+        </div>
       </div>
     </section>
 
@@ -284,6 +300,32 @@
       fbq('track', 'Lead');
     });
   });
+
+  // Age consent gate: booking calendar stays disabled until 18+ is confirmed
+  (function() {
+    var consent = document.getElementById('age-consent');
+    var wrapper = document.getElementById('calendly-wrapper');
+    var warning = document.getElementById('age-consent-warning');
+    if (!consent || !wrapper) return;
+
+    consent.addEventListener('change', function() {
+      if (consent.checked) {
+        wrapper.classList.remove('opacity-40', 'pointer-events-none');
+        wrapper.setAttribute('aria-disabled', 'false');
+        warning.classList.add('hidden');
+      } else {
+        wrapper.classList.add('opacity-40', 'pointer-events-none');
+        wrapper.setAttribute('aria-disabled', 'true');
+      }
+    });
+
+    wrapper.addEventListener('click', function() {
+      if (!consent.checked) {
+        warning.classList.remove('hidden');
+        consent.focus();
+      }
+    });
+  })();
 
   // Fire Schedule pixel when Calendly booking is completed
   window.addEventListener('message', function(e) {
