@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dawn Ashcroft-Fielding – FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:  '#003359',
+            navyD: '#002040',
+            rouge: '#C8102E',
+            cyan:  '#4DD4F5',
+            sand:  '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+
+    /* Vocab table rows */
+    .vocab-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.6rem 0;
+      align-items: baseline;
+    }
+    .vocab-row:last-child { border-bottom: none; }
+    .vocab-fr   { font-weight: 600; color: #003359; }
+    .vocab-pron { font-style: italic; color: #8a9ab0; font-size: 0.8rem; padding: 0 0.5rem; }
+    .vocab-en   { color: #6b7280; font-size: 0.85rem; }
+
+    /* Phrase / script rows */
+    .phrase-row {
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.75rem 0;
+    }
+    .phrase-row:last-child { border-bottom: none; }
+    .phrase-fr   { font-weight: 600; color: #003359; font-size: 0.95rem; }
+    .phrase-pron { font-style: italic; color: #8a9ab0; font-size: 0.78rem; margin-top: 1px; }
+    .phrase-en   { color: #6b7280; font-size: 0.85rem; margin-top: 2px; }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #C8102E; margin-bottom: 0.75rem; display: block;
+    }
+
+    /* Pill */
+    .sound-pill {
+      display: inline-flex; flex-direction: column; align-items: center;
+      background: #f8f9fb; border: 1px solid #e5e9ef; border-radius: 10px;
+      padding: 0.5rem 0.85rem; text-align: center;
+    }
+    .sound-pill .fr   { font-weight: 700; color: #003359; font-size: 0.9rem; }
+    .sound-pill .pron { font-style: italic; color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+    .sound-pill .en   { color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+
+    /* Card */
+    .card { background: white; border: 1px solid #e8ecf0; border-radius: 1rem; padding: 1.5rem; }
+
+    /* Lesson header strip */
+    .lesson-strip { background: #003359; color: white; border-radius: 0.75rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
+    .lesson-strip .num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #4DD4F5; }
+    .lesson-strip h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; margin-top: 2px; }
+    .lesson-strip .meta { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
+
+    /* Script step number */
+    .script-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.35rem; height: 1.35rem; border-radius: 999px;
+      background: #003359; color: white; font-size: 0.68rem; font-weight: 700;
+      flex-shrink: 0; margin-right: 0.65rem;
+    }
+    .script-row { display: flex; align-items: flex-start; border-bottom: 1px solid #f0f0f0; padding: 0.65rem 0; }
+    .script-row:last-child { border-bottom: none; }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-navy text-white">
+    <div class="max-w-3xl mx-auto px-6 py-6 flex items-end justify-between gap-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest" style="color:#4DD4F5;">FluentISH</p>
+        <h1 class="font-display text-2xl font-bold mt-1">Dawn</h1>
+      </div>
+      <div class="text-right">
+        <p class="text-sm text-blue-200 font-medium">Lesson 1</p>
+        <p class="text-xs text-blue-400 mt-0.5">17 July 2026</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto px-6 py-8 space-y-6">
+
+    <!-- Lesson strip -->
+    <div class="lesson-strip">
+      <div class="num">Lesson 1 &middot; 17 July 2026</div>
+      <h2>Finding Your Voice</h2>
+      <div class="meta">Accent fundamentals &middot; Your personal script &middot; Farm, horses &amp; family</div>
+    </div>
+
+    <!-- Welcome note -->
+    <div class="card">
+      <span class="section-label">Where We Started</span>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        First proper lesson done! We started with a quick accent test, then spent the rest of the session building
+        <em>your</em> first script &mdash; a little run of French about you, the farm, your horses and James, that we
+        drilled until it started coming out on its own. That's the method: talk about what you actually care about,
+        repeat it until it's automatic, and let the grammar look after itself.
+      </p>
+    </div>
+
+    <!-- Accent fundamentals -->
+    <div class="card">
+      <span class="section-label">Accent Fundamentals</span>
+      <p class="text-sm text-gray-400 mb-4 italic">Your Welsh vowels are already doing you favours here &mdash; that rounded mouth shape is closer to French than flat English is. The main habit to build: relax the R and keep sounds further back in the mouth.</p>
+
+      <div class="phrase-row">
+        <div class="phrase-fr">Merci beaucoup</div>
+        <div class="phrase-pron">mair-see bo-koo</div>
+        <div class="phrase-en">Thank you very much</div>
+      </div>
+      <p class="text-xs text-gray-400 italic -mt-1">Watch the "beaucoup" &mdash; rush the vowels and it drifts toward two words you really don't want to say to a waiter. Keep it deep and round: bo&#8203;-koo, not bo-kew.</p>
+    </div>
+
+    <!-- Key Phrases from the lesson -->
+    <div class="card">
+      <span class="section-label">Key Phrases</span>
+
+      <div class="phrase-row">
+        <div class="phrase-fr">Je suis passionn&eacute;e par&hellip;</div>
+        <div class="phrase-pron">zhuh swee pass-yon-ay par</div>
+        <div class="phrase-en">I'm passionate about&hellip;</div>
+      </div>
+
+      <div class="phrase-row">
+        <div class="phrase-fr">J'habite dans une ferme</div>
+        <div class="phrase-pron">zha-beet donz oon fairm</div>
+        <div class="phrase-en">I live on a farm</div>
+      </div>
+
+      <div class="phrase-row">
+        <div class="phrase-fr">Le monde &eacute;questre</div>
+        <div class="phrase-pron">luh mond ay-kestr</div>
+        <div class="phrase-en">The equestrian world</div>
+      </div>
+
+      <div class="phrase-row">
+        <div class="phrase-fr">Ils s'appellent&hellip;</div>
+        <div class="phrase-pron">eel sa-pel</div>
+        <div class="phrase-en">They're called&hellip; (for a list of names)</div>
+      </div>
+
+      <div class="phrase-row">
+        <div class="phrase-fr">Mince !</div>
+        <div class="phrase-pron">manss</div>
+        <div class="phrase-en">Oops! / Drat! &mdash; the polite option. There are ruder versions if you want them &mdash; ask.</div>
+      </div>
+    </div>
+
+    <!-- Vocabulary -->
+    <div class="card">
+      <span class="section-label">Vocabulary</span>
+
+      <h3 class="font-display text-base font-bold text-navy mb-3">Farm &amp; Horses</h3>
+      <div class="vocab-row">
+        <span class="vocab-fr">Un cheval</span>
+        <span class="vocab-pron">shuh-val</span>
+        <span class="vocab-en">A horse</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Des chevaux</span>
+        <span class="vocab-pron">day shuh-vo</span>
+        <span class="vocab-en">Horses (plural &mdash; irregular!)</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Une ferme</span>
+        <span class="vocab-pron">oon fairm</span>
+        <span class="vocab-en">A farm</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Un fils</span>
+        <span class="vocab-pron">un fees</span>
+        <span class="vocab-en">A son (the S is silent, the S at the end isn't &mdash; French being French)</span>
+      </div>
+
+      <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Sounding Natural</h3>
+      <div class="vocab-row">
+        <span class="vocab-fr">Un souvenir</span>
+        <span class="vocab-pron">un soo-vuh-neer</span>
+        <span class="vocab-en">A memory</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Un oubli</span>
+        <span class="vocab-pron">un oo-blee</span>
+        <span class="vocab-en">A forgotten thing &mdash; the opposite of a souvenir</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">J'ai oubli&eacute;</span>
+        <span class="vocab-pron">zhay oo-blee-ay</span>
+        <span class="vocab-en">I forgot</span>
+      </div>
+
+      <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Greetings &amp; Register</h3>
+      <div class="vocab-row">
+        <span class="vocab-fr">Bonjour</span>
+        <span class="vocab-pron">bon-zhoor</span>
+        <span class="vocab-en">Hello &mdash; shops, strangers, anyone you don't know well</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Salut</span>
+        <span class="vocab-pron">sa-loo</span>
+        <span class="vocab-en">Hi &mdash; friends, casual</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Coucou</span>
+        <span class="vocab-pron">koo-koo</span>
+        <span class="vocab-en">Hiya &mdash; close friends, kids, very affectionate</span>
+      </div>
+      <div class="vocab-row">
+        <span class="vocab-fr">Ma poule</span>
+        <span class="vocab-pron">ma pool</span>
+        <span class="vocab-en">Literally "my chicken" &mdash; an affectionate way to address someone</span>
+      </div>
+    </div>
+
+    <!-- Culture note -->
+    <div class="card">
+      <span class="section-label">A Little Etymology</span>
+      <div class="phrase-row">
+        <div class="phrase-fr">Un compagnon</div>
+        <div class="phrase-pron">un kom-pan-yon</div>
+        <div class="phrase-en">A companion</div>
+      </div>
+      <p class="text-sm text-gray-600 leading-relaxed mt-2">
+        Com- (with) + pain (bread) &mdash; a companion is literally someone you share bread with. A lot of French
+        vocabulary is hiding in plain sight like this once you know where to look for the English cousin underneath
+        the accent.
+      </p>
+      <p class="text-sm text-gray-400 italic mt-4">
+        Also: if you ever see a bottle of "La Vieille Ferme" (the rooster label) in the supermarket &mdash; now you
+        know exactly what it means. The Old Farm.
+      </p>
+    </div>
+
+    <!-- Your Script -->
+    <div class="card" style="border-color: #C8102E; border-width: 2px;">
+      <span class="section-label">Your Script &mdash; Learn This Off By Heart</span>
+      <p class="text-sm text-gray-400 italic mb-4">
+        This is the patter we built together. Order doesn't matter, hitting every beat does. Say it out loud a
+        few times before bed &mdash; repetition and sleep do the rest.
+      </p>
+
+      <div class="phrase-row">
+        <div class="phrase-fr">Bonjour !</div>
+        <div class="phrase-pron">bon-zhoor</div>
+        <div class="phrase-en">Hello!</div>
+      </div>
+      <div class="phrase-row">
+        <div class="phrase-fr">Je m'appelle Dawn.</div>
+        <div class="phrase-pron">zhuh ma-pel Dawn</div>
+        <div class="phrase-en">My name's Dawn.</div>
+      </div>
+      <div class="phrase-row">
+        <div class="phrase-fr">J'habite dans une ferme et je suis passionn&eacute;e par le monde &eacute;questre.</div>
+        <div class="phrase-pron">zha-beet donz oon fairm ay zhuh swee pass-yon-ay par luh mond ay-kestr</div>
+        <div class="phrase-en">I live on a farm and I'm passionate about the equestrian world.</div>
+      </div>
+      <div class="phrase-row">
+        <div class="phrase-fr">J'ai quatre chevaux et ils s'appellent Raven, Timothy, Alfie et Lily.</div>
+        <div class="phrase-pron">zhay katr shuh-vo ay eel sa-pel Raven, Timothy, Alfie ay Lily</div>
+        <div class="phrase-en">I have four horses and they're called Raven, Timothy, Alfie and Lily.</div>
+      </div>
+      <div class="phrase-row">
+        <div class="phrase-fr">Mince, j'ai oubli&eacute; &mdash; j'ai aussi un fils qui s'appelle James !</div>
+        <div class="phrase-pron">manss, zhay oo-blee-ay &mdash; zhay oh-see un fees kee sa-pel James</div>
+        <div class="phrase-en">Oops, I forgot &mdash; I've also got a son called James!</div>
+      </div>
+    </div>
+
+    <!-- Before next lesson -->
+    <div class="card">
+      <span class="section-label">Before Next Lesson</span>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        No pressure and no memorising with flashcards &mdash; just say the script out loud a handful of times when
+        you think of it. It'll feel clunky tonight and noticeably less clunky by Friday. Next time: stretching the
+        script further (where you live, what you're aiming for in France) and starting to handle being interrupted
+        mid-sentence &mdash; which is most of what real conversation actually is.
+      </p>
+      <p class="text-xs text-gray-400 mt-4">Next lesson: Friday 24 July.</p>
+    </div>
+
+  </main>
+
+  <footer class="max-w-3xl mx-auto px-6 py-8 text-center text-xs text-gray-400">
+    &copy; FluentISH &mdash; Dawn Ashcroft-Fielding &mdash; Lesson 1
+  </footer>
+
+</body>
+</html>
