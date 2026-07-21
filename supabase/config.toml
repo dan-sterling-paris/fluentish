@@ -59,3 +59,11 @@ verify_jwt = false
 # Cron schedule is configured in migration 20260512000002_drip_send_cron.sql
 [functions.drip-send]
 verify_jwt = false
+
+# mcp-ads-performance: remote MCP server exposing Meta Ads + GA4 performance
+# as tools for a Claude custom connector (so ad performance can be asked
+# about from any Claude surface, not just Claude Code). Auth is a static
+# bearer token checked inside the function (MCP_ACCESS_TOKEN secret), not a
+# Supabase user JWT, so Supabase's own JWT verification must stay off.
+[functions.mcp-ads-performance]
+verify_jwt = false
