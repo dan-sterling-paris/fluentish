@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maria Forder - FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:  '#003359',
+            navyD: '#002040',
+            rouge: '#C8102E',
+            cyan:  '#4DD4F5',
+            sand:  '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+    [x-cloak] { display: none !important; }
+
+    .tab-btn {
+      padding: 0.9rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-bottom: 3px solid transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
+      color: #6b7280;
+    }
+    .tab-btn:hover { color: #003359; }
+    .tab-btn.active { color: #003359; border-bottom-color: #003359; }
+
+    /* Vocab table rows */
+    .vocab-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.6rem 0;
+      align-items: baseline;
+    }
+    .vocab-row:last-child { border-bottom: none; }
+    .vocab-fr   { font-weight: 600; color: #003359; }
+    .vocab-pron { font-style: italic; color: #8a9ab0; font-size: 0.8rem; padding: 0 0.5rem; }
+    .vocab-en   { color: #6b7280; font-size: 0.85rem; }
+
+    /* Phrase rows */
+    .phrase-row {
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.75rem 0;
+    }
+    .phrase-row:last-child { border-bottom: none; }
+    .phrase-fr   { font-weight: 600; color: #003359; font-size: 0.95rem; }
+    .phrase-pron { font-style: italic; color: #8a9ab0; font-size: 0.78rem; margin-top: 1px; }
+    .phrase-en   { color: #6b7280; font-size: 0.85rem; margin-top: 2px; }
+
+    /* Dialogue */
+    .dialogue-row { display: flex; gap: 0.75rem; margin-bottom: 0.6rem; align-items: flex-start; }
+    .speaker-tag  {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 4px; white-space: nowrap; margin-top: 3px;
+      background: #003359; color: white; flex-shrink: 0;
+    }
+    .speaker-tag.maria { background: #C8102E; }
+    .dialogue-fr   { font-weight: 500; color: #1a1a2e; }
+    .dialogue-en   { color: #8a9ab0; font-size: 0.82rem; margin-top: 2px; }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #C8102E; margin-bottom: 0.75rem; display: block;
+    }
+
+    /* Pill */
+    .sound-pill {
+      display: inline-flex; flex-direction: column; align-items: center;
+      background: #f8f9fb; border: 1px solid #e5e9ef; border-radius: 10px;
+      padding: 0.5rem 0.85rem; text-align: center;
+    }
+    .sound-pill .fr { font-weight: 700; color: #003359; font-size: 0.9rem; }
+    .sound-pill .en { color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+
+    /* Card */
+    .card { background: white; border: 1px solid #e8ecf0; border-radius: 1rem; padding: 1.5rem; }
+
+    /* Toolkit table */
+    .toolkit-row { display: grid; grid-template-columns: 1.2fr 1fr 1.4fr; gap: 0; border-bottom: 1px solid #f0f0f0; padding: 0.65rem 0; align-items: baseline; }
+    .toolkit-row:last-child { border-bottom: none; }
+
+    /* Lesson header strip */
+    .lesson-strip { background: #003359; color: white; border-radius: 0.75rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
+    .lesson-strip .num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #4DD4F5; }
+    .lesson-strip h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; margin-top: 2px; }
+    .lesson-strip .meta { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
+
+    /* Tip card */
+    .tip-card {
+      background: #f8f9fb; border: 1px solid #e5e9ef; border-radius: 0.75rem;
+      padding: 1rem 1.25rem; margin-top: 0.5rem;
+    }
+    .tip-card .tip-title { font-weight: 700; color: #003359; font-size: 0.85rem; margin-bottom: 0.25rem; }
+    .tip-card p { font-size: 0.82rem; color: #6b7280; line-height: 1.5; }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen" x-data="{ tab: 'all' }" x-cloak>
+
+  <!-- Header -->
+  <header class="bg-navy text-white">
+    <div class="max-w-4xl mx-auto px-6 py-6 flex items-end justify-between gap-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest" style="color:#4DD4F5;">FluentISH</p>
+        <h1 class="font-display text-2xl font-bold mt-1">Maria's Course</h1>
+      </div>
+      <div class="text-right">
+        <p class="text-sm text-blue-200 font-medium">1 lesson</p>
+        <p class="text-xs text-blue-400 mt-0.5">Moving to France</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tab nav -->
+  <div class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-4xl mx-auto px-6 flex overflow-x-auto">
+      <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
+      <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
+    </div>
+  </div>
+
+  <main class="max-w-4xl mx-auto px-6 py-8 space-y-6">
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: EVERYTHING                           -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'all'" class="space-y-6">
+
+      <!-- Your Introductory Script -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Your Introductory Script - Learn This Off By Heart</span>
+        <p class="text-sm text-gray-400 italic mb-4">This is the icebreaker you built in Lesson 1. Say it as a throwaway, with rhythm, zero English.</p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Bonjour, je m'appelle Maria.</div>
+          <div class="phrase-pron">bon-zhoor, zhe ma-pel Ma-ree-ah</div>
+          <div class="phrase-en">Hello, my name is Maria.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'apprends le fran&ccedil;ais doucement.</div>
+          <div class="phrase-pron">zha-pron luh fron-say dooss-mon</div>
+          <div class="phrase-en">I'm learning French gently / slowly.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis sur le point de d&eacute;m&eacute;nager en France.</div>
+          <div class="phrase-pron">zhe swee soor luh pwan duh day-may-na-zhay on Fronss</div>
+          <div class="phrase-en">I'm about to move to France.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai un dipl&ocirc;me en zoologie.</div>
+          <div class="phrase-pron">zhay uhn dee-plohm on zo-ol-oh-zhee</div>
+          <div class="phrase-en">I have a degree in zoology.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a un manque de donn&eacute;es sur les muscardins.</div>
+          <div class="phrase-pron">eel ya uhn monk duh don-ay soor lay moos-kar-dan</div>
+          <div class="phrase-en">There's a lack of data on hazel dormice.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Et je veux les aider.</div>
+          <div class="phrase-pron">ay zhe vuh lay zay-day</div>
+          <div class="phrase-en">And I want to help them.</div>
+        </div>
+      </div>
+
+      <!-- Key Phrases -->
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-4">Introducing yourself</h3>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Bonjour, je m'appelle...</div>
+          <div class="phrase-pron">bon-zhoor, zhe ma-pel</div>
+          <div class="phrase-en">Hello, my name is...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Enchant&eacute;e !</div>
+          <div class="phrase-pron">on-shon-tay</div>
+          <div class="phrase-en">Pleased to meet you!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'apprends le fran&ccedil;ais.</div>
+          <div class="phrase-pron">zha-pron luh fron-say</div>
+          <div class="phrase-en">I'm learning French.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis sur le point de d&eacute;m&eacute;nager en France.</div>
+          <div class="phrase-pron">zhe swee soor luh pwan duh day-may-na-zhay on Fronss</div>
+          <div class="phrase-en">I'm about to move to France.</div>
+        </div>
+
+        <h3 class="font-display text-lg font-bold text-navy mt-6 mb-4">About your interests</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Mon ambition, c'est de...</div>
+          <div class="phrase-pron">mon om-bee-syon, say duh</div>
+          <div class="phrase-en">My ambition is to...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai h&acirc;te de...</div>
+          <div class="phrase-pron">zhay aht duh</div>
+          <div class="phrase-en">I can't wait to... / I'm looking forward to...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai un dipl&ocirc;me en zoologie.</div>
+          <div class="phrase-pron">zhay uhn dee-plohm on zo-ol-oh-zhee</div>
+          <div class="phrase-en">I have a degree in zoology.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a un manque de donn&eacute;es.</div>
+          <div class="phrase-pron">eel ya uhn monk duh don-ay</div>
+          <div class="phrase-en">There's a lack of data.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je veux les aider.</div>
+          <div class="phrase-pron">zhe vuh lay zay-day</div>
+          <div class="phrase-en">I want to help them.</div>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Animals &amp; Conservation</h3>
+        <div class="vocab-row"><span class="vocab-fr">Le muscardin</span><span class="vocab-pron">moos-kar-dan</span><span class="vocab-en">hazel dormouse</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Les muscardins</span><span class="vocab-pron">lay moos-kar-dan</span><span class="vocab-en">hazel dormice (don't pronounce the S)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un animal / Les animaux</span><span class="vocab-pron">uhn an-ee-mal / lay zan-ee-moh</span><span class="vocab-en">an animal / animals</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un manque de donn&eacute;es</span><span class="vocab-pron">uhn monk duh don-ay</span><span class="vocab-en">a lack of data</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Mon ambition</span><span class="vocab-pron">mon om-bee-syon</span><span class="vocab-en">my ambition</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Useful Structures</h3>
+        <div class="vocab-row"><span class="vocab-fr">Il y a...</span><span class="vocab-pron">eel ya</span><span class="vocab-en">there is / there are (spoken: "ya")</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Manquer</span><span class="vocab-pron">mon-kay</span><span class="vocab-en">to miss / to lack</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Tu me manques</span><span class="vocab-pron">too muh monk</span><span class="vocab-en">I miss you (literally: you are missing from me)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Sur le point de</span><span class="vocab-pron">soor luh pwan duh</span><span class="vocab-en">about to / on the point of</span></div>
+        <div class="vocab-row"><span class="vocab-fr">J'ai h&acirc;te de</span><span class="vocab-pron">zhay aht duh</span><span class="vocab-en">I can't wait to</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Parce que</span><span class="vocab-pron">parss kuh</span><span class="vocab-en">because</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Pourquoi ?</span><span class="vocab-pron">poor-kwah</span><span class="vocab-en">why?</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Education &amp; Work</h3>
+        <div class="vocab-row"><span class="vocab-fr">Un dipl&ocirc;me</span><span class="vocab-pron">dee-plohm</span><span class="vocab-en">a degree / diploma</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La zoologie</span><span class="vocab-pron">zo-ol-oh-zhee</span><span class="vocab-en">zoology</span></div>
+        <div class="vocab-row"><span class="vocab-fr">D&eacute;m&eacute;nager</span><span class="vocab-pron">day-may-na-zhay</span><span class="vocab-en">to move (house)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Doucement</span><span class="vocab-pron">dooss-mon</span><span class="vocab-en">gently / slowly</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Enchant&eacute;e</span><span class="vocab-pron">on-shon-tay</span><span class="vocab-en">pleased to meet you</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Wood &amp; Carpentry (coming next!)</h3>
+        <div class="vocab-row"><span class="vocab-fr">Le bois</span><span class="vocab-pron">bwah</span><span class="vocab-en">wood</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le ch&ecirc;ne</span><span class="vocab-pron">shen</span><span class="vocab-en">oak</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un charpentier</span><span class="vocab-pron">shar-pon-tyay</span><span class="vocab-en">a carpenter</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La charpente</span><span class="vocab-pron">shar-pont</span><span class="vocab-en">carpentry / woodwork</span></div>
+      </div>
+
+      <!-- Root Phrases -->
+      <div class="card">
+        <span class="section-label">Root Phrases - Expand These</span>
+        <p class="text-sm text-gray-400 mb-4 italic">Learn the stem, then add anything after it.</p>
+
+        <div class="space-y-4">
+          <div>
+            <div class="phrase-fr">Je suis sur le point de... <span class="text-gray-400 font-normal text-sm italic ml-2">zhe swee soor luh pwan duh</span></div>
+            <div class="phrase-en mb-2">I'm about to...</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">d&eacute;m&eacute;nager en France</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">partir</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">commencer</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">Il y a... <span class="text-gray-400 font-normal text-sm italic ml-2">eel ya</span></div>
+            <div class="phrase-en mb-2">There is / there are...</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">un manque de donn&eacute;es</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">un probl&egrave;me</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">beaucoup de muscardins</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">J'ai h&acirc;te de... <span class="text-gray-400 font-normal text-sm italic ml-2">zhay aht duh</span></div>
+            <div class="phrase-en mb-2">I can't wait to...</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">arriver en France</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">commencer mes recherches</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">voir les muscardins</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">Mon ambition, c'est de... <span class="text-gray-400 font-normal text-sm italic ml-2">mon om-bee-syon, say duh</span></div>
+            <div class="phrase-en mb-2">My ambition is to...</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">faire des recherches sur les muscardins</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">travailler avec les animaux</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pronunciation Tips -->
+      <div class="card">
+        <span class="section-label">Pronunciation Tips</span>
+
+        <div class="tip-card">
+          <div class="tip-title">Singing off the back teeth</div>
+          <p>Imagine your back teeth and widen everything out. It feels forced at first, but overdo it and then bring it back. This is the technique that takes you from "good" to fluent.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">French Rs</div>
+          <p>Don't roll it too much, and don't do a hard English R. Just chew on it lightly. A light English R is better than a bad French one.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Point vs Pont</div>
+          <p><strong>Sur le point de</strong> (on the point of) vs <strong>sur le pont</strong> (on the bridge). The nasal sounds matter! Think "pwan" not "pon". Like the duck noise: quang quang.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Le fran&ccedil;ais vs La fran&ccedil;aise</div>
+          <p><strong>Le fran&ccedil;ais</strong> = the French language (masculine). <strong>Une fran&ccedil;aise</strong> = a French woman (feminine). Be careful which one you mean!</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Silent final letters</div>
+          <p><strong>Les muscardins</strong> - don't pronounce the final S. Same for most French plurals. The "les" already tells you it's plural.</p>
+        </div>
+      </div>
+
+      <!-- Sounding Natural -->
+      <div class="card">
+        <span class="section-label">Sounding Natural</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Filler words (buys thinking time)</h3>
+        <div class="flex flex-wrap gap-2 mb-5">
+          <div class="sound-pill"><span class="fr">Alors...</span><span class="en">So...</span></div>
+          <div class="sound-pill"><span class="fr">Donc...</span><span class="en">So / therefore...</span></div>
+          <div class="sound-pill"><span class="fr">Eh bien...</span><span class="en">Well...</span></div>
+          <div class="sound-pill"><span class="fr">Euh...</span><span class="en">Um... (what the French actually say)</span></div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Reactions (show you're listening)</h3>
+        <div class="flex flex-wrap gap-2">
+          <div class="sound-pill"><span class="fr">Ah bon ?</span><span class="en">Oh really?</span></div>
+          <div class="sound-pill"><span class="fr">Ah oui !</span><span class="en">Oh yes!</span></div>
+          <div class="sound-pill"><span class="fr">Exactement !</span><span class="en">Exactly!</span></div>
+          <div class="sound-pill"><span class="fr">Tout &agrave; fait !</span><span class="en">Absolutely!</span></div>
+          <div class="sound-pill"><span class="fr">C'est fascinant !</span><span class="en">That's fascinating!</span></div>
+          <div class="sound-pill"><span class="fr">Parfait !</span><span class="en">Perfect!</span></div>
+        </div>
+      </div>
+
+    </div><!-- /all -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 1                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l1'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 1 - 21 July 2026</div>
+        <h2>Building Your Introductory Script</h2>
+        <div class="meta">Personal introduction, zoology, hazel dormice, pronunciation work</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Built a complete introductory script from scratch, sentence by sentence. Starting with
+          a simple "bonjour, je m'appelle Maria" and progressively adding layers: learning French,
+          about to move to France, your zoology degree, and your ambition to research hazel dormice.
+          Practised each section five times to lock it in, with pronunciation coaching throughout.
+        </p>
+      </div>
+
+      <!-- The full script built up -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Your Full Script - The Icebreaker</span>
+        <p class="text-sm text-gray-400 italic mb-4">Say it as a throwaway. Rhythm over perfection. If you get stuck, muddle through - zero English.</p>
+
+        <div class="space-y-3">
+          <div class="dialogue-row">
+            <span class="speaker-tag maria">Maria</span>
+            <div>
+              <div class="dialogue-fr">Bonjour, je m'appelle Maria.</div>
+              <div class="dialogue-en">Hello, my name is Maria.</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag maria">Maria</span>
+            <div>
+              <div class="dialogue-fr">J'apprends le fran&ccedil;ais doucement.</div>
+              <div class="dialogue-en">I'm learning French gently.</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag maria">Maria</span>
+            <div>
+              <div class="dialogue-fr">Je suis sur le point de d&eacute;m&eacute;nager en France.</div>
+              <div class="dialogue-en">I'm about to move to France.</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag maria">Maria</span>
+            <div>
+              <div class="dialogue-fr">J'ai un dipl&ocirc;me en zoologie.</div>
+              <div class="dialogue-en">I have a degree in zoology.</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag maria">Maria</span>
+            <div>
+              <div class="dialogue-fr">Il y a un manque de donn&eacute;es sur les muscardins.</div>
+              <div class="dialogue-en">There's a lack of data on hazel dormice.</div>
+            </div>
+          </div>
+          <div class="dialogue-row">
+            <span class="speaker-tag maria">Maria</span>
+            <div>
+              <div class="dialogue-fr">Et je veux les aider.</div>
+              <div class="dialogue-en">And I want to help them.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- How it was built -->
+      <div class="card">
+        <span class="section-label">How We Built It</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+          Each block was practised individually before being added to the chain. The method:
+          say each new piece five times slowly, lock in the pronunciation, then connect it to what came before.
+        </p>
+
+        <div class="space-y-3">
+          <div class="p-3 bg-gray-50 rounded-lg">
+            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">Block 1</p>
+            <p class="text-sm font-semibold text-navy">Bonjour, je m'appelle Maria.</p>
+            <p class="text-xs text-gray-500 mt-1">You already had this. Natural and confident.</p>
+          </div>
+          <div class="p-3 bg-gray-50 rounded-lg">
+            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">Block 2</p>
+            <p class="text-sm font-semibold text-navy">J'apprends le fran&ccedil;ais doucement.</p>
+            <p class="text-xs text-gray-500 mt-1">You said "douche" (shower!) first time, then corrected to "doucement". Nice save.</p>
+          </div>
+          <div class="p-3 bg-gray-50 rounded-lg">
+            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">Block 3</p>
+            <p class="text-sm font-semibold text-navy">Je suis sur le point de d&eacute;m&eacute;nager en France.</p>
+            <p class="text-xs text-gray-500 mt-1">The big pronunciation work: "le point" not "le pont" (bridge). Nasal sounds practised extensively.</p>
+          </div>
+          <div class="p-3 bg-gray-50 rounded-lg">
+            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">Block 4</p>
+            <p class="text-sm font-semibold text-navy">J'ai un dipl&ocirc;me en zoologie.</p>
+            <p class="text-xs text-gray-500 mt-1">You improvised "diplom&eacute;e zoologique" (a zoological degree) when you got stuck, which was impressive - a natural on-the-fly adjustment.</p>
+          </div>
+          <div class="p-3 bg-gray-50 rounded-lg">
+            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">Block 5</p>
+            <p class="text-sm font-semibold text-navy">Il y a un manque de donn&eacute;es sur les muscardins, et je veux les aider.</p>
+            <p class="text-xs text-gray-500 mt-1">The showstopper. Muscardins practised carefully. You self-corrected "les" (no S sound) naturally.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vocabulary from the lesson -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Core lesson vocabulary</h3>
+        <div class="vocab-row"><span class="vocab-fr">Je m'appelle</span><span class="vocab-pron">zhe ma-pel</span><span class="vocab-en">my name is (literally: I call myself)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">J'apprends</span><span class="vocab-pron">zha-pron</span><span class="vocab-en">I'm learning</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le fran&ccedil;ais</span><span class="vocab-pron">luh fron-say</span><span class="vocab-en">the French language</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Doucement</span><span class="vocab-pron">dooss-mon</span><span class="vocab-en">gently / slowly</span></div>
+        <div class="vocab-row"><span class="vocab-fr">D&eacute;m&eacute;nager</span><span class="vocab-pron">day-may-na-zhay</span><span class="vocab-en">to move (house)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un dipl&ocirc;me</span><span class="vocab-pron">dee-plohm</span><span class="vocab-en">a degree / diploma</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La zoologie</span><span class="vocab-pron">zo-ol-oh-zhee</span><span class="vocab-en">zoology</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le muscardin</span><span class="vocab-pron">moos-kar-dan</span><span class="vocab-en">hazel dormouse</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un manque</span><span class="vocab-pron">uhn monk</span><span class="vocab-en">a lack / a shortage</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Les donn&eacute;es</span><span class="vocab-pron">lay don-ay</span><span class="vocab-en">data</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Aider</span><span class="vocab-pron">ay-day</span><span class="vocab-en">to help</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Bonus vocabulary</h3>
+        <div class="vocab-row"><span class="vocab-fr">Enchant&eacute;e</span><span class="vocab-pron">on-shon-tay</span><span class="vocab-en">pleased to meet you</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Il y a</span><span class="vocab-pron">eel ya</span><span class="vocab-en">there is / there are</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Tu me manques</span><span class="vocab-pron">too muh monk</span><span class="vocab-en">I miss you (you are missing from me)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Mon ambition</span><span class="vocab-pron">mon om-bee-syon</span><span class="vocab-en">my ambition (the English word with an accent!)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">J'ai h&acirc;te de</span><span class="vocab-pron">zhay aht duh</span><span class="vocab-en">I can't wait to</span></div>
+      </div>
+
+      <!-- Pronunciation notes -->
+      <div class="card">
+        <span class="section-label">Pronunciation Notes from This Lesson</span>
+
+        <div class="tip-card">
+          <div class="tip-title">"Le point" nasal sound</div>
+          <p>Think of how French ducks go "quang quang" - it's that nasal. If you say "pont" instead of "point", you're saying bridge instead of point. Overdo the nasality, then bring it back.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">"Muscardin" endings</div>
+          <p>Words ending in -in have a nasal sound: muscard<strong>in</strong>, like v<strong>in</strong> (wine). Really lean into it. And don't pronounce the final S in the plural.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">"Doucement" not "douche"!</div>
+          <p>Doucement = gently/slowly. Douche = a shower. Small but important difference! The "-ment" ending is soft: "dooss-mon".</p>
+        </div>
+      </div>
+
+      <!-- Coming next -->
+      <div class="card" style="background: #003359; color: white;">
+        <span class="section-label" style="color: #4DD4F5;">Coming Up - Lesson 2</span>
+        <h3 class="font-display text-lg font-bold mb-2" style="color: white;">Thursday 24 July</h3>
+        <p class="text-sm" style="color: rgba(255,255,255,0.7);">
+          We'll expand the script with more branches, start conversing more in French,
+          and explore wood and carpentry vocabulary. Think about anything specific you'd love to be able to say.
+        </p>
+        <div class="mt-3 pt-3" style="border-top: 1px solid rgba(255,255,255,0.15);">
+          <p class="text-xs font-semibold uppercase tracking-wider" style="color: #4DD4F5;">Future upgrade</p>
+          <p class="text-sm mt-1" style="color: rgba(255,255,255,0.7);">
+            Once you've moved, we can switch "je suis sur le point de d&eacute;m&eacute;nager" to
+            <strong style="color: white;">je viens de d&eacute;m&eacute;nager</strong> (I've just moved) - a simple swap that updates the whole script.
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /l1 -->
+
+
+  </main>
+
+  <footer class="max-w-4xl mx-auto px-6 py-8 mt-4 border-t border-gray-200">
+    <p class="text-xs text-gray-400 text-center">
+      FluentISH - Maria's personal course portal.
+    </p>
+  </footer>
+
+</body>
+</html>
