@@ -13,8 +13,10 @@
   <link rel="preconnect" href="https://assets.calendly.com" />
   <!-- Preload hero image -->
   <link rel="preload" as="image" href="images/home-hero-portrait.webp" type="image/webp" />
-  <!-- Google Fonts (reduced to 4 used variants from 10) -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Google Fonts (async, non-render-blocking) -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" /></noscript>
   <!-- Inline CSS: hand-extracted Tailwind utilities (replaces CDN) -->
   <style>
     /* === RESET / BASE === */
@@ -125,7 +127,7 @@
     .text-gray-400 { color: #9ca3af; }
     .text-gray-500 { color: #6b7280; }
     .text-blue-200 { color: #bfdbfe; }
-    .text-blue-400 { color: #60a5fa; }
+    .text-blue-300 { color: #93c5fd; }
     .text-blue-500 { color: #3b82f6; }
     .scroll-smooth { scroll-behavior: smooth; }
 
@@ -179,15 +181,17 @@
     .sticky-cta { transform: translateY(100%); transition: transform 0.3s ease; }
     .sticky-cta.visible { transform: translateY(0); }
   </style>
-  <!-- Meta Pixel Code -->
+  <!-- Meta Pixel Code (deferred to after first paint) -->
   <script>
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  (function(){function init(){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
   n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
   n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
   t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
   (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
   fbq('init','26628549533507941');
-  fbq('track','PageView');
+  fbq('track','PageView');}
+  if('requestIdleCallback' in window){requestIdleCallback(init)}else{setTimeout(init,1)}
+  })();
   </script>
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=26628549533507941&ev=PageView&noscript=1"/></noscript>
@@ -197,11 +201,10 @@
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XS9D9D0XRH');
+    if('requestIdleCallback' in window){requestIdleCallback(function(){gtag('js',new Date());gtag('config','G-XS9D9D0XRH')})}
+    else{setTimeout(function(){gtag('js',new Date());gtag('config','G-XS9D9D0XRH')},1)}
   </script>
-  <!-- Calendly widget JS (inline embed) -->
-  <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+  <!-- Calendly widget JS lazy-loaded in bottom script block -->
 </head>
 
 <body class="bg-white">
@@ -248,14 +251,14 @@
           <a href="#booking" class="book-cta inline-block w-full sm:w-auto bg-rouge hover:bg-rougeH text-white font-bold px-10 py-4 rounded-full text-lg transition-colors shadow-xl cursor-pointer text-center">
             Grab Your Free Spot &darr;
           </a>
-          <p class="text-blue-400 text-xs mt-4 tracking-wide">15 minutes &middot; completely free &middot; no credit card &middot; no obligation</p>
+          <p class="text-blue-300 text-xs mt-4 tracking-wide">15 minutes &middot; completely free &middot; no credit card &middot; no obligation</p>
         </div>
       </div>
     </section>
 
     <!-- ===================== CREDIBILITY STRIP ===================== -->
     <section class="bg-sand border-y border-stone-200">
-      <div class="max-w-3xl mx-auto px-6 py-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs tracking-widest uppercase font-semibold text-gray-400">
+      <div class="max-w-3xl mx-auto px-6 py-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs tracking-widest uppercase font-semibold text-gray-500">
         <span>Fully bilingual</span>
         <span class="hidden sm:block w-px h-3 bg-gray-300"></span>
         <span>Paris since 2011</span>
@@ -407,7 +410,7 @@
 
   <!-- Footer -->
   <footer class="bg-navyD text-white py-8 pb-24 md:pb-8">
-    <div class="max-w-3xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-500">
+    <div class="max-w-3xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-300">
       <p>&copy; 2026 FluentISH &middot; All rights reserved</p>
       <a href="privacy.html" class="hover:text-blue-300 transition-colors">Privacy Policy</a>
     </div>
@@ -452,6 +455,24 @@
     }, { threshold: 0 });
 
     observer.observe(heroCta);
+  })();
+
+  // Lazy-load Calendly widget when booking section nears viewport
+  (function() {
+    var booking = document.getElementById('booking');
+    if (!booking) return;
+    var loaded = false;
+    var io = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting && !loaded) {
+        loaded = true;
+        var s = document.createElement('script');
+        s.src = 'https://assets.calendly.com/assets/external/widget.js';
+        s.async = true;
+        document.body.appendChild(s);
+        io.disconnect();
+      }
+    }, { rootMargin: '200px' });
+    io.observe(booking);
   })();
   </script>
 
