@@ -141,6 +141,7 @@
       <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
       <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
       <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
+      <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'" style="color: #C8102E;">Lesson 3 (rehearsal)</button>
     </div>
   </div>
 
@@ -887,6 +888,273 @@
       </div>
 
     </div><!-- /l2 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 3 (REHEARSAL)                 -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l3'" class="space-y-6">
+
+      <div class="lesson-strip" style="background: linear-gradient(135deg, #003359 60%, #C8102E);">
+        <div class="num">Lesson 3 &mdash; Tuesday 29 July 2026</div>
+        <h2>Rehearsal Script</h2>
+        <div class="meta">Practise this conversation out loud before the lesson. Cover everything, sound natural.</div>
+      </div>
+
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">How to Use This</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Read through this conversation and practise Maria's lines out loud. Don't memorise it word for word,
+          just get comfortable with the flow. Use filler words (euh, alors) to buy time. Get into character,
+          relax your shoulders, throw the lines out. If you get stuck, muddle through, zero English.
+        </p>
+      </div>
+
+      <!-- PART 1: The Icebreaker -->
+      <div class="card">
+        <span class="section-label">Part 1 &mdash; The Icebreaker</span>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Salut Maria ! &Ccedil;a va ?</div>
+            <div class="dialogue-en">Hi Maria! How's it going?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Salut Dan ! Oui, &ccedil;a va bien, merci. Et toi ?</div>
+            <div class="dialogue-en">Hi Dan! Yes, good thanks. And you?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Tr&egrave;s bien. Alors, parle-moi de toi.</div>
+            <div class="dialogue-en">Very well. So, tell me about yourself.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Alors... je m'appelle Maria. J'apprends le fran&ccedil;ais doucement. Je suis sur le point de d&eacute;m&eacute;nager en France.</div>
+            <div class="dialogue-en">So... my name is Maria. I'm learning French gently. I'm about to move to France.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Ah bon ? Pourquoi la France ?</div>
+            <div class="dialogue-en">Oh really? Why France?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Parce que j'ai un dipl&ocirc;me en zoologie. Il y a un manque de donn&eacute;es sur les muscardins, et je veux les aider.</div>
+            <div class="dialogue-en">Because I have a degree in zoology. There's a lack of data on hazel dormice, and I want to help them.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">C'est fascinant ! C'est quoi, ton ambition ?</div>
+            <div class="dialogue-en">That's fascinating! What's your ambition?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Mon ambition, c'est de faire des recherches sur les muscardins. J'ai h&acirc;te de commencer !</div>
+            <div class="dialogue-en">My ambition is to do research on hazel dormice. I can't wait to start!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PART 2: Paris & Roots -->
+      <div class="card">
+        <span class="section-label">Part 2 &mdash; Paris &amp; Putting Down Roots</span>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Tu connais d&eacute;j&agrave; la France ?</div>
+            <div class="dialogue-en">Do you already know France?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Oui ! On a v&eacute;cu pendant un an &agrave; Paris. C'&eacute;tait parfait.</div>
+            <div class="dialogue-en">Yes! We lived in Paris for a year. It was perfect.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">&Ccedil;a te manque, Paris ?</div>
+            <div class="dialogue-en">Do you miss Paris?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Ah oui, Paris me manque ! J'aime le fran&ccedil;ais, j'aime les fran&ccedil;ais, j'aime la France. Je veux prendre racine l&agrave;-bas.</div>
+            <div class="dialogue-en">Oh yes, I miss Paris! I love French, I love the French, I love France. I want to put down roots there.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Et ta famille ?</div>
+            <div class="dialogue-en">And your family?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Mon fils est l&agrave;-bas jusqu'&agrave; septembre. Son visa commence depuis... euh, non... en ao&ucirc;t. On veut prendre racine en France ensemble.</div>
+            <div class="dialogue-en">My son is there until September. His visa starts from... um, no... in August. We want to put down roots in France together.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PART 3: Life in England -->
+      <div class="card">
+        <span class="section-label">Part 3 &mdash; Life in England</span>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Et l'Angleterre, &ccedil;a te pla&icirc;t encore ?</div>
+            <div class="dialogue-en">And England, do you still like it?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Alors... pas vraiment. Le gouvernement ne me pla&icirc;t pas. L'&eacute;tat... comment dire... c'est difficile pour les jeunes. Il n'y a pas assez de travail pour les ados.</div>
+            <div class="dialogue-en">Well... not really. I don't like the government. The state... how do I say... it's hard for young people. There's not enough work for teenagers.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Tu as des amis ici ?</div>
+            <div class="dialogue-en">Do you have friends here?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Euh... mes amis sont des expats. Ils vivent un peu partout. Ils me manquent. Je n'ai pas vraiment pris racine ici.</div>
+            <div class="dialogue-en">Um... my friends are expats. They live all over the place. I miss them. I haven't really put down roots here.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PART 4: Practical Matters -->
+      <div class="card">
+        <span class="section-label">Part 4 &mdash; Practical Matters</span>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Et le d&eacute;m&eacute;nagement, &ccedil;a avance ?</div>
+            <div class="dialogue-en">And the move, how's it going?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Ah, le d&eacute;m&eacute;nagement ! Ce n'est pas le m&eacute;nage, hein ! On fait le m&eacute;nage apr&egrave;s le d&eacute;m&eacute;nagement. En ce moment, c'est le chaos.</div>
+            <div class="dialogue-en">Ah, the move! It's not the cleaning, eh! You do the cleaning after the move. Right now, it's chaos.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Tu sais ce qu'il faut pour s'installer ?</div>
+            <div class="dialogue-en">Do you know what you need to get set up?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Je sais qu'il faut donner mes coordonn&eacute;es &agrave; la mairie. Mes donn&eacute;es personnelles. Et pour les muscardins, je veux cr&eacute;er une base de donn&eacute;es. Je ne connais pas le mot pour... euh... &laquo; data collection &raquo; en fran&ccedil;ais ?</div>
+            <div class="dialogue-en">I know I need to give my contact details to the town hall. My personal information. And for the dormice, I want to create a database. I don't know the word for... um... "data collection" in French?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Tu connais la r&eacute;gion ?</div>
+            <div class="dialogue-en">Do you know the area?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Je connais un peu Paris, mais je ne connais pas bien la campagne. Je sais que c'est beau... mais je ne connais pas encore les voisins !</div>
+            <div class="dialogue-en">I know Paris a bit, but I don't know the countryside well. I know it's beautiful... but I don't know the neighbours yet!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PART 5: The Weather & Wrapping Up -->
+      <div class="card">
+        <span class="section-label">Part 5 &mdash; Wrapping Up</span>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Il fait tr&egrave;s chaud en France en ce moment.</div>
+            <div class="dialogue-en">It's very hot in France right now.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Exactement ! La canicule ! C'est difficile pour les esp&egrave;ces prot&eacute;g&eacute;es... les muscardins aussi. Tout &agrave; fait dangereux.</div>
+            <div class="dialogue-en">Exactly! The heatwave! It's hard for protected species... the dormice too. Absolutely dangerous.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Maria, tu parles tr&egrave;s bien.</div>
+            <div class="dialogue-en">Maria, you speak very well.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Merci ! J'apprends doucement. Mais j'aime le fran&ccedil;ais, j'aime les fran&ccedil;ais, j'aime la France. J'ai h&acirc;te de prendre racine l&agrave;-bas. Enchant&eacute;e !</div>
+            <div class="dialogue-en">Thanks! I'm learning gently. But I love French, I love the French, I love France. I can't wait to put down roots there. Lovely to meet you!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cheat sheet -->
+      <div class="card" style="background: #f8f9fb;">
+        <span class="section-label">Quick Cheat Sheet</span>
+        <div class="space-y-3">
+          <div>
+            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">If you get stuck</p>
+            <p class="text-sm text-navy font-semibold">Comment dire... / Je ne connais pas le mot pour... / Euh...</p>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">Show you're listening</p>
+            <p class="text-sm text-navy font-semibold">Ah bon ? / Ah oui ! / Exactement ! / Tout &agrave; fait ! / C'est fascinant !</p>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">Buy thinking time</p>
+            <p class="text-sm text-navy font-semibold">Alors... / Donc... / Eh bien... / Euh...</p>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">Remember</p>
+            <p class="text-sm text-gray-600">On (not nous) &middot; Pendant (not pour) &middot; La France (feminine!) &middot; Savoir (skill) vs Conna&icirc;tre (person/place)</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /l3 -->
 
 
   </main>
