@@ -5,17 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Book a free 15-minute introductory call with FluentISH - bespoke 1-on-1 French coaching, online, UK-wide." />
   <title>Book a Free Chat | FluentISH</title>
-  <meta name="robots" content="noindex" />
   <!-- Preconnects (fire first, before any requests) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://connect.facebook.net" />
-  <link rel="preconnect" href="https://assets.calendly.com" />
+  <link rel="preconnect" href="https://gutihncfxjdyxulfwtgp.supabase.co" />
   <!-- Preload hero image -->
   <link rel="preload" as="image" href="images/home-hero-portrait.webp" type="image/webp" />
   <!-- Google Fonts (async, non-render-blocking) -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" /></noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=optional" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=optional" rel="stylesheet" /></noscript>
   <!-- Inline CSS: hand-extracted Tailwind utilities (replaces CDN) -->
   <style>
     /* === RESET / BASE === */
@@ -122,7 +120,7 @@
     .text-navy { color: #003359; }
     .text-rouge { color: #C8102E; }
     .text-cyan { color: #4DD4F5; }
-    .text-gray-400 { color: #9ca3af; }
+    .text-gray-400 { color: #767676; }
     .text-gray-500 { color: #6b7280; }
     .text-blue-200 { color: #bfdbfe; }
     .text-blue-300 { color: #93c5fd; }
@@ -182,12 +180,32 @@
     .faq-item:last-child { border-bottom: none; }
     .faq-item summary { cursor: pointer; padding: 1rem 0; font-weight: 600; color: #003359; font-size: 0.875rem; line-height: 1.5; list-style: none; }
     .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item summary::after { content: '+'; float: right; font-size: 1.25rem; color: #9ca3af; }
+    .faq-item summary::after { content: '+'; float: right; font-size: 1.25rem; color: #767676; }
     .faq-item[open] summary::after { content: '\2212'; }
     .faq-item p { padding-bottom: 1rem; color: #6b7280; font-size: 0.875rem; line-height: 1.625; }
+
+    /* === BOOKING FORM === */
+    .slot-group { margin-bottom: 0.75rem; }
+    .slot-day { font-size: 0.8rem; font-weight: 600; color: #6b7280; margin-bottom: 0.5rem; text-align: left; }
+    .slot-btn {
+      display: inline-block; padding: 0.5rem 1rem; margin: 0 0.375rem 0.375rem 0;
+      border: 1.5px solid #003359; border-radius: 9999px; background: #fff; color: #003359;
+      font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 150ms;
+    }
+    .slot-btn:hover { background: #003359; color: #fff; }
+    .slot-btn.selected { background: #C8102E; color: #fff; border-color: #C8102E; }
+    .slot-skeleton {
+      height: 120px; border-radius: 0.75rem; background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .booking-hp { position: absolute; left: -9999px; opacity: 0; height: 0; width: 0; overflow: hidden; }
+    .bf-input {
+      width: 100%; border-radius: 0.75rem; border: 1px solid #e5e7eb; padding: 0.75rem 1rem;
+      font-size: 0.875rem; transition: border-color 150ms, box-shadow 150ms; outline: none;
+    }
+    .bf-input:focus { border-color: #003359; box-shadow: 0 0 0 2px rgba(0,51,89,0.2); }
   </style>
-  <!-- Calendly popup overlay CSS (Variant B only, lightweight) -->
-  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" media="print" onload="this.media='all'">
   <!-- A/B Testing: synchronous assignment (must run before body parse) -->
   <script>
   (function() {
@@ -228,15 +246,7 @@
     s.textContent = '[data-variant="' + hide + '"] { display: none !important; }';
     document.head.appendChild(s);
 
-    // 6. Activate Variant A's inline Calendly widget on DOMContentLoaded
-    //    (Variant B uses popup, so no inline widget needed)
-    if (window.__abVariant === 'A') {
-      document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('[data-variant="A"] .ab-calendly-widget').forEach(function(el) {
-          el.classList.add('calendly-inline-widget');
-        });
-      });
-    }
+    // 6. (Removed: Calendly widget activation)
   })();
   </script>
   <!-- Meta Pixel Code (deferred to after first paint) -->
@@ -254,15 +264,16 @@
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=26628549533507941&ev=PageView&noscript=1"/></noscript>
   <!-- End Meta Pixel Code -->
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH"></script>
+  <!-- Google tag (gtag.js) - deferred to idle -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XS9D9D0XRH');
+    (function(){function init(){var s=document.createElement('script');
+    s.src='https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH';s.async=true;
+    document.head.appendChild(s);gtag('js',new Date());
+    gtag('config','G-XS9D9D0XRH');}
+    if('requestIdleCallback' in window){requestIdleCallback(init)}else{setTimeout(init,1)}})();
   </script>
-  <!-- Calendly widget JS lazy-loaded in bottom script block -->
 </head>
 
 <body class="bg-white">
