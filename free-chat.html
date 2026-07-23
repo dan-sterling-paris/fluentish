@@ -457,22 +457,29 @@
     observer.observe(heroCta);
   })();
 
-  // Lazy-load Calendly widget when booking section nears viewport
+  // Lazy-load Calendly widget on CTA click or scroll proximity (whichever first)
   (function() {
     var booking = document.getElementById('booking');
     if (!booking) return;
     var loaded = false;
+    function loadCalendly() {
+      if (loaded) return;
+      loaded = true;
+      var s = document.createElement('script');
+      s.src = 'https://assets.calendly.com/assets/external/widget.js';
+      s.async = true;
+      document.body.appendChild(s);
+      io.disconnect();
+    }
+    // Load when booking section nears viewport
     var io = new IntersectionObserver(function(entries) {
-      if (entries[0].isIntersecting && !loaded) {
-        loaded = true;
-        var s = document.createElement('script');
-        s.src = 'https://assets.calendly.com/assets/external/widget.js';
-        s.async = true;
-        document.body.appendChild(s);
-        io.disconnect();
-      }
-    }, { rootMargin: '200px' });
+      if (entries[0].isIntersecting) loadCalendly();
+    }, { rootMargin: '400px' });
     io.observe(booking);
+    // Also load immediately on any CTA click (smooth scroll takes ~500ms, gives a head start)
+    document.querySelectorAll('.book-cta').forEach(function(link) {
+      link.addEventListener('click', loadCalendly);
+    });
   })();
   </script>
 
