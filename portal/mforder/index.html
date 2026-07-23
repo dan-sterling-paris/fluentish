@@ -129,7 +129,7 @@
         <h1 class="font-display text-2xl font-bold mt-1">Maria's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">1 lesson</p>
+        <p class="text-sm text-blue-200 font-medium">2 lessons</p>
         <p class="text-xs text-blue-400 mt-0.5">Moving to France</p>
       </div>
     </div>
@@ -140,6 +140,7 @@
     <div class="max-w-4xl mx-auto px-6 flex overflow-x-auto">
       <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
       <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
+      <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
     </div>
   </div>
 
@@ -548,6 +549,233 @@
       </div>
 
     </div><!-- /l1 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 2                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l2'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 2 - 23 July 2026</div>
+        <h2>From Script to Conversation</h2>
+        <div class="meta">Free conversation &middot; Grammar distinctions &middot; Pronunciation &amp; delivery</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Moved from scripted phrases into real conversation. Started by reviewing your introductory
+          script from Lesson 1, then jumped straight into chatting in French about your life, your time
+          in Paris, and your plans for France. Learned key grammar distinctions (savoir vs conna&icirc;tre,
+          pendant vs pour, on vs nous) and drilled two powerful phrases: talking about living in Paris
+          and expressing your love for France. Finished with a brilliant synthesis conversation pulling
+          everything together, entirely in French.
+        </p>
+      </div>
+
+      <!-- KEY PHRASES -->
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+        <h3 class="font-display text-base font-bold text-navy mb-3">Talking about your time in France</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">On a v&eacute;cu un an &agrave; Paris.</div>
+          <div class="phrase-pron">on a vay-koo uhn on ah Pa-ree</div>
+          <div class="phrase-en">We lived in Paris for a year.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On a v&eacute;cu un an en France.</div>
+          <div class="phrase-pron">on a vay-koo uhn on on Fronss</div>
+          <div class="phrase-en">We lived in France for a year.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-6 mb-3">The phrase that endears you to France</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'aime la langue fran&ccedil;aise.</div>
+          <div class="phrase-pron">zhem la long fron-sez</div>
+          <div class="phrase-en">I love the French language.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'aime le peuple fran&ccedil;ais.</div>
+          <div class="phrase-pron">zhem luh pupl fron-say</div>
+          <div class="phrase-en">I love the French people.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'aime la France.</div>
+          <div class="phrase-pron">zhem la Fronss</div>
+          <div class="phrase-en">I love France.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-6 mb-3">Putting down roots</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je veux prendre racine en France.</div>
+          <div class="phrase-pron">zhe vuh prondr ra-seen on Fronss</div>
+          <div class="phrase-en">I want to put down roots in France.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-6 mb-3">Get-out-of-jail phrases</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Comment dire...</div>
+          <div class="phrase-pron">ko-mon deer</div>
+          <div class="phrase-en">How do I say...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je ne connais pas le mot pour...</div>
+          <div class="phrase-pron">zhe nuh ko-nay pah luh moh poor</div>
+          <div class="phrase-en">I don't know the word for...</div>
+        </div>
+      </div>
+
+      <!-- VOCABULARY -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Information &amp; Data</h3>
+        <div class="vocab-row"><span class="vocab-fr">Les donn&eacute;es</span><span class="vocab-pron">lay don-ay</span><span class="vocab-en">information, data (more natural than "data")</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Les coordonn&eacute;es</span><span class="vocab-pron">lay ko-or-don-ay</span><span class="vocab-en">contact details</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une base de donn&eacute;es</span><span class="vocab-pron">oon bahz duh don-ay</span><span class="vocab-en">a database</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Les donn&eacute;es personnelles</span><span class="vocab-pron">lay don-ay pair-son-el</span><span class="vocab-en">personal information</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Two Ways to "Know"</h3>
+        <div class="vocab-row"><span class="vocab-fr">Savoir</span><span class="vocab-pron">sa-vwar</span><span class="vocab-en">to know (a fact or skill)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Conna&icirc;tre</span><span class="vocab-pron">ko-netr</span><span class="vocab-en">to know (a person or place)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Je sais cuisiner</span><span class="vocab-pron">zhe say kwee-zee-nay</span><span class="vocab-en">I know how to cook (skill = savoir)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Je connais Maria</span><span class="vocab-pron">zhe ko-nay Ma-ree-ah</span><span class="vocab-en">I know Maria (person = conna&icirc;tre)</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Time &amp; Duration</h3>
+        <div class="vocab-row"><span class="vocab-fr">Pendant</span><span class="vocab-pron">pon-don</span><span class="vocab-en">during, for (duration) - NOT "pour"!</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Depuis</span><span class="vocab-pron">duh-pwee</span><span class="vocab-en">since</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Jusqu'&agrave;</span><span class="vocab-pron">zhoos-kah</span><span class="vocab-en">until</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Life &amp; Society</h3>
+        <div class="vocab-row"><span class="vocab-fr">La racine</span><span class="vocab-pron">ra-seen</span><span class="vocab-en">root (of a word, or putting down roots)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Prendre racine</span><span class="vocab-pron">prondr ra-seen</span><span class="vocab-en">to put down roots / to take root</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le gouvernement</span><span class="vocab-pron">goo-vairn-mon</span><span class="vocab-en">the government</span></div>
+        <div class="vocab-row"><span class="vocab-fr">L'&eacute;tat</span><span class="vocab-pron">lay-tah</span><span class="vocab-en">the state (administration)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Les jeunes</span><span class="vocab-pron">lay zhuhn</span><span class="vocab-en">young people</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Les adolescents</span><span class="vocab-pron">lay za-dol-ess-on</span><span class="vocab-en">teenagers</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Interesting Words</h3>
+        <div class="vocab-row"><span class="vocab-fr">L'esp&egrave;ce</span><span class="vocab-pron">less-pess</span><span class="vocab-en">species (also means cash!)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La canicule</span><span class="vocab-pron">ka-nee-kool</span><span class="vocab-en">heatwave (from Latin "canis" = dog)</span></div>
+      </div>
+
+      <!-- DIALOGUE -->
+      <div class="card">
+        <span class="section-label">Dialogue &mdash; Full Synthesis Conversation</span>
+        <p class="text-sm text-gray-400 italic mb-4">At the end of the lesson, you pulled everything together into one flowing conversation in French.</p>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Bonjour Maria !</div>
+            <div class="dialogue-en">Hello Maria!</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Bonjour, je m'appelle Maria. J'apprends le fran&ccedil;ais doucement.</div>
+            <div class="dialogue-en">Hello, my name is Maria. I'm learning French gently.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">Qu'est-ce que vous voulez me dire ?</div>
+            <div class="dialogue-en">What would you like to tell me?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Je suis sur le point de d&eacute;m&eacute;nager en France. On a v&eacute;cu un an &agrave; Paris.</div>
+            <div class="dialogue-en">I'm about to move to France. We lived in Paris for a year.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Dan</span>
+          <div>
+            <div class="dialogue-fr">C'est super ! Et pourquoi la France ?</div>
+            <div class="dialogue-en">That's great! And why France?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">J'ai un dipl&ocirc;me en zoologie. Il y a un manque de donn&eacute;es sur les muscardins, et je veux les aider.</div>
+            <div class="dialogue-en">I have a degree in zoology. There's a lack of data on hazel dormice, and I want to help them.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">J'aime la langue fran&ccedil;aise, j'aime le peuple fran&ccedil;ais, j'aime la France.</div>
+            <div class="dialogue-en">I love the French language, I love the French people, I love France.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WOW EXCHANGE -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Wow Moment</span>
+        <p class="text-sm text-gray-400 italic mb-4">You spoke for several minutes in French without dropping into English. Dan's reaction: "Maria, that's brilliant. Well done. That's really really really good."</p>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">J'aime la langue fran&ccedil;aise, j'aime le peuple fran&ccedil;ais, j'aime la France.</div>
+            <div class="dialogue-en">I love the French language, I love the French people, I love France.</div>
+          </div>
+        </div>
+        <p class="text-sm text-gray-600 mt-3 leading-relaxed">
+          You pulled together both lessons into one flowing conversation, switching between your introductory script,
+          talking about Paris, your zoology background, and the dormice, all without reverting to English.
+          Your comprehension was praised as exceptionally strong, and your ability to infer meaning from
+          context (like identifying "esp&egrave;ce" as relating to protected species) was highlighted as a real strength.
+        </p>
+      </div>
+
+      <!-- GRAMMAR & PRONUNCIATION NOTES -->
+      <div class="card">
+        <span class="section-label">Grammar &amp; Pronunciation Notes</span>
+
+        <div class="tip-card">
+          <div class="tip-title">On vs Nous</div>
+          <p>When talking about your family or in casual conversation, use <strong>on</strong> instead of <strong>nous</strong>. Nous is technically correct but sounds too formal for everyday French, a bit like saying "one does" in English. <strong>On a v&eacute;cu</strong> (we lived) not <strong>nous avons v&eacute;cu</strong>.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Pendant, not Pour</div>
+          <p>For duration, use <strong>pendant</strong> (during/for), not <strong>pour</strong>. Saying "pour un an" is a classic English-speaker giveaway. <strong>On a v&eacute;cu pendant un an &agrave; Paris</strong> or simply <strong>on a v&eacute;cu un an &agrave; Paris</strong>.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">La France (feminine!)</div>
+          <p>France is feminine: <strong>la France</strong>, never "le France". The French are fiercely proud of this. They won't care if you get Canada or Portugal wrong, but if you say "le France" they will notice. This is your protective armour.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Character &amp; Delivery</div>
+          <p>Get into character when you speak. Like an actor changing emphasis on "To be or not to be", your delivery changes when you embody the intent. Shake your head, relax your shoulders, throw the phrase out like it's nothing. It transforms your pronunciation.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">M&eacute;nage vs D&eacute;m&eacute;nager</div>
+          <p><strong>M&eacute;nage</strong> = cleaning (faire le m&eacute;nage). <strong>D&eacute;m&eacute;nager</strong> = to move house. The etymology looks similar but the meanings are completely different. Amener = to bring, so d&eacute;-m&eacute;nager is literally to un-bring your home.</p>
+        </div>
+      </div>
+
+      <!-- PRACTICE GOALS -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Drill "on a v&eacute;cu un an &agrave; Paris" until it feels like a throwaway, not a recital</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Practise the three-part phrase: "j'aime la langue fran&ccedil;aise, j'aime le peuple fran&ccedil;ais, j'aime la France" with character and delivery</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Default to "on" instead of "nous" when talking about your family</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Use "pendant" for duration, never "pour" (pendant un an, not pour un an)</li>
+        </ul>
+      </div>
+
+    </div><!-- /l2 -->
 
 
   </main>
