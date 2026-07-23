@@ -186,6 +186,8 @@
     .faq-item[open] summary::after { content: '\2212'; }
     .faq-item p { padding-bottom: 1rem; color: #6b7280; font-size: 0.875rem; line-height: 1.625; }
   </style>
+  <!-- Calendly popup overlay CSS (Variant B only, lightweight) -->
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" media="print" onload="this.media='all'">
   <!-- A/B Testing: synchronous assignment (must run before body parse) -->
   <script>
   (function() {
@@ -226,12 +228,15 @@
     s.textContent = '[data-variant="' + hide + '"] { display: none !important; }';
     document.head.appendChild(s);
 
-    // 6. Activate only the visible variant's Calendly widget on DOMContentLoaded
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('[data-variant="' + window.__abVariant + '"] .ab-calendly-widget').forEach(function(el) {
-        el.classList.add('calendly-inline-widget');
+    // 6. Activate Variant A's inline Calendly widget on DOMContentLoaded
+    //    (Variant B uses popup, so no inline widget needed)
+    if (window.__abVariant === 'A') {
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('[data-variant="A"] .ab-calendly-widget').forEach(function(el) {
+          el.classList.add('calendly-inline-widget');
+        });
       });
-    });
+    }
   })();
   </script>
   <!-- Meta Pixel Code (deferred to after first paint) -->
@@ -324,14 +329,16 @@
       </div>
     </section>
 
-    <!-- ===================== VARIANT B: CALENDAR (above content, fast path) ===================== -->
-    <section data-variant="B" id="booking-b" class="py-8 bg-white">
+    <!-- ===================== VARIANT B: POPUP CTA (fast path, no inline embed) ===================== -->
+    <section data-variant="B" id="booking-b" class="py-10 bg-white">
       <div class="max-w-3xl mx-auto px-6 text-center">
-        <p class="text-gray-500 text-base leading-relaxed mb-2 max-w-lg mx-auto">
-          Pick a slot below. 15 minutes, no pressure, no credit card.
+        <p class="text-gray-500 text-base leading-relaxed mb-6 max-w-lg mx-auto">
+          15 minutes, no pressure, no credit card.
         </p>
-        <div class="ab-calendly-widget" data-url="https://calendly.com/fluentish/free-15-minute-chat" style="min-width:320px;height:700px;"></div>
-        <p class="text-gray-400 text-sm mt-4">
+        <button id="calendly-popup-btn" class="book-cta inline-block bg-rouge hover:bg-rougeH text-white font-bold px-10 py-4 rounded-full text-lg transition-colors shadow-xl cursor-pointer">
+          Pick a Time &rarr;
+        </button>
+        <p class="text-gray-400 text-sm mt-6">
           Prefer to ask a question first? <a href="mailto:bonjour@fluentish.co.uk" class="text-navy font-semibold hover:text-blue-300 transition-colors" style="text-decoration:underline;">bonjour@fluentish.co.uk</a>
         </p>
         <p class="text-gray-400 text-xs mt-3">Not sure yet? Scroll down to learn more about how it works.</p>
@@ -650,31 +657,45 @@
       }
     }
 
-    // ── 7. Lazy-load Calendly widget ─────────────────────────────────
+    // ── 7. Load Calendly widget ────────────────────────────────────
     (function() {
-      var bookingEl = document.getElementById(variant === 'B' ? 'booking-b' : 'booking');
-      if (!bookingEl) return;
-      var loaded = false;
-      function loadCalendly() {
-        if (loaded) return;
-        loaded = true;
-        var s = document.createElement('script');
-        s.src = 'https://assets.calendly.com/assets/external/widget.js';
-        s.async = true;
-        document.body.appendChild(s);
-        if (io) io.disconnect();
+      var scriptEl = null;
+      function loadCalendlyScript(cb) {
+        if (window.Calendly) { if (cb) cb(); return; }
+        if (!scriptEl) {
+          scriptEl = document.createElement('script');
+          scriptEl.src = 'https://assets.calendly.com/assets/external/widget.js';
+          scriptEl.async = true;
+          document.body.appendChild(scriptEl);
+        }
+        if (cb) scriptEl.addEventListener('load', cb);
       }
+
+      var CALENDLY_URL = 'https://calendly.com/fluentish/free-15-minute-chat';
+      function openPopup() {
+        loadCalendlyScript(function() {
+          Calendly.initPopupWidget({ url: CALENDLY_URL });
+        });
+      }
+
       if (variant === 'B') {
-        // Variant B: calendar is near the top, load immediately
-        loadCalendly();
+        // Variant B: any CTA click opens the Calendly popup directly
+        document.querySelectorAll('.book-cta').forEach(function(link) {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            openPopup();
+          });
+        });
       } else {
-        // Variant A: lazy-load when booking section nears viewport or CTA clicked
+        // Variant A: lazy-load inline widget when booking section nears viewport or CTA clicked
+        var bookingEl = document.getElementById('booking');
+        if (!bookingEl) return;
         var io = new IntersectionObserver(function(entries) {
-          if (entries[0].isIntersecting) loadCalendly();
+          if (entries[0].isIntersecting) { loadCalendlyScript(); io.disconnect(); }
         }, { rootMargin: '400px' });
         io.observe(bookingEl);
         document.querySelectorAll('.book-cta').forEach(function(link) {
-          link.addEventListener('click', loadCalendly);
+          link.addEventListener('click', function() { loadCalendlyScript(); });
         });
       }
     })();
