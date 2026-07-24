@@ -52,10 +52,22 @@ verify_jwt = false
 [functions.calendly-webhook]
 verify_jwt = false
 
+# booking-form: receives free-chat landing page form submissions,
+# queries Google Calendar for available slots, creates calendar events,
+# sends confirmation + notification emails via Resend
+[functions.booking-form]
+verify_jwt = false
+
 # drip-send: automated follow-up SMS sequence (runs every 5 minutes via pg_cron)
 # Sends follow-up 1 at 24h and follow-up 2 at 48h after lead creation,
-# adjusted to the next 08:00 UK if outside the 08:00–21:00 working window.
+# adjusted to the next 08:00 UK if outside the 08:00-21:00 working window.
 # Halts automatically if the lead has replied (last_message_direction = 'inbound').
 # Cron schedule is configured in migration 20260512000002_drip_send_cron.sql
 [functions.drip-send]
+verify_jwt = false
+
+# booking-reminder: sends a reminder email 1 hour before confirmed bookings
+# (runs every 5 minutes via pg_cron)
+# Cron schedule is configured in migration 20260724200000_booking_reminder_cron.sql
+[functions.booking-reminder]
 verify_jwt = false

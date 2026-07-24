@@ -28,8 +28,6 @@
     gtag('js', new Date());
     gtag('config', 'G-XS9D9D0XRH');
   </script>
-  <!-- Calendly widget JS (inline embed) -->
-  <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -260,24 +258,68 @@
           If we go ahead: &pound;50/hour, 10% off blocks of 4+ lessons, paid securely via Stripe.
         </p>
 
-        <!-- Age consent -->
-        <div class="max-w-md mx-auto mb-8 text-left bg-sand border border-stone-200 rounded-2xl p-5">
-          <label for="age-consent" class="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" id="age-consent" class="mt-1 w-4 h-4 shrink-0 accent-rouge" required />
-            <span class="text-sm text-gray-600 leading-relaxed">
-              I confirm that the student attending this session will be
-              <strong class="text-navy">18 years of age or older</strong>.
-              FluentISH coaching is offered to adult students only.
-            </span>
-          </label>
-          <p id="age-consent-warning" class="hidden text-rouge text-xs mt-2">
-            Please confirm the student will be 18 or older to book a chat. If they're under 18, please have a parent or guardian get in touch instead.
-          </p>
+        <!-- Slot picker -->
+        <div id="slot-picker" class="max-w-md mx-auto mb-8">
+          <div id="slot-loading" class="text-gray-400 py-8">Loading available times...</div>
+          <div id="slot-list" class="hidden space-y-3 text-left"></div>
+          <div id="slot-error" class="hidden text-rouge py-8">Unable to load times. Please refresh and try again.</div>
         </div>
 
-        <!-- Calendly inline widget -->
-        <div id="calendly-wrapper" class="relative opacity-40 pointer-events-none transition-opacity" aria-disabled="true">
-          <div class="calendly-inline-widget" data-url="https://calendly.com/fluentish/free-15-minute-chat" style="min-width:320px;height:700px;"></div>
+        <!-- Booking form (hidden until slot selected) -->
+        <form id="booking-form" class="hidden max-w-md mx-auto text-left">
+          <p id="selected-slot-label" class="text-center text-navy font-semibold mb-6"></p>
+
+          <div class="mb-4">
+            <input type="text" name="name" required autocomplete="given-name" class="bf-input w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy" placeholder="First name" />
+            <p class="bf-error hidden text-rouge text-xs mt-1"></p>
+          </div>
+
+          <div class="mb-4">
+            <input type="text" name="surname" required autocomplete="family-name" class="bf-input w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy" placeholder="Surname" />
+            <p class="bf-error hidden text-rouge text-xs mt-1"></p>
+          </div>
+
+          <div class="mb-4">
+            <input type="email" name="email" required autocomplete="email" class="bf-input w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy" placeholder="Email address" />
+            <p class="bf-error hidden text-rouge text-xs mt-1"></p>
+          </div>
+
+          <div class="mb-4">
+            <input type="tel" name="phone" required autocomplete="tel" class="bf-input w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy" placeholder="+44 7700 900000" />
+            <p class="bf-error hidden text-rouge text-xs mt-1"></p>
+          </div>
+
+          <!-- Honeypot -->
+          <div style="position:absolute;left:-9999px;" aria-hidden="true">
+            <input type="text" name="company" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <!-- Age consent -->
+          <div class="mb-6">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" name="age_consent" required class="mt-1 shrink-0" style="width:18px;height:18px;accent-color:#003359;" />
+              <span class="text-sm text-gray-600 leading-relaxed">
+                I confirm I am <strong class="text-navy">18 years of age or over</strong>.
+              </span>
+            </label>
+            <p class="bf-error hidden text-rouge text-xs mt-1"></p>
+          </div>
+
+          <button type="submit" id="booking-submit" class="w-full bg-rouge hover:bg-rougeH text-white font-bold py-4 rounded-full text-base transition-colors">
+            Confirm Booking
+          </button>
+
+          <p id="form-error" class="hidden text-rouge text-sm text-center mt-3"></p>
+        </form>
+
+        <!-- Success message -->
+        <div id="booking-success" class="hidden max-w-md mx-auto text-center py-8">
+          <div class="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h3 class="font-display text-2xl font-bold text-navy mb-3">You're booked!</h3>
+          <p id="success-details" class="text-gray-600 mb-4"></p>
+          <p class="text-gray-500 text-sm">Check your email for a confirmation. A bientot!</p>
         </div>
       </div>
     </section>
@@ -303,41 +345,8 @@
   // Fire Lead pixel when any booking CTA is clicked
   document.querySelectorAll('.book-cta').forEach(function(link) {
     link.addEventListener('click', function() {
-      fbq('track', 'Lead');
+      if (typeof fbq === 'function') fbq('track', 'Lead');
     });
-  });
-
-  // Age consent gate: booking calendar stays disabled until 18+ is confirmed
-  (function() {
-    var consent = document.getElementById('age-consent');
-    var wrapper = document.getElementById('calendly-wrapper');
-    var warning = document.getElementById('age-consent-warning');
-    if (!consent || !wrapper) return;
-
-    consent.addEventListener('change', function() {
-      if (consent.checked) {
-        wrapper.classList.remove('opacity-40', 'pointer-events-none');
-        wrapper.setAttribute('aria-disabled', 'false');
-        warning.classList.add('hidden');
-      } else {
-        wrapper.classList.add('opacity-40', 'pointer-events-none');
-        wrapper.setAttribute('aria-disabled', 'true');
-      }
-    });
-
-    wrapper.addEventListener('click', function() {
-      if (!consent.checked) {
-        warning.classList.remove('hidden');
-        consent.focus();
-      }
-    });
-  })();
-
-  // Fire Schedule pixel when Calendly booking is completed
-  window.addEventListener('message', function(e) {
-    if (e.data.event && e.data.event === 'calendly.event_scheduled') {
-      fbq('track', 'Schedule');
-    }
   });
 
   // Sticky CTA: show when hero CTA scrolls out of view
@@ -357,6 +366,169 @@
     }, { threshold: 0 });
 
     observer.observe(heroCta);
+  })();
+
+  // Booking form
+  (function() {
+    var API = 'https://gutihncfxjdyxulfwtgp.supabase.co/functions/v1/booking-form';
+    var selectedSlot = null;
+    var variant = 'A';
+
+    // Load slots
+    fetch(API)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var loading = document.getElementById('slot-loading');
+        var list = document.getElementById('slot-list');
+        var errorEl = document.getElementById('slot-error');
+
+        if (!data.slots || data.slots.length === 0) {
+          loading.classList.add('hidden');
+          errorEl.textContent = 'No available slots right now. Please check back soon.';
+          errorEl.classList.remove('hidden');
+          return;
+        }
+
+        loading.classList.add('hidden');
+        list.classList.remove('hidden');
+
+        // Group by day
+        var grouped = {};
+        var dayOrder = [];
+        data.slots.forEach(function(s) {
+          if (!grouped[s.day]) { grouped[s.day] = []; dayOrder.push(s.day); }
+          grouped[s.day].push(s);
+        });
+
+        dayOrder.forEach(function(day) {
+          var dayDiv = document.createElement('div');
+          dayDiv.className = 'mb-5';
+
+          var dayLabel = document.createElement('p');
+          dayLabel.className = 'text-navy font-semibold text-sm mb-2';
+          dayLabel.textContent = day;
+          dayDiv.appendChild(dayLabel);
+
+          var btnWrap = document.createElement('div');
+          btnWrap.className = 'flex flex-wrap gap-2';
+
+          grouped[day].forEach(function(slot) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'slot-btn px-5 py-2.5 border-2 border-navy text-navy rounded-full text-sm font-semibold hover:bg-navy hover:text-white transition-colors';
+            btn.textContent = slot.time;
+            btn.addEventListener('click', function() {
+              document.querySelectorAll('.slot-btn').forEach(function(b) {
+                b.classList.remove('bg-navy', 'text-white');
+              });
+              btn.classList.add('bg-navy', 'text-white');
+              selectedSlot = slot;
+
+              var form = document.getElementById('booking-form');
+              form.classList.remove('hidden');
+              document.getElementById('selected-slot-label').textContent = slot.day + ' at ' + slot.time + ' UK time';
+              form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            btnWrap.appendChild(btn);
+          });
+
+          dayDiv.appendChild(btnWrap);
+          list.appendChild(dayDiv);
+        });
+      })
+      .catch(function() {
+        document.getElementById('slot-loading').classList.add('hidden');
+        document.getElementById('slot-error').classList.remove('hidden');
+      });
+
+    // Form submission
+    var form = document.getElementById('booking-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Clear errors
+      form.querySelectorAll('.bf-error').forEach(function(el) { el.classList.add('hidden'); el.textContent = ''; });
+      document.getElementById('form-error').classList.add('hidden');
+
+      var nameVal = form.querySelector('[name="name"]').value.trim();
+      var surnameVal = form.querySelector('[name="surname"]').value.trim();
+      var emailVal = form.querySelector('[name="email"]').value.trim();
+      var phoneVal = form.querySelector('[name="phone"]').value.trim();
+      var ageConsent = form.querySelector('[name="age_consent"]').checked;
+      var honeypot = form.querySelector('[name="company"]').value;
+
+      var valid = true;
+      if (!nameVal) { showFieldError(form.querySelector('[name="name"]'), 'Please enter your first name.'); valid = false; }
+      if (!surnameVal) { showFieldError(form.querySelector('[name="surname"]'), 'Please enter your surname.'); valid = false; }
+      if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { showFieldError(form.querySelector('[name="email"]'), 'Please enter a valid email address.'); valid = false; }
+      if (!phoneVal || phoneVal.length < 6) { showFieldError(form.querySelector('[name="phone"]'), 'Please enter your phone number.'); valid = false; }
+      if (!ageConsent) { showFieldError(form.querySelector('[name="age_consent"]'), 'You must confirm you are 18 or over.'); valid = false; }
+      if (!selectedSlot) {
+        document.getElementById('form-error').textContent = 'Please select a time slot.';
+        document.getElementById('form-error').classList.remove('hidden');
+        valid = false;
+      }
+      if (!valid) return;
+
+      var submitBtn = document.getElementById('booking-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Booking...';
+
+      fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: nameVal,
+          surname: surnameVal,
+          email: emailVal,
+          phone: phoneVal,
+          age_consent: ageConsent,
+          slot_start: selectedSlot.iso,
+          variant: variant,
+          honeypot: honeypot
+        })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.ok) {
+          if (typeof fbq === 'function') fbq('track', 'Schedule');
+
+          document.getElementById('booking-form').classList.add('hidden');
+          document.getElementById('slot-picker').classList.add('hidden');
+          var success = document.getElementById('booking-success');
+          success.classList.remove('hidden');
+          document.getElementById('success-details').textContent = data.date + ' at ' + data.time + ' UK time';
+          success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (data.error === 'slot_taken') {
+          document.getElementById('form-error').textContent = 'That slot was just taken. Please choose another time.';
+          document.getElementById('form-error').classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Confirm Booking';
+        } else {
+          document.getElementById('form-error').textContent = data.error || 'Something went wrong. Please try again.';
+          document.getElementById('form-error').classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Confirm Booking';
+        }
+      })
+      .catch(function() {
+        document.getElementById('form-error').textContent = 'Connection error. Please try again.';
+        document.getElementById('form-error').classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Confirm Booking';
+      });
+    });
+
+    function showFieldError(input, msg) {
+      var container = input.closest('.mb-4') || input.closest('.mb-6');
+      var errEl = container ? container.querySelector('.bf-error') : null;
+      if (errEl) {
+        errEl.textContent = msg;
+        errEl.classList.remove('hidden');
+      }
+    }
   })();
   </script>
 
