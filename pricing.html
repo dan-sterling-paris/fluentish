@@ -5,31 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="FluentISH pricing: £50 per 1-on-1 session. Online UK-wide. Book your free 15-minute discovery call today." />
   <title>Pricing &amp; Booking | FluentISH</title>
-  <!-- Meta Pixel Code -->
-  <script>
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
-  (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init','26628549533507941');
-  fbq('track','PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=26628549533507941&ev=PageView&noscript=1"/></noscript>
-  <!-- End Meta Pixel Code -->
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XS9D9D0XRH');
-  </script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       theme: {
@@ -50,7 +26,11 @@
       },
     }
   </script>
+  <link rel="preload" as="font" href="fonts/playfair-display.woff2" type="font/woff2" crossorigin />
+  <link rel="preload" as="font" href="fonts/inter.woff2" type="font/woff2" crossorigin />
   <style>
+    @font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(fonts/playfair-display.woff2) format('woff2'); }
+    @font-face { font-family: 'Inter'; font-style: normal; font-weight: 300 700; font-display: swap; src: url(fonts/inter.woff2) format('woff2'); }
     body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
     h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
 
@@ -175,7 +155,7 @@
                class="block text-center bg-rouge hover:bg-rougeH text-white font-bold py-4 rounded-full text-base transition-colors">
               Book a Free 15-Min Chat
             </a>
-            <p class="text-center text-blue-500 text-xs mt-4">No commitment. No credit card.</p>
+            <p class="text-center text-blue-400 text-xs mt-4">No commitment. No credit card.</p>
           </div>
 
           <!-- Right column -->
@@ -227,15 +207,15 @@
               <div class="space-y-3 text-sm">
                 <div class="flex justify-between items-center gap-3 py-2.5 border-b border-gray-50">
                   <span class="text-gray-500 shrink-0">Language app subscription</span>
-                  <span class="text-gray-400 text-xs text-right">£7-15/month, zero real conversation</span>
+                  <span class="text-gray-500 text-xs text-right">£7-15/month, zero real conversation</span>
                 </div>
                 <div class="flex justify-between items-center gap-3 py-2.5 border-b border-gray-50">
                   <span class="text-gray-500 shrink-0">Evening class (group)</span>
-                  <span class="text-gray-400 text-xs text-right">£15-25, shared, slow</span>
+                  <span class="text-gray-500 text-xs text-right">£15-25, shared, slow</span>
                 </div>
                 <div class="flex justify-between items-center gap-3 py-2.5 border-b border-gray-50">
                   <span class="text-gray-500 shrink-0">Generic online tutor</span>
-                  <span class="text-gray-400 text-xs text-right">£20-60, variable quality</span>
+                  <span class="text-gray-500 text-xs text-right">£20-60, variable quality</span>
                 </div>
                 <div class="flex justify-between items-center gap-3 py-2.5 bg-sand rounded-lg px-3 -mx-3">
                   <span class="text-navy font-semibold shrink-0">FluentISH</span>
@@ -260,16 +240,75 @@
           Pick a time that works for you. We'll have a quick, no-obligation call to
           discuss your goals, your current level, and whether FluentISH is the right fit.
         </p>
-        <p class="text-gray-400 text-sm mb-12">
+        <p class="text-gray-500 text-sm mb-12">
           If it's not, I'll say so. If it is, we agree next steps then and there.
         </p>
 
-        <!-- Calendly inline widget begin -->
-        <div class="calendly-inline-widget" data-url="https://calendly.com/fluentish/free-15-minute-chat" style="min-width:320px;height:700px;"></div>
-        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-        <!-- Calendly inline widget end -->
+        <!-- Slot picker -->
+        <div id="slot-picker" class="max-w-md mx-auto mb-8">
+          <div id="slot-loading" class="text-gray-500 py-8">Loading available times...</div>
+          <div id="slot-list" class="hidden space-y-3 text-left"></div>
+          <div id="slot-error" class="hidden text-rouge py-8">Unable to load times. Please refresh and try again.</div>
+        </div>
 
-        <p class="text-gray-400 text-sm">
+        <!-- Booking form (hidden until slot selected) -->
+        <form id="booking-form" class="hidden max-w-md mx-auto text-left">
+          <p id="selected-slot-label" class="text-center text-navy font-semibold mb-6"></p>
+
+          <div class="mb-4">
+            <input type="text" name="name" required autocomplete="given-name" class="bf-input w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy" placeholder="First name" />
+            <p class="bf-error hidden text-rouge text-xs mt-1"></p>
+          </div>
+
+          <div class="mb-4">
+            <input type="text" name="surname" required autocomplete="family-name" class="bf-input w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy" placeholder="Surname" />
+            <p class="bf-error hidden text-rouge text-xs mt-1"></p>
+          </div>
+
+          <div class="mb-4">
+            <input type="email" name="email" required autocomplete="email" class="bf-input w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy" placeholder="Email address" />
+            <p class="bf-error hidden text-rouge text-xs mt-1"></p>
+          </div>
+
+          <div class="mb-4">
+            <input type="tel" name="phone" required autocomplete="tel" class="bf-input w-full px-4 py-3 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-navy" placeholder="+44 7700 900000" />
+            <p class="bf-error hidden text-rouge text-xs mt-1"></p>
+          </div>
+
+          <!-- Honeypot -->
+          <div style="position:absolute;left:-9999px;" aria-hidden="true">
+            <input type="text" name="company" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <!-- Age consent -->
+          <div class="mb-6">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" name="age_consent" required class="mt-1 shrink-0" style="width:18px;height:18px;accent-color:#003359;" />
+              <span class="text-sm text-gray-600 leading-relaxed">
+                I confirm I am <strong class="text-navy">18 years of age or over</strong>.
+              </span>
+            </label>
+            <p class="bf-error hidden text-rouge text-xs mt-1"></p>
+          </div>
+
+          <button type="submit" id="booking-submit" class="w-full bg-rouge hover:bg-rougeH text-white font-bold py-4 rounded-full text-base transition-colors">
+            Confirm Free Chat
+          </button>
+
+          <p id="form-error" class="hidden text-rouge text-sm text-center mt-3"></p>
+        </form>
+
+        <!-- Success message -->
+        <div id="booking-success" class="hidden max-w-md mx-auto text-center py-8">
+          <div class="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h3 class="font-display text-2xl font-bold text-navy mb-3">You're booked!</h3>
+          <p id="success-details" class="text-gray-600 mb-4"></p>
+          <p class="text-gray-500 text-sm">Check your email for a confirmation. A bientot!</p>
+        </div>
+
+        <p class="text-gray-500 text-sm mt-6">
           Prefer to email first?
           <a href="mailto:bonjour@fluentish.co.uk"
              class="text-rouge underline underline-offset-2 hover:text-rougeH font-medium transition-colors">
@@ -352,8 +391,8 @@
           <p class="mt-5 text-blue-300 text-sm leading-relaxed max-w-xs">
             Bespoke 1-on-1 conversational French coaching for adults. Online, UK-wide.
           </p>
-          <p class="mt-2 text-blue-500 text-xs">Based in Greater Manchester. In-person sessions available locally.</p>
-          <p class="mt-4 text-blue-500 text-xs">Best learnt over a coffee. Or a glass of something.</p>
+          <p class="mt-2 text-blue-400 text-xs">Based in Greater Manchester and Paris. In-person sessions available locally.</p>
+          <p class="mt-4 text-blue-400 text-xs">Best learnt over a coffee. Or a glass of something.</p>
         </div>
         <div>
           <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Pages</h4>
@@ -369,7 +408,7 @@
           <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Get in Touch</h4>
           <ul class="space-y-3 text-sm text-blue-300">
             <li><a href="mailto:bonjour@fluentish.co.uk" class="hover:text-white transition-colors">bonjour@fluentish.co.uk</a></li>
-            <li class="text-blue-500 text-xs">Based in Greater Manchester</li>
+            <li class="text-blue-400 text-xs">Based in Greater Manchester</li>
             <li class="pt-1">
               <a href="#booking" class="inline-block bg-rouge hover:bg-rougeH text-white text-xs font-semibold px-5 py-2 rounded-full transition-colors">
                 Book Free Chat
@@ -378,7 +417,7 @@
           </ul>
         </div>
       </div>
-      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-500">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-400">
         <p>&copy; 2026 FluentISH · All rights reserved</p>
         <a href="privacy.html" class="hover:text-blue-300 transition-colors">Privacy Policy</a>
       </div>
@@ -391,11 +430,211 @@
     });
   </script>
 
+  <!-- Booking form -->
+  <script>
+  (function() {
+    var API = 'https://gutihncfxjdyxulfwtgp.supabase.co/functions/v1/booking-form';
+    var selectedSlot = null;
+    var variant = 'A';
+
+    fetch(API)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var loading = document.getElementById('slot-loading');
+        var list = document.getElementById('slot-list');
+        var errorEl = document.getElementById('slot-error');
+
+        if (!data.slots || data.slots.length === 0) {
+          loading.classList.add('hidden');
+          errorEl.textContent = 'No available slots right now. Please check back soon.';
+          errorEl.classList.remove('hidden');
+          return;
+        }
+
+        loading.classList.add('hidden');
+        list.classList.remove('hidden');
+
+        var grouped = {};
+        var dayOrder = [];
+        data.slots.forEach(function(s) {
+          if (!grouped[s.day]) { grouped[s.day] = []; dayOrder.push(s.day); }
+          grouped[s.day].push(s);
+        });
+
+        dayOrder.forEach(function(day) {
+          var dayDiv = document.createElement('div');
+          dayDiv.className = 'mb-5';
+
+          var dayLabel = document.createElement('p');
+          dayLabel.className = 'text-navy font-semibold text-sm mb-2';
+          dayLabel.textContent = day;
+          if (grouped[day].length <= 2) {
+            var badge = document.createElement('span');
+            badge.className = 'text-rouge text-xs font-semibold';
+            badge.textContent = grouped[day].length === 1 ? ' \u2014 last slot!' : ' \u2014 last few slots';
+            dayLabel.appendChild(badge);
+          }
+          dayDiv.appendChild(dayLabel);
+
+          var btnWrap = document.createElement('div');
+          btnWrap.className = 'flex flex-wrap gap-2';
+
+          grouped[day].forEach(function(slot) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'slot-btn px-5 py-2.5 border-2 border-navy text-navy rounded-full text-sm font-semibold hover:bg-navy hover:text-white transition-colors';
+            btn.textContent = slot.time;
+            btn.addEventListener('click', function() {
+              document.querySelectorAll('.slot-btn').forEach(function(b) {
+                b.classList.remove('bg-navy', 'text-white');
+              });
+              btn.classList.add('bg-navy', 'text-white');
+              selectedSlot = slot;
+
+              var form = document.getElementById('booking-form');
+              form.classList.remove('hidden');
+              document.getElementById('selected-slot-label').textContent = slot.day + ' at ' + slot.time + ' UK time';
+              form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            btnWrap.appendChild(btn);
+          });
+
+          dayDiv.appendChild(btnWrap);
+          list.appendChild(dayDiv);
+        });
+      })
+      .catch(function() {
+        document.getElementById('slot-loading').classList.add('hidden');
+        document.getElementById('slot-error').classList.remove('hidden');
+      });
+
+    var form = document.getElementById('booking-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      form.querySelectorAll('.bf-error').forEach(function(el) { el.classList.add('hidden'); el.textContent = ''; });
+      document.getElementById('form-error').classList.add('hidden');
+
+      var nameVal = form.querySelector('[name="name"]').value.trim();
+      var surnameVal = form.querySelector('[name="surname"]').value.trim();
+      var emailVal = form.querySelector('[name="email"]').value.trim();
+      var phoneVal = form.querySelector('[name="phone"]').value.trim();
+      var ageConsent = form.querySelector('[name="age_consent"]').checked;
+      var honeypot = form.querySelector('[name="company"]').value;
+
+      var valid = true;
+      if (!nameVal) { showFieldError(form.querySelector('[name="name"]'), 'Please enter your first name.'); valid = false; }
+      if (!surnameVal) { showFieldError(form.querySelector('[name="surname"]'), 'Please enter your surname.'); valid = false; }
+      if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { showFieldError(form.querySelector('[name="email"]'), 'Please enter a valid email address.'); valid = false; }
+      if (!phoneVal || phoneVal.length < 6) { showFieldError(form.querySelector('[name="phone"]'), 'Please enter your phone number.'); valid = false; }
+      if (!ageConsent) { showFieldError(form.querySelector('[name="age_consent"]'), 'You must confirm you are 18 or over.'); valid = false; }
+      if (!selectedSlot) {
+        document.getElementById('form-error').textContent = 'Please select a time slot.';
+        document.getElementById('form-error').classList.remove('hidden');
+        valid = false;
+      }
+      if (!valid) return;
+
+      var submitBtn = document.getElementById('booking-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Booking...';
+
+      fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: nameVal,
+          surname: surnameVal,
+          email: emailVal,
+          phone: phoneVal,
+          age_consent: ageConsent,
+          slot_start: selectedSlot.iso,
+          variant: variant,
+          honeypot: honeypot
+        })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.ok) {
+          if (typeof fbq === 'function') fbq('track', 'Schedule');
+
+          document.getElementById('booking-form').classList.add('hidden');
+          document.getElementById('slot-picker').classList.add('hidden');
+          var success = document.getElementById('booking-success');
+          success.classList.remove('hidden');
+          document.getElementById('success-details').textContent = data.date + ' at ' + data.time + ' UK time';
+          success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (data.error === 'slot_taken') {
+          document.getElementById('form-error').textContent = 'That slot was just taken. Please choose another time.';
+          document.getElementById('form-error').classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Confirm Free Chat';
+        } else {
+          document.getElementById('form-error').textContent = data.error || 'Something went wrong. Please try again.';
+          document.getElementById('form-error').classList.remove('hidden');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Confirm Free Chat';
+        }
+      })
+      .catch(function() {
+        document.getElementById('form-error').textContent = 'Connection error. Please try again.';
+        document.getElementById('form-error').classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Confirm Free Chat';
+      });
+    });
+
+    function showFieldError(input, msg) {
+      var container = input.closest('.mb-4') || input.closest('.mb-6');
+      var errEl = container ? container.querySelector('.bf-error') : null;
+      if (errEl) {
+        errEl.textContent = msg;
+        errEl.classList.remove('hidden');
+      }
+    }
+  })();
+  </script>
+
 <script>
 document.addEventListener('click', function(e) {
   var link = e.target.closest('a[href*="#booking"]');
-  if (link) fbq('track', 'Lead');
+  if (link && typeof fbq === 'function') fbq('track', 'Lead');
 });
 </script>
+<!-- Deferred tracking: staggered to reduce TBT -->
+<script>
+function loadTracker(fn) {
+  if ('requestIdleCallback' in window) requestIdleCallback(fn);
+  else setTimeout(fn, 1);
+}
+window.addEventListener('load', function() {
+  loadTracker(function() {
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','26628549533507941');
+    fbq('track','PageView');
+  });
+
+  setTimeout(function() {
+    loadTracker(function() {
+      var gs = document.createElement('script');
+      gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH';
+      gs.async = true;
+      document.head.appendChild(gs);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XS9D9D0XRH');
+    });
+  }, 2000);
+});
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=26628549533507941&ev=PageView&noscript=1"/></noscript>
 </body>
 </html>

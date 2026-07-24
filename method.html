@@ -5,31 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="How FluentISH works: bespoke 1-on-1 French coaching, online UK-wide. Three steps, no textbooks, real results." />
   <title>How It Works | FluentISH</title>
-  <!-- Meta Pixel Code -->
-  <script>
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
-  (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init','26628549533507941');
-  fbq('track','PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=26628549533507941&ev=PageView&noscript=1"/></noscript>
-  <!-- End Meta Pixel Code -->
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XS9D9D0XRH');
-  </script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       theme: {
@@ -50,7 +26,11 @@
       },
     }
   </script>
+  <link rel="preload" as="font" href="fonts/playfair-display.woff2" type="font/woff2" crossorigin />
+  <link rel="preload" as="font" href="fonts/inter.woff2" type="font/woff2" crossorigin />
   <style>
+    @font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(fonts/playfair-display.woff2) format('woff2'); }
+    @font-face { font-family: 'Inter'; font-style: normal; font-weight: 300 700; font-display: swap; src: url(fonts/inter.woff2) format('woff2'); }
     body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
     h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
 
@@ -348,7 +328,7 @@
         <div class="text-center mb-14">
           <p class="section-label">Questions</p>
           <h2 class="font-display text-4xl font-bold text-navy">Frequently asked</h2>
-          <p class="mt-3 text-gray-400 text-sm">And a few that aren't asked frequently, but probably should be.</p>
+          <p class="mt-3 text-gray-500 text-sm">And a few that aren't asked frequently, but probably should be.</p>
         </div>
 
         <div class="space-y-3">
@@ -466,8 +446,8 @@
           <p class="mt-5 text-blue-300 text-sm leading-relaxed max-w-xs">
             Bespoke 1-on-1 conversational French coaching for adults. Online, UK-wide.
           </p>
-          <p class="mt-2 text-blue-500 text-xs">Based in Greater Manchester. In-person sessions available locally.</p>
-          <p class="mt-4 text-blue-500 text-xs">Best learnt over a coffee. Or a glass of something.</p>
+          <p class="mt-2 text-blue-400 text-xs">Based in Greater Manchester and Paris. In-person sessions available locally.</p>
+          <p class="mt-4 text-blue-400 text-xs">Best learnt over a coffee. Or a glass of something.</p>
         </div>
         <div>
           <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Pages</h4>
@@ -483,7 +463,7 @@
           <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Get in Touch</h4>
           <ul class="space-y-3 text-sm text-blue-300">
             <li><a href="mailto:bonjour@fluentish.co.uk" class="hover:text-white transition-colors">bonjour@fluentish.co.uk</a></li>
-            <li class="text-blue-500 text-xs">Based in Greater Manchester</li>
+            <li class="text-blue-400 text-xs">Based in Greater Manchester</li>
             <li class="pt-1">
               <a href="pricing.html#booking" class="inline-block bg-rouge hover:bg-rougeH text-white text-xs font-semibold px-5 py-2 rounded-full transition-colors">
                 Book Free Chat
@@ -492,7 +472,7 @@
           </ul>
         </div>
       </div>
-      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-500">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-400">
         <p>&copy; 2026 FluentISH · All rights reserved</p>
         <a href="privacy.html" class="hover:text-blue-300 transition-colors">Privacy Policy</a>
       </div>
@@ -508,8 +488,41 @@
 <script>
 document.addEventListener('click', function(e) {
   var link = e.target.closest('a[href*="#booking"]');
-  if (link) fbq('track', 'Lead');
+  if (link && typeof fbq === 'function') fbq('track', 'Lead');
 });
 </script>
+<!-- Deferred tracking: staggered to reduce TBT -->
+<script>
+function loadTracker(fn) {
+  if ('requestIdleCallback' in window) requestIdleCallback(fn);
+  else setTimeout(fn, 1);
+}
+window.addEventListener('load', function() {
+  loadTracker(function() {
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','26628549533507941');
+    fbq('track','PageView');
+  });
+
+  setTimeout(function() {
+    loadTracker(function() {
+      var gs = document.createElement('script');
+      gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH';
+      gs.async = true;
+      document.head.appendChild(gs);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XS9D9D0XRH');
+    });
+  }, 2000);
+});
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=26628549533507941&ev=PageView&noscript=1"/></noscript>
 </body>
 </html>

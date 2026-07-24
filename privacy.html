@@ -5,31 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Privacy Policy for FluentISH. How we collect, use and protect your personal data." />
   <title>Privacy Policy | FluentISH</title>
-  <!-- Meta Pixel Code -->
-  <script>
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
-  (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init','26628549533507941');
-  fbq('track','PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=26628549533507941&ev=PageView&noscript=1"/></noscript>
-  <!-- End Meta Pixel Code -->
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XS9D9D0XRH');
-  </script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="font" href="fonts/playfair-display.woff2" type="font/woff2" crossorigin />
+  <link rel="preload" as="font" href="fonts/inter.woff2" type="font/woff2" crossorigin />
   <script>
     tailwind.config = {
       theme: {
@@ -51,6 +29,8 @@
     }
   </script>
   <style>
+    @font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(fonts/playfair-display.woff2) format('woff2'); }
+    @font-face { font-family: 'Inter'; font-style: normal; font-weight: 300 700; font-display: swap; src: url(fonts/inter.woff2) format('woff2'); }
     body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
     h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
 
@@ -172,7 +152,7 @@
           This policy explains what personal data FluentISH collects, why, how it is used,
           and what rights you have under UK data protection law.
         </p>
-        <p class="text-blue-400 text-sm mt-5">Last updated: 30 April 2026</p>
+        <p class="text-blue-400 text-sm mt-5">Last updated: 24 July 2026</p>
       </div>
     </section>
 
@@ -189,9 +169,9 @@
         </p>
         <div class="bg-sand rounded-xl p-6 mb-6 text-sm leading-7 text-gray-700">
           <strong class="text-navy block mb-1">Dan Blumenau trading as FluentISH</strong>
-          18 Catherine Street West<br />
-          Bolton<br />
-          BL6 7JY<br />
+          72 High Street<br />
+          Ashwell, Hertfordshire<br />
+          SG7 5NS<br />
           United Kingdom<br />
           <a href="mailto:bonjour@fluentish.co.uk" class="text-rouge hover:underline mt-1 block">bonjour@fluentish.co.uk</a>
         </div>
@@ -207,7 +187,7 @@
           <li><strong>Identity data:</strong> first name, last name</li>
           <li><strong>Contact data:</strong> email address, phone number</li>
           <li><strong>Communications data:</strong> the content of messages sent via email, WhatsApp or SMS</li>
-          <li><strong>Booking data:</strong> your preferred session times and scheduling history</li>
+          <li><strong>Booking data:</strong> your preferred session times, scheduling history, and age confirmation (18+)</li>
           <li><strong>Payment data:</strong> transaction records. Card details are processed directly
               by Stripe and are never seen or stored by FluentISH.</li>
           <li><strong>Marketing response data:</strong> whether you submitted an enquiry form via a
@@ -224,7 +204,7 @@
         <h2>3. How we collect your data</h2>
         <ul>
           <li>Directly from you when you complete an enquiry or lead form via a Meta advertisement</li>
-          <li>When you book a session through our booking system (Calendly or equivalent)</li>
+          <li>When you book a free chat or session through our website booking form</li>
           <li>When you contact us by email, WhatsApp or SMS</li>
           <li>When you make a payment via Stripe</li>
           <li>Through ongoing session notes created by Dan Blumenau</li>
@@ -341,17 +321,17 @@
               </tr>
               <tr>
                 <td><strong>Google LLC</strong></td>
-                <td>Client record management (Google Sheets) and website fonts</td>
+                <td>Calendar scheduling, Google Meet video calls, client record management (Google Sheets), website analytics (Google Analytics)</td>
                 <td>Processor</td>
               </tr>
               <tr>
-                <td><strong>Zoho Corporation Pvt. Ltd</strong></td>
-                <td>Email communications</td>
+                <td><strong>Supabase, Inc.</strong></td>
+                <td>Booking data storage and serverless functions</td>
                 <td>Processor</td>
               </tr>
               <tr>
-                <td><strong>Calendly LLC</strong> (or equivalent booking tool)</td>
-                <td>Session scheduling and booking</td>
+                <td><strong>Resend, Inc.</strong></td>
+                <td>Transactional email (booking confirmations and reminders)</td>
                 <td>Processor</td>
               </tr>
               <tr>
@@ -498,15 +478,15 @@
         </p>
         <ul>
           <li>
-            <strong>Google Fonts</strong> (fonts.googleapis.com, fonts.gstatic.com): loads
-            typefaces used on the site. Google's servers receive your IP address as part of
-            this request. No cookie is set by FluentISH in connection with this service.
-          </li>
-          <li>
-            <strong>Tailwind CSS CDN</strong> (cdn.tailwindcss.com): loads the site's styling
-            library. Again, your IP address is transmitted to the CDN provider.
+            <strong>Google Analytics</strong> (googletagmanager.com): measures how visitors
+            use this site. Google receives your IP address and sets cookies to distinguish
+            users and sessions.
           </li>
         </ul>
+        <p>
+          Fonts used on this site (Playfair Display and Inter) are self-hosted and do not
+          make any requests to external servers.
+        </p>
         <p>
           This website uses the <strong>Meta Pixel</strong>, a small piece of code provided
           by Meta Platforms, Inc., to measure the effectiveness of our advertising and to
@@ -517,8 +497,6 @@
           <a href="https://www.facebook.com/adpreferences" class="text-rouge hover:underline">Facebook Ad Preferences</a>
           or through the
           <a href="https://optout.aboutads.info/" class="text-rouge hover:underline">Digital Advertising Alliance opt-out</a>.
-          If a booking tool (such as Calendly) is embedded on this site, that tool may set
-          its own cookies subject to its own privacy policy.
         </p>
 
         <!-- 11. Changes -->
@@ -563,8 +541,8 @@
           <p class="mt-5 text-blue-300 text-sm leading-relaxed max-w-xs">
             Bespoke 1-on-1 conversational French coaching for adults. Online, UK-wide.
           </p>
-          <p class="mt-2 text-blue-500 text-xs">Based in Greater Manchester. In-person sessions available locally.</p>
-          <p class="mt-4 text-blue-500 text-xs">Best learnt over a coffee. Or a glass of something.</p>
+          <p class="mt-2 text-blue-400 text-xs">Based in Greater Manchester and Paris. In-person sessions available locally.</p>
+          <p class="mt-4 text-blue-400 text-xs">Best learnt over a coffee. Or a glass of something.</p>
         </div>
         <div>
           <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Pages</h4>
@@ -580,7 +558,7 @@
           <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Get in Touch</h4>
           <ul class="space-y-3 text-sm text-blue-300">
             <li><a href="mailto:bonjour@fluentish.co.uk" class="hover:text-white transition-colors">bonjour@fluentish.co.uk</a></li>
-            <li class="text-blue-500 text-xs">Based in Greater Manchester</li>
+            <li class="text-blue-400 text-xs">Based in Greater Manchester</li>
             <li class="pt-1">
               <a href="pricing.html#booking" class="inline-block bg-rouge hover:bg-rougeH text-white text-xs font-semibold px-5 py-2 rounded-full transition-colors">
                 Book Free Chat
@@ -589,7 +567,7 @@
           </ul>
         </div>
       </div>
-      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-500">
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-400">
         <p>&copy; 2026 FluentISH · All rights reserved</p>
         <a href="privacy.html" class="hover:text-blue-300 transition-colors">Privacy Policy</a>
       </div>
@@ -605,8 +583,43 @@
 <script>
 document.addEventListener('click', function(e) {
   var link = e.target.closest('a[href*="#booking"]');
-  if (link) fbq('track', 'Lead');
+  if (link && typeof fbq === 'function') fbq('track', 'Lead');
 });
 </script>
+
+<!-- Deferred tracking: staggered to reduce TBT -->
+<script>
+function loadTracker(fn) {
+  if ('requestIdleCallback' in window) requestIdleCallback(fn);
+  else setTimeout(fn, 1);
+}
+window.addEventListener('load', function() {
+  loadTracker(function() {
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','26628549533507941');
+    fbq('track','PageView');
+  });
+
+  setTimeout(function() {
+    loadTracker(function() {
+      var gs = document.createElement('script');
+      gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH';
+      gs.async = true;
+      document.head.appendChild(gs);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XS9D9D0XRH');
+    });
+  }, 2000);
+});
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=26628549533507941&ev=PageView&noscript=1"/></noscript>
+
 </body>
 </html>
