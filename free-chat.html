@@ -5,59 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Book a free 15-minute introductory call with FluentISH - bespoke 1-on-1 French coaching, online, UK-wide." />
   <title>Book a Free Chat | FluentISH</title>
-  <meta name="robots" content="noindex" />
-  <link rel="preload" as="image" href="images/home-hero-portrait.jpg" />
-  <!-- Meta Pixel Code -->
-  <script>
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
-  (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init','26628549533507941');
-  fbq('track','PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=26628549533507941&ev=PageView&noscript=1"/></noscript>
-  <!-- End Meta Pixel Code -->
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XS9D9D0XRH');
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preload" as="image" href="images/home-hero-portrait.webp" type="image/webp" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            navy:  '#003359',
-            navyD: '#002040',
-            rouge: '#C8102E',
-            rougeH:'#A50D25',
-            cyan:  '#4DD4F5',
-            sand:  '#F7F4EF',
-          },
-          fontFamily: {
-            display: ['"Playfair Display"', 'Georgia', 'serif'],
-            body:    ['Inter', 'system-ui', 'sans-serif'],
-          },
-        },
-      },
-    }
-  </script>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
   <style>
     body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
     h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
     .sticky-cta { transform: translateY(100%); transition: transform 0.3s ease; }
     .sticky-cta.visible { transform: translateY(0); }
   </style>
+  <link rel="stylesheet" href="free-chat.css" />
 </head>
 
 <body class="bg-white">
@@ -83,10 +42,13 @@
 
         <!-- Dan's photo + credential -->
         <div class="flex items-center justify-center gap-4 mb-6">
-          <img src="images/home-hero-portrait.jpg"
-               alt="Dan Blumenau, French tutor"
-               width="80" height="80"
-               class="w-20 h-20 rounded-full object-cover border-2 border-white/20" />
+          <picture>
+            <source srcset="images/home-hero-portrait.webp" type="image/webp" />
+            <img src="images/home-hero-portrait.jpg"
+                 alt="Dan Blumenau, French tutor"
+                 width="80" height="80"
+                 class="w-20 h-20 rounded-full object-cover border-2 border-white/20" />
+          </picture>
           <p class="text-blue-200 text-sm text-left leading-snug">
             <strong class="text-white">Dan Blumenau</strong><br/>
             Bilingual. Paris since 2011.<br/>
@@ -214,10 +176,14 @@
     <section class="bg-navy text-white py-14 md:py-20">
       <div class="max-w-3xl mx-auto px-6 grid md:grid-cols-5 gap-8 items-center">
         <div class="md:col-span-2">
-          <img src="images/home-philosophy-conversation.jpg"
-               alt="Dan Blumenau in conversation"
-               loading="lazy"
-               class="w-full aspect-[4/3] object-cover rounded-2xl" />
+          <picture>
+            <source srcset="images/home-philosophy-conversation.webp" type="image/webp" />
+            <img src="images/home-philosophy-conversation.jpg"
+                 alt="Dan Blumenau in conversation"
+                 loading="lazy"
+                 width="1280" height="1707"
+                 class="w-full aspect-[4/3] object-cover rounded-2xl" />
+          </picture>
         </div>
         <div class="md:col-span-3">
           <p class="text-xs font-semibold uppercase tracking-widest text-cyan mb-4">Your tutor</p>
@@ -531,6 +497,32 @@
     }
   })();
   </script>
+
+  <!-- Deferred tracking: Meta Pixel + gtag -->
+  <script>
+  window.addEventListener('load', function() {
+    // Meta Pixel
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','26628549533507941');
+    fbq('track','PageView');
+
+    // gtag
+    var gs = document.createElement('script');
+    gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH';
+    gs.async = true;
+    document.head.appendChild(gs);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XS9D9D0XRH');
+  });
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=26628549533507941&ev=PageView&noscript=1"/></noscript>
 
 </body>
 </html>
