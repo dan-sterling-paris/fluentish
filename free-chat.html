@@ -6,12 +6,11 @@
   <meta name="description" content="Book a free 15-minute introductory call with FluentISH - bespoke 1-on-1 French coaching, online, UK-wide." />
   <title>Book a Free Chat | FluentISH</title>
   <link rel="preload" as="image" href="images/home-hero-portrait.webp" type="image/webp" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" /></noscript>
-  <link rel="preload" as="font" href="https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgEM86xRbPQ.woff2" type="font/woff2" crossorigin />
+  <link rel="preload" as="font" href="fonts/playfair-display.woff2" type="font/woff2" crossorigin />
+  <link rel="preload" as="font" href="fonts/inter.woff2" type="font/woff2" crossorigin />
   <style>
+    @font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(fonts/playfair-display.woff2) format('woff2'); }
+    @font-face { font-family: 'Inter'; font-style: normal; font-weight: 300 700; font-display: swap; src: url(fonts/inter.woff2) format('woff2'); }
     body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
     h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
     .sticky-cta { transform: translateY(100%); transition: transform 0.3s ease; }
@@ -38,7 +37,7 @@
       <div class="max-w-3xl mx-auto px-6 text-center">
         <p class="text-xs font-semibold uppercase tracking-widest text-cyan mb-5">1-on-1 French coaching, online, UK-wide</p>
         <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
-          A free conversation<br/>about where your<br/><em class="text-rouge not-italic">French</em> could go.
+          A free conversation<br/>about where your<br/><em class="text-white not-italic">French</em> could go.
         </h1>
 
         <!-- Dan's photo + credential -->
@@ -73,7 +72,7 @@
 
     <!-- ===================== CREDIBILITY STRIP ===================== -->
     <section class="bg-sand border-y border-stone-200">
-      <div class="max-w-3xl mx-auto px-6 py-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs tracking-widest uppercase font-semibold text-gray-400">
+      <div class="max-w-3xl mx-auto px-6 py-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs tracking-widest uppercase font-semibold text-gray-500">
         <span>Fully bilingual</span>
         <span class="hidden sm:block w-px h-3 bg-gray-300"></span>
         <span>Paris since 2011</span>
@@ -168,7 +167,7 @@
           <a href="#booking" class="book-cta inline-block bg-rouge hover:bg-rougeH text-white font-bold px-8 py-3.5 rounded-full text-base transition-colors cursor-pointer">
             Find out if there's an opening &darr;
           </a>
-          <p class="text-gray-400 text-xs mt-3">Availability is limited. The free chat is the fastest way to check.</p>
+          <p class="text-gray-500 text-xs mt-3">Availability is limited. The free chat is the fastest way to check.</p>
         </div>
       </div>
     </section>
@@ -218,16 +217,16 @@
           Choose a slot below and we'll have a quick, no-pressure chat about your goals
           and whether FluentISH is the right fit.
         </p>
-        <p class="text-gray-400 text-sm mb-2">
+        <p class="text-gray-500 text-sm mb-2">
           No credit card. No obligation. No follow-up emails if you decide it's not for you.
         </p>
-        <p class="text-gray-400 text-sm mb-8">
+        <p class="text-gray-500 text-sm mb-8">
           If we go ahead: &pound;50/hour, 10% off blocks of 4+ lessons, paid securely via Stripe.
         </p>
 
         <!-- Slot picker -->
         <div id="slot-picker" class="max-w-md mx-auto mb-8">
-          <div id="slot-loading" class="text-gray-400 py-8">Loading available times...</div>
+          <div id="slot-loading" class="text-gray-500 py-8">Loading available times...</div>
           <div id="slot-list" class="hidden space-y-3 text-left"></div>
           <div id="slot-error" class="hidden text-rouge py-8">Unable to load times. Please refresh and try again.</div>
         </div>
@@ -295,7 +294,7 @@
 
   <!-- Footer -->
   <footer class="bg-navyD text-white py-8 pb-24 md:pb-8">
-    <div class="max-w-3xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-500">
+    <div class="max-w-3xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-400">
       <p>&copy; 2026 FluentISH &middot; All rights reserved</p>
       <a href="privacy.html" class="hover:text-blue-300 transition-colors">Privacy Policy</a>
     </div>
