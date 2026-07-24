@@ -7,10 +7,11 @@ const GOOGLE_SERVICE_ACCOUNT_JSON = Deno.env.get("GOOGLE_SERVICE_ACCOUNT_JSON") 
 const GOOGLE_CALENDAR_ID = Deno.env.get("GOOGLE_CALENDAR_ID") ?? "";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 
-// Discovery call availability: 10:00-12:00 UK time, Mon-Fri
+// Discovery call availability: 10:00-13:00 UK time, Mon-Fri
 const SLOT_START_HOUR = 10;
 const SLOT_END_HOUR = 12;
-const SLOT_DURATION_MINS = 30; // 30-min buffer for a 15-min call
+const SLOT_DURATION_MINS = 15;
+const BUFFER_MINS = 30; // min gap required before/after any other appointment
 const MAX_SLOTS = 10;
 const MAX_DAYS_AHEAD = 20;
 
@@ -150,10 +151,11 @@ function generateSlotsForDay(
       ));
       const slotEndUtc = new Date(slotStartUtc.getTime() + SLOT_DURATION_MINS * 60 * 1000);
 
-      // Check if slot overlaps with any busy period
+      // Check if slot overlaps with any busy period (including 30-min buffer)
+      const bufferMs = BUFFER_MINS * 60 * 1000;
       const isBusy = busyPeriods.some((bp) => {
-        const bStart = new Date(bp.start).getTime();
-        const bEnd = new Date(bp.end).getTime();
+        const bStart = new Date(bp.start).getTime() - bufferMs;
+        const bEnd = new Date(bp.end).getTime() + bufferMs;
         return slotStartUtc.getTime() < bEnd && slotEndUtc.getTime() > bStart;
       });
 
@@ -308,14 +310,14 @@ async function handleGetSlots(): Promise<Response> {
     const dateStr = candidate.toISOString().slice(0, 10);
     const ukOffset = getUkOffsetHours(candidate);
 
-    // Query window: 10:00-12:00 UK time in UTC
+    // Query window: slot range +/- buffer to catch nearby appointments
     const dayStartUtc = new Date(Date.UTC(
       candidate.getUTCFullYear(), candidate.getUTCMonth(), candidate.getUTCDate(),
-      SLOT_START_HOUR - ukOffset, 0
+      SLOT_START_HOUR - ukOffset, -BUFFER_MINS
     ));
     const dayEndUtc = new Date(Date.UTC(
       candidate.getUTCFullYear(), candidate.getUTCMonth(), candidate.getUTCDate(),
-      SLOT_END_HOUR - ukOffset, 0
+      SLOT_END_HOUR - ukOffset, BUFFER_MINS
     ));
 
     const busy = await getBusyPeriods(
@@ -361,13 +363,15 @@ async function handleBooking(req: Request): Promise<Response> {
   const slotDate = new Date(slot_start);
   if (isNaN(slotDate.getTime())) return err("Invalid slot time.", 400);
 
-  // Re-check availability (race condition prevention)
+  // Re-check availability (race condition prevention, including 30-min buffer)
   const accessToken = await getGoogleAccessToken();
-  const slotEnd = new Date(slotDate.getTime() + SLOT_DURATION_MINS * 60 * 1000);
+  const bufferMs = BUFFER_MINS * 60 * 1000;
+  const checkStart = new Date(slotDate.getTime() - bufferMs);
+  const checkEnd = new Date(slotDate.getTime() + SLOT_DURATION_MINS * 60 * 1000 + bufferMs);
   const busy = await getBusyPeriods(
     accessToken,
-    slotDate.toISOString(),
-    slotEnd.toISOString()
+    checkStart.toISOString(),
+    checkEnd.toISOString()
   );
 
   if (busy.length > 0) {

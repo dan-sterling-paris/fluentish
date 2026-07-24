@@ -373,6 +373,12 @@
           var dayLabel = document.createElement('p');
           dayLabel.className = 'text-navy font-semibold text-sm mb-2';
           dayLabel.textContent = day;
+          if (grouped[day].length <= 2) {
+            var badge = document.createElement('span');
+            badge.className = 'text-rouge text-xs font-semibold';
+            badge.textContent = grouped[day].length === 1 ? ' — last slot!' : ' — last few slots';
+            dayLabel.appendChild(badge);
+          }
           dayDiv.appendChild(dayLabel);
 
           var btnWrap = document.createElement('div');
