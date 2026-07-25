@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -30,6 +31,20 @@
   <style>
     body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
     h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+    [x-cloak] { display: none !important; }
+
+    .tab-btn {
+      padding: 0.9rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-bottom: 3px solid transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
+      color: #6b7280;
+    }
+    .tab-btn:hover { color: #003359; }
+    .tab-btn.active { color: #003359; border-bottom-color: #003359; }
 
     /* Vocab table rows */
     .vocab-row {
@@ -45,7 +60,7 @@
     .vocab-pron { font-style: italic; color: #8a9ab0; font-size: 0.8rem; padding: 0 0.5rem; }
     .vocab-en   { color: #6b7280; font-size: 0.85rem; }
 
-    /* Phrase / script rows */
+    /* Phrase rows */
     .phrase-row {
       border-bottom: 1px solid #f0f0f0;
       padding: 0.75rem 0;
@@ -74,239 +89,807 @@
     /* Card */
     .card { background: white; border: 1px solid #e8ecf0; border-radius: 1rem; padding: 1.5rem; }
 
+    /* Toolkit table */
+    .toolkit-row { display: grid; grid-template-columns: 1.2fr 1fr 1.4fr; gap: 0; border-bottom: 1px solid #f0f0f0; padding: 0.65rem 0; align-items: baseline; }
+    .toolkit-row:last-child { border-bottom: none; }
+
     /* Lesson header strip */
     .lesson-strip { background: #003359; color: white; border-radius: 0.75rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
     .lesson-strip .num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #4DD4F5; }
     .lesson-strip h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; margin-top: 2px; }
     .lesson-strip .meta { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
 
-    /* Script step number */
-    .script-num {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 1.35rem; height: 1.35rem; border-radius: 999px;
-      background: #003359; color: white; font-size: 0.68rem; font-weight: 700;
-      flex-shrink: 0; margin-right: 0.65rem;
+    /* Technique card */
+    .technique-step {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.5rem 0;
     }
-    .script-row { display: flex; align-items: flex-start; border-bottom: 1px solid #f0f0f0; padding: 0.65rem 0; }
-    .script-row:last-child { border-bottom: none; }
+    .technique-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.5rem; height: 1.5rem; border-radius: 999px;
+      background: #4DD4F5; color: #003359; font-size: 0.7rem; font-weight: 700;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen" x-data="{ tab: 'all' }" x-cloak>
 
   <!-- Header -->
   <header class="bg-navy text-white">
-    <div class="max-w-3xl mx-auto px-6 py-6 flex items-end justify-between gap-4">
+    <div class="max-w-4xl mx-auto px-6 py-6 flex items-end justify-between gap-4">
       <div>
         <p class="text-xs font-semibold uppercase tracking-widest" style="color:#4DD4F5;">FluentISH</p>
-        <h1 class="font-display text-2xl font-bold mt-1">Dawn</h1>
+        <h1 class="font-display text-2xl font-bold mt-1">Dawn's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">Lesson 1</p>
-        <p class="text-xs text-blue-400 mt-0.5">17 July 2026</p>
+        <p class="text-sm text-blue-200 font-medium">2 lessons</p>
+        <p class="text-xs text-blue-400 mt-0.5">Farm, horses &amp; writing</p>
       </div>
     </div>
   </header>
 
-  <main class="max-w-3xl mx-auto px-6 py-8 space-y-6">
-
-    <!-- Lesson strip -->
-    <div class="lesson-strip">
-      <div class="num">Lesson 1 &middot; 17 July 2026</div>
-      <h2>Finding Your Voice</h2>
-      <div class="meta">Accent fundamentals &middot; Your personal script &middot; Farm, horses &amp; family</div>
+  <!-- Tab nav -->
+  <div class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-4xl mx-auto px-6 flex overflow-x-auto">
+      <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
+      <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
+      <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2 &#10022;</button>
     </div>
+  </div>
 
-    <!-- Welcome note -->
-    <div class="card">
-      <span class="section-label">Where We Started</span>
-      <p class="text-sm text-gray-600 leading-relaxed">
-        First proper lesson done! We started with a quick accent test, then spent the rest of the session building
-        <em>your</em> first script: a little run of French about you, the farm, your horses and James, that we
-        drilled until it started coming out on its own. That's the method: talk about what you actually care about,
-        repeat it until it's automatic, and let the grammar look after itself.
-      </p>
-    </div>
+  <main class="max-w-4xl mx-auto px-6 py-8 space-y-6">
 
-    <!-- Accent fundamentals -->
-    <div class="card">
-      <span class="section-label">Accent Fundamentals</span>
-      <p class="text-sm text-gray-400 mb-4 italic">Your Welsh vowels are already doing you favours here: that rounded mouth shape is closer to French than flat English is. The main habit to build: relax the R and keep sounds further back in the mouth.</p>
 
-      <div class="phrase-row">
-        <div class="phrase-fr">Merci beaucoup</div>
-        <div class="phrase-pron">mair-see bo-koo</div>
-        <div class="phrase-en">Thank you very much</div>
-      </div>
-      <p class="text-xs text-gray-400 italic -mt-1">Watch the "beaucoup": rush the vowels and it drifts toward two words you really don't want to say to a waiter. Keep it deep and round: bo&#8203;-koo, not bo-kew.</p>
-    </div>
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: EVERYTHING                           -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'all'" class="space-y-6">
 
-    <!-- Key Phrases from the lesson -->
-    <div class="card">
-      <span class="section-label">Key Phrases</span>
+      <!-- Full Script -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Your Script: Learn This Off By Heart</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          Say it out loud. Don't memorise it off the page. If the horse names
+          break your rhythm, skip them. Flow beats detail.
+        </p>
 
-      <div class="phrase-row">
-        <div class="phrase-fr">Je suis passionn&eacute;e par&hellip;</div>
-        <div class="phrase-pron">zhuh swee pass-yon-ay par</div>
-        <div class="phrase-en">I'm passionate about&hellip;</div>
-      </div>
-
-      <div class="phrase-row">
-        <div class="phrase-fr">Je vis &agrave; la ferme</div>
-        <div class="phrase-pron">zhuh vee ah la fairm</div>
-        <div class="phrase-en">I live on a farm</div>
-      </div>
-
-      <div class="phrase-row">
-        <div class="phrase-fr">Le monde &eacute;questre</div>
-        <div class="phrase-pron">luh mond ay-kestr</div>
-        <div class="phrase-en">The equestrian world</div>
-      </div>
-
-      <div class="phrase-row">
-        <div class="phrase-fr">Ils s'appellent&hellip;</div>
-        <div class="phrase-pron">eel sa-pel</div>
-        <div class="phrase-en">They're called&hellip; (for a list of names)</div>
-      </div>
-
-      <div class="phrase-row">
-        <div class="phrase-fr">Mince !</div>
-        <div class="phrase-pron">manss</div>
-        <div class="phrase-en">Oops! / Drat! The polite option. There are ruder versions if you want them, just ask.</div>
-      </div>
-    </div>
-
-    <!-- Vocabulary -->
-    <div class="card">
-      <span class="section-label">Vocabulary</span>
-
-      <h3 class="font-display text-base font-bold text-navy mb-3">Farm &amp; Horses</h3>
-      <div class="vocab-row">
-        <span class="vocab-fr">Un cheval</span>
-        <span class="vocab-pron">shuh-val</span>
-        <span class="vocab-en">A horse</span>
-      </div>
-      <div class="vocab-row">
-        <span class="vocab-fr">Des chevaux</span>
-        <span class="vocab-pron">day shuh-vo</span>
-        <span class="vocab-en">Horses (plural, irregular!)</span>
-      </div>
-      <div class="vocab-row">
-        <span class="vocab-fr">Une ferme</span>
-        <span class="vocab-pron">oon fairm</span>
-        <span class="vocab-en">A farm</span>
-      </div>
-      <div class="vocab-row">
-        <span class="vocab-fr">Un fils</span>
-        <span class="vocab-pron">un fees</span>
-        <span class="vocab-en">A son (the final S is pronounced, unusually for French)</span>
+        <div class="phrase-row">
+          <div class="phrase-fr">Bonjour !</div>
+          <div class="phrase-pron">bon-zhoor</div>
+          <div class="phrase-en">Hello!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je m'appelle Dawn.</div>
+          <div class="phrase-pron">zhuh ma-pel Dawn</div>
+          <div class="phrase-en">My name's Dawn.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vis &agrave; la ferme et je suis passionn&eacute;e par le monde &eacute;questre.</div>
+          <div class="phrase-pron">zhuh vee ah la fairm ay zhuh swee pass-yon-ay par luh mond ay-kestr</div>
+          <div class="phrase-en">I live on a farm and I'm passionate about the equestrian world.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai quatre chevaux et ils s'appellent Raven, Timothy, Alfie et Lily.</div>
+          <div class="phrase-pron">zhay katr shuh-vo ay eel sa-pel Raven, Timothy, Alfie ay Lily</div>
+          <div class="phrase-en">I have four horses and they're called Raven, Timothy, Alfie and Lily.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Mince, j'ai oubli&eacute; ! J'ai aussi un fils qui s'appelle James !</div>
+          <div class="phrase-pron">manss, zhay oo-blee-ay ! zhay oh-see un fees kee sa-pel James</div>
+          <div class="phrase-en">Oops, I forgot! I've also got a son called James!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">D'ailleurs, je suis &eacute;crivaine.</div>
+          <div class="phrase-pron">dye-yur, zhuh swee ay-kree-ven</div>
+          <div class="phrase-en">By the way, I'm a writer.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'&eacute;cris la chick lit, &ccedil;a veut dire la litt&eacute;rature f&eacute;minine.</div>
+          <div class="phrase-pron">zhay-kree la chick lit, sa vuh deer la lee-tay-ra-toor fay-mee-neen</div>
+          <div class="phrase-en">I write chick lit, that means women's fiction.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai &eacute;crit quatre livres.</div>
+          <div class="phrase-pron">zhay ay-kree katr leevr</div>
+          <div class="phrase-en">I've written four books.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On me consid&egrave;re un peu comme la prochaine JK Rowling !</div>
+          <div class="phrase-pron">on muh kon-see-dair un puh kom la pro-shen JK Rowling</div>
+          <div class="phrase-en">People consider me a bit like the next JK Rowling!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je rigole !</div>
+          <div class="phrase-pron">zhuh ree-gol</div>
+          <div class="phrase-en">I'm joking!</div>
+        </div>
       </div>
 
-      <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Sounding Natural</h3>
-      <div class="vocab-row">
-        <span class="vocab-fr">Un souvenir</span>
-        <span class="vocab-pron">un soo-vuh-neer</span>
-        <span class="vocab-en">A memory</span>
-      </div>
-      <div class="vocab-row">
-        <span class="vocab-fr">Un oubli</span>
-        <span class="vocab-pron">un oo-blee</span>
-        <span class="vocab-en">A forgotten thing: the opposite of a souvenir</span>
-      </div>
-      <div class="vocab-row">
-        <span class="vocab-fr">J'ai oubli&eacute;</span>
-        <span class="vocab-pron">zhay oo-blee-ay</span>
-        <span class="vocab-en">I forgot</span>
+      <!-- Get out of jail cards -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">Get-Out-of-Jail Cards</span>
+        <p class="text-sm text-gray-400 mb-4 italic">Keep these loaded at all times. When you're stuck mid-conversation, reach for one instead of freezing up.</p>
+
+        <div class="toolkit-row">
+          <div class="vocab-fr">Comment dire&hellip;</div>
+          <div class="vocab-pron">ko-mon deer</div>
+          <div class="vocab-en">How can I say this&hellip; (buys you time)</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Pardon ?</div>
+          <div class="vocab-pron">par-don</div>
+          <div class="vocab-en">Sorry? / I didn't catch that</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Je rigole !</div>
+          <div class="vocab-pron">zhuh ree-gol</div>
+          <div class="vocab-en">I'm joking! (handy after the JK Rowling line)</div>
+        </div>
       </div>
 
-      <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Greetings &amp; Register</h3>
-      <div class="vocab-row">
-        <span class="vocab-fr">Bonjour</span>
-        <span class="vocab-pron">bon-zhoor</span>
-        <span class="vocab-en">Hello: shops, strangers, anyone you don't know well</span>
-      </div>
-      <div class="vocab-row">
-        <span class="vocab-fr">Salut</span>
-        <span class="vocab-pron">sa-loo</span>
-        <span class="vocab-en">Hi: friends, casual</span>
-      </div>
-      <div class="vocab-row">
-        <span class="vocab-fr">Coucou</span>
-        <span class="vocab-pron">koo-koo</span>
-        <span class="vocab-en">Hiya: close friends, kids, very affectionate</span>
-      </div>
-    </div>
+      <!-- Key Phrases -->
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
 
-    <!-- Culture note -->
-    <div class="card">
-      <span class="section-label">A Little Etymology</span>
-      <div class="phrase-row">
-        <div class="phrase-fr">Un compagnon</div>
-        <div class="phrase-pron">un kom-pan-yon</div>
-        <div class="phrase-en">A companion</div>
-      </div>
-      <p class="text-sm text-gray-600 leading-relaxed mt-2">
-        Com- (with) + pain (bread): a companion is literally someone you share bread with. A lot of French
-        vocabulary is hiding in plain sight like this once you know where to look for the English cousin underneath
-        the accent.
-      </p>
-      <p class="text-sm text-gray-400 italic mt-4">
-        Also: if you ever see a bottle of "La Vieille Ferme" (the rooster label) in the supermarket, now you
-        know exactly what it means. The Old Farm.
-      </p>
-    </div>
+        <h3 class="font-display text-base font-bold text-navy mb-3">About Yourself</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis passionn&eacute;e par&hellip;</div>
+          <div class="phrase-pron">zhuh swee pass-yon-ay par</div>
+          <div class="phrase-en">I'm passionate about&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vis &agrave; la ferme</div>
+          <div class="phrase-pron">zhuh vee ah la fairm</div>
+          <div class="phrase-en">I live on a farm</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Le monde &eacute;questre</div>
+          <div class="phrase-pron">luh mond ay-kestr</div>
+          <div class="phrase-en">The equestrian world</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Ils s'appellent&hellip;</div>
+          <div class="phrase-pron">eel sa-pel</div>
+          <div class="phrase-en">They're called&hellip; (for a list of names)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Mince !</div>
+          <div class="phrase-pron">manss</div>
+          <div class="phrase-en">Oops! / Drat! The polite option.</div>
+        </div>
 
-    <!-- Your Script -->
-    <div class="card" style="border-color: #C8102E; border-width: 2px;">
-      <span class="section-label">Your Script: Learn This Off By Heart</span>
-      <p class="text-sm text-gray-400 italic mb-4">
-        This is the patter we built together. Order doesn't matter, hitting every beat does. Say it out loud a
-        few times before bed. Repetition and sleep do the rest.
-      </p>
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">About Your Writing</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">D'ailleurs, je suis &eacute;crivaine.</div>
+          <div class="phrase-pron">dye-yur, zhuh swee ay-kree-ven</div>
+          <div class="phrase-en">By the way, I'm a writer.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'&eacute;cris la chick lit, &ccedil;a veut dire la litt&eacute;rature f&eacute;minine.</div>
+          <div class="phrase-pron">zhay-kree la chick lit, sa vuh deer la lee-tay-ra-toor fay-mee-neen</div>
+          <div class="phrase-en">I write chick lit, that means women's fiction.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai &eacute;crit quatre livres.</div>
+          <div class="phrase-pron">zhay ay-kree katr leevr</div>
+          <div class="phrase-en">I've written four books.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On me consid&egrave;re un peu comme&hellip;</div>
+          <div class="phrase-pron">on muh kon-see-dair un puh kom</div>
+          <div class="phrase-en">People consider me a bit like&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est-&agrave;-dire&hellip; / &Ccedil;a veut dire&hellip;</div>
+          <div class="phrase-pron">set-ah-deer / sa vuh deer</div>
+          <div class="phrase-en">That is to say&hellip; / That means&hellip;</div>
+        </div>
+      </div>
 
-      <div class="phrase-row">
-        <div class="phrase-fr">Bonjour !</div>
-        <div class="phrase-pron">bon-zhoor</div>
-        <div class="phrase-en">Hello!</div>
-      </div>
-      <div class="phrase-row">
-        <div class="phrase-fr">Je m'appelle Dawn.</div>
-        <div class="phrase-pron">zhuh ma-pel Dawn</div>
-        <div class="phrase-en">My name's Dawn.</div>
-      </div>
-      <div class="phrase-row">
-        <div class="phrase-fr">Je vis &agrave; la ferme et je suis passionn&eacute;e par le monde &eacute;questre.</div>
-        <div class="phrase-pron">zhuh vee ah la fairm ay zhuh swee pass-yon-ay par luh mond ay-kestr</div>
-        <div class="phrase-en">I live on a farm and I'm passionate about the equestrian world.</div>
-      </div>
-      <div class="phrase-row">
-        <div class="phrase-fr">J'ai quatre chevaux et ils s'appellent Raven, Timothy, Alfie et Lily.</div>
-        <div class="phrase-pron">zhay katr shuh-vo ay eel sa-pel Raven, Timothy, Alfie ay Lily</div>
-        <div class="phrase-en">I have four horses and they're called Raven, Timothy, Alfie and Lily.</div>
-      </div>
-      <div class="phrase-row">
-        <div class="phrase-fr">Mince, j'ai oubli&eacute; ! J'ai aussi un fils qui s'appelle James !</div>
-        <div class="phrase-pron">manss, zhay oo-blee-ay ! zhay oh-see un fees kee sa-pel James</div>
-        <div class="phrase-en">Oops, I forgot! I've also got a son called James!</div>
-      </div>
-    </div>
+      <!-- Vocabulary dictionary -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
 
-    <!-- Before next lesson -->
-    <div class="card">
-      <span class="section-label">Before Next Lesson</span>
-      <p class="text-sm text-gray-600 leading-relaxed">
-        No pressure and no memorising with flashcards. Just say the script out loud a handful of times when
-        you think of it. It'll feel clunky tonight and noticeably less clunky by Friday. Next time: stretching the
-        script further (where you live, what you're aiming for in France) and starting to handle being interrupted
-        mid-sentence, which is most of what real conversation actually is.
-      </p>
-      <p class="text-xs text-gray-400 mt-4">Next lesson: Friday 24 July.</p>
-    </div>
+        <h3 class="font-display text-base font-bold text-navy mb-3">Farm &amp; Horses</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un cheval</span>
+          <span class="vocab-pron">shuh-val</span>
+          <span class="vocab-en">A horse</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des chevaux</span>
+          <span class="vocab-pron">day shuh-vo</span>
+          <span class="vocab-en">Horses (plural, irregular!)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Une ferme</span>
+          <span class="vocab-pron">oon fairm</span>
+          <span class="vocab-en">A farm</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un fils</span>
+          <span class="vocab-pron">un fees</span>
+          <span class="vocab-en">A son (the final S is pronounced, unusually for French)</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Writing &amp; Literature</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Une &eacute;crivaine</span>
+          <span class="vocab-pron">oon ay-kree-ven</span>
+          <span class="vocab-en">A writer (feminine, the one you want)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un roman</span>
+          <span class="vocab-pron">un ro-man</span>
+          <span class="vocab-en">A novel</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un livre</span>
+          <span class="vocab-pron">un leevr</span>
+          <span class="vocab-en">A book</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un nom de plume</span>
+          <span class="vocab-pron">un nom duh ploom</span>
+          <span class="vocab-en">A pen name (plume = feather, as in a quill)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">La litt&eacute;rature f&eacute;minine</span>
+          <span class="vocab-pron">la lee-tay-ra-toor fay-mee-neen</span>
+          <span class="vocab-en">Women's fiction / chick lit</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Verbs: &Eacute;crire (to write)</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">J'&eacute;cris</span>
+          <span class="vocab-pron">zhay-kree</span>
+          <span class="vocab-en">I write (present). Watch the nasal vowel: not "glace"!</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">J'ai &eacute;crit</span>
+          <span class="vocab-pron">zhay ay-kree</span>
+          <span class="vocab-en">I wrote / I have written (past). Sounds nearly the same spoken.</span>
+        </div>
+        <p class="text-xs text-gray-400 italic mt-2">The spelling changes (S &rarr; T at the end) but the pronunciation barely does. When it's spoken, you don't have to worry about which one you're using.</p>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Sounding Natural</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un souvenir</span>
+          <span class="vocab-pron">un soo-vuh-neer</span>
+          <span class="vocab-en">A memory</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un oubli</span>
+          <span class="vocab-pron">un oo-blee</span>
+          <span class="vocab-en">A forgotten thing: the opposite of a souvenir</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">J'ai oubli&eacute;</span>
+          <span class="vocab-pron">zhay oo-blee-ay</span>
+          <span class="vocab-en">I forgot</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">D'ailleurs</span>
+          <span class="vocab-pron">dye-yur</span>
+          <span class="vocab-en">By the way / incidentally (great for changing subject)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">On</span>
+          <span class="vocab-pron">on</span>
+          <span class="vocab-en">"We" in casual speech (replaces nous). On va &agrave; Paris = we're going to Paris.</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Concr&eacute;tiser</span>
+          <span class="vocab-pron">kon-kray-tee-zay</span>
+          <span class="vocab-en">To make something concrete / nail it down</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Greetings &amp; Register</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Bonjour</span>
+          <span class="vocab-pron">bon-zhoor</span>
+          <span class="vocab-en">Hello: shops, strangers, anyone you don't know well</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Salut</span>
+          <span class="vocab-pron">sa-loo</span>
+          <span class="vocab-en">Hi: friends, casual</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Coucou</span>
+          <span class="vocab-pron">koo-koo</span>
+          <span class="vocab-en">Hiya: close friends, kids, very affectionate</span>
+        </div>
+      </div>
+
+      <!-- Sounding Natural -->
+      <div class="card">
+        <span class="section-label">Sounding Natural</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Accent fundamentals</h3>
+        <p class="text-sm text-gray-400 mb-4 italic">Your Welsh vowels are already doing you favours: that rounded mouth shape is closer to French than flat English is. The main habit to build: relax the R and keep sounds further back in the mouth.</p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Merci beaucoup</div>
+          <div class="phrase-pron">mair-see bo-koo</div>
+          <div class="phrase-en">Thank you very much</div>
+        </div>
+        <p class="text-xs text-gray-400 italic -mt-1">Watch the "beaucoup": rush the vowels and it drifts toward two words you really don't want to say to a waiter. Keep it deep and round: bo&#8203;-koo, not bo-kew.</p>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The "On" Trick</h3>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          In textbooks, "we" is <em>nous</em>. In real life, almost nobody says <em>nous</em> in casual conversation.
+          The French say <strong>on</strong> instead. <em>On va &agrave; Paris</em> (we're going to Paris), <em>on mange</em>
+          (we're eating). It also works as a vague "people" or "one": <em>on me consid&egrave;re</em> (people consider me).
+          One word, two jobs, and it makes you sound immediately less like a textbook.
+        </p>
+      </div>
+
+      <!-- Etymology -->
+      <div class="card">
+        <span class="section-label">A Little Etymology</span>
+        <div class="phrase-row">
+          <div class="phrase-fr">Un compagnon</div>
+          <div class="phrase-pron">un kom-pan-yon</div>
+          <div class="phrase-en">A companion</div>
+        </div>
+        <p class="text-sm text-gray-600 leading-relaxed mt-2">
+          Com- (with) + pain (bread): a companion is literally someone you share bread with. A lot of French
+          vocabulary is hiding in plain sight like this once you know where to look for the English cousin underneath
+          the accent.
+        </p>
+        <p class="text-sm text-gray-400 italic mt-4">
+          Also: if you ever see a bottle of "La Vieille Ferme" (the rooster label) in the supermarket, now you
+          know exactly what it means. The Old Farm.
+        </p>
+      </div>
+
+    </div><!-- /all -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 1                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l1'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 1 &middot; 17 July 2026</div>
+        <h2>Finding Your Voice</h2>
+        <div class="meta">Accent fundamentals &middot; Your personal script &middot; Farm, horses &amp; family</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          First proper lesson done! We started with a quick accent test, then spent the rest of the session building
+          <em>your</em> first script: a little run of French about you, the farm, your horses and James, that we
+          drilled until it started coming out on its own. That's the method: talk about what you actually care about,
+          repeat it until it's automatic, and let the grammar look after itself.
+        </p>
+      </div>
+
+      <!-- Accent fundamentals -->
+      <div class="card">
+        <span class="section-label">Accent Fundamentals</span>
+        <p class="text-sm text-gray-400 mb-4 italic">Your Welsh vowels are already doing you favours here: that rounded mouth shape is closer to French than flat English is. The main habit to build: relax the R and keep sounds further back in the mouth.</p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Merci beaucoup</div>
+          <div class="phrase-pron">mair-see bo-koo</div>
+          <div class="phrase-en">Thank you very much</div>
+        </div>
+        <p class="text-xs text-gray-400 italic -mt-1">Watch the "beaucoup": rush the vowels and it drifts toward two words you really don't want to say to a waiter. Keep it deep and round: bo&#8203;-koo, not bo-kew.</p>
+      </div>
+
+      <!-- Key Phrases -->
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis passionn&eacute;e par&hellip;</div>
+          <div class="phrase-pron">zhuh swee pass-yon-ay par</div>
+          <div class="phrase-en">I'm passionate about&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vis &agrave; la ferme</div>
+          <div class="phrase-pron">zhuh vee ah la fairm</div>
+          <div class="phrase-en">I live on a farm</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Le monde &eacute;questre</div>
+          <div class="phrase-pron">luh mond ay-kestr</div>
+          <div class="phrase-en">The equestrian world</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Ils s'appellent&hellip;</div>
+          <div class="phrase-pron">eel sa-pel</div>
+          <div class="phrase-en">They're called&hellip; (for a list of names)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Mince !</div>
+          <div class="phrase-pron">manss</div>
+          <div class="phrase-en">Oops! / Drat! The polite option. There are ruder versions if you want them, just ask.</div>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Farm &amp; Horses</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un cheval</span>
+          <span class="vocab-pron">shuh-val</span>
+          <span class="vocab-en">A horse</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des chevaux</span>
+          <span class="vocab-pron">day shuh-vo</span>
+          <span class="vocab-en">Horses (plural, irregular!)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Une ferme</span>
+          <span class="vocab-pron">oon fairm</span>
+          <span class="vocab-en">A farm</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un fils</span>
+          <span class="vocab-pron">un fees</span>
+          <span class="vocab-en">A son (the final S is pronounced, unusually for French)</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Sounding Natural</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un souvenir</span>
+          <span class="vocab-pron">un soo-vuh-neer</span>
+          <span class="vocab-en">A memory</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un oubli</span>
+          <span class="vocab-pron">un oo-blee</span>
+          <span class="vocab-en">A forgotten thing: the opposite of a souvenir</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">J'ai oubli&eacute;</span>
+          <span class="vocab-pron">zhay oo-blee-ay</span>
+          <span class="vocab-en">I forgot</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Greetings &amp; Register</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Bonjour</span>
+          <span class="vocab-pron">bon-zhoor</span>
+          <span class="vocab-en">Hello: shops, strangers, anyone you don't know well</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Salut</span>
+          <span class="vocab-pron">sa-loo</span>
+          <span class="vocab-en">Hi: friends, casual</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Coucou</span>
+          <span class="vocab-pron">koo-koo</span>
+          <span class="vocab-en">Hiya: close friends, kids, very affectionate</span>
+        </div>
+      </div>
+
+      <!-- Culture note -->
+      <div class="card">
+        <span class="section-label">A Little Etymology</span>
+        <div class="phrase-row">
+          <div class="phrase-fr">Un compagnon</div>
+          <div class="phrase-pron">un kom-pan-yon</div>
+          <div class="phrase-en">A companion</div>
+        </div>
+        <p class="text-sm text-gray-600 leading-relaxed mt-2">
+          Com- (with) + pain (bread): a companion is literally someone you share bread with. A lot of French
+          vocabulary is hiding in plain sight like this once you know where to look for the English cousin underneath
+          the accent.
+        </p>
+        <p class="text-sm text-gray-400 italic mt-4">
+          Also: if you ever see a bottle of "La Vieille Ferme" (the rooster label) in the supermarket, now you
+          know exactly what it means. The Old Farm.
+        </p>
+      </div>
+
+      <!-- Script (Lesson 1 version) -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Your Script (Lesson 1 Version)</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          This is the patter we built together. Order doesn't matter, hitting every beat does. Say it out loud a
+          few times before bed. Repetition and sleep do the rest.
+        </p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Bonjour !</div>
+          <div class="phrase-pron">bon-zhoor</div>
+          <div class="phrase-en">Hello!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je m'appelle Dawn.</div>
+          <div class="phrase-pron">zhuh ma-pel Dawn</div>
+          <div class="phrase-en">My name's Dawn.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vis &agrave; la ferme et je suis passionn&eacute;e par le monde &eacute;questre.</div>
+          <div class="phrase-pron">zhuh vee ah la fairm ay zhuh swee pass-yon-ay par luh mond ay-kestr</div>
+          <div class="phrase-en">I live on a farm and I'm passionate about the equestrian world.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai quatre chevaux et ils s'appellent Raven, Timothy, Alfie et Lily.</div>
+          <div class="phrase-pron">zhay katr shuh-vo ay eel sa-pel Raven, Timothy, Alfie ay Lily</div>
+          <div class="phrase-en">I have four horses and they're called Raven, Timothy, Alfie and Lily.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Mince, j'ai oubli&eacute; ! J'ai aussi un fils qui s'appelle James !</div>
+          <div class="phrase-pron">manss, zhay oo-blee-ay ! zhay oh-see un fees kee sa-pel James</div>
+          <div class="phrase-en">Oops, I forgot! I've also got a son called James!</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          No pressure and no memorising with flashcards. Just say the script out loud a handful of times when
+          you think of it. It'll feel clunky tonight and noticeably less clunky by Friday.
+        </p>
+      </div>
+
+    </div><!-- /l1 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 2                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l2'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 2 &middot; 24 July 2026</div>
+        <h2>Building the Script</h2>
+        <div class="meta">Expanding your story &middot; Writing vocabulary &middot; Get-out-of-jail phrases</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Second lesson done. We ran the original script again, worked through the lesson-two wobble (completely
+          normal, everyone does it), and then stretched the script forwards into your writing career.
+          The big win: you built "j'ai &eacute;crit quatre livres" on the spot by pulling apart the grammar you
+          already knew. Your comprehension is strong. The work now is getting your mouth to keep up with your brain,
+          and that's just repetition.
+        </p>
+      </div>
+
+      <!-- Get out of jail cards -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">Get-Out-of-Jail Cards</span>
+        <p class="text-sm text-gray-400 mb-4 italic">Keep these loaded at all times. When you're stuck mid-conversation, reach for one instead of freezing up.</p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Comment dire&hellip;</div>
+          <div class="phrase-pron">ko-mon deer</div>
+          <div class="phrase-en">How can I say this&hellip; (buys you time when you can't find the word)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Pardon ?</div>
+          <div class="phrase-pron">par-don</div>
+          <div class="phrase-en">Sorry? / I didn't catch that (polite, natural, use it freely)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je rigole !</div>
+          <div class="phrase-pron">zhuh ree-gol</div>
+          <div class="phrase-en">I'm joking! (handy after the JK Rowling line)</div>
+        </div>
+      </div>
+
+      <!-- Key Phrases -->
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">D'ailleurs, je suis &eacute;crivaine.</div>
+          <div class="phrase-pron">dye-yur, zhuh swee ay-kree-ven</div>
+          <div class="phrase-en">By the way, I'm a writer.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'&eacute;cris la chick lit, &ccedil;a veut dire la litt&eacute;rature f&eacute;minine.</div>
+          <div class="phrase-pron">zhay-kree la chick lit, sa vuh deer la lee-tay-ra-toor fay-mee-neen</div>
+          <div class="phrase-en">I write chick lit, that means women's fiction.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai &eacute;crit quatre livres.</div>
+          <div class="phrase-pron">zhay ay-kree katr leevr</div>
+          <div class="phrase-en">I've written four books.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On me consid&egrave;re un peu comme&hellip;</div>
+          <div class="phrase-pron">on muh kon-see-dair un puh kom</div>
+          <div class="phrase-en">People consider me a bit like&hellip; (the royal "on")</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">&Ccedil;a veut dire&hellip;</div>
+          <div class="phrase-pron">sa vuh deer</div>
+          <div class="phrase-en">That means&hellip; / In other words&hellip;</div>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Writing &amp; Literature</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Une &eacute;crivaine</span>
+          <span class="vocab-pron">oon ay-kree-ven</span>
+          <span class="vocab-en">A writer (feminine, the one you want)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un roman</span>
+          <span class="vocab-pron">un ro-man</span>
+          <span class="vocab-en">A novel</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un livre</span>
+          <span class="vocab-pron">un leevr</span>
+          <span class="vocab-en">A book</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un nom de plume</span>
+          <span class="vocab-pron">un nom duh ploom</span>
+          <span class="vocab-en">A pen name (plume = feather, as in a quill)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">La litt&eacute;rature f&eacute;minine</span>
+          <span class="vocab-pron">la lee-tay-ra-toor fay-mee-neen</span>
+          <span class="vocab-en">Women's fiction / chick lit</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Verbs: &Eacute;crire (to write)</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">J'&eacute;cris</span>
+          <span class="vocab-pron">zhay-kree</span>
+          <span class="vocab-en">I write (present). Watch the nasal vowel: not "glace"!</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">J'ai &eacute;crit</span>
+          <span class="vocab-pron">zhay ay-kree</span>
+          <span class="vocab-en">I wrote / I have written (past). Sounds nearly the same spoken.</span>
+        </div>
+        <p class="text-xs text-gray-400 italic mt-2">The spelling changes (S &rarr; T at the end) but the pronunciation barely does. When it's spoken, you don't have to worry about which one you're using.</p>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Conversational Tools</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">D'ailleurs</span>
+          <span class="vocab-pron">dye-yur</span>
+          <span class="vocab-en">By the way / incidentally (great for changing subject)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">On</span>
+          <span class="vocab-pron">on</span>
+          <span class="vocab-en">"We" in casual speech (replaces nous). On va &agrave; Paris = we're going to Paris.</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Concr&eacute;tiser</span>
+          <span class="vocab-pron">kon-kray-tee-zay</span>
+          <span class="vocab-en">To make something concrete / nail it down</span>
+        </div>
+      </div>
+
+      <!-- The "On" Trick -->
+      <div class="card">
+        <span class="section-label">The "On" Trick</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          In textbooks, "we" is <em>nous</em>. In real life, almost nobody says <em>nous</em> in casual conversation.
+          The French say <strong>on</strong> instead. <em>On va &agrave; Paris</em> (we're going to Paris), <em>on mange</em>
+          (we're eating). It also works as a vague "people" or "one": <em>on me consid&egrave;re</em> (people consider me).
+          One word, two jobs, and it makes you sound immediately less like a textbook.
+        </p>
+      </div>
+
+      <!-- Technique -->
+      <div class="card">
+        <span class="section-label">Technique: The Window Pane</span>
+        <p class="text-sm text-gray-400 italic mb-4">Think of stretching pizza dough. You work it a little, it goes slightly transparent. Keep going, a bit more transparent. Keep going until a hole appears. That's where you need more practice.</p>
+
+        <div class="technique-step">
+          <span class="technique-num">1</span>
+          <p class="text-sm text-gray-600">Take one phrase at a time. Say it five times as fast as you can. Don't worry about accuracy, just get through it.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">2</span>
+          <p class="text-sm text-gray-600">Stretch to two phrases. Repeat until smooth. When a hole appears (you trip), stop there and drill that join.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">3</span>
+          <p class="text-sm text-gray-600">Keep stretching until you can run the whole script in one go. Speed first, polish later.</p>
+        </div>
+        <p class="text-xs text-gray-400 italic mt-3">You're a visual learner: you see the <em>shape</em> of the sentence. So record yourself reading the script correctly, then listen and repeat. That links the shape to the sound, and the sound is what will come out when you need it.</p>
+      </div>
+
+      <!-- Updated Script -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Your Script (Updated)</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          Same rules as lesson 1: say it out loud, don't memorise it off the page. If the horse names
+          break your rhythm, skip them. Flow beats detail. The new lines are at the end.
+        </p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Bonjour !</div>
+          <div class="phrase-pron">bon-zhoor</div>
+          <div class="phrase-en">Hello!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je m'appelle Dawn.</div>
+          <div class="phrase-pron">zhuh ma-pel Dawn</div>
+          <div class="phrase-en">My name's Dawn.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vis &agrave; la ferme et je suis passionn&eacute;e par le monde &eacute;questre.</div>
+          <div class="phrase-pron">zhuh vee ah la fairm ay zhuh swee pass-yon-ay par luh mond ay-kestr</div>
+          <div class="phrase-en">I live on a farm and I'm passionate about the equestrian world.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai quatre chevaux et ils s'appellent Raven, Timothy, Alfie et Lily.</div>
+          <div class="phrase-pron">zhay katr shuh-vo ay eel sa-pel Raven, Timothy, Alfie ay Lily</div>
+          <div class="phrase-en">I have four horses and they're called Raven, Timothy, Alfie and Lily.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Mince, j'ai oubli&eacute; ! J'ai aussi un fils qui s'appelle James !</div>
+          <div class="phrase-pron">manss, zhay oo-blee-ay ! zhay oh-see un fees kee sa-pel James</div>
+          <div class="phrase-en">Oops, I forgot! I've also got a son called James!</div>
+        </div>
+
+        <div class="mt-3 mb-2">
+          <span class="inline-block text-xs font-bold uppercase tracking-widest text-cyan bg-navy rounded-full px-3 py-1">New this lesson</span>
+        </div>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">D'ailleurs, je suis &eacute;crivaine.</div>
+          <div class="phrase-pron">dye-yur, zhuh swee ay-kree-ven</div>
+          <div class="phrase-en">By the way, I'm a writer.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'&eacute;cris la chick lit, &ccedil;a veut dire la litt&eacute;rature f&eacute;minine.</div>
+          <div class="phrase-pron">zhay-kree la chick lit, sa vuh deer la lee-tay-ra-toor fay-mee-neen</div>
+          <div class="phrase-en">I write chick lit, that means women's fiction.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai &eacute;crit quatre livres.</div>
+          <div class="phrase-pron">zhay ay-kree katr leevr</div>
+          <div class="phrase-en">I've written four books.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On me consid&egrave;re un peu comme la prochaine JK Rowling !</div>
+          <div class="phrase-pron">on muh kon-see-dair un puh kom la pro-shen JK Rowling</div>
+          <div class="phrase-en">People consider me a bit like the next JK Rowling!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je rigole !</div>
+          <div class="phrase-pron">zhuh ree-gol</div>
+          <div class="phrase-en">I'm joking!</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Record yourself reading the script as a voice note. Then listen back and repeat it, over and over.
+          You said you see the <em>shape</em> of a sentence before you can say it. Reading while listening
+          will connect the shape to the sound, and once that link is there, the words will come out without
+          you having to think about it. Lock yourself away where nobody can hear you, take the pressure off,
+          and just parrot it until it feels automatic.
+        </p>
+        <p class="text-xs text-gray-400 mt-4">Next lessons: Monday 28 July &amp; Friday 1 August.</p>
+      </div>
+
+    </div><!-- /l2 -->
 
   </main>
 
-  <footer class="max-w-3xl mx-auto px-6 py-8 text-center text-xs text-gray-400">
-    &copy; FluentISH &middot; Dawn Ashcroft-Fielding &middot; Lesson 1
+  <footer class="max-w-4xl mx-auto px-6 py-8 text-center text-xs text-gray-400">
+    &copy; FluentISH &middot; Dawn Ashcroft-Fielding
   </footer>
 
 </body>
