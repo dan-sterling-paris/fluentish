@@ -1,402 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<title>FluentISH Ads</title>
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  background: #fff;
-  color: #1a1a1a;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 15px;
-  min-height: 100vh;
-  padding: 16px 16px 32px;
-}
-
-/* --- Login --- */
-#login {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 80vh;
-  gap: 12px;
-  text-align: center;
-}
-#login h1 { font-size: 22px; font-weight: 700; color: #1a1a1a; }
-#login h1 span { color: #6366f1; }
-#login p { color: #666; font-size: 14px; }
-
-#pin-input {
-  width: 100%;
-  max-width: 320px;
-  padding: 12px 16px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  background: #f8f8f8;
-  color: #1a1a1a;
-  font-size: 16px;
-  font-family: monospace;
-  text-align: center;
-  outline: none;
-}
-#pin-input:focus { border-color: #6366f1; }
-
-#login-btn {
-  width: 100%;
-  max-width: 320px;
-  padding: 12px;
-  border-radius: 10px;
-  background: #6366f1;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-}
-#login-err { color: #dc2626; font-size: 13px; min-height: 18px; }
-
-/* --- App --- */
-#app { display: none; }
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 18px;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.logo { font-size: 17px; font-weight: 700; color: #1a1a1a; }
-.logo span { color: #6366f1; }
-
-.range-pills { display: flex; gap: 6px; }
-.pill {
-  padding: 5px 13px;
-  border-radius: 999px;
-  border: 1px solid #ddd;
-  background: #fff;
-  color: #666;
-  font-size: 13px;
-  cursor: pointer;
-  font-family: inherit;
-}
-.pill.active { background: #6366f1; border-color: #6366f1; color: #fff; }
-
-.grid-4 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 10px;
-}
-@media (min-width: 600px) { .grid-4 { grid-template-columns: repeat(4, 1fr); } }
-
-.card {
-  background: #f8f8fa;
-  border: 1px solid #e5e5ea;
-  border-radius: 12px;
-  padding: 14px 16px;
-}
-.card-label {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: #888;
-  margin-bottom: 5px;
-}
-.card-value { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; line-height: 1; }
-.card-sub { font-size: 11px; color: #999; margin-top: 4px; }
-
-.c-spend  .card-value { color: #16a34a; }
-.c-impr   .card-value { color: #2563eb; }
-.c-clicks .card-value { color: #d97706; }
-.c-book   .card-value { color: #7c3aed; }
-.c-cpm    .card-value, .c-cpc .card-value, .c-ctr .card-value { color: #1a1a1a; }
-
-.section-title {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: #888;
-  margin: 18px 0 8px;
-}
-
-.table-wrap {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  border: 1px solid #e5e5ea;
-  border-radius: 12px;
-  background: #fff;
-}
-table { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
-th {
-  text-align: right;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: #888;
-  padding: 10px 12px;
-  border-bottom: 1px solid #e5e5ea;
-}
-th:first-child { text-align: left; }
-td {
-  text-align: right;
-  padding: 8px 12px;
-  border-bottom: 1px solid #f0f0f0;
-  color: #1a1a1a;
-}
-td:first-child { text-align: left; color: #666; }
-tr:last-child td { border-bottom: none; }
-
-.tag-book {
-  display: inline-block;
-  background: #f3e8ff;
-  color: #7c3aed;
-  border-radius: 4px;
-  padding: 1px 7px;
-  font-weight: 600;
-}
-
-.state { text-align: center; padding: 40px 16px; color: #888; }
-.spinner {
-  width: 26px; height: 26px;
-  border: 2px solid #e5e5ea;
-  border-top-color: #6366f1;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  margin: 0 auto 10px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-footer { text-align: center; font-size: 11px; color: #aaa; margin-top: 20px; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>FluentISH Ads</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#003359',
+            accent: '#6366f1',
+          },
+          fontFamily: {
+            body: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
 </head>
-<body>
+<body class="bg-white text-gray-900 font-body min-h-screen">
 
-<div id="login">
-  <div>
-    <h1>Fluent<span>ISH</span> Ads</h1>
-    <p>Enter your dashboard token to continue</p>
-  </div>
-  <input id="pin-input" type="password" placeholder="Token" autocomplete="off" spellcheck="false">
-  <button id="login-btn">View Dashboard</button>
-  <div id="login-err"></div>
-</div>
-
-<div id="app">
-  <header>
-    <div class="logo">Fluent<span>ISH</span> Ads</div>
-    <div class="range-pills">
-      <button class="pill" data-days="7">7d</button>
-      <button class="pill active" data-days="14">14d</button>
-      <button class="pill" data-days="28">28d</button>
-    </div>
-  </header>
-
-  <div id="summary-cards" class="grid-4"></div>
-  <div id="ratio-cards" class="grid-4" style="display:none"></div>
-
-  <div id="table-section" style="display:none">
-    <div class="section-title">Daily breakdown</div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Spend</th>
-            <th>Impr</th>
-            <th>Reach</th>
-            <th>Clicks</th>
-            <th>Bookings</th>
-            <th>CTR</th>
-            <th>CPC</th>
-            <th>CPM</th>
-            <th>Cost/Bkg</th>
-          </tr>
-        </thead>
-        <tbody id="daily-body"></tbody>
-      </table>
-    </div>
+  <!-- Login -->
+  <div id="login" class="flex flex-col items-center justify-center min-h-screen gap-4 px-6 text-center">
+    <h1 class="text-2xl font-bold text-gray-900">Fluent<span class="text-accent">ISH</span> Ads</h1>
+    <p class="text-gray-500 text-sm">Enter your dashboard token</p>
+    <input id="pin" type="password" placeholder="Token" autocomplete="off"
+      class="w-full max-w-xs px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 text-center text-base font-mono focus:outline-none focus:border-accent" />
+    <button id="go" class="w-full max-w-xs py-3 rounded-xl bg-accent text-white font-semibold text-sm">View Dashboard</button>
+    <p id="err" class="text-red-500 text-xs h-5"></p>
   </div>
 
-  <footer id="footer"></footer>
-</div>
+  <!-- Dashboard -->
+  <div id="app" class="hidden px-4 py-5 max-w-4xl mx-auto">
+    <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
+      <h1 class="text-lg font-bold text-gray-900">Fluent<span class="text-accent">ISH</span> Ads</h1>
+      <div id="pills" class="flex gap-1.5">
+        <button data-d="7"  class="pill px-3.5 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500">7d</button>
+        <button data-d="14" class="pill px-3.5 py-1 rounded-full border text-xs font-medium bg-accent border-accent text-white">14d</button>
+        <button data-d="28" class="pill px-3.5 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500">28d</button>
+      </div>
+    </div>
 
-<script>
-(function () {
-  var API = 'https://gutihncfxjdyxulfwtgp.supabase.co/functions/v1/dashboard';
-  var SESSION_KEY = 'ads_token';
-  var token = '';
-  var days = 14;
+    <div id="cards" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-2.5"></div>
+    <div id="ratios" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5 hidden"></div>
 
-  try { token = sessionStorage.getItem(SESSION_KEY) || ''; } catch(e) {}
+    <div id="tbl" class="hidden">
+      <p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-2">Daily breakdown</p>
+      <div class="overflow-x-auto rounded-xl border border-gray-200">
+        <table class="w-full text-[13px] whitespace-nowrap">
+          <thead>
+            <tr class="text-[10px] uppercase tracking-wide text-gray-400">
+              <th class="text-left px-3 py-2.5 border-b border-gray-200 font-bold">Date</th>
+              <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">Spend</th>
+              <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">Impr</th>
+              <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">Reach</th>
+              <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">Clicks</th>
+              <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">Bkgs</th>
+              <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">CTR</th>
+              <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">CPC</th>
+              <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">CPM</th>
+              <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">Cost/Bkg</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
 
-  function fmt(n, dec, prefix) {
-    if (n == null || isNaN(n) || n === '') return '-';
-    var s = Number(n).toFixed(dec != null ? dec : 0);
-    var parts = s.split('.');
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return (prefix || '') + parts.join('.');
-  }
+    <p id="foot" class="text-center text-[11px] text-gray-400 mt-5"></p>
+  </div>
 
-  function bookings(row) {
-    var acts = row.actions || [];
-    var a = acts.find(function(x) {
-      return x.action_type === 'offsite_conversion.fb_pixel_custom' || x.action_type === 'schedule';
-    });
-    return a ? parseInt(a.value, 10) : 0;
-  }
+  <script>
+    var API = 'https://gutihncfxjdyxulfwtgp.supabase.co/functions/v1/dashboard';
+    var tk = '', days = 14;
+    try { tk = sessionStorage.getItem('ads_t') || ''; } catch(e) {}
 
-  function fmtDate(str) {
-    var d = new Date(str + 'T12:00:00Z');
-    return d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
-  }
+    var loginEl = document.getElementById('login');
+    var appEl = document.getElementById('app');
 
-  function card(cls, label, value, sub) {
-    return '<div class="card ' + cls + '"><div class="card-label">' + label +
-      '</div><div class="card-value">' + value +
-      '</div><div class="card-sub">' + sub + '</div></div>';
-  }
+    function fmt(n, d, p) {
+      if (n == null || isNaN(n)) return '-';
+      var s = Number(n).toFixed(d||0), pts = s.split('.');
+      pts[0] = pts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return (p||'') + pts.join('.');
+    }
 
-  var loginEl  = document.getElementById('login');
-  var appEl    = document.getElementById('app');
-  var pinInput = document.getElementById('pin-input');
-  var loginBtn = document.getElementById('login-btn');
-  var loginErr = document.getElementById('login-err');
+    function bk(r) {
+      var a = (r.actions||[]).find(function(x){
+        return x.action_type==='offsite_conversion.fb_pixel_custom'||x.action_type==='schedule';
+      });
+      return a ? +a.value : 0;
+    }
 
-  function tryLogin() {
-    var val = pinInput.value.trim();
-    if (!val) { loginErr.textContent = 'Please enter a token'; return; }
-    loginBtn.textContent = 'Checking\u2026';
-    loginBtn.disabled = true;
-    loginErr.textContent = '';
+    function fd(s) {
+      return new Date(s+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    }
 
-    fetch(API + '?t=' + encodeURIComponent(val) + '&days=7')
-      .then(function(r) { return r.json(); })
-      .then(function(json) {
-        if (json.ok) {
-          token = val;
-          try { sessionStorage.setItem(SESSION_KEY, token); } catch(e) {}
-          loginEl.style.display = 'none';
-          appEl.style.display = '';
+    function crd(cls, lbl, val, sub) {
+      return '<div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5">' +
+        '<p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-1">' + lbl + '</p>' +
+        '<p class="text-2xl font-bold tracking-tight ' + cls + '">' + val + '</p>' +
+        '<p class="text-[11px] text-gray-400 mt-1">' + sub + '</p></div>';
+    }
+
+    // Login
+    document.getElementById('go').onclick = function() {
+      var v = document.getElementById('pin').value.trim();
+      if (!v) { document.getElementById('err').textContent='Enter a token'; return; }
+      this.textContent = 'Checking\u2026';
+      document.getElementById('err').textContent = '';
+      fetch(API+'?t='+encodeURIComponent(v)+'&days=7').then(function(r){return r.json()}).then(function(j){
+        if (j.ok) {
+          tk = v;
+          try { sessionStorage.setItem('ads_t', tk); } catch(e) {}
+          loginEl.classList.add('hidden');
+          appEl.classList.remove('hidden');
           load();
         } else {
-          loginErr.textContent = 'Invalid token';
-          loginBtn.textContent = 'View Dashboard';
-          loginBtn.disabled = false;
+          document.getElementById('err').textContent = 'Invalid token';
+          document.getElementById('go').textContent = 'View Dashboard';
         }
-      })
-      .catch(function(e) {
-        loginErr.textContent = 'Connection error: ' + e.message;
-        loginBtn.textContent = 'View Dashboard';
-        loginBtn.disabled = false;
+      }).catch(function(e){
+        document.getElementById('err').textContent = e.message;
+        document.getElementById('go').textContent = 'View Dashboard';
       });
-  }
+    };
+    document.getElementById('pin').onkeydown = function(e){ if(e.key==='Enter') document.getElementById('go').click(); };
 
-  loginBtn.addEventListener('click', tryLogin);
-  pinInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') tryLogin(); });
+    if (tk) { loginEl.classList.add('hidden'); appEl.classList.remove('hidden'); load(); }
 
-  if (token) {
-    loginEl.style.display = 'none';
-    appEl.style.display = '';
-    load();
-  }
-
-  function load() {
-    document.getElementById('summary-cards').innerHTML =
-      '<div class="state" style="grid-column:1/-1"><div class="spinner"></div>Loading\u2026</div>';
-    document.getElementById('ratio-cards').style.display = 'none';
-    document.getElementById('table-section').style.display = 'none';
-    document.getElementById('footer').textContent = '';
-
-    fetch(API + '?t=' + encodeURIComponent(token) + '&days=' + days)
-      .then(function(r) { return r.json(); })
-      .then(function(json) {
-        if (!json.ok) throw new Error(json.error || 'Error');
-        render(json.rows, json.account);
-      })
-      .catch(function(e) {
-        document.getElementById('summary-cards').innerHTML =
-          '<div class="state" style="color:#dc2626;grid-column:1/-1">Error: ' + e.message + '</div>';
-      });
-  }
-
-  function render(rows, accountName) {
-    rows.sort(function(a, b) { return a.date_start < b.date_start ? -1 : 1; });
-
-    var totSpend = 0, totImpr = 0, totReach = 0, totClicks = 0, totBook = 0;
-    rows.forEach(function(r) {
-      totSpend  += parseFloat(r.spend   || 0);
-      totImpr   += parseInt(r.impressions || 0, 10);
-      totReach  += parseInt(r.reach     || 0, 10);
-      totClicks += parseInt(r.clicks    || 0, 10);
-      totBook   += bookings(r);
+    // Pills
+    document.querySelectorAll('.pill').forEach(function(b){
+      b.onclick = function(){
+        document.querySelectorAll('.pill').forEach(function(p){
+          p.className='pill px-3.5 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500';
+        });
+        b.className='pill px-3.5 py-1 rounded-full border text-xs font-medium bg-accent border-accent text-white';
+        days = +b.dataset.d;
+        load();
+      };
     });
 
-    var totCPM = totImpr   ? totSpend / totImpr * 1000 : 0;
-    var totCPC = totClicks ? totSpend / totClicks       : 0;
-    var totCTR = totImpr   ? totClicks / totImpr * 100  : 0;
+    function load() {
+      document.getElementById('cards').innerHTML =
+        '<p class="col-span-full text-center py-10 text-gray-400 text-sm">Loading\u2026</p>';
+      document.getElementById('ratios').classList.add('hidden');
+      document.getElementById('tbl').classList.add('hidden');
 
-    document.getElementById('summary-cards').innerHTML =
-      card('c-spend',  'Spend',       '\u00a3' + fmt(totSpend, 2), days + 'd total') +
-      card('c-impr',   'Impressions',  fmt(totImpr),               days + 'd total') +
-      card('c-clicks', 'Clicks',       fmt(totClicks),             days + 'd total') +
-      card('c-book',   'Bookings',     String(totBook),            'appointments');
+      fetch(API+'?t='+encodeURIComponent(tk)+'&days='+days).then(function(r){return r.json()}).then(function(j){
+        if (!j.ok) throw new Error(j.error);
+        render(j.rows);
+      }).catch(function(e){
+        document.getElementById('cards').innerHTML =
+          '<p class="col-span-full text-center py-10 text-red-500 text-sm">'+e.message+'</p>';
+      });
+    }
 
-    var rc = document.getElementById('ratio-cards');
-    rc.innerHTML =
-      card('c-cpm', 'CPM',            '\u00a3' + fmt(totCPM, 2),  'per 1,000 impr') +
-      card('c-cpc', 'CPC',            '\u00a3' + fmt(totCPC, 2),  'per click') +
-      card('c-ctr', 'CTR',             fmt(totCTR, 2) + '%',      'click-through') +
-      card('c-book','Cost / Booking',  totBook ? '\u00a3' + fmt(totSpend / totBook, 2) : '-', 'avg cost');
-    rc.style.display = '';
+    function render(rows) {
+      rows.sort(function(a,b){ return a.date_start<b.date_start?-1:1; });
+      var tS=0,tI=0,tR=0,tC=0,tB=0;
+      rows.forEach(function(r){
+        tS+=+(r.spend||0); tI+=+(r.impressions||0); tR+=+(r.reach||0); tC+=+(r.clicks||0); tB+=bk(r);
+      });
 
-    var tbody = document.getElementById('daily-body');
-    tbody.innerHTML = rows.slice().reverse().map(function(r) {
-      var sp = parseFloat(r.spend || 0);
-      var im = parseInt(r.impressions || 0, 10);
-      var re = parseInt(r.reach || 0, 10);
-      var cl = parseInt(r.clicks || 0, 10);
-      var bk = bookings(r);
-      return '<tr>' +
-        '<td>' + fmtDate(r.date_start) + '</td>' +
-        '<td>\u00a3' + fmt(sp, 2) + '</td>' +
-        '<td>' + fmt(im) + '</td>' +
-        '<td>' + fmt(re) + '</td>' +
-        '<td>' + fmt(cl) + '</td>' +
-        '<td>' + (bk ? '<span class="tag-book">' + bk + '</span>' : '-') + '</td>' +
-        '<td>' + fmt(im ? cl / im * 100 : 0, 2) + '%</td>' +
-        '<td>\u00a3' + fmt(cl ? sp / cl : 0, 2) + '</td>' +
-        '<td>\u00a3' + fmt(im ? sp / im * 1000 : 0, 2) + '</td>' +
-        '<td>' + (bk ? '\u00a3' + fmt(sp / bk, 2) : '-') + '</td>' +
-        '</tr>';
-    }).join('');
+      document.getElementById('cards').innerHTML =
+        crd('text-green-600','Spend','\u00a3'+fmt(tS,2),days+'d total') +
+        crd('text-blue-600','Impressions',fmt(tI),days+'d total') +
+        crd('text-amber-600','Clicks',fmt(tC),days+'d total') +
+        crd('text-purple-600','Bookings',''+tB,'appointments');
 
-    document.getElementById('table-section').style.display = '';
+      var rc = document.getElementById('ratios');
+      rc.classList.remove('hidden');
+      rc.innerHTML =
+        crd('text-gray-900','CPM','\u00a3'+fmt(tI?tS/tI*1000:0,2),'per 1,000 impr') +
+        crd('text-gray-900','CPC','\u00a3'+fmt(tC?tS/tC:0,2),'per click') +
+        crd('text-gray-900','CTR',fmt(tI?tC/tI*100:0,2)+'%','click-through') +
+        crd('text-purple-600','Cost / Booking',tB?'\u00a3'+fmt(tS/tB,2):'-','avg cost');
 
-    var now = new Date();
-    document.getElementById('footer').textContent =
-      'Updated ' + now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) +
-      ' \u00b7 ' + now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-  }
+      document.getElementById('rows').innerHTML = rows.slice().reverse().map(function(r){
+        var s=+(r.spend||0),i=+(r.impressions||0),re=+(r.reach||0),c=+(r.clicks||0),b=bk(r);
+        return '<tr class="border-b border-gray-100 last:border-0">' +
+          '<td class="text-left px-3 py-2 text-gray-500">'+fd(r.date_start)+'</td>' +
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(s,2)+'</td>' +
+          '<td class="text-right px-3 py-2">'+fmt(i)+'</td>' +
+          '<td class="text-right px-3 py-2">'+fmt(re)+'</td>' +
+          '<td class="text-right px-3 py-2">'+fmt(c)+'</td>' +
+          '<td class="text-right px-3 py-2">'+(b?'<span class="bg-purple-100 text-purple-600 rounded px-1.5 py-0.5 font-semibold">'+b+'</span>':'-')+'</td>' +
+          '<td class="text-right px-3 py-2">'+fmt(i?c/i*100:0,2)+'%</td>' +
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(c?s/c:0,2)+'</td>' +
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(i?s/i*1000:0,2)+'</td>' +
+          '<td class="text-right px-3 py-2">'+(b?'\u00a3'+fmt(s/b,2):'-')+'</td></tr>';
+      }).join('');
 
-  document.querySelectorAll('.pill').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.pill').forEach(function(b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      days = parseInt(btn.dataset.days, 10);
-      load();
-    });
-  });
-})();
-</script>
+      document.getElementById('tbl').classList.remove('hidden');
+      var n=new Date();
+      document.getElementById('foot').textContent='Updated '+n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+
+        ' \u00b7 '+n.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    }
+  </script>
 </body>
 </html>
