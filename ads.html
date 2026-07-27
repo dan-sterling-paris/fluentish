@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" style="color-scheme:dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="color-scheme" content="dark">
 <meta name="robots" content="noindex, nofollow">
 <title>FluentISH Ads</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: #0d0d0d !important;
-  color: #f0f0f0 !important;
+  background: #fff;
+  color: #1a1a1a;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 15px;
   min-height: 100vh;
@@ -28,23 +27,22 @@ body {
   gap: 12px;
   text-align: center;
 }
-#login h1 { font-size: 22px; font-weight: 700; color: #f0f0f0; }
+#login h1 { font-size: 22px; font-weight: 700; color: #1a1a1a; }
 #login h1 span { color: #6366f1; }
-#login p { color: #888; font-size: 14px; }
+#login p { color: #666; font-size: 14px; }
 
 #pin-input {
   width: 100%;
   max-width: 320px;
   padding: 12px 16px;
   border-radius: 10px;
-  border: 1px solid #2a2a2a;
-  background: #1a1a1a;
-  color: #f0f0f0;
+  border: 1px solid #ddd;
+  background: #f8f8f8;
+  color: #1a1a1a;
   font-size: 16px;
   font-family: monospace;
   text-align: center;
   outline: none;
-  -webkit-appearance: none;
 }
 #pin-input:focus { border-color: #6366f1; }
 
@@ -61,7 +59,7 @@ body {
   cursor: pointer;
   font-family: inherit;
 }
-#login-err { color: #ef4444; font-size: 13px; min-height: 18px; }
+#login-err { color: #dc2626; font-size: 13px; min-height: 18px; }
 
 /* --- App --- */
 #app { display: none; }
@@ -74,16 +72,16 @@ header {
   gap: 10px;
   flex-wrap: wrap;
 }
-.logo { font-size: 17px; font-weight: 700; color: #f0f0f0; }
+.logo { font-size: 17px; font-weight: 700; color: #1a1a1a; }
 .logo span { color: #6366f1; }
 
 .range-pills { display: flex; gap: 6px; }
 .pill {
   padding: 5px 13px;
   border-radius: 999px;
-  border: 1px solid #2a2a2a;
-  background: transparent;
-  color: #777;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #666;
   font-size: 13px;
   cursor: pointer;
   font-family: inherit;
@@ -99,8 +97,8 @@ header {
 @media (min-width: 600px) { .grid-4 { grid-template-columns: repeat(4, 1fr); } }
 
 .card {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: #f8f8fa;
+  border: 1px solid #e5e5ea;
   border-radius: 12px;
   padding: 14px 16px;
 }
@@ -109,33 +107,33 @@ header {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: #666;
+  color: #888;
   margin-bottom: 5px;
 }
 .card-value { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; line-height: 1; }
-.card-sub { font-size: 11px; color: #666; margin-top: 4px; }
+.card-sub { font-size: 11px; color: #999; margin-top: 4px; }
 
-.c-spend  .card-value { color: #22c55e; }
-.c-impr   .card-value { color: #3b82f6; }
-.c-clicks .card-value { color: #f59e0b; }
-.c-book   .card-value { color: #a855f7; }
-.c-cpm    .card-value, .c-cpc .card-value, .c-ctr .card-value { color: #f0f0f0; }
+.c-spend  .card-value { color: #16a34a; }
+.c-impr   .card-value { color: #2563eb; }
+.c-clicks .card-value { color: #d97706; }
+.c-book   .card-value { color: #7c3aed; }
+.c-cpm    .card-value, .c-cpc .card-value, .c-ctr .card-value { color: #1a1a1a; }
 
 .section-title {
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: #666;
+  color: #888;
   margin: 18px 0 8px;
 }
 
 .table-wrap {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border: 1px solid #2a2a2a;
+  border: 1px solid #e5e5ea;
   border-radius: 12px;
-  background: #1a1a1a;
+  background: #fff;
 }
 table { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
 th {
@@ -144,33 +142,33 @@ th {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: #666;
+  color: #888;
   padding: 10px 12px;
-  border-bottom: 1px solid #2a2a2a;
+  border-bottom: 1px solid #e5e5ea;
 }
 th:first-child { text-align: left; }
 td {
   text-align: right;
   padding: 8px 12px;
-  border-bottom: 1px solid #222;
-  color: #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #1a1a1a;
 }
-td:first-child { text-align: left; color: #888; }
+td:first-child { text-align: left; color: #666; }
 tr:last-child td { border-bottom: none; }
 
 .tag-book {
   display: inline-block;
-  background: rgba(168,85,247,0.2);
-  color: #a855f7;
+  background: #f3e8ff;
+  color: #7c3aed;
   border-radius: 4px;
   padding: 1px 7px;
   font-weight: 600;
 }
 
-.state { text-align: center; padding: 40px 16px; color: #666; }
+.state { text-align: center; padding: 40px 16px; color: #888; }
 .spinner {
   width: 26px; height: 26px;
-  border: 2px solid #2a2a2a;
+  border: 2px solid #e5e5ea;
   border-top-color: #6366f1;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
@@ -178,7 +176,7 @@ tr:last-child td { border-bottom: none; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-footer { text-align: center; font-size: 11px; color: #555; margin-top: 20px; }
+footer { text-align: center; font-size: 11px; color: #aaa; margin-top: 20px; }
 </style>
 </head>
 <body>
@@ -241,7 +239,6 @@ footer { text-align: center; font-size: 11px; color: #555; margin-top: 20px; }
 
   try { token = sessionStorage.getItem(SESSION_KEY) || ''; } catch(e) {}
 
-  // --- Helpers ---
   function fmt(n, dec, prefix) {
     if (n == null || isNaN(n) || n === '') return '-';
     var s = Number(n).toFixed(dec != null ? dec : 0);
@@ -250,11 +247,10 @@ footer { text-align: center; font-size: 11px; color: #555; margin-top: 20px; }
     return (prefix || '') + parts.join('.');
   }
 
-  function schedules(row) {
+  function bookings(row) {
     var acts = row.actions || [];
-    // 'schedule' for standard Schedule pixel; 'offsite_conversion.fb_pixel_custom' for custom events
     var a = acts.find(function(x) {
-      return x.action_type === 'schedule' || x.action_type === 'offsite_conversion.fb_pixel_custom';
+      return x.action_type === 'offsite_conversion.fb_pixel_custom' || x.action_type === 'schedule';
     });
     return a ? parseInt(a.value, 10) : 0;
   }
@@ -270,18 +266,12 @@ footer { text-align: center; font-size: 11px; color: #555; margin-top: 20px; }
       '</div><div class="card-sub">' + sub + '</div></div>';
   }
 
-  function spinner() {
-    return '<div class="state" style="grid-column:1/-1"><div class="spinner"></div>Loading\u2026</div>';
-  }
-
-  // --- Elements ---
   var loginEl  = document.getElementById('login');
   var appEl    = document.getElementById('app');
   var pinInput = document.getElementById('pin-input');
   var loginBtn = document.getElementById('login-btn');
   var loginErr = document.getElementById('login-err');
 
-  // --- Login ---
   function tryLogin() {
     var val = pinInput.value.trim();
     if (!val) { loginErr.textContent = 'Please enter a token'; return; }
@@ -314,16 +304,15 @@ footer { text-align: center; font-size: 11px; color: #555; margin-top: 20px; }
   loginBtn.addEventListener('click', tryLogin);
   pinInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') tryLogin(); });
 
-  // Skip login if token cached
   if (token) {
     loginEl.style.display = 'none';
     appEl.style.display = '';
     load();
   }
 
-  // --- Load data ---
   function load() {
-    document.getElementById('summary-cards').innerHTML = spinner();
+    document.getElementById('summary-cards').innerHTML =
+      '<div class="state" style="grid-column:1/-1"><div class="spinner"></div>Loading\u2026</div>';
     document.getElementById('ratio-cards').style.display = 'none';
     document.getElementById('table-section').style.display = 'none';
     document.getElementById('footer').textContent = '';
@@ -336,11 +325,10 @@ footer { text-align: center; font-size: 11px; color: #555; margin-top: 20px; }
       })
       .catch(function(e) {
         document.getElementById('summary-cards').innerHTML =
-          '<div class="state" style="color:#ef4444;grid-column:1/-1">Error: ' + e.message + '</div>';
+          '<div class="state" style="color:#dc2626;grid-column:1/-1">Error: ' + e.message + '</div>';
       });
   }
 
-  // --- Render ---
   function render(rows, accountName) {
     rows.sort(function(a, b) { return a.date_start < b.date_start ? -1 : 1; });
 
@@ -350,7 +338,7 @@ footer { text-align: center; font-size: 11px; color: #555; margin-top: 20px; }
       totImpr   += parseInt(r.impressions || 0, 10);
       totReach  += parseInt(r.reach     || 0, 10);
       totClicks += parseInt(r.clicks    || 0, 10);
-      totBook   += schedules(r);
+      totBook   += bookings(r);
     });
 
     var totCPM = totImpr   ? totSpend / totImpr * 1000 : 0;
@@ -377,7 +365,7 @@ footer { text-align: center; font-size: 11px; color: #555; margin-top: 20px; }
       var im = parseInt(r.impressions || 0, 10);
       var re = parseInt(r.reach || 0, 10);
       var cl = parseInt(r.clicks || 0, 10);
-      var bk = schedules(r);
+      var bk = bookings(r);
       return '<tr>' +
         '<td>' + fmtDate(r.date_start) + '</td>' +
         '<td>\u00a3' + fmt(sp, 2) + '</td>' +
@@ -400,7 +388,6 @@ footer { text-align: center; font-size: 11px; color: #555; margin-top: 20px; }
       ' \u00b7 ' + now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
-  // --- Range pills ---
   document.querySelectorAll('.pill').forEach(function(btn) {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.pill').forEach(function(b) { b.classList.remove('active'); });
