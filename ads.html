@@ -57,11 +57,21 @@
     <div id="cards" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-2.5"></div>
     <div id="ratios" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5 hidden"></div>
 
-    <!-- Waterfall chart -->
+    <!-- Waterfall charts -->
     <div id="waterfall" class="hidden mb-5">
-      <p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-2">Spend bridge (volume / rate)</p>
-      <div class="overflow-x-auto">
-        <canvas id="wfCanvas" height="220" class="w-full max-w-2xl"></canvas>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-2">Spend bridge</p>
+          <div class="overflow-x-auto bg-gray-50 border border-gray-200 rounded-xl p-3">
+            <canvas id="wfSpend" height="200"></canvas>
+          </div>
+        </div>
+        <div>
+          <p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-2">Bookings funnel bridge</p>
+          <div class="overflow-x-auto bg-gray-50 border border-gray-200 rounded-xl p-3">
+            <canvas id="wfBook" height="200"></canvas>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -340,29 +350,64 @@
       document.getElementById('tbl-title').textContent =
         'Daily breakdown' + (smooth ? ' (3-day rolling avg)' : '');
 
-      document.getElementById('rows').innerHTML = tableRows.slice().reverse().map(function(r){
+      // Delta indicator: green arrow up = good, red arrow down = bad
+      // For spend/CPC/CPM lower is better (invert); for rest higher is better
+      function delta(cur, prev, invert) {
+        if (prev === 0 || prev == null || cur == null) return '';
+        var diff = cur - prev;
+        if (Math.abs(diff) < 0.001) return '';
+        var good = invert ? diff < 0 : diff > 0;
+        var arrow = good ? '\u25b2' : '\u25bc';
+        var color = good ? 'text-emerald-500' : 'text-red-400';
+        return ' <span class="'+color+' text-[9px] delta-ind">'+arrow+'</span>';
+      }
+
+      function rowHtml(r, cls, prevR) {
         var s=+(r.spend||0),i=+(r.impressions||0),re=+(r.reach||0),c=+(r.clicks||0),b=bk(r);
-        // For smoothed bookings, show decimal if non-integer
         var bStr = b ? (b % 1 === 0 ? ''+b : b.toFixed(1)) : '-';
         var bHtml = b ? '<span class="bg-purple-100 text-purple-600 rounded px-1.5 py-0.5 font-semibold">'+bStr+'</span>' : '-';
-        return '<tr class="border-b border-gray-100 last:border-0">' +
+        var ctr = i?c/i*100:0, cpc = c?s/c:0, cpm = i?s/i*1000:0;
+        // Previous row values for deltas
+        var ps=0,pi=0,pre=0,pc=0,pb=0,pctr=0,pcpc=0,pcpm=0;
+        if (prevR) {
+          ps=+(prevR.spend||0); pi=+(prevR.impressions||0); pre=+(prevR.reach||0);
+          pc=+(prevR.clicks||0); pb=bk(prevR);
+          pctr=pi?pc/pi*100:0; pcpc=pc?ps/pc:0; pcpm=pi?ps/pi*1000:0;
+        }
+        var d = prevR ? true : false;
+        return '<tr class="border-b border-gray-100 last:border-0 '+(cls||'')+'">' +
           '<td class="text-left px-3 py-2 text-gray-500">'+fd(r.date_start)+'</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(s,2)+'</td>' +
-          '<td class="text-right px-3 py-2">'+fmt(i)+'</td>' +
-          '<td class="text-right px-3 py-2">'+fmt(re)+'</td>' +
-          '<td class="text-right px-3 py-2">'+fmt(c)+'</td>' +
-          '<td class="text-right px-3 py-2">'+bHtml+'</td>' +
-          '<td class="text-right px-3 py-2">'+fmt(i?c/i*100:0,2)+'%</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(c?s/c:0,2)+'</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(i?s/i*1000:0,2)+'</td></tr>';
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(s,2)+(d?delta(s,ps,true):'')+'</td>' +
+          '<td class="text-right px-3 py-2">'+fmt(i)+(d?delta(i,pi):'')+'</td>' +
+          '<td class="text-right px-3 py-2">'+fmt(re)+(d?delta(re,pre):'')+'</td>' +
+          '<td class="text-right px-3 py-2">'+fmt(c)+(d?delta(c,pc):'')+'</td>' +
+          '<td class="text-right px-3 py-2">'+bHtml+(d?delta(b,pb):'')+'</td>' +
+          '<td class="text-right px-3 py-2">'+fmt(ctr,2)+'%'+(d?delta(ctr,pctr):'')+'</td>' +
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(cpc,2)+(d?delta(cpc,pcpc,true):'')+'</td>' +
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(cpm,2)+(d?delta(cpm,pcpm,true):'')+'</td></tr>';
+      }
+
+      var reversed = tableRows.slice().reverse();
+      var html = reversed.map(function(r, idx) {
+        var prevR = reversed[idx + 1] || null; // previous day (next in reversed array)
+        return rowHtml(r, '', prevR);
       }).join('');
 
+      if (compare && days > 0) {
+        var prevRows = smooth ? rollingAvg(prev, 3) : prev;
+        html += '<tr><td colspan="9" class="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-gray-400 bg-gray-50 border-t-2 border-gray-300">Previous period</td></tr>';
+        html += prevRows.slice().reverse().map(function(r){ return rowHtml(r, 'bg-gray-50/50 text-gray-500'); }).join('');
+      }
+
+      document.getElementById('rows').innerHTML = html;
       document.getElementById('tbl').classList.remove('hidden');
 
       // --- Waterfall ---
       if (compare && days > 0) {
-        drawWaterfall(prv, cur);
+        // Show container first so canvas can measure width
         document.getElementById('waterfall').classList.remove('hidden');
+        drawSpendWaterfall(prv, cur);
+        drawBookingsWaterfall(prv, cur);
       } else {
         document.getElementById('waterfall').classList.add('hidden');
       }
@@ -372,29 +417,13 @@
         ' \u00b7 '+n.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
     }
 
-    // --- Waterfall chart (volume/rate bridge) ---
-    function drawWaterfall(prv, cur) {
-      // FP&A decomposition:
-      // Spend = Impressions x CPM/1000
-      // Change = Volume effect (impr change at old CPM) + Rate effect (CPM change at new impr) + Mix
-      // Simplified: Spend_prev, +Volume, +Rate, = Spend_cur
-      var prevCPM = prv.impr ? prv.spend / prv.impr * 1000 : 0;
-      var curCPM  = cur.impr ? cur.spend / cur.impr * 1000 : 0;
-      var volEffect  = (cur.impr - prv.impr) / 1000 * prevCPM;
-      var rateEffect = (curCPM - prevCPM) / 1000 * cur.impr;
-
-      var bars = [
-        { label: 'Prev Spend',  value: prv.spend, type: 'total' },
-        { label: 'Volume',      value: volEffect,  type: 'delta' },
-        { label: 'Rate (CPM)',  value: rateEffect, type: 'delta' },
-        { label: 'Cur Spend',   value: cur.spend,  type: 'total' },
-      ];
-
-      var canvas = document.getElementById('wfCanvas');
+    // --- Generic waterfall renderer ---
+    function drawWF(canvasId, bars, prefix, decimals) {
+      var canvas = document.getElementById(canvasId);
       var ctx = canvas.getContext('2d');
       var dpr = window.devicePixelRatio || 1;
-      var w = canvas.parentElement.offsetWidth;
-      var h = 220;
+      var w = canvas.parentElement.offsetWidth - 24; // account for padding
+      var h = 200;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       canvas.style.width = w + 'px';
@@ -402,30 +431,30 @@
       ctx.scale(dpr, dpr);
       ctx.clearRect(0, 0, w, h);
 
-      var pad = { top: 30, bottom: 40, left: 10, right: 10 };
-      var barW = Math.min(60, (w - pad.left - pad.right) / bars.length * 0.6);
+      var pad = { top: 28, bottom: 38, left: 8, right: 8 };
+      var barW = Math.min(52, (w - pad.left - pad.right) / bars.length * 0.55);
       var gap = (w - pad.left - pad.right - barW * bars.length) / (bars.length + 1);
       var chartH = h - pad.top - pad.bottom;
 
-      // Find max value for scale
       var running = 0;
       var positions = [];
       bars.forEach(function(b) {
         if (b.type === 'total') {
-          positions.push({ top: 0, bottom: b.value, val: b.value });
+          positions.push({ top: 0, bottom: b.value, runAfter: b.value });
           running = b.value;
         } else {
           var from = running;
           running += b.value;
-          positions.push({ top: Math.min(from, running), bottom: Math.max(from, running), val: b.value });
+          positions.push({ top: Math.min(from, running), bottom: Math.max(from, running), runAfter: running });
         }
       });
-      var maxVal = Math.max.apply(null, positions.map(function(p){ return p.bottom; })) * 1.15;
+
+      var maxVal = Math.max.apply(null, positions.map(function(p){ return p.bottom; })) * 1.18;
       if (maxVal === 0) maxVal = 1;
 
       function yPos(v) { return pad.top + chartH * (1 - v / maxVal); }
 
-      ctx.font = '500 10px Inter, system-ui, sans-serif';
+      ctx.font = '600 9px Inter, system-ui, sans-serif';
       ctx.textAlign = 'center';
 
       bars.forEach(function(b, i) {
@@ -433,47 +462,76 @@
         var p = positions[i];
         var y1 = yPos(p.bottom);
         var y2 = yPos(p.top);
-        var barH = y2 - y1;
+        var barH = Math.max(y2 - y1, 2);
 
-        // Bar colour
-        if (b.type === 'total') {
-          ctx.fillStyle = '#6366f1';
-        } else {
-          ctx.fillStyle = b.value >= 0 ? '#ef4444' : '#22c55e';
-        }
-
+        ctx.fillStyle = b.type === 'total' ? '#6366f1' : (b.value >= 0 ? '#ef4444' : '#22c55e');
         ctx.beginPath();
         ctx.roundRect(x, y1, barW, barH, 3);
         ctx.fill();
 
         // Value label
         ctx.fillStyle = '#374151';
-        var prefix = b.type === 'delta' ? (b.value >= 0 ? '+' : '') : '';
-        ctx.fillText(prefix + '\u00a3' + Math.abs(b.value).toFixed(2), x + barW/2, y1 - 6);
+        var sign = b.type === 'delta' ? (b.value >= 0 ? '+' : '') : '';
+        ctx.fillText(sign + prefix + Math.abs(b.value).toFixed(decimals), x + barW/2, y1 - 5);
 
         // Bar label
         ctx.fillStyle = '#9ca3af';
-        ctx.fillText(b.label, x + barW/2, h - pad.bottom + 16);
+        ctx.font = '500 9px Inter, system-ui, sans-serif';
+        ctx.fillText(b.label, x + barW/2, h - pad.bottom + 14);
+        ctx.font = '600 9px Inter, system-ui, sans-serif';
 
-        // Connector line
-        if (b.type === 'delta' && i < bars.length - 1) {
-          ctx.strokeStyle = '#d1d5db';
-          ctx.lineWidth = 1;
-          ctx.setLineDash([3, 3]);
-          ctx.beginPath();
-          var endY = yPos(running);
-          // Actually draw from current bar top to next bar
-          var nextX = pad.left + gap * (i + 2) + barW * (i + 1);
-          ctx.moveTo(x + barW, yPos(positions[i].top < positions[i].bottom ?
-            (b.value >= 0 ? positions[i].bottom : positions[i].top) :
-            positions[i].top));
-          ctx.lineTo(nextX, yPos(positions[i].top < positions[i].bottom ?
-            (b.value >= 0 ? positions[i].bottom : positions[i].top) :
-            positions[i].top));
-          ctx.stroke();
-          ctx.setLineDash([]);
+        // Connector line from running level to next bar
+        if (b.type !== 'total' || i === 0) {
+          if (i < bars.length - 1) {
+            var nextX = pad.left + gap * (i + 2) + barW * (i + 1);
+            var connY = yPos(p.runAfter);
+            ctx.strokeStyle = '#d1d5db';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(x + barW, connY);
+            ctx.lineTo(nextX, connY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+          }
         }
       });
+    }
+
+    // --- Spend waterfall: Impr volume x CPM rate ---
+    function drawSpendWaterfall(prv, cur) {
+      var prevCPM = prv.impr ? prv.spend / prv.impr * 1000 : 0;
+      var curCPM  = cur.impr ? cur.spend / cur.impr * 1000 : 0;
+      var vol  = (cur.impr - prv.impr) / 1000 * prevCPM;
+      var rate = (curCPM - prevCPM) / 1000 * cur.impr;
+
+      drawWF('wfSpend', [
+        { label: 'Prev Spend', value: prv.spend, type: 'total' },
+        { label: 'Volume',     value: vol,        type: 'delta' },
+        { label: 'Rate (CPM)', value: rate,       type: 'delta' },
+        { label: 'Cur Spend',  value: cur.spend,  type: 'total' },
+      ], '\u00a3', 2);
+    }
+
+    // --- Bookings waterfall: Impr x CTR x Conv rate ---
+    function drawBookingsWaterfall(prv, cur) {
+      var pCTR  = prv.impr   ? prv.clicks / prv.impr   : 0;
+      var cCTR  = cur.impr   ? cur.clicks / cur.impr   : 0;
+      var pConv = prv.clicks ? prv.bkgs   / prv.clicks : 0;
+      var cConv = cur.clicks ? cur.bkgs   / cur.clicks : 0;
+
+      // 3-factor decomposition
+      var volEffect  = (cur.impr - prv.impr) * pCTR * pConv;
+      var ctrEffect  = cur.impr * (cCTR - pCTR) * pConv;
+      var convEffect = cur.impr * cCTR * (cConv - pConv);
+
+      drawWF('wfBook', [
+        { label: 'Prev Bkgs',  value: prv.bkgs,   type: 'total' },
+        { label: 'Impressions', value: volEffect,   type: 'delta' },
+        { label: 'CTR',         value: ctrEffect,   type: 'delta' },
+        { label: 'Conv Rate',   value: convEffect,  type: 'delta' },
+        { label: 'Cur Bkgs',   value: cur.bkgs,    type: 'total' },
+      ], '', 1);
     }
 
     // --- CSV download ---
