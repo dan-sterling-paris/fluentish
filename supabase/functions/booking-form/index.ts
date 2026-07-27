@@ -342,8 +342,8 @@ async function handleBooking(req: Request): Promise<Response> {
   const body = await req.json();
   const { name, surname, email, phone, age_consent, slot_start, variant, visitor_id, honeypot } = body;
 
-  // Honeypot: silently accept
-  if (honeypot) return json({ ok: true });
+  // Honeypot: silently accept (bot: true tells client not to fire tracking pixels)
+  if (honeypot) return json({ ok: true, bot: true });
 
   // Validate
   const trimName = (name ?? "").trim();

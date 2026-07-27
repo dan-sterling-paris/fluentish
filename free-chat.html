@@ -308,10 +308,17 @@
   </div>
 
   <script>
-  // Fire Lead pixel when any booking CTA is clicked
+  var isLive = window.location.hostname === 'fluentish.co.uk' || window.location.hostname === 'www.fluentish.co.uk';
+
+  // Initialise dataLayer early so GA4 events queue before gtag.js loads
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  // Fire Lead pixel + GA4 event when any booking CTA is clicked
   document.querySelectorAll('.book-cta').forEach(function(link) {
     link.addEventListener('click', function() {
-      if (typeof fbq === 'function') fbq('track', 'Lead');
+      if (isLive && typeof fbq === 'function') fbq('track', 'Lead');
+      gtag('event', 'cta_click');
     });
   });
 
@@ -352,11 +359,13 @@
           loading.classList.add('hidden');
           errorEl.textContent = 'No available slots right now. Please check back soon.';
           errorEl.classList.remove('hidden');
+          gtag('event', 'slot_picker_empty');
           return;
         }
 
         loading.classList.add('hidden');
         list.classList.remove('hidden');
+        gtag('event', 'slot_picker_loaded', { slot_count: data.slots.length });
 
         // Group by day
         var grouped = {};
@@ -395,6 +404,7 @@
               });
               btn.classList.add('bg-navy', 'text-white');
               selectedSlot = slot;
+              gtag('event', 'slot_selected', { slot_day: slot.day });
 
               var form = document.getElementById('booking-form');
               form.classList.remove('hidden');
@@ -411,6 +421,7 @@
       .catch(function() {
         document.getElementById('slot-loading').classList.add('hidden');
         document.getElementById('slot-error').classList.remove('hidden');
+        gtag('event', 'slot_picker_error');
       });
 
     // Form submission
@@ -444,6 +455,8 @@
       }
       if (!valid) return;
 
+      gtag('event', 'booking_submitted');
+
       var submitBtn = document.getElementById('booking-submit');
       submitBtn.disabled = true;
       submitBtn.textContent = 'Booking...';
@@ -464,8 +477,13 @@
       })
       .then(function(r) { return r.json(); })
       .then(function(data) {
-        if (data.ok) {
-          if (typeof fbq === 'function') fbq('track', 'Schedule');
+        if (data.ok && !data.bot) {
+          if (typeof fbq === 'function' && isLive) {
+            fbq('track', 'Schedule');
+          } else if (isLive) {
+            window._pendingSchedule = true;
+          }
+          gtag('event', 'booking_success');
 
           document.getElementById('booking-form').classList.add('hidden');
           document.getElementById('slot-picker').classList.add('hidden');
@@ -474,11 +492,13 @@
           document.getElementById('success-details').textContent = data.date + ' at ' + data.time + ' UK time';
           success.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else if (data.error === 'slot_taken') {
+          gtag('event', 'booking_error', { error_type: 'slot_taken' });
           document.getElementById('form-error').textContent = 'That slot was just taken. Please choose another time.';
           document.getElementById('form-error').classList.remove('hidden');
           submitBtn.disabled = false;
           submitBtn.textContent = 'Confirm Booking';
         } else {
+          gtag('event', 'booking_error', { error_type: 'server' });
           document.getElementById('form-error').textContent = data.error || 'Something went wrong. Please try again.';
           document.getElementById('form-error').classList.remove('hidden');
           submitBtn.disabled = false;
@@ -486,6 +506,7 @@
         }
       })
       .catch(function() {
+        gtag('event', 'booking_error', { error_type: 'connection' });
         document.getElementById('form-error').textContent = 'Connection error. Please try again.';
         document.getElementById('form-error').classList.remove('hidden');
         submitBtn.disabled = false;
@@ -504,14 +525,14 @@
   })();
   </script>
 
-  <!-- Deferred tracking: staggered to reduce TBT -->
+  <!-- Deferred tracking: loads on idle after page paint to avoid blocking LCP -->
   <script>
   function loadTracker(fn) {
     if ('requestIdleCallback' in window) requestIdleCallback(fn);
     else setTimeout(fn, 1);
   }
   window.addEventListener('load', function() {
-    // Meta Pixel (load first, stagger gtag after)
+    // Meta Pixel
     loadTracker(function() {
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -520,21 +541,18 @@
       (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
       fbq('init','26628549533507941');
       fbq('track','PageView');
+      if (window._pendingSchedule) { fbq('track', 'Schedule'); delete window._pendingSchedule; }
     });
 
-    // gtag (staggered)
-    setTimeout(function() {
-      loadTracker(function() {
-        var gs = document.createElement('script');
-        gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH';
-        gs.async = true;
-        document.head.appendChild(gs);
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-XS9D9D0XRH');
-      });
-    }, 2000);
+    // GA4 - dataLayer and gtag() already defined above; queued events fire once gtag.js loads
+    loadTracker(function() {
+      var gs = document.createElement('script');
+      gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH';
+      gs.async = true;
+      document.head.appendChild(gs);
+      gtag('js', new Date());
+      gtag('config', 'G-XS9D9D0XRH');
+    });
   });
   </script>
   <noscript><img height="1" width="1" style="display:none"
