@@ -39,6 +39,7 @@
     <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
       <h1 class="text-lg font-bold text-gray-900">Fluent<span class="text-accent">ISH</span> Ads</h1>
       <div id="pills" class="flex gap-1.5">
+        <button data-d="1"  class="pill px-3.5 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500">T/Y</button>
         <button data-d="7"  class="pill px-3.5 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500">7d</button>
         <button data-d="14" class="pill px-3.5 py-1 rounded-full border text-xs font-medium bg-accent border-accent text-white">14d</button>
         <button data-d="28" class="pill px-3.5 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500">28d</button>
@@ -151,13 +152,90 @@
       document.getElementById('ratios').classList.add('hidden');
       document.getElementById('tbl').classList.add('hidden');
 
-      fetch(API+'?t='+encodeURIComponent(tk)+'&days='+days).then(function(r){return r.json()}).then(function(j){
+      var fetchDays = days < 7 ? 7 : days;
+      fetch(API+'?t='+encodeURIComponent(tk)+'&days='+fetchDays).then(function(r){return r.json()}).then(function(j){
         if (!j.ok) throw new Error(j.error);
-        render(j.rows);
+        if (days === 1) { renderTY(j.rows); } else { render(j.rows); }
       }).catch(function(e){
         document.getElementById('cards').innerHTML =
           '<p class="col-span-full text-center py-10 text-red-500 text-sm">'+e.message+'</p>';
       });
+    }
+
+    function delta(cur, prev) {
+      if (!prev) return '';
+      var pct = ((cur - prev) / prev * 100);
+      if (Math.abs(pct) < 0.5) return '<span class="text-gray-400 text-xs ml-1">0%</span>';
+      var col = pct > 0 ? 'text-green-600' : 'text-red-500';
+      var arrow = pct > 0 ? '\u2191' : '\u2193';
+      return '<span class="' + col + ' text-xs ml-1">' + arrow + Math.abs(pct).toFixed(0) + '%</span>';
+    }
+
+    function deltaInv(cur, prev) {
+      // Inverted: lower is better (for costs)
+      if (!prev) return '';
+      var pct = ((cur - prev) / prev * 100);
+      if (Math.abs(pct) < 0.5) return '<span class="text-gray-400 text-xs ml-1">0%</span>';
+      var col = pct < 0 ? 'text-green-600' : 'text-red-500';
+      var arrow = pct > 0 ? '\u2191' : '\u2193';
+      return '<span class="' + col + ' text-xs ml-1">' + arrow + Math.abs(pct).toFixed(0) + '%</span>';
+    }
+
+    function crdDelta(cls, lbl, val, sub, deltaHtml) {
+      return '<div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5">' +
+        '<p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-1">' + lbl + '</p>' +
+        '<p class="text-2xl font-bold tracking-tight ' + cls + '">' + val + (deltaHtml||'') + '</p>' +
+        '<p class="text-[11px] text-gray-400 mt-1">' + sub + '</p></div>';
+    }
+
+    function renderTY(rows) {
+      rows.sort(function(a,b){ return a.date_start<b.date_start?-1:1; });
+      var today = rows[rows.length-1];
+      var yest  = rows.length > 1 ? rows[rows.length-2] : null;
+
+      var tS=+(today.spend||0), tI=+(today.impressions||0), tC=+(today.clicks||0), tB=bk(today);
+      var yS=yest?+(yest.spend||0):0, yI=yest?+(yest.impressions||0):0, yC=yest?+(yest.clicks||0):0, yB=yest?bk(yest):0;
+
+      document.getElementById('cards').innerHTML =
+        crdDelta('text-green-600','Spend','\u00a3'+fmt(tS,2),'today', deltaInv(tS,yS)) +
+        crdDelta('text-blue-600','Impressions',fmt(tI),'today', delta(tI,yI)) +
+        crdDelta('text-amber-600','Clicks',fmt(tC),'today', delta(tC,yC)) +
+        crdDelta('text-purple-600','Bookings',''+tB,'today', delta(tB,yB));
+
+      var tCPM=tI?tS/tI*1000:0, yCPM=yI?yS/yI*1000:0;
+      var tCPC=tC?tS/tC:0,       yCPC=yC?yS/yC:0;
+      var tCTR=tI?tC/tI*100:0,   yCTR=yI?yC/yI*100:0;
+
+      var rc = document.getElementById('ratios');
+      rc.classList.remove('hidden');
+      rc.innerHTML =
+        crdDelta('text-gray-900','CPM','\u00a3'+fmt(tCPM,2),'today', deltaInv(tCPM,yCPM)) +
+        crdDelta('text-gray-900','CPC','\u00a3'+fmt(tCPC,2),'today', deltaInv(tCPC,yCPC)) +
+        crdDelta('text-gray-900','CTR',fmt(tCTR,2)+'%','today', delta(tCTR,yCTR)) +
+        crdDelta('text-purple-600','Cost / Booking',tB?'\u00a3'+fmt(tS/tB,2):'-','today',
+          tB&&yB?deltaInv(tS/tB,yS/yB):'');
+
+      // Show both days in the table
+      var pair = yest ? [today, yest] : [today];
+      document.getElementById('rows').innerHTML = pair.map(function(r){
+        var s=+(r.spend||0),i=+(r.impressions||0),re=+(r.reach||0),c=+(r.clicks||0),b=bk(r);
+        return '<tr class="border-b border-gray-100 last:border-0">' +
+          '<td class="text-left px-3 py-2 text-gray-500">'+fd(r.date_start)+'</td>' +
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(s,2)+'</td>' +
+          '<td class="text-right px-3 py-2">'+fmt(i)+'</td>' +
+          '<td class="text-right px-3 py-2">'+fmt(re)+'</td>' +
+          '<td class="text-right px-3 py-2">'+fmt(c)+'</td>' +
+          '<td class="text-right px-3 py-2">'+(b?'<span class="bg-purple-100 text-purple-600 rounded px-1.5 py-0.5 font-semibold">'+b+'</span>':'-')+'</td>' +
+          '<td class="text-right px-3 py-2">'+fmt(i?c/i*100:0,2)+'%</td>' +
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(c?s/c:0,2)+'</td>' +
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(i?s/i*1000:0,2)+'</td>' +
+          '<td class="text-right px-3 py-2">'+(b?'\u00a3'+fmt(s/b,2):'-')+'</td></tr>';
+      }).join('');
+
+      document.getElementById('tbl').classList.remove('hidden');
+      var n=new Date();
+      document.getElementById('foot').textContent='Updated '+n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+
+        ' \u00b7 '+n.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
     }
 
     function render(rows) {
