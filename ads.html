@@ -350,15 +350,14 @@
       document.getElementById('tbl-title').textContent =
         'Daily breakdown' + (smooth ? ' (3-day rolling avg)' : '');
 
-      // Delta indicator: green arrow up = good, red arrow down = bad
-      // For spend/CPC/CPM lower is better (invert); for rest higher is better
-      function delta(cur, prev, invert) {
+      // Delta indicator: green = higher than previous day, red = lower
+      function delta(cur, prev) {
         if (prev === 0 || prev == null || cur == null) return '';
         var diff = cur - prev;
         if (Math.abs(diff) < 0.001) return '';
-        var good = invert ? diff < 0 : diff > 0;
-        var arrow = good ? '\u25b2' : '\u25bc';
-        var color = good ? 'text-emerald-500' : 'text-red-400';
+        var up = diff > 0;
+        var arrow = up ? '\u25b2' : '\u25bc';
+        var color = up ? 'text-emerald-500' : 'text-red-400';
         return ' <span class="'+color+' text-[9px] delta-ind">'+arrow+'</span>';
       }
 
@@ -377,14 +376,14 @@
         var d = prevR ? true : false;
         return '<tr class="border-b border-gray-100 last:border-0 '+(cls||'')+'">' +
           '<td class="text-left px-3 py-2 text-gray-500">'+fd(r.date_start)+'</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(s,2)+(d?delta(s,ps,true):'')+'</td>' +
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(s,2)+(d?delta(s,ps):'')+'</td>' +
           '<td class="text-right px-3 py-2">'+fmt(i)+(d?delta(i,pi):'')+'</td>' +
           '<td class="text-right px-3 py-2">'+fmt(re)+(d?delta(re,pre):'')+'</td>' +
           '<td class="text-right px-3 py-2">'+fmt(c)+(d?delta(c,pc):'')+'</td>' +
           '<td class="text-right px-3 py-2">'+bHtml+(d?delta(b,pb):'')+'</td>' +
           '<td class="text-right px-3 py-2">'+fmt(ctr,2)+'%'+(d?delta(ctr,pctr):'')+'</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(cpc,2)+(d?delta(cpc,pcpc,true):'')+'</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(cpm,2)+(d?delta(cpm,pcpm,true):'')+'</td></tr>';
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(cpc,2)+(d?delta(cpc,pcpc):'')+'</td>' +
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(cpm,2)+(d?delta(cpm,pcpm):'')+'</td></tr>';
       }
 
       var reversed = tableRows.slice().reverse();
@@ -393,7 +392,7 @@
         return rowHtml(r, '', prevR);
       }).join('');
 
-      if (compare && days > 0) {
+      if (compare) {
         var prevRows = smooth ? rollingAvg(prev, 3) : prev;
         html += '<tr><td colspan="9" class="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-gray-400 bg-gray-50 border-t-2 border-gray-300">Previous period</td></tr>';
         html += prevRows.slice().reverse().map(function(r){ return rowHtml(r, 'bg-gray-50/50 text-gray-500'); }).join('');
@@ -403,7 +402,7 @@
       document.getElementById('tbl').classList.remove('hidden');
 
       // --- Waterfall ---
-      if (compare && days > 0) {
+      if (compare) {
         // Show container first so canvas can measure width
         document.getElementById('waterfall').classList.remove('hidden');
         drawSpendWaterfall(prv, cur);
@@ -464,7 +463,7 @@
         var y2 = yPos(p.top);
         var barH = Math.max(y2 - y1, 2);
 
-        ctx.fillStyle = b.type === 'total' ? '#6366f1' : (b.value >= 0 ? '#ef4444' : '#22c55e');
+        ctx.fillStyle = b.type === 'total' ? '#6366f1' : (b.value >= 0 ? '#22c55e' : '#ef4444');
         ctx.beginPath();
         ctx.roundRect(x, y1, barW, barH, 3);
         ctx.fill();
