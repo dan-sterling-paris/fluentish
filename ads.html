@@ -78,7 +78,7 @@
   <script>
     var API = 'https://gutihncfxjdyxulfwtgp.supabase.co/functions/v1/dashboard';
     var tk = '', days = 14;
-    try { tk = sessionStorage.getItem('ads_t') || ''; } catch(e) {}
+    try { tk = localStorage.getItem('ads_t') || ''; } catch(e) {}
 
     var loginEl = document.getElementById('login');
     var appEl = document.getElementById('app');
@@ -117,7 +117,7 @@
       fetch(API+'?t='+encodeURIComponent(v)+'&days=7').then(function(r){return r.json()}).then(function(j){
         if (j.ok) {
           tk = v;
-          try { sessionStorage.setItem('ads_t', tk); } catch(e) {}
+          try { localStorage.setItem('ads_t', tk); } catch(e) {}
           loginEl.classList.add('hidden');
           appEl.classList.remove('hidden');
           load();
