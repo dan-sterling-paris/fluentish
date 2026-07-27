@@ -314,10 +314,17 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
 
-  // Fire Lead pixel + GA4 event when any booking CTA is clicked
+  // SHA-256 helper for Meta Advanced Matching
+  function sha256Hex(str) {
+    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.toLowerCase().trim()))
+      .then(function(buf) {
+        return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+      });
+  }
+
+  // GA4 event when any booking CTA is clicked (Lead fires later at form submission)
   document.querySelectorAll('.book-cta').forEach(function(link) {
     link.addEventListener('click', function() {
-      if (isLive && typeof fbq === 'function') fbq('track', 'Lead');
       gtag('event', 'cta_click');
     });
   });
@@ -456,6 +463,7 @@
       if (!valid) return;
 
       gtag('event', 'booking_submitted');
+      if (isLive && typeof fbq === 'function') fbq('track', 'Lead');
 
       var submitBtn = document.getElementById('booking-submit');
       submitBtn.disabled = true;
@@ -478,12 +486,17 @@
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data.ok && !data.bot) {
-          if (typeof fbq === 'function' && isLive) {
-            fbq('track', 'Schedule');
-          } else if (isLive) {
-            window._pendingSchedule = true;
+          gtag('event', 'generate_lead', { method: 'booking_form' });
+          if (isLive) {
+            sha256Hex(emailVal).then(function(hashedEmail) {
+              var matchData = { eventID: data.event_id, em: hashedEmail };
+              if (typeof fbq === 'function') {
+                fbq('track', 'Schedule', {}, matchData);
+              } else {
+                window._pendingSchedule = matchData;
+              }
+            });
           }
-          gtag('event', 'booking_success');
 
           document.getElementById('booking-form').classList.add('hidden');
           document.getElementById('slot-picker').classList.add('hidden');
@@ -541,7 +554,7 @@
       (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
       fbq('init','26628549533507941');
       fbq('track','PageView');
-      if (window._pendingSchedule) { fbq('track', 'Schedule'); delete window._pendingSchedule; }
+      if (window._pendingSchedule) { fbq('track', 'Schedule', {}, window._pendingSchedule); delete window._pendingSchedule; }
     });
 
     // GA4 - dataLayer and gtag() already defined above; queued events fire once gtag.js loads

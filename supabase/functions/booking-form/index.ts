@@ -6,6 +6,8 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const GOOGLE_SERVICE_ACCOUNT_JSON = Deno.env.get("GOOGLE_SERVICE_ACCOUNT_JSON") ?? "";
 const GOOGLE_CALENDAR_ID = Deno.env.get("GOOGLE_CALENDAR_ID") ?? "";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
+const META_PIXEL_ID = Deno.env.get("META_PIXEL_ID") ?? "";
+const META_CAPI_TOKEN = Deno.env.get("META_CAPI_TOKEN") ?? "";
 
 // Discovery call availability: 10:00-13:00 UK time, Mon-Fri
 const SLOT_START_HOUR = 10;
@@ -30,6 +32,50 @@ function json(data: unknown, status = 200) {
 
 function err(message: string, status: number) {
   return json({ ok: false, error: message }, status);
+}
+
+// ── Meta CAPI helpers ────────────────────────────────────────────────────────
+
+async function sha256Hex(value: string): Promise<string> {
+  const buf = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(value.toLowerCase().trim())
+  );
+  return Array.from(new Uint8Array(buf))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+async function sendMetaCAPI(eventName: string, eventId: string, email: string, phone: string) {
+  if (!META_PIXEL_ID || !META_CAPI_TOKEN) {
+    console.warn("Meta CAPI not configured (META_PIXEL_ID / META_CAPI_TOKEN missing)");
+    return;
+  }
+  const [hashedEmail, hashedPhone] = await Promise.all([
+    sha256Hex(email),
+    sha256Hex(phone.replace(/\s+/g, "")),
+  ]);
+  const payload = {
+    data: [{
+      event_name: eventName,
+      event_time: Math.floor(Date.now() / 1000),
+      event_id: eventId,
+      event_source_url: "https://fluentish.co.uk/free-chat.html",
+      action_source: "website",
+      user_data: {
+        em: [hashedEmail],
+        ph: [hashedPhone],
+        country: ["gb"],
+      },
+    }],
+  };
+  const resp = await fetch(
+    `https://graph.facebook.com/v21.0/${META_PIXEL_ID}/events?access_token=${META_CAPI_TOKEN}`,
+    { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }
+  );
+  if (!resp.ok) {
+    console.error(`Meta CAPI error ${resp.status}: ${await resp.text()}`);
+  }
 }
 
 // ── Google Calendar helpers ──────────────────────────────────────────────────
@@ -423,7 +469,7 @@ async function handleBooking(req: Request): Promise<Response> {
     });
   }
 
-  // Send emails (don't block on failure)
+  // Send emails + Meta CAPI in parallel (don't block on failure)
   try {
     await Promise.all([
       sendEmail(
@@ -436,10 +482,11 @@ async function handleBooking(req: Request): Promise<Response> {
         `New booking request from ${trimName}`,
         notificationEmailHtml(trimName, trimSurname, trimEmail, trimPhone, dayLabel, timeStr, variant, slot_start)
       ),
+      sendMetaCAPI("Schedule", eventId, trimEmail, trimPhone),
     ]);
   } catch (e) {
-    console.error("Email send error (booking still saved):", e);
+    console.error("Post-booking task error (booking still saved):", e);
   }
 
-  return json({ ok: true, date: dayLabel, time: timeStr });
+  return json({ ok: true, date: dayLabel, time: timeStr, event_id: eventId });
 }
