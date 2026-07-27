@@ -57,6 +57,14 @@
     <div id="cards" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-2.5"></div>
     <div id="ratios" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5 hidden"></div>
 
+    <!-- Funnel -->
+    <div id="funnel" class="hidden mb-5">
+      <p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-2">Conversion funnel</p>
+      <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+        <div id="funnel-inner" class="flex items-center justify-center gap-0"></div>
+      </div>
+    </div>
+
     <!-- Waterfall charts -->
     <div id="waterfall" class="hidden mb-5">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -345,6 +353,9 @@
           crd('text-purple-600','Cost / Bkg',cur.bkgs?'\u00a3'+fmt(cur.spend/cur.bkgs,2):'-','avg cost');
       }
 
+      // Funnel
+      drawFunnel(cur);
+
       // Table
       var tableRows = smooth ? rollingAvg(current, 3) : current;
       document.getElementById('tbl-title').textContent =
@@ -431,6 +442,51 @@
       var n=new Date();
       document.getElementById('foot').textContent='Updated '+n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+
         ' \u00b7 '+n.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    }
+
+    // --- Funnel ---
+    function drawFunnel(cur) {
+      var el = document.getElementById('funnel');
+      var inner = document.getElementById('funnel-inner');
+      if (!cur.impr) { el.classList.add('hidden'); return; }
+      el.classList.remove('hidden');
+
+      var ctr = cur.impr ? cur.clicks / cur.impr : 0;
+      var cvr = cur.clicks ? cur.bkgs / cur.clicks : 0;
+
+      var stages = [
+        { label: 'Impressions', value: cur.impr, color: 'bg-blue-500' },
+        { label: 'Clicks', value: cur.clicks, color: 'bg-amber-500' },
+        { label: 'Bookings', value: cur.bkgs, color: 'bg-purple-500' }
+      ];
+      var rates = [
+        { label: 'CTR', value: (ctr * 100).toFixed(2) + '%' },
+        { label: 'Conv', value: (cvr * 100).toFixed(2) + '%' }
+      ];
+
+      // Bar widths proportional to values (min 18% so small stages stay visible)
+      var maxVal = Math.max.apply(null, stages.map(function(s){ return s.value; })) || 1;
+      var html = '';
+      for (var i = 0; i < stages.length; i++) {
+        var s = stages[i];
+        var pct = Math.max(18, Math.round(s.value / maxVal * 100));
+        html +=
+          '<div class="flex flex-col items-center" style="width:' + pct + '%">' +
+            '<div class="' + s.color + ' text-white rounded-lg w-full py-3 text-center shadow-sm">' +
+              '<div class="text-lg font-bold leading-tight">' + fmt(s.value) + '</div>' +
+              '<div class="text-[10px] uppercase tracking-wide opacity-80">' + s.label + '</div>' +
+            '</div>' +
+          '</div>';
+        if (i < rates.length) {
+          html +=
+            '<div class="flex flex-col items-center px-1.5 shrink-0">' +
+              '<div class="text-gray-400 text-lg">\u2192</div>' +
+              '<div class="text-[10px] font-bold text-gray-500">' + rates[i].value + '</div>' +
+              '<div class="text-[9px] text-gray-400">' + rates[i].label + '</div>' +
+            '</div>';
+        }
+      }
+      inner.innerHTML = html;
     }
 
     // --- Generic waterfall renderer ---
@@ -563,11 +619,11 @@
         var s=+(r.spend||0),i=+(r.impressions||0),re=+(r.reach||0),c=+(r.clicks||0),b=bk(r);
         return [
           r.date_start, s.toFixed(2), i, re, c, b,
-          (i?c/i*100:0).toFixed(2), (c?s/c:0).toFixed(2), (i?s/i*1000:0).toFixed(2)
+          (i?c/i:0).toFixed(6), (c?b/c:0).toFixed(6), (c?s/c:0).toFixed(2), (i?s/i*1000:0).toFixed(2)
         ].join(',');
       }
 
-      var header = 'Date,Spend,Impressions,Reach,Clicks,Bookings,CTR%,CPC,CPM\n';
+      var header = 'Date,Spend,Impressions,Reach,Clicks,Bookings,CTR,Conv Rate,CPC,CPM\n';
       var lines = [];
 
       if (compare) {
