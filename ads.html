@@ -350,14 +350,15 @@
       document.getElementById('tbl-title').textContent =
         'Daily breakdown' + (smooth ? ' (3-day rolling avg)' : '');
 
-      // Delta indicator: green = higher than previous day, red = lower
-      function delta(cur, prev) {
+      // Delta indicator: green = better than previous day, red = worse
+      // For spend/CPC/CPM lower is better (invert); for rest higher is better
+      function delta(cur, prev, invert) {
         if (prev === 0 || prev == null || cur == null) return '';
         var diff = cur - prev;
         if (Math.abs(diff) < 0.001) return '';
-        var up = diff > 0;
-        var arrow = up ? '\u25b2' : '\u25bc';
-        var color = up ? 'text-emerald-500' : 'text-red-400';
+        var good = invert ? diff < 0 : diff > 0;
+        var arrow = good ? '\u25b2' : '\u25bc';
+        var color = good ? 'text-emerald-500' : 'text-red-400';
         return ' <span class="'+color+' text-[9px] delta-ind">'+arrow+'</span>';
       }
 
@@ -376,26 +377,42 @@
         var d = prevR ? true : false;
         return '<tr class="border-b border-gray-100 last:border-0 '+(cls||'')+'">' +
           '<td class="text-left px-3 py-2 text-gray-500">'+fd(r.date_start)+'</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(s,2)+(d?delta(s,ps):'')+'</td>' +
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(s,2)+(d?delta(s,ps,true):'')+'</td>' +
           '<td class="text-right px-3 py-2">'+fmt(i)+(d?delta(i,pi):'')+'</td>' +
           '<td class="text-right px-3 py-2">'+fmt(re)+(d?delta(re,pre):'')+'</td>' +
           '<td class="text-right px-3 py-2">'+fmt(c)+(d?delta(c,pc):'')+'</td>' +
           '<td class="text-right px-3 py-2">'+bHtml+(d?delta(b,pb):'')+'</td>' +
           '<td class="text-right px-3 py-2">'+fmt(ctr,2)+'%'+(d?delta(ctr,pctr):'')+'</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(cpc,2)+(d?delta(cpc,pcpc):'')+'</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(cpm,2)+(d?delta(cpm,pcpm):'')+'</td></tr>';
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(cpc,2)+(d?delta(cpc,pcpc,true):'')+'</td>' +
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(cpm,2)+(d?delta(cpm,pcpm,true):'')+'</td></tr>';
+      }
+
+      // Build day-over-day lookup from all processed (possibly smoothed) rows
+      var allProcessed = smooth ? rollingAvg(allRows, 3) : allRows;
+      var rowsByDate = {};
+      allProcessed.forEach(function(r){ rowsByDate[r.date_start] = r; });
+
+      function dayBefore(dateStr) {
+        var d = new Date(dateStr);
+        d.setDate(d.getDate() - 1);
+        return d.toISOString().slice(0, 10);
+      }
+
+      function getPrevDay(r) {
+        return rowsByDate[dayBefore(r.date_start)] || null;
       }
 
       var reversed = tableRows.slice().reverse();
-      var html = reversed.map(function(r, idx) {
-        var prevR = reversed[idx + 1] || null; // previous day (next in reversed array)
-        return rowHtml(r, '', prevR);
+      var html = reversed.map(function(r) {
+        return rowHtml(r, '', getPrevDay(r));
       }).join('');
 
       if (compare) {
         var prevRows = smooth ? rollingAvg(prev, 3) : prev;
         html += '<tr><td colspan="9" class="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-gray-400 bg-gray-50 border-t-2 border-gray-300">Previous period</td></tr>';
-        html += prevRows.slice().reverse().map(function(r){ return rowHtml(r, 'bg-gray-50/50 text-gray-500'); }).join('');
+        html += prevRows.slice().reverse().map(function(r){
+          return rowHtml(r, 'bg-gray-50/50 text-gray-500', getPrevDay(r));
+        }).join('');
       }
 
       document.getElementById('rows').innerHTML = html;
