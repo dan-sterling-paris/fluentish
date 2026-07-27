@@ -434,7 +434,7 @@
     }
 
     // --- Generic waterfall renderer ---
-    function drawWF(canvasId, bars, prefix, decimals) {
+    function drawWF(canvasId, bars, prefix, decimals, invert) {
       var canvas = document.getElementById(canvasId);
       var ctx = canvas.getContext('2d');
       var dpr = window.devicePixelRatio || 1;
@@ -480,7 +480,9 @@
         var y2 = yPos(p.top);
         var barH = Math.max(y2 - y1, 2);
 
-        ctx.fillStyle = b.type === 'total' ? '#6366f1' : (b.value >= 0 ? '#22c55e' : '#ef4444');
+        var posCol = invert ? '#ef4444' : '#22c55e';
+        var negCol = invert ? '#22c55e' : '#ef4444';
+        ctx.fillStyle = b.type === 'total' ? '#6366f1' : (b.value >= 0 ? posCol : negCol);
         ctx.beginPath();
         ctx.roundRect(x, y1, barW, barH, 3);
         ctx.fill();
@@ -526,7 +528,7 @@
         { label: 'Volume',     value: vol,        type: 'delta' },
         { label: 'Rate (CPM)', value: rate,       type: 'delta' },
         { label: 'Cur Spend',  value: cur.spend,  type: 'total' },
-      ], '\u00a3', 2);
+      ], '\u00a3', 2, true);
     }
 
     // --- Bookings waterfall: Impr x CTR x Conv rate ---
