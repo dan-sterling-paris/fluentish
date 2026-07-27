@@ -57,8 +57,19 @@
     <div id="cards" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-2.5"></div>
     <div id="ratios" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5 hidden"></div>
 
+    <!-- Waterfall chart -->
+    <div id="waterfall" class="hidden mb-5">
+      <p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-2">Spend bridge (volume / rate)</p>
+      <div class="overflow-x-auto">
+        <canvas id="wfCanvas" height="220" class="w-full max-w-2xl"></canvas>
+      </div>
+    </div>
+
     <div id="tbl" class="hidden">
-      <p id="tbl-title" class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-2">Daily breakdown</p>
+      <div class="flex items-center justify-between mb-2">
+        <p id="tbl-title" class="text-[10px] font-bold uppercase tracking-wide text-gray-400">Daily breakdown</p>
+        <button id="csv-btn" class="text-[11px] font-medium text-accent hover:underline cursor-pointer">Download CSV</button>
+      </div>
       <div class="overflow-x-auto rounded-xl border border-gray-200">
         <table class="w-full text-[13px] whitespace-nowrap">
           <thead>
@@ -347,10 +358,148 @@
       }).join('');
 
       document.getElementById('tbl').classList.remove('hidden');
+
+      // --- Waterfall ---
+      if (compare && days > 0) {
+        drawWaterfall(prv, cur);
+        document.getElementById('waterfall').classList.remove('hidden');
+      } else {
+        document.getElementById('waterfall').classList.add('hidden');
+      }
+
       var n=new Date();
       document.getElementById('foot').textContent='Updated '+n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+
         ' \u00b7 '+n.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
     }
+
+    // --- Waterfall chart (volume/rate bridge) ---
+    function drawWaterfall(prv, cur) {
+      // FP&A decomposition:
+      // Spend = Impressions x CPM/1000
+      // Change = Volume effect (impr change at old CPM) + Rate effect (CPM change at new impr) + Mix
+      // Simplified: Spend_prev, +Volume, +Rate, = Spend_cur
+      var prevCPM = prv.impr ? prv.spend / prv.impr * 1000 : 0;
+      var curCPM  = cur.impr ? cur.spend / cur.impr * 1000 : 0;
+      var volEffect  = (cur.impr - prv.impr) / 1000 * prevCPM;
+      var rateEffect = (curCPM - prevCPM) / 1000 * cur.impr;
+
+      var bars = [
+        { label: 'Prev Spend',  value: prv.spend, type: 'total' },
+        { label: 'Volume',      value: volEffect,  type: 'delta' },
+        { label: 'Rate (CPM)',  value: rateEffect, type: 'delta' },
+        { label: 'Cur Spend',   value: cur.spend,  type: 'total' },
+      ];
+
+      var canvas = document.getElementById('wfCanvas');
+      var ctx = canvas.getContext('2d');
+      var dpr = window.devicePixelRatio || 1;
+      var w = canvas.parentElement.offsetWidth;
+      var h = 220;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, w, h);
+
+      var pad = { top: 30, bottom: 40, left: 10, right: 10 };
+      var barW = Math.min(60, (w - pad.left - pad.right) / bars.length * 0.6);
+      var gap = (w - pad.left - pad.right - barW * bars.length) / (bars.length + 1);
+      var chartH = h - pad.top - pad.bottom;
+
+      // Find max value for scale
+      var running = 0;
+      var positions = [];
+      bars.forEach(function(b) {
+        if (b.type === 'total') {
+          positions.push({ top: 0, bottom: b.value, val: b.value });
+          running = b.value;
+        } else {
+          var from = running;
+          running += b.value;
+          positions.push({ top: Math.min(from, running), bottom: Math.max(from, running), val: b.value });
+        }
+      });
+      var maxVal = Math.max.apply(null, positions.map(function(p){ return p.bottom; })) * 1.15;
+      if (maxVal === 0) maxVal = 1;
+
+      function yPos(v) { return pad.top + chartH * (1 - v / maxVal); }
+
+      ctx.font = '500 10px Inter, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+
+      bars.forEach(function(b, i) {
+        var x = pad.left + gap * (i + 1) + barW * i;
+        var p = positions[i];
+        var y1 = yPos(p.bottom);
+        var y2 = yPos(p.top);
+        var barH = y2 - y1;
+
+        // Bar colour
+        if (b.type === 'total') {
+          ctx.fillStyle = '#6366f1';
+        } else {
+          ctx.fillStyle = b.value >= 0 ? '#ef4444' : '#22c55e';
+        }
+
+        ctx.beginPath();
+        ctx.roundRect(x, y1, barW, barH, 3);
+        ctx.fill();
+
+        // Value label
+        ctx.fillStyle = '#374151';
+        var prefix = b.type === 'delta' ? (b.value >= 0 ? '+' : '') : '';
+        ctx.fillText(prefix + '\u00a3' + Math.abs(b.value).toFixed(2), x + barW/2, y1 - 6);
+
+        // Bar label
+        ctx.fillStyle = '#9ca3af';
+        ctx.fillText(b.label, x + barW/2, h - pad.bottom + 16);
+
+        // Connector line
+        if (b.type === 'delta' && i < bars.length - 1) {
+          ctx.strokeStyle = '#d1d5db';
+          ctx.lineWidth = 1;
+          ctx.setLineDash([3, 3]);
+          ctx.beginPath();
+          var endY = yPos(running);
+          // Actually draw from current bar top to next bar
+          var nextX = pad.left + gap * (i + 2) + barW * (i + 1);
+          ctx.moveTo(x + barW, yPos(positions[i].top < positions[i].bottom ?
+            (b.value >= 0 ? positions[i].bottom : positions[i].top) :
+            positions[i].top));
+          ctx.lineTo(nextX, yPos(positions[i].top < positions[i].bottom ?
+            (b.value >= 0 ? positions[i].bottom : positions[i].top) :
+            positions[i].top));
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      });
+    }
+
+    // --- CSV download ---
+    document.getElementById('csv-btn').onclick = function() {
+      var smooth = smoothBox.checked;
+      var current = slicePeriod(allRows, days);
+      var tableRows = smooth ? rollingAvg(current, 3) : current;
+
+      var header = 'Date,Spend,Impressions,Reach,Clicks,Bookings,CTR%,CPC,CPM\n';
+      var csvRows = tableRows.map(function(r) {
+        var s=+(r.spend||0),i=+(r.impressions||0),re=+(r.reach||0),c=+(r.clicks||0),b=bk(r);
+        return [
+          r.date_start, s.toFixed(2), i, re, c, b,
+          (i?c/i*100:0).toFixed(2), (c?s/c:0).toFixed(2), (i?s/i*1000:0).toFixed(2)
+        ].join(',');
+      });
+
+      var csv = header + csvRows.join('\n');
+      var blob = new Blob([csv], { type: 'text/csv' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = 'fluentish-ads-' + todayStr() + '.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    };
   </script>
 </body>
 </html>
