@@ -445,37 +445,19 @@
     }
 
     // --- Funnel ---
-    function funnelBars(d, label) {
+    function funnelRow(d, label, colors) {
       var ctr = d.impr ? d.clicks / d.impr * 100 : 0;
       var cvr = d.clicks ? d.bkgs / d.clicks * 100 : 0;
-      var stages = [
-        { label: 'Impressions', value: d.impr, pct: 100, color: '#3b82f6' },
-        { label: 'Clicks', value: d.clicks, pct: d.impr ? d.clicks / d.impr * 100 : 0, color: '#f59e0b' },
-        { label: 'Bookings', value: d.bkgs, pct: d.impr ? d.bkgs / d.impr * 100 : 0, color: '#a855f7' }
-      ];
-      var html = '<div class="mb-1"><span class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">' + label + '</span></div>';
-      for (var i = 0; i < stages.length; i++) {
-        var s = stages[i];
-        html += '<div class="h-5 rounded mb-0.5" style="width:' + Math.max(s.pct, 0.4) +
-          '%;background:' + s.color + '"></div>';
-      }
-      // Legend table
-      html += '<table class="w-full text-[11px] mt-1.5"><tr class="text-gray-400">' +
-        '<td></td><td class="text-right pr-3">Count</td><td class="text-right pr-3">% of Impr</td><td class="text-right">Rate</td></tr>';
-      for (var i = 0; i < stages.length; i++) {
-        var s = stages[i];
-        var pctImpr = d.impr ? (s.value / d.impr * 100).toFixed(2) + '%' : '-';
-        var rate = '';
-        if (i === 1) rate = fmt(ctr, 2) + '% CTR';
-        if (i === 2) rate = fmt(cvr, 2) + '% Conv';
-        html += '<tr>' +
-          '<td class="py-0.5"><span class="inline-block w-2 h-2 rounded-sm mr-1.5" style="background:' + s.color + '"></span>' + s.label + '</td>' +
-          '<td class="text-right pr-3 font-medium">' + fmt(s.value) + '</td>' +
-          '<td class="text-right pr-3 text-gray-400">' + pctImpr + '</td>' +
-          '<td class="text-right font-medium">' + rate + '</td></tr>';
-      }
-      html += '</table>';
-      return html;
+      var clickPct = d.impr ? d.clicks / d.impr * 100 : 0;
+      var bkgPct = d.impr ? d.bkgs / d.impr * 100 : 0;
+      return '<div class="flex items-center gap-2 mb-1">' +
+        '<span class="text-[10px] text-gray-400 w-14 shrink-0 text-right">' + label + '</span>' +
+        '<div class="flex items-center gap-0.5 flex-1 min-w-0">' +
+          '<div class="h-6 rounded-l" style="width:100%;background:' + colors[0] + '"></div>' +
+          '<div class="h-6" style="width:' + clickPct + '%;background:' + colors[1] + '"></div>' +
+          '<div class="h-6 rounded-r" style="width:' + bkgPct + '%;background:' + colors[2] + '"></div>' +
+        '</div>' +
+      '</div>';
     }
 
     function drawFunnel(cur, prv) {
@@ -484,15 +466,46 @@
       if (!cur.impr) { el.classList.add('hidden'); return; }
       el.classList.remove('hidden');
 
-      if (prv) {
-        inner.innerHTML =
-          '<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">' +
-            '<div>' + funnelBars(cur, 'Current period') + '</div>' +
-            '<div>' + funnelBars(prv, 'Previous period') + '</div>' +
-          '</div>';
+      var curColors = ['#3b82f6', '#f59e0b', '#a855f7'];
+      var prvColors = ['#93bbfd', '#fcd07a', '#d4a5f5'];
+
+      var html = '';
+      if (prv && prv.impr) {
+        html += funnelRow(cur, 'Current', curColors);
+        html += funnelRow(prv, 'Previous', prvColors);
       } else {
-        inner.innerHTML = funnelBars(cur, 'Current period');
+        html += funnelRow(cur, '', curColors);
       }
+
+      // Legend / data table
+      var cCtr = cur.impr ? cur.clicks / cur.impr * 100 : 0;
+      var cCvr = cur.clicks ? cur.bkgs / cur.clicks * 100 : 0;
+      html += '<table class="w-full text-[11px] mt-2.5">' +
+        '<tr class="text-[10px] text-gray-400 uppercase tracking-wide">' +
+        '<td></td><td class="text-right pr-3">Impr</td><td class="text-right pr-3">Clicks</td>' +
+        '<td class="text-right pr-3">Bkgs</td><td class="text-right pr-3">CTR</td><td class="text-right">Conv</td></tr>';
+
+      html += '<tr>' +
+        '<td class="py-0.5 font-medium">' + (prv ? 'Current' : '') + '</td>' +
+        '<td class="text-right pr-3">' + fmt(cur.impr) + '</td>' +
+        '<td class="text-right pr-3">' + fmt(cur.clicks) + '</td>' +
+        '<td class="text-right pr-3">' + fmt(cur.bkgs) + '</td>' +
+        '<td class="text-right pr-3">' + fmt(cCtr, 2) + '%</td>' +
+        '<td class="text-right">' + fmt(cCvr, 2) + '%</td></tr>';
+
+      if (prv && prv.impr) {
+        var pCtr = prv.impr ? prv.clicks / prv.impr * 100 : 0;
+        var pCvr = prv.clicks ? prv.bkgs / prv.clicks * 100 : 0;
+        html += '<tr class="text-gray-400">' +
+          '<td class="py-0.5 font-medium">Previous</td>' +
+          '<td class="text-right pr-3">' + fmt(prv.impr) + '</td>' +
+          '<td class="text-right pr-3">' + fmt(prv.clicks) + '</td>' +
+          '<td class="text-right pr-3">' + fmt(prv.bkgs) + '</td>' +
+          '<td class="text-right pr-3">' + fmt(pCtr, 2) + '%</td>' +
+          '<td class="text-right">' + fmt(pCvr, 2) + '%</td></tr>';
+      }
+      html += '</table>';
+      inner.innerHTML = html;
     }
 
     // --- Generic waterfall renderer ---
