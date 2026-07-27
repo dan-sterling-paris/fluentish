@@ -10,13 +10,8 @@
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            navy: '#003359',
-            accent: '#6366f1',
-          },
-          fontFamily: {
-            body: ['Inter', 'system-ui', 'sans-serif'],
-          },
+          colors: { accent: '#6366f1' },
+          fontFamily: { body: ['Inter', 'system-ui', 'sans-serif'] },
         },
       },
     }
@@ -26,7 +21,7 @@
 
   <!-- Login -->
   <div id="login" class="flex flex-col items-center justify-center min-h-screen gap-4 px-6 text-center">
-    <h1 class="text-2xl font-bold text-gray-900">Fluent<span class="text-accent">ISH</span> Ads</h1>
+    <h1 class="text-2xl font-bold">Fluent<span class="text-accent">ISH</span> Ads</h1>
     <p class="text-gray-500 text-sm">Enter your dashboard token</p>
     <input id="pin" type="password" placeholder="Token" autocomplete="off"
       class="w-full max-w-xs px-4 py-3 rounded-xl border border-gray-300 bg-gray-50 text-center text-base font-mono focus:outline-none focus:border-accent" />
@@ -36,21 +31,34 @@
 
   <!-- Dashboard -->
   <div id="app" class="hidden px-4 py-5 max-w-4xl mx-auto">
-    <div class="flex items-center justify-between flex-wrap gap-3 mb-5">
-      <h1 class="text-lg font-bold text-gray-900">Fluent<span class="text-accent">ISH</span> Ads</h1>
+    <!-- Header -->
+    <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
+      <h1 class="text-lg font-bold">Fluent<span class="text-accent">ISH</span> Ads</h1>
       <div id="pills" class="flex gap-1.5">
-        <button data-d="1"  class="pill px-3.5 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500">T/Y</button>
-        <button data-d="7"  class="pill px-3.5 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500">7d</button>
-        <button data-d="14" class="pill px-3.5 py-1 rounded-full border text-xs font-medium bg-accent border-accent text-white">14d</button>
-        <button data-d="28" class="pill px-3.5 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500">28d</button>
+        <button data-d="0"  class="pill px-3 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500">Today</button>
+        <button data-d="7"  class="pill px-3 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500">7d</button>
+        <button data-d="14" class="pill px-3 py-1 rounded-full border text-xs font-medium bg-accent border-accent text-white">14d</button>
+        <button data-d="28" class="pill px-3 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500">28d</button>
       </div>
+    </div>
+
+    <!-- Toggles -->
+    <div class="flex items-center gap-3 mb-5 text-xs">
+      <label class="flex items-center gap-1.5 cursor-pointer select-none">
+        <input type="checkbox" id="cmp" class="accent-accent w-3.5 h-3.5" checked />
+        <span class="text-gray-600">Compare prev period</span>
+      </label>
+      <label class="flex items-center gap-1.5 cursor-pointer select-none">
+        <input type="checkbox" id="smooth" class="accent-accent w-3.5 h-3.5" />
+        <span class="text-gray-600">3-day avg</span>
+      </label>
     </div>
 
     <div id="cards" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-2.5"></div>
     <div id="ratios" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5 hidden"></div>
 
     <div id="tbl" class="hidden">
-      <p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-2">Daily breakdown</p>
+      <p id="tbl-title" class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-2">Daily breakdown</p>
       <div class="overflow-x-auto rounded-xl border border-gray-200">
         <table class="w-full text-[13px] whitespace-nowrap">
           <thead>
@@ -64,7 +72,6 @@
               <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">CTR</th>
               <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">CPC</th>
               <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">CPM</th>
-              <th class="text-right px-3 py-2.5 border-b border-gray-200 font-bold">Cost/Bkg</th>
             </tr>
           </thead>
           <tbody id="rows"></tbody>
@@ -77,12 +84,15 @@
 
   <script>
     var API = 'https://gutihncfxjdyxulfwtgp.supabase.co/functions/v1/dashboard';
-    var tk = '', days = 14;
+    var tk = '', allRows = [], days = 14;
     try { tk = localStorage.getItem('ads_t') || ''; } catch(e) {}
 
     var loginEl = document.getElementById('login');
     var appEl = document.getElementById('app');
+    var cmpBox = document.getElementById('cmp');
+    var smoothBox = document.getElementById('smooth');
 
+    // --- Helpers ---
     function fmt(n, d, p) {
       if (n == null || isNaN(n)) return '-';
       var s = Number(n).toFixed(d||0), pts = s.split('.');
@@ -101,6 +111,8 @@
       return new Date(s+'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
     }
 
+    function todayStr() { return new Date().toISOString().slice(0,10); }
+
     function crd(cls, lbl, val, sub) {
       return '<div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5">' +
         '<p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-1">' + lbl + '</p>' +
@@ -108,19 +120,105 @@
         '<p class="text-[11px] text-gray-400 mt-1">' + sub + '</p></div>';
     }
 
-    // Login
+    function crdD(cls, lbl, val, sub, dh) {
+      return '<div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5">' +
+        '<p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-1">' + lbl + '</p>' +
+        '<p class="text-2xl font-bold tracking-tight ' + cls + '">' + val + (dh||'') + '</p>' +
+        '<p class="text-[11px] text-gray-400 mt-1">' + sub + '</p></div>';
+    }
+
+    function dUp(cur, prev) {
+      if (!prev) return '';
+      var pct = (cur - prev) / prev * 100;
+      if (Math.abs(pct) < 0.5) return '<span class="text-gray-400 text-xs ml-1">0%</span>';
+      var col = pct > 0 ? 'text-green-600' : 'text-red-500';
+      return '<span class="'+col+' text-xs ml-1">'+(pct>0?'\u2191':'\u2193')+Math.abs(pct).toFixed(0)+'%</span>';
+    }
+
+    function dDown(cur, prev) {
+      if (!prev) return '';
+      var pct = (cur - prev) / prev * 100;
+      if (Math.abs(pct) < 0.5) return '<span class="text-gray-400 text-xs ml-1">0%</span>';
+      var col = pct < 0 ? 'text-green-600' : 'text-red-500';
+      return '<span class="'+col+' text-xs ml-1">'+(pct>0?'\u2191':'\u2193')+Math.abs(pct).toFixed(0)+'%</span>';
+    }
+
+    // --- Slicing ---
+    function slicePeriod(rows, numDays) {
+      // rows sorted ascending by date. Slice the last numDays.
+      if (numDays === 0) {
+        // "Today" = just today's row
+        var today = todayStr();
+        var todayRow = rows.filter(function(r){ return r.date_start === today; });
+        // If today not available yet, use the latest row
+        return todayRow.length ? todayRow : rows.slice(-1);
+      }
+      return rows.slice(-numDays);
+    }
+
+    function slicePrev(rows, numDays) {
+      // The period of equal length immediately before the current period
+      if (numDays === 0) {
+        // Compare today vs yesterday
+        var today = todayStr();
+        var idx = -1;
+        for (var i = rows.length - 1; i >= 0; i--) {
+          if (rows[i].date_start === today) { idx = i; break; }
+        }
+        if (idx < 1) {
+          // Today not found, latest vs one before
+          return rows.length >= 2 ? [rows[rows.length-2]] : [];
+        }
+        return idx >= 1 ? [rows[idx-1]] : [];
+      }
+      var end = rows.length - numDays;
+      var start = end - numDays;
+      if (start < 0) start = 0;
+      return rows.slice(start, end);
+    }
+
+    function sumRows(arr) {
+      var s=0,i=0,r=0,c=0,b=0;
+      arr.forEach(function(x){
+        s+=+(x.spend||0); i+=+(x.impressions||0); r+=+(x.reach||0); c+=+(x.clicks||0); b+=bk(x);
+      });
+      return {spend:s, impr:i, reach:r, clicks:c, bkgs:b};
+    }
+
+    // --- Rolling average ---
+    function rollingAvg(rows, window) {
+      return rows.map(function(r, idx) {
+        var start = Math.max(0, idx - window + 1);
+        var slice = rows.slice(start, idx + 1);
+        var n = slice.length;
+        var avg = {
+          date_start: r.date_start,
+          spend: String(slice.reduce(function(a,x){return a+ +(x.spend||0)},0)/n),
+          impressions: String(Math.round(slice.reduce(function(a,x){return a+ +(x.impressions||0)},0)/n)),
+          reach: String(Math.round(slice.reduce(function(a,x){return a+ +(x.reach||0)},0)/n)),
+          clicks: String(Math.round(slice.reduce(function(a,x){return a+ +(x.clicks||0)},0)/n)),
+          actions: [{
+            action_type: 'offsite_conversion.fb_pixel_custom',
+            value: String(Math.round(slice.reduce(function(a,x){return a+bk(x)},0)/n * 10)/10)
+          }]
+        };
+        return avg;
+      });
+    }
+
+    // --- Login ---
     document.getElementById('go').onclick = function() {
       var v = document.getElementById('pin').value.trim();
       if (!v) { document.getElementById('err').textContent='Enter a token'; return; }
       this.textContent = 'Checking\u2026';
       document.getElementById('err').textContent = '';
-      fetch(API+'?t='+encodeURIComponent(v)+'&days=7').then(function(r){return r.json()}).then(function(j){
+      fetch(API+'?t='+encodeURIComponent(v)).then(function(r){return r.json()}).then(function(j){
         if (j.ok) {
-          tk = v;
+          tk = v; allRows = j.rows;
           try { localStorage.setItem('ads_t', tk); } catch(e) {}
           loginEl.classList.add('hidden');
           appEl.classList.remove('hidden');
-          load();
+          draw();
         } else {
           document.getElementById('err').textContent = 'Invalid token';
           document.getElementById('go').textContent = 'View Dashboard';
@@ -132,146 +230,120 @@
     };
     document.getElementById('pin').onkeydown = function(e){ if(e.key==='Enter') document.getElementById('go').click(); };
 
-    if (tk) { loginEl.classList.add('hidden'); appEl.classList.remove('hidden'); load(); }
+    // --- Init ---
+    if (tk) {
+      loginEl.classList.add('hidden');
+      appEl.classList.remove('hidden');
+      fetchData();
+    }
 
-    // Pills
-    document.querySelectorAll('.pill').forEach(function(b){
-      b.onclick = function(){
-        document.querySelectorAll('.pill').forEach(function(p){
-          p.className='pill px-3.5 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500';
-        });
-        b.className='pill px-3.5 py-1 rounded-full border text-xs font-medium bg-accent border-accent text-white';
-        days = +b.dataset.d;
-        load();
-      };
-    });
-
-    function load() {
+    function fetchData() {
       document.getElementById('cards').innerHTML =
         '<p class="col-span-full text-center py-10 text-gray-400 text-sm">Loading\u2026</p>';
       document.getElementById('ratios').classList.add('hidden');
       document.getElementById('tbl').classList.add('hidden');
 
-      var fetchDays = days < 7 ? 7 : days;
-      fetch(API+'?t='+encodeURIComponent(tk)+'&days='+fetchDays).then(function(r){return r.json()}).then(function(j){
+      fetch(API+'?t='+encodeURIComponent(tk)).then(function(r){return r.json()}).then(function(j){
         if (!j.ok) throw new Error(j.error);
-        if (days === 1) { renderTY(j.rows); } else { render(j.rows); }
+        allRows = j.rows;
+        allRows.sort(function(a,b){ return a.date_start<b.date_start?-1:1; });
+        draw();
       }).catch(function(e){
         document.getElementById('cards').innerHTML =
           '<p class="col-span-full text-center py-10 text-red-500 text-sm">'+e.message+'</p>';
       });
     }
 
-    function delta(cur, prev) {
-      if (!prev) return '';
-      var pct = ((cur - prev) / prev * 100);
-      if (Math.abs(pct) < 0.5) return '<span class="text-gray-400 text-xs ml-1">0%</span>';
-      var col = pct > 0 ? 'text-green-600' : 'text-red-500';
-      var arrow = pct > 0 ? '\u2191' : '\u2193';
-      return '<span class="' + col + ' text-xs ml-1">' + arrow + Math.abs(pct).toFixed(0) + '%</span>';
-    }
+    // --- Pills ---
+    document.querySelectorAll('.pill').forEach(function(b){
+      b.onclick = function(){
+        document.querySelectorAll('.pill').forEach(function(p){
+          p.className='pill px-3 py-1 rounded-full border text-xs font-medium border-gray-300 text-gray-500';
+        });
+        b.className='pill px-3 py-1 rounded-full border text-xs font-medium bg-accent border-accent text-white';
+        days = +b.dataset.d;
+        draw();
+      };
+    });
 
-    function deltaInv(cur, prev) {
-      // Inverted: lower is better (for costs)
-      if (!prev) return '';
-      var pct = ((cur - prev) / prev * 100);
-      if (Math.abs(pct) < 0.5) return '<span class="text-gray-400 text-xs ml-1">0%</span>';
-      var col = pct < 0 ? 'text-green-600' : 'text-red-500';
-      var arrow = pct > 0 ? '\u2191' : '\u2193';
-      return '<span class="' + col + ' text-xs ml-1">' + arrow + Math.abs(pct).toFixed(0) + '%</span>';
-    }
+    // --- Toggles ---
+    cmpBox.onchange = draw;
+    smoothBox.onchange = draw;
 
-    function crdDelta(cls, lbl, val, sub, deltaHtml) {
-      return '<div class="bg-gray-50 border border-gray-200 rounded-xl p-3.5">' +
-        '<p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-1">' + lbl + '</p>' +
-        '<p class="text-2xl font-bold tracking-tight ' + cls + '">' + val + (deltaHtml||'') + '</p>' +
-        '<p class="text-[11px] text-gray-400 mt-1">' + sub + '</p></div>';
-    }
+    // --- Draw ---
+    function draw() {
+      if (!allRows.length) return;
 
-    function renderTY(rows) {
-      rows.sort(function(a,b){ return a.date_start<b.date_start?-1:1; });
-      var today = rows[rows.length-1];
-      var yest  = rows.length > 1 ? rows[rows.length-2] : null;
+      var compare = cmpBox.checked;
+      var smooth = smoothBox.checked;
 
-      var tS=+(today.spend||0), tI=+(today.impressions||0), tC=+(today.clicks||0), tB=bk(today);
-      var yS=yest?+(yest.spend||0):0, yI=yest?+(yest.impressions||0):0, yC=yest?+(yest.clicks||0):0, yB=yest?bk(yest):0;
+      var current = slicePeriod(allRows, days);
+      var cur = sumRows(current);
+      var label = days === 0 ? 'today' : days + 'd total';
 
-      document.getElementById('cards').innerHTML =
-        crdDelta('text-green-600','Spend','\u00a3'+fmt(tS,2),'today', deltaInv(tS,yS)) +
-        crdDelta('text-blue-600','Impressions',fmt(tI),'today', delta(tI,yI)) +
-        crdDelta('text-amber-600','Clicks',fmt(tC),'today', delta(tC,yC)) +
-        crdDelta('text-purple-600','Bookings',''+tB,'today', delta(tB,yB));
+      if (compare) {
+        var prev = slicePrev(allRows, days);
+        var prv = sumRows(prev);
+        var prevLabel = days === 0 ? 'vs yesterday' : 'vs prev ' + days + 'd';
 
-      var tCPM=tI?tS/tI*1000:0, yCPM=yI?yS/yI*1000:0;
-      var tCPC=tC?tS/tC:0,       yCPC=yC?yS/yC:0;
-      var tCTR=tI?tC/tI*100:0,   yCTR=yI?yC/yI*100:0;
+        document.getElementById('cards').innerHTML =
+          crdD('text-green-600','Spend','\u00a3'+fmt(cur.spend,2), label, dDown(cur.spend,prv.spend)) +
+          crdD('text-blue-600','Impressions',fmt(cur.impr), label, dUp(cur.impr,prv.impr)) +
+          crdD('text-amber-600','Clicks',fmt(cur.clicks), label, dUp(cur.clicks,prv.clicks)) +
+          crdD('text-purple-600','Bookings',''+cur.bkgs, label, dUp(cur.bkgs,prv.bkgs));
 
-      var rc = document.getElementById('ratios');
-      rc.classList.remove('hidden');
-      rc.innerHTML =
-        crdDelta('text-gray-900','CPM','\u00a3'+fmt(tCPM,2),'today', deltaInv(tCPM,yCPM)) +
-        crdDelta('text-gray-900','CPC','\u00a3'+fmt(tCPC,2),'today', deltaInv(tCPC,yCPC)) +
-        crdDelta('text-gray-900','CTR',fmt(tCTR,2)+'%','today', delta(tCTR,yCTR)) +
-        crdDelta('text-purple-600','Cost / Booking',tB?'\u00a3'+fmt(tS/tB,2):'-','today',
-          tB&&yB?deltaInv(tS/tB,yS/yB):'');
+        var cCPM=cur.impr?cur.spend/cur.impr*1000:0, pCPM=prv.impr?prv.spend/prv.impr*1000:0;
+        var cCPC=cur.clicks?cur.spend/cur.clicks:0, pCPC=prv.clicks?prv.spend/prv.clicks:0;
+        var cCTR=cur.impr?cur.clicks/cur.impr*100:0, pCTR=prv.impr?prv.clicks/prv.impr*100:0;
+        var cCPB=cur.bkgs?cur.spend/cur.bkgs:0, pCPB=prv.bkgs?prv.spend/prv.bkgs:0;
 
-      // Show both days in the table
-      var pair = yest ? [today, yest] : [today];
-      document.getElementById('rows').innerHTML = pair.map(function(r){
+        var rc = document.getElementById('ratios');
+        rc.classList.remove('hidden');
+        rc.innerHTML =
+          crdD('text-gray-900','CPM','\u00a3'+fmt(cCPM,2), prevLabel, dDown(cCPM,pCPM)) +
+          crdD('text-gray-900','CPC','\u00a3'+fmt(cCPC,2), prevLabel, dDown(cCPC,pCPC)) +
+          crdD('text-gray-900','CTR',fmt(cCTR,2)+'%', prevLabel, dUp(cCTR,pCTR)) +
+          crdD('text-purple-600','Cost / Bkg',cCPB?'\u00a3'+fmt(cCPB,2):'-', prevLabel, cur.bkgs&&prv.bkgs?dDown(cCPB,pCPB):'');
+      } else {
+        document.getElementById('cards').innerHTML =
+          crd('text-green-600','Spend','\u00a3'+fmt(cur.spend,2), label) +
+          crd('text-blue-600','Impressions',fmt(cur.impr), label) +
+          crd('text-amber-600','Clicks',fmt(cur.clicks), label) +
+          crd('text-purple-600','Bookings',''+cur.bkgs, 'appointments');
+
+        var cCPM=cur.impr?cur.spend/cur.impr*1000:0;
+        var cCPC=cur.clicks?cur.spend/cur.clicks:0;
+        var cCTR=cur.impr?cur.clicks/cur.impr*100:0;
+
+        var rc = document.getElementById('ratios');
+        rc.classList.remove('hidden');
+        rc.innerHTML =
+          crd('text-gray-900','CPM','\u00a3'+fmt(cCPM,2),'per 1,000 impr') +
+          crd('text-gray-900','CPC','\u00a3'+fmt(cCPC,2),'per click') +
+          crd('text-gray-900','CTR',fmt(cCTR,2)+'%','click-through') +
+          crd('text-purple-600','Cost / Bkg',cur.bkgs?'\u00a3'+fmt(cur.spend/cur.bkgs,2):'-','avg cost');
+      }
+
+      // Table
+      var tableRows = smooth ? rollingAvg(current, 3) : current;
+      document.getElementById('tbl-title').textContent =
+        'Daily breakdown' + (smooth ? ' (3-day rolling avg)' : '');
+
+      document.getElementById('rows').innerHTML = tableRows.slice().reverse().map(function(r){
         var s=+(r.spend||0),i=+(r.impressions||0),re=+(r.reach||0),c=+(r.clicks||0),b=bk(r);
+        // For smoothed bookings, show decimal if non-integer
+        var bStr = b ? (b % 1 === 0 ? ''+b : b.toFixed(1)) : '-';
+        var bHtml = b ? '<span class="bg-purple-100 text-purple-600 rounded px-1.5 py-0.5 font-semibold">'+bStr+'</span>' : '-';
         return '<tr class="border-b border-gray-100 last:border-0">' +
           '<td class="text-left px-3 py-2 text-gray-500">'+fd(r.date_start)+'</td>' +
           '<td class="text-right px-3 py-2">\u00a3'+fmt(s,2)+'</td>' +
           '<td class="text-right px-3 py-2">'+fmt(i)+'</td>' +
           '<td class="text-right px-3 py-2">'+fmt(re)+'</td>' +
           '<td class="text-right px-3 py-2">'+fmt(c)+'</td>' +
-          '<td class="text-right px-3 py-2">'+(b?'<span class="bg-purple-100 text-purple-600 rounded px-1.5 py-0.5 font-semibold">'+b+'</span>':'-')+'</td>' +
+          '<td class="text-right px-3 py-2">'+bHtml+'</td>' +
           '<td class="text-right px-3 py-2">'+fmt(i?c/i*100:0,2)+'%</td>' +
           '<td class="text-right px-3 py-2">\u00a3'+fmt(c?s/c:0,2)+'</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(i?s/i*1000:0,2)+'</td>' +
-          '<td class="text-right px-3 py-2">'+(b?'\u00a3'+fmt(s/b,2):'-')+'</td></tr>';
-      }).join('');
-
-      document.getElementById('tbl').classList.remove('hidden');
-      var n=new Date();
-      document.getElementById('foot').textContent='Updated '+n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+
-        ' \u00b7 '+n.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-    }
-
-    function render(rows) {
-      rows.sort(function(a,b){ return a.date_start<b.date_start?-1:1; });
-      var tS=0,tI=0,tR=0,tC=0,tB=0;
-      rows.forEach(function(r){
-        tS+=+(r.spend||0); tI+=+(r.impressions||0); tR+=+(r.reach||0); tC+=+(r.clicks||0); tB+=bk(r);
-      });
-
-      document.getElementById('cards').innerHTML =
-        crd('text-green-600','Spend','\u00a3'+fmt(tS,2),days+'d total') +
-        crd('text-blue-600','Impressions',fmt(tI),days+'d total') +
-        crd('text-amber-600','Clicks',fmt(tC),days+'d total') +
-        crd('text-purple-600','Bookings',''+tB,'appointments');
-
-      var rc = document.getElementById('ratios');
-      rc.classList.remove('hidden');
-      rc.innerHTML =
-        crd('text-gray-900','CPM','\u00a3'+fmt(tI?tS/tI*1000:0,2),'per 1,000 impr') +
-        crd('text-gray-900','CPC','\u00a3'+fmt(tC?tS/tC:0,2),'per click') +
-        crd('text-gray-900','CTR',fmt(tI?tC/tI*100:0,2)+'%','click-through') +
-        crd('text-purple-600','Cost / Booking',tB?'\u00a3'+fmt(tS/tB,2):'-','avg cost');
-
-      document.getElementById('rows').innerHTML = rows.slice().reverse().map(function(r){
-        var s=+(r.spend||0),i=+(r.impressions||0),re=+(r.reach||0),c=+(r.clicks||0),b=bk(r);
-        return '<tr class="border-b border-gray-100 last:border-0">' +
-          '<td class="text-left px-3 py-2 text-gray-500">'+fd(r.date_start)+'</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(s,2)+'</td>' +
-          '<td class="text-right px-3 py-2">'+fmt(i)+'</td>' +
-          '<td class="text-right px-3 py-2">'+fmt(re)+'</td>' +
-          '<td class="text-right px-3 py-2">'+fmt(c)+'</td>' +
-          '<td class="text-right px-3 py-2">'+(b?'<span class="bg-purple-100 text-purple-600 rounded px-1.5 py-0.5 font-semibold">'+b+'</span>':'-')+'</td>' +
-          '<td class="text-right px-3 py-2">'+fmt(i?c/i*100:0,2)+'%</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(c?s/c:0,2)+'</td>' +
-          '<td class="text-right px-3 py-2">\u00a3'+fmt(i?s/i*1000:0,2)+'</td>' +
-          '<td class="text-right px-3 py-2">'+(b?'\u00a3'+fmt(s/b,2):'-')+'</td></tr>';
+          '<td class="text-right px-3 py-2">\u00a3'+fmt(i?s/i*1000:0,2)+'</td></tr>';
       }).join('');
 
       document.getElementById('tbl').classList.remove('hidden');
