@@ -36,10 +36,13 @@ Deno.serve(async (req: Request) => {
       ) ?? acctJson.data?.[0];
     if (!account) throw new Error("No ad account found");
 
-    // Always fetch 60 days including today
-    const until = new Date().toISOString().slice(0, 10);
-    const sinceDate = new Date(Date.now() - 60 * 86400000);
-    const since = sinceDate.toISOString().slice(0, 10);
+    // Always fetch 60 days including today, in the ad account's local
+    // (London) calendar day — using UTC here would lag London by an hour
+    // during BST and miss today's row entirely just after midnight.
+    const londonDate = (d: Date) =>
+      d.toLocaleDateString("en-CA", { timeZone: "Europe/London" });
+    const until = londonDate(new Date());
+    const since = londonDate(new Date(Date.now() - 60 * 86400000));
     const timeRange = JSON.stringify({ since, until });
 
     const fields = [
