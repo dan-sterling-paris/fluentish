@@ -568,15 +568,15 @@
       }
 
       var header = 'Date,Spend,Impressions,Reach,Clicks,Bookings,CTR%,CPC,CPM\n';
-      var lines = tableRows.map(csvRow);
+      var lines = [];
 
       if (compare) {
         var prev = slicePrev(allRows, days);
         var prevRows = smooth ? rollingAvg(prev, 3) : prev;
-        lines.push('');
-        lines.push('Previous period');
         lines = lines.concat(prevRows.map(csvRow));
       }
+
+      lines = lines.concat(tableRows.map(csvRow));
 
       var csv = header + lines.join('\n');
       var blob = new Blob([csv], { type: 'text/csv' });
