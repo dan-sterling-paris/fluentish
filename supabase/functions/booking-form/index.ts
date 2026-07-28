@@ -7,6 +7,9 @@ const GOOGLE_CALENDAR_ID = Deno.env.get("GOOGLE_CALENDAR_ID") ?? "";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const META_PIXEL_ID = Deno.env.get("META_PIXEL_ID") ?? "";
 const META_CAPI_TOKEN = Deno.env.get("META_CAPI_TOKEN") ?? "";
+// Optional. When set, CAPI events are routed to Events Manager > Test Events.
+// Leave unset in production so real conversions are not flagged as test traffic.
+const META_TEST_EVENT_CODE = Deno.env.get("META_TEST_EVENT_CODE") ?? "";
 
 // Discovery call availability: 10:00-13:00 UK time, Mon-Fri.
 // The window was 10:00-12:00, which excluded roughly 40% of the times people
@@ -57,7 +60,7 @@ async function sendMetaCAPI(eventName: string, eventId: string, email: string, p
     sha256Hex(email),
     sha256Hex(phone.replace(/\s+/g, "")),
   ]);
-  const payload = {
+  const payload: Record<string, unknown> = {
     data: [{
       event_name: eventName,
       event_time: Math.floor(Date.now() / 1000),
@@ -71,6 +74,7 @@ async function sendMetaCAPI(eventName: string, eventId: string, email: string, p
       },
     }],
   };
+  if (META_TEST_EVENT_CODE) payload.test_event_code = META_TEST_EVENT_CODE;
   const resp = await fetch(
     `https://graph.facebook.com/v21.0/${META_PIXEL_ID}/events?access_token=${META_CAPI_TOKEN}`,
     { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }
