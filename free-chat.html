@@ -351,9 +351,18 @@
   }
 
   // GA4 event when any booking CTA is clicked (Lead fires later at form submission)
+  // Lead fires here, on booking intent, rather than at form submission. It is the
+  // highest-volume signal Meta has to optimise on (~9/day vs ~1/day at submit),
+  // and the campaign needs volume to get near Meta's learning threshold.
+  // Safe now that the pixel stub runs in <head>: the call queues even if
+  // fbevents.js has not landed, which is what used to lose these on mobile.
   document.querySelectorAll('.book-cta').forEach(function(link) {
     link.addEventListener('click', function() {
       gtag('event', 'cta_click');
+      if (isLive) {
+        if (typeof fbq === 'function') fbq('track', 'Lead');
+        else window._pendingLead = true;
+      }
     });
   });
 
@@ -548,13 +557,9 @@
       }
       if (!valid) return;
 
+      // Lead already fired on CTA click; Schedule fires below once the booking
+      // is confirmed. Nothing to send to Meta here.
       gtag('event', 'booking_submitted');
-      if (isLive) {
-        // fbq is stubbed in <head> so this queues even before fbevents.js lands.
-        // The _pendingLead fallback only matters if that stub failed to run at all.
-        if (typeof fbq === 'function') fbq('track', 'Lead');
-        else window._pendingLead = true;
-      }
 
       var submitBtn = document.getElementById('booking-submit');
       submitBtn.disabled = true;
