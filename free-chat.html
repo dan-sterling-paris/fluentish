@@ -399,8 +399,17 @@
     function fetchSlots(attempt) {
       return fetch(API)
         .then(function(r) {
-          if (!r.ok) throw new Error('http_' + r.status);
-          return r.json();
+          // Read the body either way so a server-supplied reason survives the
+          // retry and reaches the analytics event, rather than being flattened
+          // into a generic connection error.
+          return r.json().catch(function() { return null; }).then(function(body) {
+            if (!r.ok) {
+              var httpErr = new Error('http_' + r.status);
+              httpErr.serverError = (body && body.error) || 'server';
+              throw httpErr;
+            }
+            return body;
+          });
         })
         .catch(function(err) {
           if (attempt === 0) {
@@ -490,10 +499,12 @@
           list.appendChild(dayDiv);
         });
       })
-      .catch(function() {
+      .catch(function(err) {
         document.getElementById('slot-loading').classList.add('hidden');
         showSlotFailure();
-        gtag('event', 'slot_picker_error', { error_type: 'connection' });
+        gtag('event', 'slot_picker_error', {
+          error_type: (err && err.serverError) || 'connection'
+        });
       });
 
     // Shown whenever we could not reach the calendar. Deliberately distinct from
