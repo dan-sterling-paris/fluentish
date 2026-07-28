@@ -1,5 +1,4 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { GoogleAuth } from "npm:google-auth-library@9";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -9,12 +8,15 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
 const META_PIXEL_ID = Deno.env.get("META_PIXEL_ID") ?? "";
 const META_CAPI_TOKEN = Deno.env.get("META_CAPI_TOKEN") ?? "";
 
-// Discovery call availability: 10:00-13:00 UK time, Mon-Fri
+// Discovery call availability: 10:00-13:00 UK time, Mon-Fri.
+// The window was 10:00-12:00, which excluded roughly 40% of the times people
+// have historically booked (bookings ran through to 16:30 UK).
 const SLOT_START_HOUR = 10;
-const SLOT_END_HOUR = 12;
+const SLOT_END_HOUR = 13;
 const SLOT_DURATION_MINS = 15;
 const BUFFER_MINS = 30; // min gap required before/after any other appointment
-const MAX_SLOTS = 10;
+// 12 slots/day at this window, so a cap of 10 would only ever show tomorrow.
+const MAX_SLOTS = 18;
 const MAX_DAYS_AHEAD = 20;
 
 const CORS_HEADERS = {
@@ -80,20 +82,83 @@ async function sendMetaCAPI(eventName: string, eventId: string, email: string, p
 
 // ── Google Calendar helpers ──────────────────────────────────────────────────
 
+// Signed natively with Web Crypto rather than google-auth-library@9. That package
+// drags a large Node dependency tree that Deno has to shim, and its cold-start boot
+// is the most likely cause of this function intermittently dying before it could
+// return a response - which surfaced as "Unable to load times" on the landing page.
+
+function pemToPkcs8(pem: string): ArrayBuffer {
+  const body = pem
+    .replace(/-----BEGIN PRIVATE KEY-----/, "")
+    .replace(/-----END PRIVATE KEY-----/, "")
+    .replace(/\s+/g, "");
+  const bin = atob(body);
+  const buf = new ArrayBuffer(bin.length);
+  const bytes = new Uint8Array(buf);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return buf;
+}
+
+function b64url(input: string | Uint8Array): string {
+  const bin = typeof input === "string"
+    ? input
+    : Array.from(input).map((b) => String.fromCharCode(b)).join("");
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+// Google access tokens last an hour; reuse within the worker's lifetime.
+let cachedToken: { token: string; expiresAt: number } | null = null;
+
 async function getGoogleAccessToken(): Promise<string> {
-  const keyFile = JSON.parse(GOOGLE_SERVICE_ACCOUNT_JSON);
-  const auth = new GoogleAuth({
-    credentials: keyFile,
-    clientOptions: { subject: "dan@sterlingparis.com" },
-    scopes: [
-      "https://www.googleapis.com/auth/calendar",
-      "https://www.googleapis.com/auth/calendar.events",
-    ],
+  if (cachedToken && Date.now() < cachedToken.expiresAt - 60_000) {
+    return cachedToken.token;
+  }
+
+  const key = JSON.parse(GOOGLE_SERVICE_ACCOUNT_JSON);
+  const now = Math.floor(Date.now() / 1000);
+
+  const header = b64url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  const claim = b64url(JSON.stringify({
+    iss: key.client_email,
+    sub: "dan@sterlingparis.com", // domain-wide delegation, as before
+    scope: "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events",
+    aud: "https://oauth2.googleapis.com/token",
+    iat: now,
+    exp: now + 3600,
+  }));
+
+  const cryptoKey = await crypto.subtle.importKey(
+    "pkcs8",
+    pemToPkcs8(key.private_key),
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signature = new Uint8Array(await crypto.subtle.sign(
+    "RSASSA-PKCS1-v1_5",
+    cryptoKey,
+    new TextEncoder().encode(`${header}.${claim}`),
+  ));
+
+  const resp = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+      assertion: `${header}.${claim}.${b64url(signature)}`,
+    }),
   });
-  const client = await auth.getClient();
-  const token = await client.getAccessToken();
-  if (!token.token) throw new Error("Failed to obtain Google access token");
-  return token.token;
+  if (!resp.ok) {
+    throw new Error(`Google token exchange failed ${resp.status}: ${await resp.text()}`);
+  }
+  const data = await resp.json();
+  if (!data.access_token) throw new Error("No access_token in Google token response");
+
+  cachedToken = {
+    token: data.access_token,
+    expiresAt: Date.now() + (data.expires_in ?? 3600) * 1000,
+  };
+  return cachedToken.token;
 }
 
 // Returns busy intervals for a given time range
@@ -255,6 +320,32 @@ async function sendEmail(to: string, subject: string, html: string) {
   return resp.ok;
 }
 
+// A booking page that cannot show times is an outage. Previously it failed in
+// silence and looked, to visitors, exactly like being fully booked.
+let lastAlertAt = 0;
+const ALERT_COOLDOWN_MS = 15 * 60 * 1000;
+
+function notifyFailure(e: unknown) {
+  const nowMs = Date.now();
+  if (nowMs - lastAlertAt < ALERT_COOLDOWN_MS) return;
+  lastAlertAt = nowMs;
+
+  if (!RESEND_API_KEY) {
+    console.error("ALERT: slot fetch failing and RESEND_API_KEY is unset - no alert sent");
+    return;
+  }
+  const detail = e instanceof Error ? `${e.message}\n\n${e.stack ?? ""}` : String(e);
+  sendEmail(
+    "bonjour@fluentish.co.uk",
+    "FluentISH: the booking page cannot load times",
+    `<h2>The free-chat slot picker is failing</h2>
+     <p>Visitors are being shown the "we couldn't load the calendar" fallback
+     instead of available times.</p>
+     <pre style="white-space:pre-wrap;font-size:12px">${detail}</pre>
+     <p>Further alerts suppressed for 15 minutes.</p>`
+  ).catch((sendErr) => console.error("Alert email failed:", sendErr));
+}
+
 function confirmationEmailHtml(name: string, day: string, time: string): string {
   return `
 <!DOCTYPE html>
@@ -330,7 +421,8 @@ Deno.serve(async (req: Request) => {
     return err("Method not allowed", 405);
   } catch (e) {
     console.error("Unhandled error:", e);
-    return err("Internal error", 500);
+    if (req.method === "GET") notifyFailure(e);
+    return json({ ok: false, error: "availability_unavailable" }, 500);
   }
 });
 
@@ -345,6 +437,21 @@ async function handleGetSlots(): Promise<Response> {
   const tomorrow = new Date(now);
   tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
 
+  // One freeBusy query covering the whole horizon. This was previously one request
+  // per day, awaited in series - up to 14 sequential round-trips to Google on every
+  // page load, with the count growing as the calendar filled up.
+  const windowStart = new Date(Date.UTC(
+    tomorrow.getUTCFullYear(), tomorrow.getUTCMonth(), tomorrow.getUTCDate(), 0, 0
+  ));
+  const windowEnd = new Date(windowStart);
+  windowEnd.setUTCDate(windowEnd.getUTCDate() + MAX_DAYS_AHEAD + 1);
+
+  const busy = await getBusyPeriods(
+    accessToken,
+    windowStart.toISOString(),
+    windowEnd.toISOString()
+  );
+
   for (let i = 0; i < MAX_DAYS_AHEAD && collected.length < MAX_SLOTS; i++) {
     const candidate = new Date(tomorrow);
     candidate.setUTCDate(candidate.getUTCDate() + i);
@@ -353,26 +460,9 @@ async function handleGetSlots(): Promise<Response> {
     const dow = candidate.getUTCDay();
     if (dow === 0 || dow === 6) continue;
 
-    const dateStr = candidate.toISOString().slice(0, 10);
-    const ukOffset = getUkOffsetHours(candidate);
-
-    // Query window: slot range +/- buffer to catch nearby appointments
-    const dayStartUtc = new Date(Date.UTC(
-      candidate.getUTCFullYear(), candidate.getUTCMonth(), candidate.getUTCDate(),
-      SLOT_START_HOUR - ukOffset, -BUFFER_MINS
-    ));
-    const dayEndUtc = new Date(Date.UTC(
-      candidate.getUTCFullYear(), candidate.getUTCMonth(), candidate.getUTCDate(),
-      SLOT_END_HOUR - ukOffset, BUFFER_MINS
-    ));
-
-    const busy = await getBusyPeriods(
-      accessToken,
-      dayStartUtc.toISOString(),
-      dayEndUtc.toISOString()
-    );
-
-    const daySlots = generateSlotsForDay(dateStr, busy);
+    // generateSlotsForDay compares absolute times, so the full busy list is safe
+    // to pass - periods on other days simply never overlap.
+    const daySlots = generateSlotsForDay(candidate.toISOString().slice(0, 10), busy);
     for (const s of daySlots) {
       if (collected.length >= MAX_SLOTS) break;
       collected.push(s);
