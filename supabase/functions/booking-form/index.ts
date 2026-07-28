@@ -51,37 +51,60 @@ async function sha256Hex(value: string): Promise<string> {
     .join("");
 }
 
-async function sendMetaCAPI(eventName: string, eventId: string, email: string, phone: string) {
+interface CAPIContext {
+  fbc?: string;
+  fbp?: string;
+  client_ip?: string;
+  client_ua?: string;
+  source_url?: string;
+}
+
+async function sendMetaCAPI(
+  eventName: string, eventId: string,
+  email: string, phone: string,
+  ctx?: CAPIContext
+): Promise<{ status: number; body: string }> {
   if (!META_PIXEL_ID || !META_CAPI_TOKEN) {
     console.warn("Meta CAPI not configured (META_PIXEL_ID / META_CAPI_TOKEN missing)");
-    return;
+    return { status: 0, body: "not configured" };
   }
-  const [hashedEmail, hashedPhone] = await Promise.all([
-    sha256Hex(email),
-    sha256Hex(phone.replace(/\s+/g, "")),
-  ]);
+
+  const userData: Record<string, unknown> = { country: ["gb"] };
+
+  if (email) {
+    userData.em = [await sha256Hex(email)];
+  }
+  if (phone) {
+    userData.ph = [await sha256Hex(phone.replace(/[^\d]/g, ""))];
+  }
+  if (ctx?.fbc) userData.fbc = ctx.fbc;
+  if (ctx?.fbp) userData.fbp = ctx.fbp;
+  if (ctx?.client_ip) userData.client_ip_address = ctx.client_ip;
+  if (ctx?.client_ua) userData.client_user_agent = ctx.client_ua;
+
   const payload: Record<string, unknown> = {
     data: [{
       event_name: eventName,
       event_time: Math.floor(Date.now() / 1000),
       event_id: eventId,
-      event_source_url: "https://fluentish.co.uk/free-chat.html",
+      event_source_url: ctx?.source_url || "https://fluentish.co.uk/free-chat.html",
       action_source: "website",
-      user_data: {
-        em: [hashedEmail],
-        ph: [hashedPhone],
-        country: ["gb"],
-      },
+      user_data: userData,
     }],
   };
   if (META_TEST_EVENT_CODE) payload.test_event_code = META_TEST_EVENT_CODE;
+
   const resp = await fetch(
     `https://graph.facebook.com/v21.0/${META_PIXEL_ID}/events?access_token=${META_CAPI_TOKEN}`,
     { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }
   );
+  const respBody = await resp.text();
   if (!resp.ok) {
-    console.error(`Meta CAPI error ${resp.status}: ${await resp.text()}`);
+    console.error(`Meta CAPI error ${resp.status}: ${respBody}`);
+  } else {
+    console.log(`Meta CAPI ${eventName} sent (event_id=${eventId}): ${respBody}`);
   }
+  return { status: resp.status, body: respBody };
 }
 
 // ── Google Calendar helpers ──────────────────────────────────────────────────
@@ -416,11 +439,46 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
+    const url = new URL(req.url);
+
+    // GET ?action=test-capi: diagnostic endpoint for verifying CAPI connectivity
+    if (req.method === "GET" && url.searchParams.get("action") === "test-capi") {
+      if (!META_TEST_EVENT_CODE) {
+        return json({ ok: false, error: "META_TEST_EVENT_CODE not set. Set it first to avoid polluting live data." }, 400);
+      }
+      const result = await sendMetaCAPI("Lead", crypto.randomUUID(), "test@example.com", "+440000000000");
+      return json({ ok: result.status === 200, capi_status: result.status, capi_response: result.body });
+    }
+
     if (req.method === "GET") {
       return await handleGetSlots();
     }
     if (req.method === "POST") {
-      return await handleBooking(req);
+      const body = await req.json();
+
+      // Lead CAPI: fire-and-forget from CTA click, deduplicated with browser pixel.
+      // Meta requires at least one matchable user parameter (fbc, fbp, email, phone).
+      // Ad traffic always has _fbc (from fbclid); organic visitors get _fbp once
+      // fbevents.js loads. If neither is present, skip the CAPI call silently
+      // (the browser pixel still fires).
+      if (body.action === "lead") {
+        const fbc = body.fbc || "";
+        const fbp = body.fbp || "";
+        if (!fbc && !fbp) {
+          return json({ ok: true, skipped: "no_fbc_fbp" });
+        }
+        const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+          || req.headers.get("cf-connecting-ip")
+          || "";
+        const clientUa = req.headers.get("user-agent") || "";
+        const result = await sendMetaCAPI("Lead", body.event_id || crypto.randomUUID(), "", "", {
+          fbc, fbp, client_ip: clientIp, client_ua: clientUa,
+          source_url: body.source_url || "",
+        });
+        return json({ ok: result.status === 200 });
+      }
+
+      return await handleBooking(req, body);
     }
     return err("Method not allowed", 405);
   } catch (e) {
@@ -478,9 +536,8 @@ async function handleGetSlots(): Promise<Response> {
 
 // ── POST: book a slot ────────────────────────────────────────────────────────
 
-async function handleBooking(req: Request): Promise<Response> {
-  const body = await req.json();
-  const { name, surname, email, phone, age_consent, slot_start, variant, visitor_id, honeypot } = body;
+async function handleBooking(req: Request, body: Record<string, unknown>): Promise<Response> {
+  const { name, surname, email, phone, age_consent, slot_start, variant, visitor_id, honeypot, fbc, fbp } = body;
 
   // Honeypot: silently accept (bot: true tells client not to fire tracking pixels)
   if (honeypot) return json({ ok: true, bot: true });
@@ -576,7 +633,13 @@ async function handleBooking(req: Request): Promise<Response> {
         `New booking request from ${trimName}`,
         notificationEmailHtml(trimName, trimSurname, trimEmail, trimPhone, dayLabel, timeStr, variant, slot_start)
       ),
-      sendMetaCAPI("Schedule", eventId, trimEmail, trimPhone),
+      sendMetaCAPI("Schedule", eventId, trimEmail, trimPhone, {
+        fbc: (fbc as string) || "",
+        fbp: (fbp as string) || "",
+        client_ip: req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+          || req.headers.get("cf-connecting-ip") || "",
+        client_ua: req.headers.get("user-agent") || "",
+      }),
     ]);
   } catch (e) {
     console.error("Post-booking task error (booking still saved):", e);

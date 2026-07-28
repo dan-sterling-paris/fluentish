@@ -350,18 +350,35 @@
       });
   }
 
-  // GA4 event when any booking CTA is clicked (Lead fires later at form submission)
-  // Lead fires here, on booking intent, rather than at form submission. It is the
-  // highest-volume signal Meta has to optimise on (~9/day vs ~1/day at submit),
-  // and the campaign needs volume to get near Meta's learning threshold.
-  // Safe now that the pixel stub runs in <head>: the call queues even if
-  // fbevents.js has not landed, which is what used to lose these on mobile.
+  function getCookie(name) {
+    var match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    return match ? decodeURIComponent(match[1]) : '';
+  }
+
+  var API = 'https://gutihncfxjdyxulfwtgp.supabase.co/functions/v1/booking-form';
+
+  // Lead fires on CTA click (booking intent). It is the highest-volume signal
+  // Meta has to optimise on (~9/day vs ~1/day at submit), and the campaign needs
+  // volume to get near Meta's learning threshold.
+  // Both browser pixel and CAPI fire with the same event_id for deduplication.
   document.querySelectorAll('.book-cta').forEach(function(link) {
     link.addEventListener('click', function() {
       gtag('event', 'cta_click');
       if (isLive) {
-        if (typeof fbq === 'function') fbq('track', 'Lead');
+        var leadId = crypto.randomUUID();
+        if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: leadId });
         else window._pendingLead = true;
+        fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'lead',
+            event_id: leadId,
+            source_url: location.href,
+            fbc: getCookie('_fbc'),
+            fbp: getCookie('_fbp')
+          })
+        }).catch(function() {});
       }
     });
   });
@@ -399,7 +416,6 @@
 
   // Booking form
   (function() {
-    var API = 'https://gutihncfxjdyxulfwtgp.supabase.co/functions/v1/booking-form';
     var selectedSlot = null;
     var variant = 'A';
 
@@ -576,7 +592,9 @@
           age_consent: ageConsent,
           slot_start: selectedSlot.iso,
           variant: variant,
-          honeypot: honeypot
+          honeypot: honeypot,
+          fbc: getCookie('_fbc'),
+          fbp: getCookie('_fbp')
         })
       })
       .then(function(r) { return r.json(); })
