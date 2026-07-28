@@ -6,7 +6,179 @@
   <meta name="description" content="Book a free 15-minute introductory call with FluentISH - bespoke 1-on-1 French coaching, online, UK-wide." />
   <title>Book a Free Chat | FluentISH</title>
   <meta name="robots" content="noindex" />
-  <link rel="preload" as="image" href="images/home-hero-portrait.jpg" />
+  <!-- Preconnects (fire first, before any requests) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://connect.facebook.net" />
+  <link rel="preconnect" href="https://assets.calendly.com" />
+  <!-- Preload hero image -->
+  <link rel="preload" as="image" href="images/home-hero-portrait.webp" type="image/webp" />
+  <!-- Google Fonts (reduced to 4 used variants from 10) -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Inline CSS: hand-extracted Tailwind utilities (replaces CDN) -->
+  <style>
+    /* === RESET / BASE === */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; line-height: 1.5; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+    img { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* === LAYOUT === */
+    .block { display: block; }
+    .inline-block { display: inline-block; }
+    .flex { display: flex; }
+    .grid { display: grid; }
+    .hidden { display: none; }
+    .fixed { position: fixed; }
+    .flex-col { flex-direction: column; }
+    .flex-wrap { flex-wrap: wrap; }
+    .items-center { align-items: center; }
+    .items-start { align-items: flex-start; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .shrink-0 { flex-shrink: 0; }
+    .w-full { width: 100%; }
+    .w-20 { width: 5rem; }
+    .w-px { width: 1px; }
+    .h-20 { height: 5rem; }
+    .h-3 { height: 0.75rem; }
+    .max-w-3xl { max-width: 48rem; }
+    .max-w-lg { max-width: 32rem; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .z-50 { z-index: 50; }
+    .bottom-0 { bottom: 0; }
+    .left-0 { left: 0; }
+    .right-0 { right: 0; }
+    .object-cover { object-fit: cover; }
+    .aspect-\[4\/3\] { aspect-ratio: 4/3; }
+
+    /* === SPACING === */
+    .p-6 { padding: 1.5rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .px-8 { padding-left: 2rem; padding-right: 2rem; }
+    .px-10 { padding-left: 2.5rem; padding-right: 2.5rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py-3\.5 { padding-top: 0.875rem; padding-bottom: 0.875rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+    .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+    .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+    .py-14 { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+    .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+    .pb-24 { padding-bottom: 6rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-5 { margin-bottom: 1.25rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .mb-8 { margin-bottom: 2rem; }
+    .mb-10 { margin-bottom: 2.5rem; }
+    .mt-0\.5 { margin-top: 0.125rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-3 { margin-top: 0.75rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-8 { margin-top: 2rem; }
+    .mt-10 { margin-top: 2.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .gap-5 { gap: 1.25rem; }
+    .gap-8 { gap: 2rem; }
+    .gap-x-5 { column-gap: 1.25rem; }
+    .gap-y-2 { row-gap: 0.5rem; }
+    .space-y-6 > * + * { margin-top: 1.5rem; }
+
+    /* === TYPOGRAPHY === */
+    .font-display { font-family: 'Playfair Display', Georgia, serif; }
+    .font-bold { font-weight: 700; }
+    .font-semibold { font-weight: 600; }
+    .text-xs { font-size: 0.75rem; line-height: 1rem; }
+    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .text-base { font-size: 1rem; line-height: 1.5rem; }
+    .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+    .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+    .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+    .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+    .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+    .text-center { text-align: center; }
+    .text-left { text-align: left; }
+    .uppercase { text-transform: uppercase; }
+    .not-italic { font-style: normal; }
+    .leading-tight { line-height: 1.25; }
+    .leading-snug { line-height: 1.375; }
+    .leading-relaxed { line-height: 1.625; }
+    .tracking-tight { letter-spacing: -0.025em; }
+    .tracking-wide { letter-spacing: 0.025em; }
+    .tracking-widest { letter-spacing: 0.1em; }
+
+    /* === COLOURS === */
+    .bg-white { background-color: #ffffff; }
+    .bg-navy { background-color: #003359; }
+    .bg-navyD { background-color: #002040; }
+    .bg-rouge { background-color: #C8102E; }
+    .bg-sand { background-color: #F7F4EF; }
+    .bg-gray-300 { background-color: #d1d5db; }
+    .text-white { color: #ffffff; }
+    .text-navy { color: #003359; }
+    .text-rouge { color: #C8102E; }
+    .text-cyan { color: #4DD4F5; }
+    .text-gray-400 { color: #9ca3af; }
+    .text-gray-500 { color: #6b7280; }
+    .text-blue-200 { color: #bfdbfe; }
+    .text-blue-300 { color: #93c5fd; }
+    .text-blue-400 { color: #60a5fa; }
+    .scroll-smooth { scroll-behavior: smooth; }
+
+    /* === BORDERS === */
+    .border { border-width: 1px; border-style: solid; border-color: #e5e7eb; }
+    .border-2 { border-width: 2px; border-style: solid; }
+    .border-b { border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #e5e7eb; }
+    .border-t { border-top-width: 1px; border-top-style: solid; border-top-color: #e5e7eb; }
+    .border-y { border-top-width: 1px; border-top-style: solid; border-bottom-width: 1px; border-bottom-style: solid; border-top-color: #e5e7eb; border-bottom-color: #e5e7eb; }
+    .border-gray-100 { border-color: #f3f4f6; }
+    .border-gray-200 { border-color: #e5e7eb; }
+    .border-stone-100 { border-color: #f5f5f4; }
+    .border-stone-200 { border-color: #e7e5e4; }
+    .border-white\/20 { border-color: rgba(255,255,255,0.2); }
+    .rounded-full { border-radius: 9999px; }
+    .rounded-2xl { border-radius: 1rem; }
+
+    /* === EFFECTS === */
+    .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); }
+    .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); }
+    .shadow-up { box-shadow: 0 -4px 12px rgba(0,0,0,0.1); }
+    .transition-colors { transition-property: color, background-color, border-color; transition-duration: 150ms; transition-timing-function: cubic-bezier(0.4,0,0.2,1); }
+    .cursor-pointer { cursor: pointer; }
+
+    /* === HOVER STATES === */
+    .hover\:bg-rougeH:hover { background-color: #A50D25; }
+    .hover\:text-blue-300:hover { color: #93c5fd; }
+
+    /* === RESPONSIVE: sm (640px) === */
+    @media (min-width: 640px) {
+      .sm\:block { display: block; }
+      .sm\:flex-row { flex-direction: row; }
+      .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .sm\:w-auto { width: auto; }
+      .sm\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+      .sm\:text-5xl { font-size: 3rem; line-height: 1; }
+    }
+
+    /* === RESPONSIVE: md (768px) === */
+    @media (min-width: 768px) {
+      .md\:hidden { display: none; }
+      .md\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .md\:col-span-2 { grid-column: span 2 / span 2; }
+      .md\:col-span-3 { grid-column: span 3 / span 3; }
+      .md\:py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+      .md\:pb-8 { padding-bottom: 2rem; }
+      .md\:text-6xl { font-size: 3.75rem; line-height: 1; }
+    }
+
+    /* === STICKY CTA ANIMATION === */
+    .sticky-cta { transform: translateY(100%); transition: transform 0.3s ease; }
+    .sticky-cta.visible { transform: translateY(0); }
+  </style>
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -30,36 +202,6 @@
   </script>
   <!-- Calendly widget JS (inline embed) -->
   <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            navy:  '#003359',
-            navyD: '#002040',
-            rouge: '#C8102E',
-            rougeH:'#A50D25',
-            cyan:  '#4DD4F5',
-            sand:  '#F7F4EF',
-          },
-          fontFamily: {
-            display: ['"Playfair Display"', 'Georgia', 'serif'],
-            body:    ['Inter', 'system-ui', 'sans-serif'],
-          },
-        },
-      },
-    }
-  </script>
-  <style>
-    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
-    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
-    .sticky-cta { transform: translateY(100%); transition: transform 0.3s ease; }
-    .sticky-cta.visible { transform: translateY(0); }
-  </style>
 </head>
 
 <body class="bg-white">
@@ -85,7 +227,7 @@
 
         <!-- Dan's photo + credential -->
         <div class="flex items-center justify-center gap-4 mb-6">
-          <img src="images/home-hero-portrait.jpg"
+          <img src="images/home-hero-portrait.webp"
                alt="Dan Blumenau, French tutor"
                width="80" height="80"
                class="w-20 h-20 rounded-full object-cover border-2 border-white/20" />
@@ -113,7 +255,7 @@
 
     <!-- ===================== CREDIBILITY STRIP ===================== -->
     <section class="bg-sand border-y border-stone-200">
-      <div class="max-w-3xl mx-auto px-6 py-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs tracking-widest uppercase font-semibold text-gray-400">
+      <div class="max-w-3xl mx-auto px-6 py-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs tracking-widest uppercase font-semibold text-gray-500">
         <span>Fully bilingual</span>
         <span class="hidden sm:block w-px h-3 bg-gray-300"></span>
         <span>Paris since 2011</span>
@@ -208,7 +350,7 @@
           <a href="#booking" class="book-cta inline-block bg-rouge hover:bg-rougeH text-white font-bold px-8 py-3.5 rounded-full text-base transition-colors cursor-pointer">
             Find out if there's an opening &darr;
           </a>
-          <p class="text-gray-400 text-xs mt-3">Availability is limited. The free chat is the fastest way to check.</p>
+          <p class="text-gray-500 text-xs mt-3">Availability is limited. The free chat is the fastest way to check.</p>
         </div>
       </div>
     </section>
@@ -217,9 +359,10 @@
     <section class="bg-navy text-white py-14 md:py-20">
       <div class="max-w-3xl mx-auto px-6 grid md:grid-cols-5 gap-8 items-center">
         <div class="md:col-span-2">
-          <img src="images/home-philosophy-conversation.jpg"
+          <img src="images/home-philosophy-conversation.webp"
                alt="Dan Blumenau in conversation"
                loading="lazy"
+               width="800" height="1067"
                class="w-full aspect-[4/3] object-cover rounded-2xl" />
         </div>
         <div class="md:col-span-3">
@@ -251,29 +394,12 @@
           Choose a slot below and we'll have a quick, no-pressure chat about your goals
           and whether FluentISH is the right fit.
         </p>
-        <p class="text-gray-400 text-sm mb-8">
+        <p class="text-gray-500 text-sm mb-10">
           No credit card. No obligation. No follow-up emails if you decide it's not for you.
         </p>
 
-        <!-- Age consent -->
-        <div class="max-w-md mx-auto mb-8 text-left bg-sand border border-stone-200 rounded-2xl p-5">
-          <label for="age-consent" class="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" id="age-consent" class="mt-1 w-4 h-4 shrink-0 accent-rouge" required />
-            <span class="text-sm text-gray-600 leading-relaxed">
-              I confirm that the student attending this session will be
-              <strong class="text-navy">18 years of age or older</strong>.
-              FluentISH coaching is offered to adult students only.
-            </span>
-          </label>
-          <p id="age-consent-warning" class="hidden text-rouge text-xs mt-2">
-            Please confirm the student will be 18 or older to book a chat. If they're under 18, please have a parent or guardian get in touch instead.
-          </p>
-        </div>
-
         <!-- Calendly inline widget -->
-        <div id="calendly-wrapper" class="relative opacity-40 pointer-events-none transition-opacity" aria-disabled="true">
-          <div class="calendly-inline-widget" data-url="https://calendly.com/fluentish/free-15-minute-chat" style="min-width:320px;height:700px;"></div>
-        </div>
+        <div class="calendly-inline-widget" data-url="https://calendly.com/fluentish/free-15-minute-chat" style="min-width:320px;height:700px;"></div>
       </div>
     </section>
 
@@ -281,14 +407,14 @@
 
   <!-- Footer -->
   <footer class="bg-navyD text-white py-8 pb-24 md:pb-8">
-    <div class="max-w-3xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-500">
+    <div class="max-w-3xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-300">
       <p>&copy; 2026 FluentISH &middot; All rights reserved</p>
       <a href="privacy.html" class="hover:text-blue-300 transition-colors">Privacy Policy</a>
     </div>
   </footer>
 
   <!-- Sticky mobile CTA -->
-  <div id="sticky-cta" class="sticky-cta fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.1)] px-4 py-3">
+  <div id="sticky-cta" class="sticky-cta fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-200 shadow-up px-4 py-3">
     <a href="#booking" class="book-cta block w-full bg-rouge hover:bg-rougeH text-white font-bold py-3.5 rounded-full text-base transition-colors cursor-pointer text-center">
       Grab Your Free Spot &darr;
     </a>
@@ -301,32 +427,6 @@
       fbq('track', 'Lead');
     });
   });
-
-  // Age consent gate: booking calendar stays disabled until 18+ is confirmed
-  (function() {
-    var consent = document.getElementById('age-consent');
-    var wrapper = document.getElementById('calendly-wrapper');
-    var warning = document.getElementById('age-consent-warning');
-    if (!consent || !wrapper) return;
-
-    consent.addEventListener('change', function() {
-      if (consent.checked) {
-        wrapper.classList.remove('opacity-40', 'pointer-events-none');
-        wrapper.setAttribute('aria-disabled', 'false');
-        warning.classList.add('hidden');
-      } else {
-        wrapper.classList.add('opacity-40', 'pointer-events-none');
-        wrapper.setAttribute('aria-disabled', 'true');
-      }
-    });
-
-    wrapper.addEventListener('click', function() {
-      if (!consent.checked) {
-        warning.classList.remove('hidden');
-        consent.focus();
-      }
-    });
-  })();
 
   // Fire Schedule pixel when Calendly booking is completed
   window.addEventListener('message', function(e) {
