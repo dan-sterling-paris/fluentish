@@ -54,8 +54,23 @@
       </label>
     </div>
 
-    <div id="cards" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-2.5"></div>
-    <div id="ratios" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-5 hidden"></div>
+    <!-- Manual inputs: revenue + hours for the selected period -->
+    <div class="flex items-center gap-2 mb-5 text-xs flex-wrap">
+      <label class="flex items-center gap-1.5">
+        <span class="text-gray-600">Revenue &pound;</span>
+        <input id="rev" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"
+          class="w-24 px-2 py-1 rounded-lg border border-gray-300 bg-gray-50 text-right focus:outline-none focus:border-accent" />
+      </label>
+      <label class="flex items-center gap-1.5">
+        <span class="text-gray-600">Hours</span>
+        <input id="hrs" type="number" min="0" step="0.25" inputmode="decimal" placeholder="0"
+          class="w-20 px-2 py-1 rounded-lg border border-gray-300 bg-gray-50 text-right focus:outline-none focus:border-accent" />
+      </label>
+      <span class="text-gray-400">saved per period, on this device</span>
+    </div>
+
+    <!-- Left column = figures, right column = the matching efficiency metric -->
+    <div id="cards" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5"></div>
 
     <!-- Funnel -->
     <div id="funnel" class="hidden mb-5">
@@ -122,6 +137,8 @@
     var appEl = document.getElementById('app');
     var cmpBox = document.getElementById('cmp');
     var smoothBox = document.getElementById('smooth');
+    var revBox = document.getElementById('rev');
+    var hrsBox = document.getElementById('hrs');
 
     // --- Helpers ---
     function fmt(n, d, p) {
@@ -129,6 +146,10 @@
       var s = Number(n).toFixed(d||0), pts = s.split('.');
       pts[0] = pts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       return (p||'') + pts.join('.');
+    }
+
+    function money(n) {
+      return (n < 0 ? '-\u00a3' : '\u00a3') + fmt(Math.abs(n), 2);
     }
 
     function bk(r) {
@@ -180,6 +201,31 @@
       if (Math.abs(pct) < 0.5) return '<span class="text-gray-400 text-xs ml-1">0%</span>';
       var col = pct < 0 ? 'text-green-600' : 'text-red-500';
       return '<span class="'+col+' text-xs ml-1">'+(pct>0?'\u2191':'\u2193')+Math.abs(pct).toFixed(0)+'%</span>';
+    }
+
+    // --- Revenue + hours (hand-entered, stored per period on this device) ---
+    function moneyKeys() { return ['ads_rev_' + days, 'ads_hrs_' + days]; }
+
+    function loadMoney() {
+      var k = moneyKeys(), r = '', h = '';
+      try { r = localStorage.getItem(k[0]) || ''; h = localStorage.getItem(k[1]) || ''; } catch(e) {}
+      revBox.value = r; hrsBox.value = h;
+    }
+
+    function saveMoney() {
+      var k = moneyKeys();
+      try { localStorage.setItem(k[0], revBox.value); localStorage.setItem(k[1], hrsBox.value); } catch(e) {}
+    }
+
+    // Revenue and hours are typed in, so there is no previous-period figure
+    // to compare against - these four cards never carry a delta.
+    function revCards(cur, rev, hrs, label) {
+      var roas = (rev && cur.spend) ? rev / cur.spend : 0;
+      var rph  = (rev && hrs) ? rev / hrs : 0;
+      return crd('text-emerald-600','Revenue', rev?money(rev):'-', rev?'profit '+money(rev-cur.spend):label) +
+             crd('text-emerald-600','ROAS', roas?fmt(roas,2)+'x':'-', 'return on spend') +
+             crd('text-gray-900','Hours', hrs?fmt(hrs,hrs%1?1:0):'-', label) +
+             crd('text-gray-900','Rev / Hour', rph?money(rph):'-', 'per hour worked');
     }
 
     // --- Slicing ---
@@ -273,6 +319,7 @@
     document.getElementById('pin').onkeydown = function(e){ if(e.key==='Enter') document.getElementById('go').click(); };
 
     // --- Init ---
+    loadMoney();
     if (tk) {
       loginEl.classList.add('hidden');
       appEl.classList.remove('hidden');
@@ -282,7 +329,6 @@
     function fetchData() {
       document.getElementById('cards').innerHTML =
         '<p class="col-span-full text-center py-10 text-gray-400 text-sm">Loading\u2026</p>';
-      document.getElementById('ratios').classList.add('hidden');
       document.getElementById('tbl').classList.add('hidden');
 
       fetch(API+'?t='+encodeURIComponent(tk)).then(function(r){return r.json()}).then(function(j){
@@ -304,6 +350,7 @@
         });
         b.className='pill px-3 py-1 rounded-full border text-xs font-medium bg-accent border-accent text-white';
         days = +b.dataset.d;
+        loadMoney();
         draw();
       };
     });
@@ -311,6 +358,8 @@
     // --- Toggles ---
     cmpBox.onchange = draw;
     smoothBox.onchange = draw;
+    revBox.oninput = function(){ saveMoney(); draw(); };
+    hrsBox.oninput = function(){ saveMoney(); draw(); };
 
     // --- Draw ---
     function draw() {
@@ -322,19 +371,13 @@
       var current = slicePeriod(allRows, days);
       var cur = sumRows(current);
       var label = days === 0 ? 'today' : days + 'd total';
+      var rev = +(revBox.value) || 0;
+      var hrs = +(hrsBox.value) || 0;
 
       if (compare) {
         var prev = slicePrev(allRows, days);
         var prv = sumRows(prev);
         var prevLabel = days === 0 ? 'vs yesterday' : 'vs prev ' + days + 'd';
-
-        document.getElementById('cards').innerHTML =
-          crdD('text-green-600','Spend','\u00a3'+fmt(cur.spend,2), label, dDown(cur.spend,prv.spend)) +
-          crdD('text-blue-600','Impressions',fmt(cur.impr), label, dUp(cur.impr,prv.impr)) +
-          crdD('text-sky-600','Reach',fmt(cur.reach), label, dUp(cur.reach,prv.reach)) +
-          crdD('text-amber-600','Clicks',fmt(cur.clicks), label, dUp(cur.clicks,prv.clicks)) +
-          crdD('text-teal-600','Leads',fmt(cur.leads), label, dUp(cur.leads,prv.leads)) +
-          crdD('text-purple-600','Bookings',''+cur.bkgs, label, dUp(cur.bkgs,prv.bkgs));
 
         var cCPM=cur.impr?cur.spend/cur.impr*1000:0, pCPM=prv.impr?prv.spend/prv.impr*1000:0;
         var cCPC=cur.clicks?cur.spend/cur.clicks:0, pCPC=prv.clicks?prv.spend/prv.clicks:0;
@@ -343,38 +386,41 @@
         var cCPL=cur.leads?cur.spend/cur.leads:0, pCPL=prv.leads?prv.spend/prv.leads:0;
         var cCPB=cur.bkgs?cur.spend/cur.bkgs:0, pCPB=prv.bkgs?prv.spend/prv.bkgs:0;
 
-        var rc = document.getElementById('ratios');
-        rc.classList.remove('hidden');
-        rc.innerHTML =
-          crdD('text-gray-900','CPM','\u00a3'+fmt(cCPM,2), prevLabel, dDown(cCPM,pCPM)) +
-          crdD('text-gray-900','CTR',fmt(cCTR,2)+'%', prevLabel, dUp(cCTR,pCTR)) +
-          crdD('text-gray-900','CPC','\u00a3'+fmt(cCPC,2), prevLabel, dDown(cCPC,pCPC)) +
-          crdD('text-teal-600','Click → Lead',fmt(cCLR,2)+'%', prevLabel, dUp(cCLR,pCLR)) +
-          crdD('text-teal-600','Cost / Lead',cCPL?'\u00a3'+fmt(cCPL,2):'-', prevLabel, cur.leads&&prv.leads?dDown(cCPL,pCPL):'') +
-          crdD('text-purple-600','Cost / Bkg',cCPB?'\u00a3'+fmt(cCPB,2):'-', prevLabel, cur.bkgs&&prv.bkgs?dDown(cCPB,pCPB):'');
-      } else {
+        // Each figure sits directly left of the efficiency metric it drives
         document.getElementById('cards').innerHTML =
-          crd('text-green-600','Spend','\u00a3'+fmt(cur.spend,2), label) +
-          crd('text-blue-600','Impressions',fmt(cur.impr), label) +
-          crd('text-sky-600','Reach',fmt(cur.reach), label) +
-          crd('text-amber-600','Clicks',fmt(cur.clicks), label) +
-          crd('text-teal-600','Leads',fmt(cur.leads), label) +
-          crd('text-purple-600','Bookings',''+cur.bkgs, 'appointments');
-
+          crdD('text-green-600','Spend',money(cur.spend), label, dDown(cur.spend,prv.spend)) +
+          crdD('text-gray-900','CPM',money(cCPM), prevLabel, dDown(cCPM,pCPM)) +
+          crdD('text-blue-600','Impressions',fmt(cur.impr), label, dUp(cur.impr,prv.impr)) +
+          crdD('text-gray-900','CTR',fmt(cCTR,2)+'%', prevLabel, dUp(cCTR,pCTR)) +
+          crdD('text-sky-600','Reach',fmt(cur.reach), label, dUp(cur.reach,prv.reach)) +
+          crdD('text-gray-900','CPC',money(cCPC), prevLabel, dDown(cCPC,pCPC)) +
+          crdD('text-amber-600','Clicks',fmt(cur.clicks), label, dUp(cur.clicks,prv.clicks)) +
+          crdD('text-teal-600','Click \u2192 Lead',fmt(cCLR,2)+'%', prevLabel, dUp(cCLR,pCLR)) +
+          crdD('text-teal-600','Leads',fmt(cur.leads), label, dUp(cur.leads,prv.leads)) +
+          crdD('text-teal-600','Cost / Lead',cCPL?money(cCPL):'-', prevLabel, cur.leads&&prv.leads?dDown(cCPL,pCPL):'') +
+          crdD('text-purple-600','Bookings',''+cur.bkgs, label, dUp(cur.bkgs,prv.bkgs)) +
+          crdD('text-purple-600','Cost / Bkg',cCPB?money(cCPB):'-', prevLabel, cur.bkgs&&prv.bkgs?dDown(cCPB,pCPB):'') +
+          revCards(cur, rev, hrs, label);
+      } else {
         var cCPM=cur.impr?cur.spend/cur.impr*1000:0;
         var cCPC=cur.clicks?cur.spend/cur.clicks:0;
         var cCTR=cur.impr?cur.clicks/cur.impr*100:0;
         var cCLR=cur.clicks?cur.leads/cur.clicks*100:0;
 
-        var rc = document.getElementById('ratios');
-        rc.classList.remove('hidden');
-        rc.innerHTML =
-          crd('text-gray-900','CPM','\u00a3'+fmt(cCPM,2),'per 1,000 impr') +
+        document.getElementById('cards').innerHTML =
+          crd('text-green-600','Spend',money(cur.spend), label) +
+          crd('text-gray-900','CPM',money(cCPM),'per 1,000 impr') +
+          crd('text-blue-600','Impressions',fmt(cur.impr), label) +
           crd('text-gray-900','CTR',fmt(cCTR,2)+'%','click-through') +
-          crd('text-gray-900','CPC','\u00a3'+fmt(cCPC,2),'per click') +
-          crd('text-teal-600','Click → Lead',fmt(cCLR,2)+'%','clicks → leads') +
-          crd('text-teal-600','Cost / Lead',cur.leads?'\u00a3'+fmt(cur.spend/cur.leads,2):'-','per lead') +
-          crd('text-purple-600','Cost / Bkg',cur.bkgs?'\u00a3'+fmt(cur.spend/cur.bkgs,2):'-','avg cost');
+          crd('text-sky-600','Reach',fmt(cur.reach), label) +
+          crd('text-gray-900','CPC',money(cCPC),'per click') +
+          crd('text-amber-600','Clicks',fmt(cur.clicks), label) +
+          crd('text-teal-600','Click \u2192 Lead',fmt(cCLR,2)+'%','clicks \u2192 leads') +
+          crd('text-teal-600','Leads',fmt(cur.leads), label) +
+          crd('text-teal-600','Cost / Lead',cur.leads?money(cur.spend/cur.leads):'-','per lead') +
+          crd('text-purple-600','Bookings',''+cur.bkgs,'appointments') +
+          crd('text-purple-600','Cost / Bkg',cur.bkgs?money(cur.spend/cur.bkgs):'-','avg cost') +
+          revCards(cur, rev, hrs, label);
       }
 
       // Funnel
