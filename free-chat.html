@@ -342,14 +342,6 @@
   // isLive, dataLayer, gtag() and the fbq stub are all defined in <head> so that
   // events fired before the tracking libraries load are queued, not dropped.
 
-  // SHA-256 helper for Meta Advanced Matching
-  function sha256Hex(str) {
-    return crypto.subtle.digest('SHA-256', new TextEncoder().encode(str.toLowerCase().trim()))
-      .then(function(buf) {
-        return Array.from(new Uint8Array(buf)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
-      });
-  }
-
   function getCookie(name) {
     var match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
     return match ? decodeURIComponent(match[1]) : '';
@@ -367,7 +359,7 @@
       if (isLive) {
         var leadId = crypto.randomUUID();
         if (typeof fbq === 'function') fbq('track', 'Lead', {}, { eventID: leadId });
-        else window._pendingLead = true;
+        else window._pendingLead = { eventID: leadId };
         fetch(API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -602,14 +594,12 @@
         if (data.ok && !data.bot) {
           gtag('event', 'generate_lead', { method: 'booking_form' });
           if (isLive) {
-            sha256Hex(emailVal).then(function(hashedEmail) {
-              var matchData = { eventID: data.event_id, em: hashedEmail };
-              if (typeof fbq === 'function') {
-                fbq('track', 'Schedule', {}, matchData);
-              } else {
-                window._pendingSchedule = matchData;
-              }
-            });
+            var scheduleOpts = { eventID: data.event_id };
+            if (typeof fbq === 'function') {
+              fbq('track', 'Schedule', {}, scheduleOpts);
+            } else {
+              window._pendingSchedule = scheduleOpts;
+            }
           }
 
           document.getElementById('booking-form').classList.add('hidden');
@@ -669,7 +659,7 @@
       fs.async = true;
       document.head.appendChild(fs);
       if (window._pendingSchedule) { fbq('track', 'Schedule', {}, window._pendingSchedule); delete window._pendingSchedule; }
-      if (window._pendingLead) { fbq('track', 'Lead'); delete window._pendingLead; }
+      if (window._pendingLead) { fbq('track', 'Lead', {}, window._pendingLead); delete window._pendingLead; }
     });
 
     // GA4 library only - dataLayer and gtag() already defined in <head>

@@ -620,6 +620,10 @@ async function handleBooking(req: Request, body: Record<string, unknown>): Promi
     });
   }
 
+  // UUID for Meta dedup (calendar IDs like "5udul8d6inlspocbhrmc1t8n40" don't
+  // deduplicate; UUIDs do - verified empirically with Meta Test Events).
+  const metaEventId = crypto.randomUUID();
+
   // Send emails + Meta CAPI in parallel (don't block on failure)
   try {
     await Promise.all([
@@ -633,7 +637,7 @@ async function handleBooking(req: Request, body: Record<string, unknown>): Promi
         `New booking request from ${trimName}`,
         notificationEmailHtml(trimName, trimSurname, trimEmail, trimPhone, dayLabel, timeStr, variant, slot_start)
       ),
-      sendMetaCAPI("Schedule", eventId, trimEmail, trimPhone, {
+      sendMetaCAPI("Schedule", metaEventId, trimEmail, trimPhone, {
         fbc: (fbc as string) || "",
         fbp: (fbp as string) || "",
         client_ip: req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
@@ -645,5 +649,5 @@ async function handleBooking(req: Request, body: Record<string, unknown>): Promi
     console.error("Post-booking task error (booking still saved):", e);
   }
 
-  return json({ ok: true, date: dayLabel, time: timeStr, event_id: eventId });
+  return json({ ok: true, date: dayLabel, time: timeStr, event_id: metaEventId });
 }
