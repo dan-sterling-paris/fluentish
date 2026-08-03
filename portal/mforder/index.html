@@ -129,7 +129,7 @@
         <h1 class="font-display text-2xl font-bold mt-1">Maria's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">2 lessons</p>
+        <p class="text-sm text-blue-200 font-medium">3 lessons</p>
         <p class="text-xs text-blue-400 mt-0.5">Moving to France</p>
       </div>
     </div>
@@ -141,7 +141,7 @@
       <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
       <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
       <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
-      <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'" style="color: #C8102E;">Lesson 3 (rehearsal)</button>
+      <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
     </div>
   </div>
 
@@ -288,6 +288,37 @@
           <div class="phrase-pron">zhe nuh ko-nay pah luh moh poor</div>
           <div class="phrase-en">I don't know the word for...</div>
         </div>
+
+        <h3 class="font-display text-lg font-bold text-navy mt-6 mb-4">Questions (the est-ce que shortcut)</h3>
+        <p class="text-sm text-gray-600 mb-2">Stick <strong>est-ce que</strong> in front of any statement to turn it into a question. No complex grammar needed.</p>
+        <p class="text-sm"><a href="https://fluentish.co.uk/beer-mat.html" target="_blank" class="text-rouge font-semibold underline">Open the Beer Mat tool &rarr;</a></p>
+
+        <h3 class="font-display text-lg font-bold text-navy mt-6 mb-4">At the market</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Est-ce que je peux go&ucirc;ter ?</div>
+          <div class="phrase-pron">ess-kuh zhe puh goo-tay</div>
+          <div class="phrase-en">Can I taste?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je peux prendre 200 grammes ?</div>
+          <div class="phrase-pron">zhe puh prondr duh-son gram</div>
+          <div class="phrase-en">Can I take 200 grams?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Un peu plus, s'il vous pla&icirc;t.</div>
+          <div class="phrase-pron">uhn puh ploo, seel voo play</div>
+          <div class="phrase-en">A bit more, please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est tout, merci.</div>
+          <div class="phrase-pron">say too, mair-see</div>
+          <div class="phrase-en">That's all, thanks.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Merci, bonne journ&eacute;e !</div>
+          <div class="phrase-pron">mair-see, bon zhoor-nay</div>
+          <div class="phrase-en">Thank you, have a good day!</div>
+        </div>
       </div>
 
       <!-- Vocabulary -->
@@ -344,11 +375,40 @@
         <div class="vocab-row"><span class="vocab-fr">Doucement</span><span class="vocab-pron">dooss-mon</span><span class="vocab-en">gently / slowly</span></div>
         <div class="vocab-row"><span class="vocab-fr">Enchant&eacute;e</span><span class="vocab-pron">on-shon-tay</span><span class="vocab-en">pleased to meet you</span></div>
 
-        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Wood &amp; Carpentry (coming next!)</h3>
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Wood &amp; Carpentry</h3>
         <div class="vocab-row"><span class="vocab-fr">Le bois</span><span class="vocab-pron">bwah</span><span class="vocab-en">wood</span></div>
         <div class="vocab-row"><span class="vocab-fr">Le ch&ecirc;ne</span><span class="vocab-pron">shen</span><span class="vocab-en">oak</span></div>
         <div class="vocab-row"><span class="vocab-fr">Un charpentier</span><span class="vocab-pron">shar-pon-tyay</span><span class="vocab-en">a carpenter</span></div>
         <div class="vocab-row"><span class="vocab-fr">La charpente</span><span class="vocab-pron">shar-pont</span><span class="vocab-en">carpentry / woodwork</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Fire &amp; Weather</h3>
+        <div class="vocab-row"><span class="vocab-fr">Un incendie</span><span class="vocab-pron">an-son-dee</span><span class="vocab-en">wildfire / fire (not traffic lights!)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un feu</span><span class="vocab-pron">fuh</span><span class="vocab-en">fire, also traffic lights</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La taille</span><span class="vocab-pron">tie</span><span class="vocab-en">size</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La longueur</span><span class="vocab-pron">lon-guhr</span><span class="vocab-en">length</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Quatre fois la taille de</span><span class="vocab-pron">katr fwah la tie duh</span><span class="vocab-en">four times the size of</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Acting &amp; Film</h3>
+        <div class="vocab-row"><span class="vocab-fr">Un com&eacute;dien / une com&eacute;dienne</span><span class="vocab-pron">ko-may-dyan / ko-may-dyen</span><span class="vocab-en">actor / actress (the safe term!)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La voix-off</span><span class="vocab-pron">vwah-off</span><span class="vocab-en">voiceover</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un humoriste</span><span class="vocab-pron">oo-mo-reest</span><span class="vocab-en">comedian (what we mean by comedian)</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">At the Market</h3>
+        <div class="vocab-row"><span class="vocab-fr">Go&ucirc;ter</span><span class="vocab-pron">goo-tay</span><span class="vocab-en">to taste</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Celui-ci / celui-l&agrave;</span><span class="vocab-pron">suh-lwee-see / suh-lwee-lah</span><span class="vocab-en">this one / that one (pointing)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Et avec ceci ?</span><span class="vocab-pron">ay a-vek suh-see</span><span class="vocab-en">anything else? (what sellers say)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Je peux prendre</span><span class="vocab-pron">zhe puh prondr</span><span class="vocab-en">can I take (polite way to order)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">&Ccedil;a fera...</span><span class="vocab-pron">sah fuh-rah</span><span class="vocab-en">that will be... (price)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">&Ccedil;a co&ucirc;te combien ?</span><span class="vocab-pron">sah koot kom-byan</span><span class="vocab-en">how much does it cost?</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un peu plus</span><span class="vocab-pron">uhn puh ploo</span><span class="vocab-en">a bit more</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La politesse</span><span class="vocab-pron">po-lee-tess</span><span class="vocab-en">politeness</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Bonne journ&eacute;e</span><span class="vocab-pron">bon zhoor-nay</span><span class="vocab-en">have a good day</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Questions &amp; Asking</h3>
+        <div class="vocab-row"><span class="vocab-fr">Est-ce que</span><span class="vocab-pron">ess-kuh</span><span class="vocab-en">question marker (stick it in front!)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Je peux</span><span class="vocab-pron">zhe puh</span><span class="vocab-en">I can</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Je dois</span><span class="vocab-pron">zhe dwah</span><span class="vocab-en">I must / I have to</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Je vais</span><span class="vocab-pron">zhe vay</span><span class="vocab-en">I'm going to</span></div>
       </div>
 
       <!-- Root Phrases -->
@@ -418,6 +478,34 @@
               <span class="text-xs bg-sand px-2 py-1 rounded text-navy">ici</span>
             </div>
           </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">Est-ce que je peux... <span class="text-gray-400 font-normal text-sm italic ml-2">ess-kuh zhe puh</span></div>
+            <div class="phrase-en mb-2">Can I...</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">go&ucirc;ter</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">aller</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">manger</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">avoir</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">Est-ce que je dois... <span class="text-gray-400 font-normal text-sm italic ml-2">ess-kuh zhe dwah</span></div>
+            <div class="phrase-en mb-2">Do I have to...</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">aller</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">payer</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">partir</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">Je peux prendre... <span class="text-gray-400 font-normal text-sm italic ml-2">zhe puh prondr</span></div>
+            <div class="phrase-en mb-2">Can I take...</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">celui-ci</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">200 grammes</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">un peu plus</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -473,6 +561,26 @@
         <div class="tip-card">
           <div class="tip-title">M&eacute;nage vs D&eacute;m&eacute;nager</div>
           <p><strong>M&eacute;nage</strong> = cleaning. <strong>D&eacute;m&eacute;nager</strong> = to move house. Similar etymology, completely different meanings.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Com&eacute;dien, not acteur</div>
+          <p><strong>Acteur/actrice</strong> can be slang for a pornographic actor. The safe word for theatre and film is <strong>com&eacute;dien/com&eacute;dienne</strong>. Comedians (as we mean them) are <strong>humoristes</strong>.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Est-ce que = beer mat learning</div>
+          <p>Stick <strong>est-ce que</strong> in front of any statement to turn it into a question. No complex grammar needed. <strong>Je peux aller</strong> (I can go) becomes <strong>est-ce que je peux aller ?</strong> (can I go?). Works with everything.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Market politeness</div>
+          <p>Markets are polite, Sunday environments. Always <strong>bonjour</strong> when arriving, <strong>merci, bonne journ&eacute;e</strong> when leaving. Use <strong>je peux prendre</strong> (can I take) to order politely. The French notice when you skip the pleasantries.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Infer, don't translate</div>
+          <p>Don't try to understand every word. Pick up the key words and infer the rest from context, hand gestures, and tone. Even native speakers miss words in fast speech. Your ear is better than you think.</p>
         </div>
       </div>
 
@@ -891,299 +999,226 @@
 
 
     <!-- ══════════════════════════════════════════ -->
-    <!-- TAB: LESSON 3 (REHEARSAL)                 -->
+    <!-- TAB: LESSON 3                             -->
     <!-- ══════════════════════════════════════════ -->
     <div x-show="tab === 'l3'" class="space-y-6">
 
-      <div class="lesson-strip" style="background: linear-gradient(135deg, #003359 60%, #C8102E);">
-        <div class="num">Lesson 3 &mdash; Tuesday 29 July 2026</div>
-        <h2>Rehearsal Script</h2>
-        <div class="meta">Practise this conversation out loud before the lesson. Cover everything, sound natural.</div>
+      <div class="lesson-strip">
+        <div class="num">Lesson 3 - 28 July 2026</div>
+        <h2>Questions, Fires &amp; the French Market</h2>
+        <div class="meta">Free conversation &middot; Est-ce que questions &middot; Wildfire vocab &middot; Market roleplay</div>
       </div>
 
-      <div class="card" style="border-color: #C8102E; border-width: 2px;">
-        <span class="section-label">How to Use This</span>
+      <div class="card">
+        <span class="section-label">What You Covered</span>
         <p class="text-sm text-gray-600 leading-relaxed">
-          Read through this conversation and practise Maria's lines out loud. Don't memorise it word for word,
-          just get comfortable with the flow. Use filler words (euh, alors) to buy time. Get into character,
-          relax your shoulders, throw the lines out. If you get stuck, muddle through, zero English.
+          A big leap forward. Started with 10 minutes of free conversation entirely in French about wildfires
+          in Bordeaux, your house, and Dan's trip to Paris. Learned the "beer mat" technique for building
+          questions using est-ce que. Discussed acting vocabulary (com&eacute;dien vs acteur). Finished with a
+          market roleplay: greeting the seller, asking to taste cheese, ordering by weight, and signing off
+          politely. Dan noted your progression is jumping massively, and you're saying things he never taught
+          you, pulled from buried memory.
         </p>
       </div>
 
-      <!-- PART 1: The Icebreaker -->
+      <!-- KEY PHRASES -->
       <div class="card">
-        <span class="section-label">Part 1 &mdash; The Icebreaker</span>
+        <span class="section-label">Key Phrases</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">The est-ce que shortcut (beer mat learning)</h3>
+        <p class="text-sm text-gray-600 mb-2">Stick <strong>est-ce que</strong> in front of any statement to turn it into a question. No complex grammar needed.</p>
+        <p class="text-sm"><a href="https://fluentish.co.uk/beer-mat.html" target="_blank" class="text-rouge font-semibold underline">Open the Beer Mat tool &rarr;</a></p>
+
+        <h3 class="font-display text-base font-bold text-navy mt-6 mb-3">At the market</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Bonjour Madame / Monsieur.</div>
+          <div class="phrase-pron">bon-zhoor ma-dam / muh-syuh</div>
+          <div class="phrase-en">Hello (formal greeting at markets).</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Est-ce que je peux go&ucirc;ter ?</div>
+          <div class="phrase-pron">ess-kuh zhe puh goo-tay</div>
+          <div class="phrase-en">Can I taste?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je peux prendre celui-ci ?</div>
+          <div class="phrase-pron">zhe puh prondr suh-lwee-see</div>
+          <div class="phrase-en">Can I take this one?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je peux prendre 200 grammes ?</div>
+          <div class="phrase-pron">zhe puh prondr duh-son gram</div>
+          <div class="phrase-en">Can I take 200 grams?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Un peu plus, s'il vous pla&icirc;t.</div>
+          <div class="phrase-pron">uhn puh ploo, seel voo play</div>
+          <div class="phrase-en">A bit more, please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est tout, merci.</div>
+          <div class="phrase-pron">say too, mair-see</div>
+          <div class="phrase-en">That's all, thanks.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Merci, bonne journ&eacute;e !</div>
+          <div class="phrase-pron">mair-see, bon zhoor-nay</div>
+          <div class="phrase-en">Thank you, have a good day!</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-6 mb-3">Talking about the wildfires</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Les incendies dans la Gironde sont quatre fois la taille de Paris.</div>
+          <div class="phrase-pron">lay zan-son-dee don la Zhee-rond son katr fwah la tie duh Pa-ree</div>
+          <div class="phrase-en">The wildfires in the Gironde are four times the size of Paris.</div>
+        </div>
+      </div>
+
+      <!-- VOCABULARY -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Fire &amp; Weather</h3>
+        <div class="vocab-row"><span class="vocab-fr">Un incendie</span><span class="vocab-pron">an-son-dee</span><span class="vocab-en">wildfire / fire</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un feu</span><span class="vocab-pron">fuh</span><span class="vocab-en">fire (also traffic lights)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La taille</span><span class="vocab-pron">tie</span><span class="vocab-en">size</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La longueur</span><span class="vocab-pron">lon-guhr</span><span class="vocab-en">length (useful for ordering wood!)</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Acting &amp; Film</h3>
+        <div class="vocab-row"><span class="vocab-fr">Un com&eacute;dien / une com&eacute;dienne</span><span class="vocab-pron">ko-may-dyan / ko-may-dyen</span><span class="vocab-en">actor / actress (the safe word!)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La voix-off</span><span class="vocab-pron">vwah-off</span><span class="vocab-en">voiceover</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un humoriste</span><span class="vocab-pron">oo-mo-reest</span><span class="vocab-en">comedian (what we mean by comedian)</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">At the Market</h3>
+        <div class="vocab-row"><span class="vocab-fr">Go&ucirc;ter</span><span class="vocab-pron">goo-tay</span><span class="vocab-en">to taste</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Celui-ci / celui-l&agrave;</span><span class="vocab-pron">suh-lwee-see / suh-lwee-lah</span><span class="vocab-en">this one / that one (pointing)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Et avec ceci ?</span><span class="vocab-pron">ay a-vek suh-see</span><span class="vocab-en">anything else? (what sellers say)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Je peux prendre</span><span class="vocab-pron">zhe puh prondr</span><span class="vocab-en">can I take (polite way to order)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">&Ccedil;a fera...</span><span class="vocab-pron">sah fuh-rah</span><span class="vocab-en">that will be... (price)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">&Ccedil;a co&ucirc;te combien ?</span><span class="vocab-pron">sah koot kom-byan</span><span class="vocab-en">how much does it cost?</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un peu plus</span><span class="vocab-pron">uhn puh ploo</span><span class="vocab-en">a bit more</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La politesse</span><span class="vocab-pron">po-lee-tess</span><span class="vocab-en">politeness</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Questions &amp; Modal Verbs</h3>
+        <div class="vocab-row"><span class="vocab-fr">Est-ce que</span><span class="vocab-pron">ess-kuh</span><span class="vocab-en">question marker (stick it in front!)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Je peux</span><span class="vocab-pron">zhe puh</span><span class="vocab-en">I can</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Je dois</span><span class="vocab-pron">zhe dwah</span><span class="vocab-en">I must / I have to</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Je vais</span><span class="vocab-pron">zhe vay</span><span class="vocab-en">I'm going to</span></div>
+      </div>
+
+      <!-- DIALOGUE: MARKET ROLEPLAY -->
+      <div class="card">
+        <span class="section-label">Dialogue &mdash; Market Roleplay</span>
+        <p class="text-sm text-gray-400 italic mb-4">You practised buying cheese at a market stall. Here's the polite flow.</p>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Bonjour Monsieur.</div>
+            <div class="dialogue-en">Hello Sir.</div>
+          </div>
+        </div>
         <div class="dialogue-row">
           <span class="speaker-tag">Dan</span>
           <div>
-            <div class="dialogue-fr">Salut Maria ! &Ccedil;a va ?</div>
-            <div class="dialogue-en">Hi Maria! How's it going?</div>
+            <div class="dialogue-fr">Bonjour Madame ! Qu'est-ce que je peux vous servir ?</div>
+            <div class="dialogue-en">Hello Madam! What can I serve you?</div>
           </div>
         </div>
         <div class="dialogue-row">
           <span class="speaker-tag maria">Maria</span>
           <div>
-            <div class="dialogue-fr">Salut Dan ! Oui, &ccedil;a va bien, merci. Et toi ?</div>
-            <div class="dialogue-en">Hi Dan! Yes, good thanks. And you?</div>
+            <div class="dialogue-fr">Est-ce que je peux go&ucirc;ter celui-ci ?</div>
+            <div class="dialogue-en">Can I taste this one?</div>
           </div>
         </div>
         <div class="dialogue-row">
           <span class="speaker-tag">Dan</span>
           <div>
-            <div class="dialogue-fr">Tr&egrave;s bien. Alors, parle-moi de toi.</div>
-            <div class="dialogue-en">Very well. So, tell me about yourself.</div>
+            <div class="dialogue-fr">Bien s&ucirc;r ! Voil&agrave;.</div>
+            <div class="dialogue-en">Of course! Here you go.</div>
           </div>
         </div>
         <div class="dialogue-row">
           <span class="speaker-tag maria">Maria</span>
           <div>
-            <div class="dialogue-fr">Alors... je m'appelle Maria. J'apprends le fran&ccedil;ais doucement. Je suis sur le point de d&eacute;m&eacute;nager en France.</div>
-            <div class="dialogue-en">So... my name is Maria. I'm learning French gently. I'm about to move to France.</div>
+            <div class="dialogue-fr">C'est bon ! Je peux prendre 200 grammes ?</div>
+            <div class="dialogue-en">It's good! Can I take 200 grams?</div>
           </div>
         </div>
         <div class="dialogue-row">
           <span class="speaker-tag">Dan</span>
           <div>
-            <div class="dialogue-fr">Ah bon ? Pourquoi la France ?</div>
-            <div class="dialogue-en">Oh really? Why France?</div>
+            <div class="dialogue-fr">Et avec ceci ?</div>
+            <div class="dialogue-en">Anything else?</div>
           </div>
         </div>
         <div class="dialogue-row">
           <span class="speaker-tag maria">Maria</span>
           <div>
-            <div class="dialogue-fr">Parce que j'ai un dipl&ocirc;me en zoologie. Il y a un manque de donn&eacute;es sur les muscardins, et je veux les aider.</div>
-            <div class="dialogue-en">Because I have a degree in zoology. There's a lack of data on hazel dormice, and I want to help them.</div>
+            <div class="dialogue-fr">C'est tout, merci.</div>
+            <div class="dialogue-en">That's all, thanks.</div>
           </div>
         </div>
         <div class="dialogue-row">
           <span class="speaker-tag">Dan</span>
           <div>
-            <div class="dialogue-fr">C'est fascinant ! C'est quoi, ton ambition ?</div>
-            <div class="dialogue-en">That's fascinating! What's your ambition?</div>
+            <div class="dialogue-fr">&Ccedil;a fera six euros cinquante.</div>
+            <div class="dialogue-en">That will be six fifty.</div>
           </div>
         </div>
         <div class="dialogue-row">
           <span class="speaker-tag maria">Maria</span>
           <div>
-            <div class="dialogue-fr">Mon ambition, c'est de faire des recherches sur les muscardins. J'ai h&acirc;te de commencer !</div>
-            <div class="dialogue-en">My ambition is to do research on hazel dormice. I can't wait to start!</div>
+            <div class="dialogue-fr">Merci, bonne journ&eacute;e !</div>
+            <div class="dialogue-en">Thank you, have a good day!</div>
           </div>
         </div>
       </div>
 
-      <!-- PART 2: Paris & Roots -->
+      <!-- GRAMMAR & TIPS -->
       <div class="card">
-        <span class="section-label">Part 2 &mdash; Paris &amp; Putting Down Roots</span>
-        <div class="dialogue-row">
-          <span class="speaker-tag">Dan</span>
-          <div>
-            <div class="dialogue-fr">Tu connais d&eacute;j&agrave; la France ?</div>
-            <div class="dialogue-en">Do you already know France?</div>
-          </div>
+        <span class="section-label">Tips &amp; Notes from This Lesson</span>
+
+        <div class="tip-card">
+          <div class="tip-title">Beer mat learning (est-ce que)</div>
+          <p>Stick <strong>est-ce que</strong> in front of any statement to make it a question. <strong>Je peux aller</strong> (I can go) becomes <strong>est-ce que je peux aller ?</strong> (can I go?). Swap the verb to build dozens of questions: <strong>est-ce que je dois</strong> (do I have to), <strong>est-ce que je vais</strong> (am I going to), <strong>est-ce que je veux</strong> (do I want). Add <strong>comment</strong> (how) or <strong>pourquoi</strong> (why) for even more.</p>
         </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag maria">Maria</span>
-          <div>
-            <div class="dialogue-fr">Oui ! On a v&eacute;cu pendant un an &agrave; Paris. C'&eacute;tait parfait.</div>
-            <div class="dialogue-en">Yes! We lived in Paris for a year. It was perfect.</div>
-          </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Com&eacute;dien, not acteur</div>
+          <p><strong>Acteur/actrice</strong> can be slang for a pornographic actor in French. The proper word for a theatre or film actor is <strong>com&eacute;dien/com&eacute;dienne</strong>. And what we call a "comedian" in English is an <strong>humoriste</strong> in French.</p>
         </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag">Dan</span>
-          <div>
-            <div class="dialogue-fr">&Ccedil;a te manque, Paris ?</div>
-            <div class="dialogue-en">Do you miss Paris?</div>
-          </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Market politeness</div>
+          <p>Markets are a little flashback to old-fashioned, polite France. Always <strong>bonjour</strong> first, <strong>merci, bonne journ&eacute;e</strong> when leaving. Use <strong>je peux prendre</strong> (can I take) to order politely. The French get spiky if you skip the pleasantries.</p>
         </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag maria">Maria</span>
-          <div>
-            <div class="dialogue-fr">Ah oui, Paris me manque ! J'aime le fran&ccedil;ais, j'aime les fran&ccedil;ais, j'aime la France. Je veux prendre racine dans le sud de la France.</div>
-            <div class="dialogue-en">Oh yes, I miss Paris! I love French, I love the French, I love France. I want to put down roots in the south of France.</div>
-          </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Incendie vs feu</div>
+          <p><strong>Un incendie</strong> is a wildfire or serious fire. <strong>Un feu</strong> is a general fire but also means traffic lights (<strong>le feu rouge</strong>). For current events, <strong>les incendies</strong> is what they're saying on the news.</p>
         </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag">Dan</span>
-          <div>
-            <div class="dialogue-fr">Et ta famille ?</div>
-            <div class="dialogue-en">And your family?</div>
-          </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Infer, don't translate</div>
+          <p>You don't need to understand every word. The archduchess tongue twister proved it: you picked up "socks" from a stream of rapid French. In conversation, grab the key words and infer context from gestures and tone. Your comprehension is much higher than you think.</p>
         </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag maria">Maria</span>
-          <div>
-            <div class="dialogue-fr">Mon fils est l&agrave;-bas jusqu'&agrave; septembre. Son visa commence depuis... euh, non... en ao&ucirc;t. On veut prendre racine en France ensemble.</div>
-            <div class="dialogue-en">My son is there until September. His visa starts from... um, no... in August. We want to put down roots in France together.</div>
-          </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Taille vs longueur</div>
+          <p><strong>La taille</strong> = size (general). <strong>La longueur</strong> = length. Both useful when ordering wood for your son's business. "Quatre fois la taille de Paris" = four times the size of Paris.</p>
         </div>
       </div>
 
-      <!-- PART 3: Life in England -->
+      <!-- PRACTICE GOALS -->
       <div class="card">
-        <span class="section-label">Part 3 &mdash; Life in England</span>
-        <div class="dialogue-row">
-          <span class="speaker-tag">Dan</span>
-          <div>
-            <div class="dialogue-fr">Et l'Angleterre, &ccedil;a te pla&icirc;t encore ?</div>
-            <div class="dialogue-en">And England, do you still like it?</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag maria">Maria</span>
-          <div>
-            <div class="dialogue-fr">Alors... pas vraiment. L'&eacute;tat ne me pla&icirc;t pas. Comment dire... c'est difficile pour les jeunes. Y'a pas assez de travail pour les jeunes.</div>
-            <div class="dialogue-en">Well... not really. I don't like the state. How do I say... it's hard for young people. There's not enough work for young people.</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag">Dan</span>
-          <div>
-            <div class="dialogue-fr">Tu as des amis ici ?</div>
-            <div class="dialogue-en">Do you have friends here?</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag maria">Maria</span>
-          <div>
-            <div class="dialogue-fr">Euh... mes amis sont des expats. Ils vivent un peu partout. Ils me manquent. Je n'ai pas vraiment pris racine ici.</div>
-            <div class="dialogue-en">Um... my friends are expats. They live all over the place. I miss them. I haven't really put down roots here.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PART 4: The Plan -->
-      <div class="card">
-        <span class="section-label">Part 4 &mdash; The Plan</span>
-        <div class="dialogue-row">
-          <span class="speaker-tag">Dan</span>
-          <div>
-            <div class="dialogue-fr">Alors, c'est quoi ton ambition globale ?</div>
-            <div class="dialogue-en">So, what's your overall ambition?</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag maria">Maria</span>
-          <div>
-            <div class="dialogue-fr">Mon ambition globale, c'est de faire des recherches sur les muscardins. Il y a un manque de donn&eacute;es sur les esp&egrave;ces prot&eacute;g&eacute;es, et je veux cr&eacute;er une base de donn&eacute;es. Je ne connais pas le mot pour... euh... &laquo; data collection &raquo; en fran&ccedil;ais ?</div>
-            <div class="dialogue-en">My overall ambition is to do research on hazel dormice. There's a lack of data on protected species, and I want to create a database. I don't know the word for... um... "data collection" in French?</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag">Dan</span>
-          <div>
-            <div class="dialogue-fr">Et pour commencer ?</div>
-            <div class="dialogue-en">And to start with?</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag maria">Maria</span>
-          <div>
-            <div class="dialogue-fr">Alors, pour commencer, je veux &ecirc;tre b&eacute;n&eacute;vole dans une association pour les animaux. Je connais un peu la r&eacute;gion, mais je ne connais pas encore les associations l&agrave;-bas. Je sais qu'il y a des esp&egrave;ces prot&eacute;g&eacute;es dans le sud.</div>
-            <div class="dialogue-en">Well, to start with, I want to volunteer at an animal charity. I know the area a bit, but I don't know the charities there yet. I know there are protected species in the south.</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag">Dan</span>
-          <div>
-            <div class="dialogue-fr">Tu sais ce qu'il faut pour s'installer ?</div>
-            <div class="dialogue-en">Do you know what you need to get set up?</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag maria">Maria</span>
-          <div>
-            <div class="dialogue-fr">Je sais qu'il faut donner mes coordonn&eacute;es &agrave; la mairie. Mes donn&eacute;es personnelles. Ah, le d&eacute;m&eacute;nagement ! Ce n'est pas le m&eacute;nage, hein ! On fait le m&eacute;nage apr&egrave;s le d&eacute;m&eacute;nagement.</div>
-            <div class="dialogue-en">I know I need to give my contact details to the town hall. My personal information. Ah, the move! It's not the cleaning, eh! You do the cleaning after the move.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PART 5: Les Guêpes -->
-      <div class="card">
-        <span class="section-label">Part 5 &mdash; Pourquoi n'y a-t-il pas de gu&ecirc;pes ?</span>
-        <div class="dialogue-row">
-          <span class="speaker-tag">Dan</span>
-          <div>
-            <div class="dialogue-fr">Tu as une question pour moi ?</div>
-            <div class="dialogue-en">Do you have a question for me?</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag maria">Maria</span>
-          <div>
-            <div class="dialogue-fr">Oui ! Pourquoi n'y a-t-il pas de gu&ecirc;pes cette ann&eacute;e ? En Angleterre, il y a moins de gu&ecirc;pes. C'est bizarre, non ?</div>
-            <div class="dialogue-en">Yes! Why are there no wasps this year? In England, there are fewer wasps. It's weird, isn't it?</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag">Dan</span>
-          <div>
-            <div class="dialogue-fr">En fait, en France c'est le contraire ! Il y a beaucoup plus de gu&ecirc;pes cette ann&eacute;e. Tu sais pourquoi ?</div>
-            <div class="dialogue-en">Actually, in France it's the opposite! There are a lot more wasps this year. Do you know why?</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag maria">Maria</span>
-          <div>
-            <div class="dialogue-fr">Ah bon ? Euh... alors... l'hiver &eacute;tait doux ? Un hiver doux, c'est bon pour les reines. Elles survivent, elles sortent plus t&ocirc;t, elles font plus de nids.</div>
-            <div class="dialogue-en">Oh really? Um... well... the winter was mild? A mild winter is good for the queens. They survive, they come out earlier, they build more nests.</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag">Dan</span>
-          <div>
-            <div class="dialogue-fr">Exactement ! Et la canicule ?</div>
-            <div class="dialogue-en">Exactly! And the heatwave?</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag maria">Maria</span>
-          <div>
-            <div class="dialogue-fr">La canicule... alors... la chaleur aide les gu&ecirc;pes, mais c'est dangereux pour les autres esp&egrave;ces. Les muscardins, par exemple. Il y a un manque de donn&eacute;es sur l'impact de la canicule sur les esp&egrave;ces prot&eacute;g&eacute;es.</div>
-            <div class="dialogue-en">The heatwave... well... the heat helps the wasps, but it's dangerous for other species. The hazel dormice, for example. There's a lack of data on the impact of the heatwave on protected species.</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag">Dan</span>
-          <div>
-            <div class="dialogue-fr">Tu vois ? Tu es d&eacute;j&agrave; pr&ecirc;te pour ton travail de b&eacute;n&eacute;vole !</div>
-            <div class="dialogue-en">See? You're already ready for your volunteering work!</div>
-          </div>
-        </div>
-        <div class="dialogue-row">
-          <span class="speaker-tag maria">Maria</span>
-          <div>
-            <div class="dialogue-fr">C'est fascinant ! J'ai h&acirc;te de commencer. J'aime le fran&ccedil;ais, j'aime les fran&ccedil;ais, j'aime la France. J'ai h&acirc;te de prendre racine dans le sud. Enchant&eacute;e !</div>
-            <div class="dialogue-en">It's fascinating! I can't wait to start. I love French, I love the French, I love France. I can't wait to put down roots in the south. Lovely to meet you!</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Cheat sheet -->
-      <div class="card" style="background: #f8f9fb;">
-        <span class="section-label">Quick Cheat Sheet</span>
-        <div class="space-y-3">
-          <div>
-            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">If you get stuck</p>
-            <p class="text-sm text-navy font-semibold">Comment dire... / Je ne connais pas le mot pour... / Euh...</p>
-          </div>
-          <div>
-            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">Show you're listening</p>
-            <p class="text-sm text-navy font-semibold">Ah bon ? / Ah oui ! / Exactement ! / Tout &agrave; fait ! / C'est fascinant !</p>
-          </div>
-          <div>
-            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">Buy thinking time</p>
-            <p class="text-sm text-navy font-semibold">Alors... / Donc... / Eh bien... / Euh...</p>
-          </div>
-          <div>
-            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">Wasp vocabulary</p>
-            <p class="text-sm text-navy font-semibold">Une gu&ecirc;pe <span class="text-gray-400 font-normal">(gwep)</span> &middot; Un nid <span class="text-gray-400 font-normal">(nee)</span> &middot; La reine <span class="text-gray-400 font-normal">(ren)</span> &middot; Un hiver doux <span class="text-gray-400 font-normal">(ee-vair doo)</span> &middot; La chaleur <span class="text-gray-400 font-normal">(sha-luhr)</span> &middot; Survivre <span class="text-gray-400 font-normal">(soor-veevr)</span> &middot; Le contraire <span class="text-gray-400 font-normal">(kon-trair)</span></p>
-          </div>
-          <div>
-            <p class="text-xs font-semibold text-rouge uppercase tracking-wider mb-1">Remember</p>
-            <p class="text-sm text-gray-600">On (not nous) &middot; Pendant (not pour) &middot; La France (feminine!) &middot; Savoir (skill) vs Conna&icirc;tre (person/place)</p>
-          </div>
-        </div>
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Prepare 3-4 French sentences: a mix of questions (using est-ce que) and extended phrases</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Practise asking questions about Dan rather than just answering them</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Visit the local boulangerie and markets in France: say bonjour, ask to taste, order by weight</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Think about real-life scenarios you need French for (hospital, bakery, neighbours) and write down what you'd want to say</li>
+        </ul>
       </div>
 
     </div><!-- /l3 -->
