@@ -129,7 +129,7 @@
         <h1 class="font-display text-2xl font-bold mt-1">Maria's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">3 lessons</p>
+        <p class="text-sm text-blue-200 font-medium">4 lessons</p>
         <p class="text-xs text-blue-400 mt-0.5">Moving to France</p>
       </div>
     </div>
@@ -142,6 +142,7 @@
       <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
       <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
       <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
+      <button @click="tab = 'l4'"   :class="tab === 'l4'   ? 'tab-btn active' : 'tab-btn'">Lesson 4</button>
     </div>
   </div>
 
@@ -1222,6 +1223,162 @@
       </div>
 
     </div><!-- /l3 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 4                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l4'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 4</div>
+        <h2>Conversation Mode: Taking the Lead</h2>
+        <div class="meta">Active conversation · Using "on" · Cultural vocabulary</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          This session marked a real turning point — you stepped up as the driver of the conversation, asking questions and building longer sentences rather than sitting back and responding. You also deepened your feel for the language by exploring cultural vocabulary and the kinds of phrases that help you sound genuinely at home in France, not just linguistically competent.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+        <h3 class="font-display text-base font-bold text-navy mb-3">Everyday Essentials</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">On peut avoir... ?</div>
+          <div class="phrase-pron">on puh-tah-vwar</div>
+          <div class="phrase-en">Can we have...?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il faut y aller</div>
+          <div class="phrase-pron">eel foh zee ah-lay</div>
+          <div class="phrase-en">I have to go / It's time to go</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Changer d'endroit</div>
+          <div class="phrase-pron">shon-zhay don-drwah</div>
+          <div class="phrase-en">To move to a different place</div>
+        </div>
+        <h3 class="font-display text-base font-bold text-navy mb-3 mt-4">Reading Signs &amp; Schedules</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Sauf...</div>
+          <div class="phrase-pron">sof</div>
+          <div class="phrase-en">Except... (very common on signs)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">La période estivale</div>
+          <div class="phrase-pron">peh-ree-od es-tee-val</div>
+          <div class="phrase-en">The summer season</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+        <h3 class="font-display text-base font-bold text-navy mb-3">French Celebrations</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">La Fête Nationale</span>
+          <span class="vocab-pron">fet nas-yo-nal</span>
+          <span class="vocab-en">Bastille Day – 14 juillet</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">La Fête de la Musique</span>
+          <span class="vocab-pron">fet duh lah mü-zeek</span>
+          <span class="vocab-en">Music festival – 21 juin (the solstice)</span>
+        </div>
+        <h3 class="font-display text-base font-bold text-navy mb-3 mt-4">At the Market</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">le marché</span>
+          <span class="vocab-pron">mar-shay</span>
+          <span class="vocab-en">the market</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">le marchand</span>
+          <span class="vocab-pron">mar-shon</span>
+          <span class="vocab-en">the merchant / stallholder</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">l'endroit</span>
+          <span class="vocab-pron">lon-drwah</span>
+          <span class="vocab-en">the place / the spot</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">les vacanciers</span>
+          <span class="vocab-pron">vah-kon-syay</span>
+          <span class="vocab-en">tourists / holidaymakers (non-judgmental)</span>
+        </div>
+        <h3 class="font-display text-base font-bold text-navy mb-3 mt-4">At the Restaurant</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">une carafe</span>
+          <span class="vocab-pron">kah-raf</span>
+          <span class="vocab-en">a jug of tap water (free)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">une bouteille</span>
+          <span class="vocab-pron">boo-tay</span>
+          <span class="vocab-en">a bottle (implies you'll pay for it)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">un panneau</span>
+          <span class="vocab-pron">pah-noh</span>
+          <span class="vocab-en">a sign (e.g. on a wall or post)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">une affiche</span>
+          <span class="vocab-pron">ah-feesh</span>
+          <span class="vocab-en">a poster</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Dialogue — Asking for Water</span>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Excusez-moi — on peut avoir une carafe d'eau, s'il vous plaît ?</div>
+            <div class="dialogue-en">Excuse me — could we have a jug of water, please?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Serveur</span>
+          <div>
+            <div class="dialogue-fr">Bien sûr, madame. Je vous apporte ça tout de suite.</div>
+            <div class="dialogue-en">Of course, madam. I'll bring that right away.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">Merci beaucoup !</div>
+            <div class="dialogue-en">Thank you very much!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Wow Exchange</span>
+        <p class="text-sm text-gray-400 italic mb-4">You challenged yourself to retell a story about visiting Epcot — entirely in French, in the past tense, without any prompting.</p>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">On est allé à Epcot et on a vu un panneau en français... le monsieur nous a regardés d'une façon très spéciale !</div>
+            <div class="dialogue-en">We went to Epcot and we saw a sign in French... the man looked at us in a very special way!</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Drill "des" and "tradition" aloud until the pronunciation feels automatic — shower time is perfect for this</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Practise "on" structures in your head throughout the day: on a, on est, on peut avoir, on va</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Keep a language diary while in France — jot down any encounters, confusing signs, or things you tried to say</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Come back with 2–3 short stories to retell in French next session</li>
+        </ul>
+      </div>
+
+    </div><!-- /l4 -->
 
 
   </main>
