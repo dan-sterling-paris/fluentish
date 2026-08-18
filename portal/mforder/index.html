@@ -129,7 +129,7 @@
         <h1 class="font-display text-2xl font-bold mt-1">Maria's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">4 lessons</p>
+        <p class="text-sm text-blue-200 font-medium">5 lessons</p>
         <p class="text-xs text-blue-400 mt-0.5">Moving to France</p>
       </div>
     </div>
@@ -143,6 +143,7 @@
       <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
       <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
       <button @click="tab = 'l4'"   :class="tab === 'l4'   ? 'tab-btn active' : 'tab-btn'">Lesson 4</button>
+      <button @click="tab = 'l5'"   :class="tab === 'l5'   ? 'tab-btn active' : 'tab-btn'">Lesson 5</button>
     </div>
   </div>
 
@@ -1379,6 +1380,185 @@
       </div>
 
     </div><!-- /l4 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 5                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l5'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 5 - 14 August 2026</div>
+        <h2>Output, Shadowing &amp; the Car Dealership</h2>
+        <div class="meta">Output Hypothesis &middot; 20-min French conversation &middot; Shadowing technique &middot; Automotive vocab</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          A landmark session. You spoke French for 20 minutes straight without reverting to English,
+          retelling your experiences at the boulangerie, local interactions, and life in France.
+          Dan introduced the Output Hypothesis (speaking beats passive listening for fluency) and
+          the "noticing gap" concept (forcing output helps your brain lock in corrections). You practised
+          shadowing for the first time, drilled retrieval of key phrases from earlier lessons,
+          and consolidated "on" verb structures across present, past, and future tenses. The session
+          ended with automotive vocabulary prep for your upcoming car dealership visit.
+        </p>
+      </div>
+
+      <!-- KEY PHRASES -->
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">At the restaurant</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">On a d&eacute;j&agrave; command&eacute;.</div>
+          <div class="phrase-pron">on a day-zha ko-mon-day</div>
+          <div class="phrase-en">We've already ordered.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On peut avoir une carafe d'eau, s'il vous pla&icirc;t ?</div>
+          <div class="phrase-pron">on puh-tah-vwar oon ka-raf doh, seel voo play</div>
+          <div class="phrase-en">Can we have a jug of water, please?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il faut y aller.</div>
+          <div class="phrase-pron">eel foh zee ah-lay</div>
+          <div class="phrase-en">I have to go / It's time to go.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-6 mb-3">"On" across three tenses (the three chunks)</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">On est en train de... (+ infinitive)</div>
+          <div class="phrase-pron">on ay on tran duh</div>
+          <div class="phrase-en">We're in the process of... (present)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On a... (+ past participle)</div>
+          <div class="phrase-pron">on a</div>
+          <div class="phrase-en">We did / We have... (past)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On va... (+ infinitive)</div>
+          <div class="phrase-pron">on va</div>
+          <div class="phrase-en">We're going to... (future)</div>
+        </div>
+      </div>
+
+      <!-- VOCABULARY -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Restaurant &amp; Ordering</h3>
+        <div class="vocab-row"><span class="vocab-fr">Commander</span><span class="vocab-pron">ko-mon-day</span><span class="vocab-en">to order (food, drinks)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">D&eacute;j&agrave;</span><span class="vocab-pron">day-zha</span><span class="vocab-en">already</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une carafe d'eau</span><span class="vocab-pron">ka-raf doh</span><span class="vocab-en">a jug of tap water (free)</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">At the Car Dealership</h3>
+        <div class="vocab-row"><span class="vocab-fr">La carte grise</span><span class="vocab-pron">kart greez</span><span class="vocab-en">registration document (proof of ownership)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le contr&ocirc;le technique</span><span class="vocab-pron">kon-trohl tek-neek</span><span class="vocab-en">MOT / technical inspection</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le volant</span><span class="vocab-pron">vo-lon</span><span class="vocab-en">steering wheel</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La bo&icirc;te de vitesses</span><span class="vocab-pron">bwaht duh vee-tess</span><span class="vocab-en">gearbox</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un pneu</span><span class="vocab-pron">pnuh</span><span class="vocab-en">a tyre</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le service technique</span><span class="vocab-pron">sair-vees tek-neek</span><span class="vocab-en">technical service / servicing</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Learning Techniques</h3>
+        <div class="vocab-row"><span class="vocab-fr">Le shadowing</span><span class="vocab-pron">sha-doh-weeng</span><span class="vocab-en">shadowing (repeating speech to match a native speaker)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une brocante</span><span class="vocab-pron">bro-kont</span><span class="vocab-en">a flea market / antique fair</span></div>
+      </div>
+
+      <!-- DIALOGUE -->
+      <div class="card">
+        <span class="section-label">Dialogue &mdash; Telling a Waiter You've Already Ordered</span>
+        <p class="text-sm text-gray-400 italic mb-4">For when English-speaking tourists at your table cause the waiter to switch to English.</p>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Serveur</span>
+          <div>
+            <div class="dialogue-fr">Vous avez choisi ?</div>
+            <div class="dialogue-en">Have you decided?</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">On a d&eacute;j&agrave; command&eacute;, merci.</div>
+            <div class="dialogue-en">We've already ordered, thanks.</div>
+          </div>
+        </div>
+        <div class="dialogue-row">
+          <span class="speaker-tag">Serveur</span>
+          <div>
+            <div class="dialogue-fr">Ah pardon ! Tr&egrave;s bien.</div>
+            <div class="dialogue-en">Oh sorry! Very well.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WOW EXCHANGE -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Wow Exchange</span>
+        <p class="text-sm text-gray-400 italic mb-4">You spoke French for 20 minutes straight, retelling your experiences in France without reverting to English. Dan's feedback: your brain is doing the work, the frustration and lag you feel is the neural processing happening in real time.</p>
+        <div class="dialogue-row">
+          <span class="speaker-tag maria">Maria</span>
+          <div>
+            <div class="dialogue-fr">On est all&eacute; &agrave; la boulangerie et on a achet&eacute; des quiches... la dame m'a demand&eacute; si je voulais emporter et j'ai compris !</div>
+            <div class="dialogue-en">We went to the bakery and bought quiches... the lady asked if I wanted to take away and I understood!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIPS -->
+      <div class="card">
+        <span class="section-label">Tips &amp; Notes from This Lesson</span>
+
+        <div class="tip-card">
+          <div class="tip-title">Output Hypothesis</div>
+          <p>Speaking beats passive listening for building fluency. Researched by Merrill Swain in Quebec in the 1960s-80s: forcing yourself to produce language (even badly) creates stronger neural pathways than just absorbing input. The "noticing gap" happens when you try to say something, get stuck, and then hear the correction. That gap is where real learning lives.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Shadowing technique</div>
+          <p>Pick a 30-second clip (cartoons, Friends in French, YouTube channels with fast then slow speech). Play it, pause, repeat it exactly as you heard it. Don't worry about understanding every word. Focus on matching the rhythm, pronunciation, and intonation. Do this daily.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">The frustration is the learning</div>
+          <p>That lag you feel when searching for words is your brain doing the translation work in real time. It's not a sign of failure, it's a sign of neural processing. Dan compared it to fight-or-flight: the embarrassment of getting stuck triggers the same stress response, but pushing through is exactly what builds procedural memory.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">"On" is your best friend</div>
+          <p><strong>On</strong> replaces <strong>nous</strong> in everyday French. Master three structures and you can talk about anything in any tense: <strong>on est en train de</strong> (present, "we're doing"), <strong>on a</strong> (past, "we did"), <strong>on va</strong> (future, "we're going to"). Next lesson will apply these to <strong>avoir</strong> (to have).</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Carte grise vs UK logbook</div>
+          <p>The <strong>carte grise</strong> is France's equivalent of the V5C. It proves ownership of the vehicle. French car insurance typically covers the person rather than the car (unlike the UK), but this is worth verifying with your insurer.</p>
+        </div>
+      </div>
+
+      <!-- PRACTICE GOALS -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Memorise the three "on" chunks: on est en train de, on a, on va, and practise making sentences with each</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Daily shadowing: find a 30-second French clip, repeat it until you match the speaker's speed and pronunciation</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Research French vocabulary for the car dealership visit (electric vehicles, insurance, test drives)</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Report back on how the car dealership visit went</li>
+        </ul>
+      </div>
+
+      <!-- COMING UP -->
+      <div class="card" style="background: #003359; color: white;">
+        <span class="section-label" style="color: #4DD4F5;">Coming Up - Lesson 6</span>
+        <h3 class="font-display text-lg font-bold mb-2" style="color: white;">Next session</h3>
+        <p class="text-sm" style="color: rgba(255,255,255,0.7);">
+          We'll debrief on the car dealership visit, apply the "on" structures to "avoir" (to have),
+          and continue building conversational stamina with longer French-only stretches.
+        </p>
+      </div>
+
+    </div><!-- /l5 -->
 
 
   </main>
