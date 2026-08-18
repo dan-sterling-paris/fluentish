@@ -129,7 +129,7 @@
         <h1 class="font-display text-2xl font-bold mt-1">Maria's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">5 lessons</p>
+        <p class="text-sm text-blue-200 font-medium">6 lessons</p>
         <p class="text-xs text-blue-400 mt-0.5">Moving to France</p>
       </div>
     </div>
@@ -144,6 +144,7 @@
       <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
       <button @click="tab = 'l4'"   :class="tab === 'l4'   ? 'tab-btn active' : 'tab-btn'">Lesson 4</button>
       <button @click="tab = 'l5'"   :class="tab === 'l5'   ? 'tab-btn active' : 'tab-btn'">Lesson 5</button>
+      <button @click="tab = 'l6'"   :class="tab === 'l6'   ? 'tab-btn active' : 'tab-btn'">Lesson 6</button>
     </div>
   </div>
 
@@ -295,6 +296,47 @@
         <p class="text-sm text-gray-600 mb-2">Stick <strong>est-ce que</strong> in front of any statement to turn it into a question. No complex grammar needed.</p>
         <p class="text-sm"><a href="https://fluentish.co.uk/beer-mat.html" target="_blank" class="text-rouge font-semibold underline">Open the Beer Mat tool &rarr;</a></p>
 
+        <h3 class="font-display text-lg font-bold text-navy mt-6 mb-4">At the restaurant</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">On a d&eacute;j&agrave; command&eacute;.</div>
+          <div class="phrase-pron">on a day-zha ko-mon-day</div>
+          <div class="phrase-en">We've already ordered.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On peut avoir une carafe d'eau, s'il vous pla&icirc;t ?</div>
+          <div class="phrase-pron">on puh-tah-vwar oon ka-raf doh, seel voo play</div>
+          <div class="phrase-en">Can we have a jug of water, please?</div>
+        </div>
+
+        <h3 class="font-display text-lg font-bold text-navy mt-6 mb-4">"On" across three tenses</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">On est en train de... (+ infinitive)</div>
+          <div class="phrase-pron">on ay on tran duh</div>
+          <div class="phrase-en">We're in the process of... (present)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On a... (+ past participle)</div>
+          <div class="phrase-pron">on a</div>
+          <div class="phrase-en">We did / We have... (past)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On va... (+ infinitive)</div>
+          <div class="phrase-pron">on va</div>
+          <div class="phrase-en">We're going to... (future, no conjugation needed!)</div>
+        </div>
+
+        <h3 class="font-display text-lg font-bold text-navy mt-6 mb-4">At the builder's / shops</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il faut cr&eacute;er un compte.</div>
+          <div class="phrase-pron">eel foh kray-ay uhn kont</div>
+          <div class="phrase-en">You need to create an account.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On a besoin de...</div>
+          <div class="phrase-pron">on a buh-zwan duh</div>
+          <div class="phrase-en">We need...</div>
+        </div>
+
         <h3 class="font-display text-lg font-bold text-navy mt-6 mb-4">At the market</h3>
         <div class="phrase-row">
           <div class="phrase-fr">Est-ce que je peux go&ucirc;ter ?</div>
@@ -394,6 +436,38 @@
         <div class="vocab-row"><span class="vocab-fr">Un com&eacute;dien / une com&eacute;dienne</span><span class="vocab-pron">ko-may-dyan / ko-may-dyen</span><span class="vocab-en">actor / actress (the safe term!)</span></div>
         <div class="vocab-row"><span class="vocab-fr">La voix-off</span><span class="vocab-pron">vwah-off</span><span class="vocab-en">voiceover</span></div>
         <div class="vocab-row"><span class="vocab-fr">Un humoriste</span><span class="vocab-pron">oo-mo-reest</span><span class="vocab-en">comedian (what we mean by comedian)</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Restaurant &amp; Ordering</h3>
+        <div class="vocab-row"><span class="vocab-fr">Commander</span><span class="vocab-pron">ko-mon-day</span><span class="vocab-en">to order (food, drinks)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">D&eacute;j&agrave;</span><span class="vocab-pron">day-zha</span><span class="vocab-en">already</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une carafe d'eau</span><span class="vocab-pron">ka-raf doh</span><span class="vocab-en">a jug of tap water (free)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Emporter</span><span class="vocab-pron">om-por-tay</span><span class="vocab-en">to take away (food)</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Car &amp; Transport</h3>
+        <div class="vocab-row"><span class="vocab-fr">La carte grise</span><span class="vocab-pron">kart greez</span><span class="vocab-en">registration document (proof of ownership)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le contr&ocirc;le technique</span><span class="vocab-pron">kon-trohl tek-neek</span><span class="vocab-en">MOT / technical inspection</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le volant</span><span class="vocab-pron">vo-lon</span><span class="vocab-en">steering wheel</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La bo&icirc;te de vitesses</span><span class="vocab-pron">bwaht duh vee-tess</span><span class="vocab-en">gearbox</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un pneu</span><span class="vocab-pron">pnuh</span><span class="vocab-en">a tyre</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un voyage</span><span class="vocab-pron">vwa-yazh</span><span class="vocab-en">a (long) journey</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un trajet</span><span class="vocab-pron">tra-zhay</span><span class="vocab-en">a (short) trip / commute</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">House &amp; DIY</h3>
+        <div class="vocab-row"><span class="vocab-fr">Le bricolage</span><span class="vocab-pron">bree-ko-lazh</span><span class="vocab-en">DIY (they also just say "DIY"!)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">L'escalier</span><span class="vocab-pron">less-kal-yay</span><span class="vocab-en">stairs / staircase</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une marche</span><span class="vocab-pron">marsh</span><span class="vocab-en">a step (on stairs)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un niveau</span><span class="vocab-pron">nee-voh</span><span class="vocab-en">a level (floor, skill, spice!)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un interrupteur</span><span class="vocab-pron">an-teh-roop-tuhr</span><span class="vocab-en">a light switch</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un compte</span><span class="vocab-pron">kont</span><span class="vocab-en">an account</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une brocante</span><span class="vocab-pron">bro-kont</span><span class="vocab-en">a flea market / antique fair</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">More Useful Verbs</h3>
+        <div class="vocab-row"><span class="vocab-fr">Perdre</span><span class="vocab-pron">pair-dr</span><span class="vocab-en">to lose</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Perdu</span><span class="vocab-pron">pair-doo</span><span class="vocab-en">lost</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Cr&eacute;er</span><span class="vocab-pron">kray-ay</span><span class="vocab-en">to create</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Filler Words</h3>
+        <div class="vocab-row"><span class="vocab-fr">Quoi</span><span class="vocab-pron">kwah</span><span class="vocab-en">"like" / "you know" (French filler, not a question)</span></div>
 
         <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">At the Market</h3>
         <div class="vocab-row"><span class="vocab-fr">Go&ucirc;ter</span><span class="vocab-pron">goo-tay</span><span class="vocab-en">to taste</span></div>
@@ -508,6 +582,34 @@
               <span class="text-xs bg-sand px-2 py-1 rounded text-navy">un peu plus</span>
             </div>
           </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">On est en train de... <span class="text-gray-400 font-normal text-sm italic ml-2">on ay on tran duh</span></div>
+            <div class="phrase-en mb-2">We're in the process of... (present)</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">manger</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">d&eacute;m&eacute;nager</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">travailler</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">On va... <span class="text-gray-400 font-normal text-sm italic ml-2">on va</span></div>
+            <div class="phrase-en mb-2">We're going to... (future, no conjugation needed!)</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">manger</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">avoir</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">aller &agrave; la plage</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">acheter une voiture</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">On a besoin de... <span class="text-gray-400 font-normal text-sm italic ml-2">on a buh-zwan duh</span></div>
+            <div class="phrase-en mb-2">We need...</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">un compte</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">les mesures</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">une voiture</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -584,6 +686,51 @@
           <div class="tip-title">Infer, don't translate</div>
           <p>Don't try to understand every word. Pick up the key words and infer the rest from context, hand gestures, and tone. Even native speakers miss words in fast speech. Your ear is better than you think.</p>
         </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Output Hypothesis</div>
+          <p>Speaking beats passive listening for building fluency. Forcing yourself to produce language (even badly) creates stronger neural pathways than absorbing input. The "noticing gap" happens when you try to say something, get stuck, and then hear the correction. That gap is where real learning lives.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Shadowing technique</div>
+          <p>Pick a 30-second clip (cartoons, Friends in French, YouTube). Play it, pause, repeat it exactly as you heard it. Don't worry about understanding every word. Focus on matching the rhythm, pronunciation, and intonation. Do this daily.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">The frustration is the learning</div>
+          <p>That lag you feel when searching for words is your brain doing the translation work in real time. It's not a sign of failure. The embarrassment of getting stuck triggers a stress response, but pushing through is exactly what builds procedural memory.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">"On" is your best friend</div>
+          <p><strong>On</strong> replaces <strong>nous</strong> in everyday French. Master three structures: <strong>on est en train de</strong> (present), <strong>on a</strong> (past), <strong>on va</strong> (future). <strong>On va</strong> is especially useful because you just add the infinitive, no conjugation needed.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Weaving (code-switching)</div>
+          <p>Native French speakers mix in English words when the English term works better. "On va regarder le match <strong>live</strong>" is completely natural. If you're stuck, weave in the English word and keep going. Flow beats perfection.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Ditch the notebook (during conversation)</div>
+          <p>Writing is great for grammar study, but during conversation it becomes a crutch. Your ear needs the workout. Focus on listening and speaking. The portal has your notes for review afterwards.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">When asked a question, just keep talking</div>
+          <p>Don't panic when someone asks you a question in French. Even if you didn't fully catch it, just answer with whatever you can. In polite conversation, they won't correct you. Silence is what makes people switch to English.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Voyage vs Trajet</div>
+          <p><strong>Un voyage</strong> is a long journey (Paris to Marseille). <strong>Un trajet</strong> is a short one (a commute, a train ride). Trajet comes from "trajectory".</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Carte grise vs UK logbook</div>
+          <p>The <strong>carte grise</strong> is France's equivalent of the V5C. French car insurance typically covers the person rather than the car (unlike the UK).</p>
+        </div>
       </div>
 
       <!-- Sounding Natural -->
@@ -596,6 +743,7 @@
           <div class="sound-pill"><span class="fr">Donc...</span><span class="en">So / therefore...</span></div>
           <div class="sound-pill"><span class="fr">Eh bien...</span><span class="en">Well...</span></div>
           <div class="sound-pill"><span class="fr">Euh...</span><span class="en">Um... (what the French actually say)</span></div>
+          <div class="sound-pill"><span class="fr">Quoi...</span><span class="en">"like" / "you know" (sentence-ender)</span></div>
         </div>
 
         <h3 class="font-display text-base font-bold text-navy mb-3">Reactions (show you're listening)</h3>
@@ -1559,6 +1707,170 @@
       </div>
 
     </div><!-- /l5 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 6                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l6'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 6 - 18 August 2026</div>
+        <h2>Real-World Wins, Weaving &amp; N-Grams</h2>
+        <div class="meta">Builder's merchant success &middot; Code-switching &middot; House vocab &middot; N-gram strategy intro</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Another 20-minute stretch entirely in French. You reported back on real-world wins: navigating
+          an account setup at a builder's merchant with a non-English-speaking assistant, pitching your
+          son's woodwork to a Farrow &amp; Ball shop owner, and ordering confidently at a caf&eacute; in
+          Isle-sur-la-Sorgue. Dan introduced the concept of "weaving" (mixing languages naturally when a
+          word works better in one than the other) and reinforced that the noticing gap from muddling
+          through without an English bailout is where real learning happens. You explored house renovation
+          and car vocabulary, discussed voyage vs trajet, and Dan challenged you to stop relying on
+          written notes as a crutch for oral fluency. The session ended with a new direction: n-gram
+          analysis of French TV subtitles to identify the highest-frequency phrases for future lessons.
+        </p>
+      </div>
+
+      <!-- KEY PHRASES -->
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Journey &amp; travel</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Un voyage</div>
+          <div class="phrase-pron">vwa-yazh</div>
+          <div class="phrase-en">A long journey (Paris to Marseille)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Un trajet</div>
+          <div class="phrase-pron">tra-zhay</div>
+          <div class="phrase-en">A short trip/journey (from "trajectory")</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-6 mb-3">At the builder's merchant</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il faut cr&eacute;er un compte.</div>
+          <div class="phrase-pron">eel foh kray-ay uhn kont</div>
+          <div class="phrase-en">You need to create an account.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On a besoin de... (+ quantity/item)</div>
+          <div class="phrase-pron">on a buh-zwan duh</div>
+          <div class="phrase-en">We need... (for ordering materials)</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-6 mb-3">Useful structures reinforced</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">On va... (+ infinitive)</div>
+          <div class="phrase-pron">on va</div>
+          <div class="phrase-en">We're going to... (the most useful future tense, no conjugation needed)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On va manger.</div>
+          <div class="phrase-pron">on va mon-zhay</div>
+          <div class="phrase-en">We're going to eat.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On va avoir...</div>
+          <div class="phrase-pron">on va ah-vwar</div>
+          <div class="phrase-en">We're going to have...</div>
+        </div>
+      </div>
+
+      <!-- VOCABULARY -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">House &amp; DIY</h3>
+        <div class="vocab-row"><span class="vocab-fr">Le bricolage</span><span class="vocab-pron">bree-ko-lazh</span><span class="vocab-en">DIY (they also just say "DIY"!)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">L'escalier</span><span class="vocab-pron">less-kal-yay</span><span class="vocab-en">stairs / staircase</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une marche</span><span class="vocab-pron">marsh</span><span class="vocab-en">a step (on stairs)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un niveau</span><span class="vocab-pron">nee-voh</span><span class="vocab-en">a level (floor, skill, spice level!)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un interrupteur</span><span class="vocab-pron">an-teh-roop-tuhr</span><span class="vocab-en">a light switch</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un compte</span><span class="vocab-pron">kont</span><span class="vocab-en">an account</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Travel &amp; Transport</h3>
+        <div class="vocab-row"><span class="vocab-fr">Un voyage</span><span class="vocab-pron">vwa-yazh</span><span class="vocab-en">a (long) journey / trip</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un trajet</span><span class="vocab-pron">tra-zhay</span><span class="vocab-en">a (short) trip / commute (from "trajectory")</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Useful Verbs</h3>
+        <div class="vocab-row"><span class="vocab-fr">Perdre</span><span class="vocab-pron">pair-dr</span><span class="vocab-en">to lose</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Perdu</span><span class="vocab-pron">pair-doo</span><span class="vocab-en">lost</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Emporter</span><span class="vocab-pron">om-por-tay</span><span class="vocab-en">to take away (food)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Cr&eacute;er</span><span class="vocab-pron">kray-ay</span><span class="vocab-en">to create</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Filler Words</h3>
+        <div class="vocab-row"><span class="vocab-fr">Quoi</span><span class="vocab-pron">kwah</span><span class="vocab-en">"like" / "you know" (French filler at end of sentences)</span></div>
+      </div>
+
+      <!-- WOW EXCHANGE -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Wow Exchange</span>
+        <p class="text-sm text-gray-400 italic mb-4">You walked into a Farrow &amp; Ball shop, spoke entirely in French to a non-English-speaking owner, and successfully pitched your son's woodwork as a potential collaboration. He said yes, gave you his card, and asked you to email photos. That's business French, unprompted, in the wild.</p>
+      </div>
+
+      <!-- TIPS -->
+      <div class="card">
+        <span class="section-label">Tips &amp; Notes from This Lesson</span>
+
+        <div class="tip-card">
+          <div class="tip-title">Weaving (code-switching)</div>
+          <p>Native French speakers mix in English words all the time when the English term works better. "On va regarder le match <strong>live</strong>" is completely natural, even though the French word exists. If you're stuck, weave in the English word and keep going. Flow beats perfection.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Ditch the notebook (during conversation)</div>
+          <p>Writing things down is great for grammar study, but during conversation it becomes a crutch. Your ear needs the workout. Focus on listening and speaking, not transcribing. The portal has your notes, so you can review afterwards.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">When asked a question, just keep talking</div>
+          <p>Don't panic when someone asks you a question in French. Even if you didn't fully catch it, just answer with whatever you can. In polite conversation, they won't stop you and correct the topic. They'll wait and ask again later. Silence is what makes people switch to English.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Voyage vs Trajet</div>
+          <p><strong>Un voyage</strong> is a long journey (Paris to Marseille, a holiday trip). <strong>Un trajet</strong> is a short one (a commute, a train ride). Trajet comes from "trajectory". On a train, you'd hear <strong>trajet</strong>. Planning a road trip? <strong>Voyage</strong>.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Niveau = level (for everything)</div>
+          <p><strong>Un niveau</strong> works for floors of a building, your level of French, and even spice levels at McDonald's. <strong>Niveau piment</strong> = spice level. Extremely versatile word.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">"Quoi" as a filler</div>
+          <p>French speakers end sentences with <strong>quoi</strong> the way English speakers say "like" or "you know". It doesn't literally mean "what" in this context. If you hear it a lot, it's just filler, not a question.</p>
+        </div>
+      </div>
+
+      <!-- PRACTICE GOALS -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Email the artisan shop owner with photos of Liam's woodwork</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Return to the builder's merchant with measurements for all rooms and place a bulk flooring order</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Continue shadowing practice daily (30-second clips)</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Keep practising "on va" + infinitive in your head throughout the day for future-tense situations</li>
+        </ul>
+      </div>
+
+      <!-- COMING UP -->
+      <div class="card" style="background: #003359; color: white;">
+        <span class="section-label" style="color: #4DD4F5;">Coming Up - Lesson 7</span>
+        <h3 class="font-display text-lg font-bold mb-2" style="color: white;">Thursday</h3>
+        <p class="text-sm" style="color: rgba(255,255,255,0.7);">
+          N-gram analysis: Dan will bring the most common phrases from French TV subtitles.
+          We'll drill the highest-frequency patterns so you can recognise and use them automatically
+          in conversation. Think of it as a shortcut to sounding natural.
+        </p>
+      </div>
+
+    </div><!-- /l6 -->
 
 
   </main>
