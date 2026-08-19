@@ -1,5 +1,4 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { GoogleAuth } from "npm:google-auth-library@9";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -31,16 +30,75 @@ function normalizePhone(raw: string): string {
   return digits;
 }
 
+// Native Web Crypto JWT signing (replaces google-auth-library@9 which drags
+// a large Node dependency tree that Deno has to shim, causing cold-start failures).
+
+function pemToPkcs8(pem: string): ArrayBuffer {
+  const body = pem
+    .replace(/-----BEGIN PRIVATE KEY-----/, "")
+    .replace(/-----END PRIVATE KEY-----/, "")
+    .replace(/\s+/g, "");
+  const bin = atob(body);
+  const buf = new ArrayBuffer(bin.length);
+  const bytes = new Uint8Array(buf);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return buf;
+}
+
+function b64url(input: string | Uint8Array): string {
+  const bin = typeof input === "string"
+    ? input
+    : Array.from(input).map((b) => String.fromCharCode(b)).join("");
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+let cachedToken: { token: string; expiresAt: number } | null = null;
+
 async function getAccessToken(): Promise<string> {
-  const keyFile = JSON.parse(GOOGLE_SERVICE_ACCOUNT_JSON);
-  const auth = new GoogleAuth({
-    credentials: keyFile,
-    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+  if (cachedToken && Date.now() < cachedToken.expiresAt - 60_000) {
+    return cachedToken.token;
+  }
+
+  const key = JSON.parse(GOOGLE_SERVICE_ACCOUNT_JSON);
+  const now = Math.floor(Date.now() / 1000);
+
+  const header = b64url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  const claim = b64url(JSON.stringify({
+    iss: key.client_email,
+    sub: "dan@sterlingparis.com",
+    scope: "https://www.googleapis.com/auth/spreadsheets",
+    aud: "https://oauth2.googleapis.com/token",
+    iat: now,
+    exp: now + 3600,
+  }));
+
+  const cryptoKey = await crypto.subtle.importKey(
+    "pkcs8",
+    pemToPkcs8(key.private_key),
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signature = new Uint8Array(await crypto.subtle.sign(
+    "RSASSA-PKCS1-v1_5",
+    cryptoKey,
+    new TextEncoder().encode(`${header}.${claim}`),
+  ));
+
+  const resp = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+      assertion: `${header}.${claim}.${b64url(signature)}`,
+    }),
   });
-  const client = await auth.getClient();
-  const token = await client.getAccessToken();
-  if (!token.token) throw new Error("Failed to obtain Google access token");
-  return token.token;
+  if (!resp.ok) {
+    throw new Error(`Google token exchange failed ${resp.status}: ${await resp.text()}`);
+  }
+  const token = await resp.json();
+  cachedToken = { token: token.access_token, expiresAt: Date.now() + token.expires_in * 1000 };
+  return token.access_token;
 }
 
 async function fetchSheetRows(accessToken: string): Promise<string[][]> {

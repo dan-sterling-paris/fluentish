@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explore the most common French sentence patterns and chunks. See what words fill each slot, filter by starting word, and train your ear for real spoken French." />
+  <title>Chunk Explorer | FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preload" as="font" href="fonts/playfair-display.woff2" type="font/woff2" crossorigin />
+  <link rel="preload" as="font" href="fonts/inter.woff2" type="font/woff2" crossorigin />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:   '#003359',
+            navyD:  '#002040',
+            rouge:  '#C8102E',
+            rougeH: '#A50D25',
+            cyan:   '#4DD4F5',
+            sand:   '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <script src="chunk-data.js"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <style>
+    @font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(fonts/playfair-display.woff2) format('woff2'); }
+    @font-face { font-family: 'Inter'; font-style: normal; font-weight: 300 700; font-display: swap; src: url(fonts/inter.woff2) format('woff2'); }
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+    .nav-link { transition: color 0.2s; }
+    .nav-link:hover { color: #C8102E; }
+    .active-link { color: #C8102E; font-weight: 600; }
+    .section-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #C8102E;
+      margin-bottom: 1.25rem;
+    }
+    [x-cloak] { display: none !important; }
+    .slot { color: #C8102E; font-weight: 800; }
+    .filler-tag { transition: background 0.1s, color 0.1s, border-color 0.1s; }
+  </style>
+</head>
+
+<body class="bg-white">
+
+  <!-- ===================== NAV ===================== -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
+      <a href="index.html" class="font-display text-2xl font-bold text-navy tracking-tight shrink-0">
+        Fluent<span class="text-rouge">ISH</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-500">
+        <a href="index.html"   class="nav-link">Home</a>
+        <a href="about.html"   class="nav-link">About Dan</a>
+        <a href="method.html"  class="nav-link">How It Works</a>
+        <a href="pricing.html" class="nav-link">Pricing</a>
+        <a href="tools.html"   class="nav-link active-link">Tools</a>
+      </nav>
+      <a href="pricing.html#booking"
+         class="hidden md:inline-block bg-rouge hover:bg-rougeH text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-colors duration-200 shrink-0">
+        Book Free Chat
+      </a>
+      <button id="menu-toggle" aria-label="Open menu" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+        <svg class="w-5 h-5 text-navy" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white px-6 py-5 flex flex-col gap-4 text-sm font-medium text-gray-700">
+      <a href="index.html"   class="py-1 hover:text-rouge transition-colors">Home</a>
+      <a href="about.html"   class="py-1 hover:text-rouge transition-colors">About Dan</a>
+      <a href="method.html"  class="py-1 hover:text-rouge transition-colors">How It Works</a>
+      <a href="pricing.html" class="py-1 hover:text-rouge transition-colors">Pricing</a>
+      <a href="tools.html"   class="py-1 text-rouge font-semibold">Tools</a>
+      <a href="pricing.html#booking" class="mt-2 bg-rouge text-white text-center py-3 rounded-full font-semibold hover:bg-rougeH transition-colors">
+        Book Free Chat
+      </a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="bg-navy text-white py-16 md:py-20">
+      <div class="max-w-3xl mx-auto px-6 text-center">
+        <p class="section-label" style="color:#4DD4F5;">Interactive tool</p>
+        <h1 class="font-display text-4xl sm:text-5xl font-bold leading-tight mb-5">
+          Chunk<br/><em class="not-italic text-rouge">Explorer</em>
+        </h1>
+        <p class="text-blue-200 text-lg leading-relaxed max-w-xl mx-auto">
+          Real French isn't built word by word. It runs on chunks: patterns you hear
+          again and again with different words slotted in. These are the most common
+          patterns from hours of real French conversation. Tap any pattern, then pick
+          a filler to complete it.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== HOW THIS WORKS ===================== -->
+    <section class="bg-white border-b border-gray-100">
+      <div class="max-w-2xl mx-auto px-6 py-10">
+        <details class="group">
+          <summary class="cursor-pointer flex items-center gap-3 text-navy font-display text-xl font-bold select-none">
+            <svg class="w-4 h-4 shrink-0 transition-transform group-open:rotate-90"
+                 fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
+            How this works
+          </summary>
+          <div class="mt-5 pl-7 text-sm text-gray-600 leading-relaxed space-y-4">
+            <p>
+              These patterns come from hours of real French conversation: podcasts, interviews,
+              and everyday chat. Not textbooks, not grammar exercises, just the way French people
+              actually speak.
+            </p>
+            <p>
+              A simple algorithm scans all that conversation looking for sentence fragments that
+              keep recurring with <em>different words slotted in</em>. For example, "je pense que"
+              appears hundreds of times, followed by dozens of different words. That makes it a
+              <strong>productive pattern</strong>: a structure you can reuse with whatever you
+              want to say next.
+            </p>
+            <p>
+              The patterns are ranked by how many different words fill the gap (more variety =
+              more useful) and by how evenly they appear across different conversations (not just
+              one topic). The result is a shortlist of the sentence building blocks that native
+              speakers reach for without thinking, and that give you the biggest head start as a
+              learner.
+            </p>
+            <p>
+              <strong>Frozen chunks</strong> (at the bottom) are the opposite: fixed phrases
+              where nothing varies. You learn these as whole pieces, like vocabulary.
+            </p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===================== TOOL ===================== -->
+    <section class="py-14 md:py-20 bg-sand" x-data="chunkExplorer()" x-cloak>
+      <div class="max-w-2xl mx-auto px-6">
+
+        <!-- Section: Frames -->
+        <div class="mb-6">
+          <h2 class="font-display text-2xl font-bold text-navy mb-2">Productive Patterns</h2>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">
+            These patterns have a variable slot. The more words that fill it, the more useful
+            the pattern is for you. Filter by starting word to explore.
+          </p>
+
+          <!-- Filter pills -->
+          <div class="flex flex-wrap gap-2 mb-6">
+            <template x-for="fo in filterOptions" :key="fo.key">
+              <button @click="setFilter(fo.key)"
+                      :class="filter === fo.key
+                        ? 'bg-navy text-white'
+                        : 'bg-white text-navy border border-stone-200 hover:border-navy'"
+                      class="text-sm font-semibold px-4 py-1.5 rounded-full transition-colors">
+                <span x-text="fo.label"></span>
+                <span x-show="fo.key !== 'all'"
+                      class="ml-1 text-xs opacity-60"
+                      x-text="'(' + fo.count + ')'"></span>
+              </button>
+            </template>
+          </div>
+        </div>
+
+        <!-- Frame cards -->
+        <div class="flex flex-col gap-3 mb-14">
+          <template x-for="frame in filteredFrames" :key="frame.s">
+            <div class="bg-white rounded-xl border overflow-hidden transition-shadow hover:shadow-md"
+                 :class="expanded === frame.s ? 'border-navy shadow-md' : 'border-stone-200'">
+              <!-- Card header -->
+              <button @click="toggleExpand(frame.s)"
+                      class="w-full text-left px-5 py-4 flex items-start justify-between gap-4">
+                <div class="flex-1 min-w-0">
+                  <p class="text-lg font-bold text-navy leading-snug" x-html="highlightSlot(frame.s)"></p>
+                  <p class="text-sm text-gray-400 italic mt-0.5" x-text="enMap[frame.s] || ''"></p>
+                  <p class="text-xs text-gray-500 mt-1.5">
+                    Heard <span class="font-semibold" x-text="frame.u"></span> times
+                    &middot;
+                    <span class="font-semibold" x-text="frame.t"></span> words fill the gap
+                  </p>
+                </div>
+                <svg :class="expanded === frame.s ? 'rotate-90' : ''"
+                     class="w-4 h-4 text-gray-300 mt-1.5 shrink-0 transition-transform"
+                     fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
+              </button>
+              <!-- Expanded fillers -->
+              <div x-show="expanded === frame.s"
+                   x-transition:enter="transition ease-out duration-150"
+                   x-transition:enter-start="opacity-0"
+                   x-transition:enter-end="opacity-100"
+                   class="px-5 pb-4 pt-1 border-t border-stone-100">
+                <p class="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">
+                  Tap a word to complete the pattern
+                </p>
+                <div class="flex flex-wrap gap-1.5">
+                  <template x-for="fl in frame.f" :key="fl[0]">
+                    <button @click="selectFiller(frame.s, fl[0])"
+                            class="filler-tag inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm cursor-pointer"
+                            :class="selectedFiller && selectedFiller.skeleton === frame.s && selectedFiller.word === fl[0]
+                              ? 'bg-navy text-white border border-navy'
+                              : 'bg-sand border border-stone-200 hover:border-navy'">
+                      <span class="font-semibold" x-text="fl[0]"></span>
+                      <span class="text-xs" :class="selectedFiller && selectedFiller.skeleton === frame.s && selectedFiller.word === fl[0] ? 'text-blue-200' : 'text-gray-400'"
+                            x-text="fl[1]"></span>
+                    </button>
+                  </template>
+                </div>
+                <p x-show="frame.t > frame.f.length"
+                   class="text-xs text-gray-400 mt-2"
+                   x-text="'+ ' + (frame.t - frame.f.length) + ' more'"></p>
+                <!-- Inline completed sentence -->
+                <div x-show="selectedFiller && selectedFiller.skeleton === frame.s"
+                     x-transition:enter="transition ease-out duration-150"
+                     x-transition:enter-start="opacity-0 -translate-y-1"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     class="bg-navy rounded-lg px-4 py-3 mt-3">
+                  <p class="font-display text-xl sm:text-2xl font-bold text-white leading-snug"
+                     x-text="completedSentence"></p>
+                  <p class="text-sm mt-1" style="color:#4DD4F5;"
+                     x-text="enMap[frame.s] ? enMap[frame.s].replace('___', selectedFiller ? selectedFiller.word : '') : ''"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <p x-show="filteredFrames.length === 0" class="text-center text-gray-400 py-8">
+            No patterns match this filter.
+          </p>
+        </div>
+
+        <!-- Section: Fixed expressions -->
+        <div>
+          <h2 class="font-display text-2xl font-bold text-navy mb-2">Frozen Chunks</h2>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">
+            These don't have a variable slot. They're fixed expressions worth learning as
+            whole pieces: you'll hear them constantly in conversation.
+          </p>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <template x-for="fx in fixed" :key="fx.p">
+              <div class="bg-white rounded-xl border border-stone-200 px-5 py-4">
+                <p class="text-lg font-bold text-navy" x-text="fx.p"></p>
+                <p class="text-sm text-gray-400 italic mt-0.5" x-text="fixedEn[fx.p] || ''"></p>
+                <p class="text-xs text-gray-500 mt-1.5">
+                  Heard <span class="font-semibold" x-text="fx.f"></span> times
+                </p>
+              </div>
+            </template>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================== CTA ===================== -->
+    <section class="bg-rouge py-20 text-white text-center">
+      <div class="max-w-2xl mx-auto px-6">
+        <h2 class="font-display text-3xl sm:text-4xl font-bold mb-5">
+          Patterns are a start. Using them is the thing.
+        </h2>
+        <p class="text-white/80 text-lg leading-relaxed mb-8">
+          Knowing the chunks is step one. Speaking them with confidence takes practice.
+          Book a free call and find out how lessons work.
+        </p>
+        <a href="pricing.html#booking"
+           class="inline-block bg-white text-rouge font-semibold text-base px-10 py-4 rounded-full hover:bg-sand transition-colors">
+          Book a Free 15-Min Chat
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="bg-navyD text-white pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-4 gap-10 mb-12 pb-12 border-b border-white/10">
+        <div class="md:col-span-2">
+          <a href="index.html" class="font-display text-2xl font-bold text-white">
+            Fluent<span class="text-rouge">ISH</span>
+          </a>
+          <p class="mt-5 text-blue-300 text-sm leading-relaxed max-w-xs">
+            Bespoke 1-on-1 conversational French coaching for adults. Online, UK-wide.
+          </p>
+          <p class="mt-2 text-blue-400 text-xs">Based in Greater Manchester and Paris. In-person sessions available locally.</p>
+          <p class="mt-4 text-blue-400 text-xs">Best learnt over a coffee. Or a glass of something.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Pages</h4>
+          <ul class="space-y-3 text-sm text-blue-300">
+            <li><a href="index.html"   class="hover:text-white transition-colors">Home</a></li>
+            <li><a href="about.html"   class="hover:text-white transition-colors">About Dan</a></li>
+            <li><a href="method.html"  class="hover:text-white transition-colors">How It Works</a></li>
+            <li><a href="pricing.html" class="hover:text-white transition-colors">Pricing</a></li>
+            <li><a href="tools.html"   class="hover:text-white transition-colors">Tools</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-xs uppercase tracking-widest text-blue-400 mb-5">Get in Touch</h4>
+          <ul class="space-y-3 text-sm text-blue-300">
+            <li><a href="mailto:bonjour@fluentish.co.uk" class="hover:text-white transition-colors">bonjour@fluentish.co.uk</a></li>
+            <li class="text-blue-400 text-xs">Based in Greater Manchester</li>
+            <li class="pt-1">
+              <a href="pricing.html#booking" class="inline-block bg-rouge hover:bg-rougeH text-white text-xs font-semibold px-5 py-2 rounded-full transition-colors">
+                Book Free Chat
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-blue-400">
+        <p>&copy; 2026 FluentISH &middot; All rights reserved</p>
+        <a href="privacy.html" class="hover:text-blue-300 transition-colors">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
+    function chunkExplorer() {
+      return {
+        filter: 'all',
+        expanded: null,
+        selectedFiller: null,
+
+        // ── Data loaded from chunk-data.js (generated by export_frames.py) ──
+        frames: CHUNK_DATA.frames,
+        fixed: CHUNK_DATA.fixed,
+
+        // ── English translations (maintained here, independent of data) ──
+        enMap: {
+          "un peu ___":"a bit ___",
+          "parce que ___":"because ___",
+          "que je ___":"that I ___",
+          "je suis ___":"I am ___",
+          "y a ___":"there is/are ___",
+          "que c'est ___":"that it's ___",
+          "c'est un ___":"it's a ___",
+          "tu as ___":"you have ___",
+          "en fait ___":"actually, ___",
+          "que tu ___":"that you ___",
+          "de la ___":"of the / some ___",
+          "c'est pas ___":"it's not ___",
+          "tu es ___":"you are ___",
+          "on a ___":"we have / we did ___",
+          "qui est ___":"who is ___",
+          "tu vois ___":"you see, ___",
+          "c'est ça ___":"that's right, ___",
+          "je pense ___":"I think ___",
+          "les gens ___":"people ___",
+          "que ça ___":"that it ___",
+          "comme ça ___":"like that, ___",
+          "et c'est ___":"and it's ___",
+          "ça c'est ___":"now that's ___",
+          "moi je ___":"me, I ___",
+          "c'est une ___":"it's a ___",
+          "que j'ai ___":"that I have ___",
+          "à la ___":"at the / to the ___",
+          "dans le ___":"in the ___",
+          "je ___ pas":"I don't ___",
+          "mais c'est ___":"but it's ___",
+          "quand même ___":"still / anyway ___",
+          "on est ___":"we are ___",
+          "il faut ___":"you have to ___",
+          "beaucoup de ___":"a lot of ___",
+          "du coup ___":"so then, ___",
+          "des ___ qui":"some ___ who/that",
+          "par exemple ___":"for example, ___",
+          "tous les ___":"every / all the ___",
+          "pas de ___":"no ___ / not any ___",
+          "a des ___":"has some ___",
+          "je vais ___":"I'm going to ___",
+          "tu peux ___":"you can ___",
+          "ce que ___":"what ___",
+          "je me ___":"I ___ myself",
+          "et donc ___":"and so, ___",
+          "quelque chose ___":"something ___",
+          "en français ___":"in French, ___",
+          "que les ___":"that the ___",
+          "le ___ de":"the ___ of",
+          "un ___ de":"a ___ of",
+          "le ___ et":"the ___ and",
+          "le monde ___":"the world / everyone ___",
+          "la ___ de":"the ___ of",
+          "des ___ et":"some ___ and",
+          "une ___ de":"a ___ of",
+          "de ___ et":"of ___ and",
+          "de ___ qui":"of ___ who/that",
+          "a pas ___":"doesn't have ___",
+          "les ___ et":"the ___ and",
+          "la ___ et":"the ___ and",
+          "il y a des ___":"there are some ___",
+          "il y a un ___":"there is a ___",
+          "je pense que c'est ___":"I think it's ___",
+          "il y a ___ de":"there is/are ___ of",
+          "il y a pas ___":"there isn't ___",
+          "y a beaucoup de ___":"there are a lot of ___",
+          "y a plein de ___":"there are loads of ___",
+          "est-ce que tu as ___":"do you have ___?",
+          "est-ce que tu peux ___":"can you ___?",
+          "je me suis dit ___":"I told myself ___",
+          "quand tu ___":"when you ___",
+          "quand on ___":"when we ___",
+          "ils sont ___":"they are ___",
+          "y a ___ de":"there is/are ___ of",
+          "des gens qui ___":"people who ___",
+          "qu'il y a ___":"that there is/are ___",
+          "il y avait ___":"there was/were ___",
+          "et du coup ___":"and so then ___",
+          "parce que je ___":"because I ___",
+          "que je suis ___":"that I am ___",
+          "parce que c'est ___":"because it's ___",
+          "ce que je ___":"what I ___",
+          "et en fait ___":"and actually ___",
+          "je trouve que ___":"I find that ___",
+          "c'est vrai que ___":"it's true that ___",
+          "tous les jours ___":"every day ___",
+          "y a un ___":"there's a ___",
+          "est-ce que tu ___":"do you ___?",
+        },
+
+        fixedEn: {
+          "et du coup":"and so then",
+          "en même temps":"at the same time",
+          "donc du coup":"so then",
+          "apprendre le français":"to learn French",
+          "y en a":"there are some",
+          "il y en a":"there are some (of them)",
+          "encore une fois":"once again",
+          "donc il y a":"so there is/are",
+          "à peu près":"more or less",
+          "mais du coup":"but then",
+          "mais en tout cas":"but in any case",
+          "tout à l'heure":"earlier / in a bit",
+          "à chaque fois":"every time",
+          "trucs comme ça":"things like that",
+          "il y a des":"there are some",
+          "il y a un":"there is a",
+          "je pense que c'est":"I think it's",
+          "il y a plein":"there are loads",
+          "je me suis dit":"I told myself / I thought",
+          "et il y a":"and there is/are",
+          "mais il y a":"but there is/are",
+          "il y a pas":"there isn't / there aren't",
+          "il y a une":"there is a",
+          "et je pense que":"and I think that",
+          "il y a eu":"there was / there have been",
+          "que il y a":"that there is/are",
+          "est-ce que tu as":"do you have",
+          "et donc du coup":"and so then",
+        },
+
+        // ── Computed ──
+
+        get filterOptions() {
+          var pills = [{key:'all', label:'All', count: this.frames.length}];
+          var order = ['je','il','y',"c'est",'que','est-ce','et','en','parce','tout','des','ce',"qu'il"];
+          for (var i = 0; i < order.length; i++) {
+            var k = order[i];
+            var n = this.frames.filter(function(fr){ return fr.w === k; }).length;
+            if (n > 0) pills.push({key:k, label:k, count:n});
+          }
+          return pills;
+        },
+
+        get filteredFrames() {
+          if (this.filter === 'all') return this.frames;
+          var f = this.filter;
+          return this.frames.filter(function(fr){ return fr.w === f; });
+        },
+
+        get completedSentence() {
+          if (!this.selectedFiller) return '';
+          return this.selectedFiller.skeleton.replace('___', this.selectedFiller.word);
+        },
+
+        // ── Actions ──
+
+        setFilter(key) {
+          this.filter = key;
+          this.expanded = null;
+          this.selectedFiller = null;
+        },
+
+        toggleExpand(skeleton) {
+          if (this.expanded === skeleton) {
+            this.expanded = null;
+            this.selectedFiller = null;
+          } else {
+            this.expanded = skeleton;
+            this.selectedFiller = null;
+          }
+        },
+
+        selectFiller(skeleton, word) {
+          if (this.selectedFiller &&
+              this.selectedFiller.skeleton === skeleton &&
+              this.selectedFiller.word === word) {
+            this.selectedFiller = null;
+          } else {
+            this.selectedFiller = { skeleton: skeleton, word: word };
+          }
+        },
+
+        highlightSlot(skeleton) {
+          return skeleton.replace('___', '<span class="slot">___</span>');
+        }
+      };
+    }
+  </script>
+
+<script>
+document.addEventListener('click', function(e) {
+  var link = e.target.closest('a[href*="#booking"]');
+  if (link && typeof fbq === 'function') fbq('track', 'Lead');
+});
+</script>
+
+<!-- Deferred tracking: staggered to reduce TBT -->
+<script>
+function loadTracker(fn) {
+  if ('requestIdleCallback' in window) requestIdleCallback(fn);
+  else setTimeout(fn, 1);
+}
+window.addEventListener('load', function() {
+  loadTracker(function() {
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','26628549533507941');
+    fbq('track','PageView');
+  });
+
+  setTimeout(function() {
+    loadTracker(function() {
+      var gs = document.createElement('script');
+      gs.src = 'https://www.googletagmanager.com/gtag/js?id=G-XS9D9D0XRH';
+      gs.async = true;
+      document.head.appendChild(gs);
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XS9D9D0XRH');
+    });
+  }, 2000);
+});
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=26628549533507941&ev=PageView&noscript=1"/></noscript>
+
+</body>
+</html>
