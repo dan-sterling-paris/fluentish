@@ -8,6 +8,21 @@ const CORS = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+// Follow Graph API cursor pagination. Campaign-level rows are
+// (campaigns x days), so a single page is rarely enough.
+async function fetchAllPages(url: string, maxPages = 25) {
+  const out: unknown[] = [];
+  let next: string | null = url;
+  for (let page = 0; page < maxPages && next; page++) {
+    const res = await fetch(next);
+    const json = await res.json();
+    if (json.error) throw new Error(json.error.message);
+    if (Array.isArray(json.data)) out.push(...json.data);
+    next = json.paging?.next ?? null;
+  }
+  return out;
+}
+
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: CORS });
@@ -42,7 +57,7 @@ Deno.serve(async (req: Request) => {
     const since = sinceDate.toISOString().slice(0, 10);
     const timeRange = JSON.stringify({ since, until });
 
-    const fields = [
+    const baseFields = [
       "date_start",
       "spend",
       "impressions",
@@ -52,19 +67,34 @@ Deno.serve(async (req: Request) => {
       "cpc",
       "ctr",
       "actions",
-    ].join(",");
+    ];
 
-    const insightUrl =
-      `${GRAPH}/${account.id}/insights?fields=${encodeURIComponent(fields)}` +
+    const common =
       `&time_increment=1&time_range=${encodeURIComponent(timeRange)}` +
-      `&limit=100&access_token=${META_TOKEN}`;
+      `&access_token=${META_TOKEN}`;
 
-    const insightRes = await fetch(insightUrl);
-    const insightJson = await insightRes.json();
-    if (insightJson.error) throw new Error(insightJson.error.message);
+    // Account-level rows power the "All campaigns" view. They are kept
+    // separate from the campaign rows because reach is de-duplicated
+    // across campaigns and so is NOT the sum of the per-campaign values.
+    const accountUrl =
+      `${GRAPH}/${account.id}/insights` +
+      `?fields=${encodeURIComponent(baseFields.join(","))}` +
+      `&limit=100${common}`;
+
+    // Campaign-level rows power the per-campaign filter.
+    const campaignFields = [...baseFields, "campaign_id", "campaign_name"];
+    const campaignUrl =
+      `${GRAPH}/${account.id}/insights` +
+      `?fields=${encodeURIComponent(campaignFields.join(","))}` +
+      `&level=campaign&limit=500${common}`;
+
+    const [rows, campaigns] = await Promise.all([
+      fetchAllPages(accountUrl),
+      fetchAllPages(campaignUrl),
+    ]);
 
     return new Response(
-      JSON.stringify({ ok: true, rows: insightJson.data ?? [], account: account.name }),
+      JSON.stringify({ ok: true, rows, campaigns, account: account.name }),
       {
         headers: {
           ...CORS,

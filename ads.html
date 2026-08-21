@@ -42,6 +42,14 @@
       </div>
     </div>
 
+    <!-- Campaign filter -->
+    <div class="mb-3">
+      <select id="camp"
+        class="w-full sm:w-auto sm:min-w-[16rem] max-w-full px-3 py-2 rounded-xl border border-gray-300 bg-gray-50 text-sm font-medium text-gray-700 focus:outline-none focus:border-accent">
+        <option value="all">All campaigns (total)</option>
+      </select>
+    </div>
+
     <!-- Toggles -->
     <div class="flex items-center gap-3 mb-5 text-xs">
       <label class="flex items-center gap-1.5 cursor-pointer select-none">
@@ -115,8 +123,9 @@
 
   <script>
     var API = 'https://gutihncfxjdyxulfwtgp.supabase.co/functions/v1/dashboard';
-    var tk = '', allRows = [], days = 0;
+    var tk = '', allRows = [], campRows = [], campList = [], campId = 'all', days = 0;
     try { tk = localStorage.getItem('ads_t') || ''; } catch(e) {}
+    try { campId = localStorage.getItem('ads_camp') || 'all'; } catch(e) {}
 
     var loginEl = document.getElementById('login');
     var appEl = document.getElementById('app');
@@ -184,6 +193,87 @@
       if (Math.abs(pct) < 0.5) return '<span class="text-gray-400 text-xs ml-1">0%</span>';
       var col = pct < 0 ? 'text-green-600' : 'text-red-500';
       return '<span class="'+col+' text-xs ml-1">'+(pct>0?'\u2191':'\u2193')+Math.abs(pct).toFixed(0)+'%</span>';
+    }
+
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function nextDay(s) {
+      var d = new Date(s + 'T12:00:00Z');
+      d.setUTCDate(d.getUTCDate() + 1);
+      return d.toISOString().slice(0,10);
+    }
+
+    // --- Campaign filter ---
+    function ingestCampaigns(rows) {
+      campRows = rows || [];
+      var byId = {};
+      campRows.forEach(function(r){
+        var id = r.campaign_id;
+        if (!id) return;
+        if (!byId[id]) byId[id] = { id: id, name: id, spend: 0, impr: 0 };
+        if (r.campaign_name) byId[id].name = r.campaign_name;
+        byId[id].spend += +(r.spend || 0);
+        byId[id].impr  += +(r.impressions || 0);
+      });
+
+      campList = Object.keys(byId).map(function(k){ return byId[k]; });
+      // Busiest first, so the campaign you actually care about is at the top.
+      campList.sort(function(a,b){
+        if (b.spend !== a.spend) return b.spend - a.spend;
+        return a.name < b.name ? -1 : 1;
+      });
+
+      var sel = document.getElementById('camp');
+      var html = '<option value="all">All campaigns (total)</option>';
+      campList.forEach(function(c){
+        var suffix = c.impr ? '' : ' \u00b7 no delivery (60d)';
+        html += '<option value="' + esc(c.id) + '">' + esc(c.name) + suffix + '</option>';
+      });
+      sel.innerHTML = html;
+
+      // A previously selected campaign may have dropped out of the window.
+      if (campId !== 'all' && !byId[campId]) campId = 'all';
+      sel.value = campId;
+    }
+
+    function campName() {
+      if (campId === 'all') return 'All campaigns';
+      for (var i = 0; i < campList.length; i++) {
+        if (campList[i].id === campId) return campList[i].name;
+      }
+      return campId;
+    }
+
+    function zeroRow(date) {
+      return { date_start: date, spend: '0', impressions: '0',
+               reach: '0', clicks: '0', actions: [] };
+    }
+
+    // Fill a sparse daily series onto a contiguous date axis, so that the
+    // Today/7d/14d/28d windows cover the same calendar days whichever
+    // campaign is selected (a campaign only has rows on days it delivered).
+    function denseSeries(rows, start, end) {
+      var byDate = {};
+      rows.forEach(function(r){ byDate[r.date_start] = r; });
+      var out = [], d = start, guard = 0;
+      while (d <= end && guard++ < 400) {
+        out.push(byDate[d] || zeroRow(d));
+        d = nextDay(d);
+      }
+      return out;
+    }
+
+    // The rows the dashboard is currently reporting on.
+    function viewRows() {
+      if (!allRows.length) return [];
+      var start = allRows[0].date_start;
+      var end = allRows[allRows.length - 1].date_start;
+      if (campId === 'all') return denseSeries(allRows, start, end);
+      var mine = campRows.filter(function(r){ return r.campaign_id === campId; });
+      return denseSeries(mine, start, end);
     }
 
     // --- Slicing ---
@@ -260,7 +350,9 @@
       document.getElementById('err').textContent = '';
       fetch(API+'?t='+encodeURIComponent(v)).then(function(r){return r.json()}).then(function(j){
         if (j.ok) {
-          tk = v; allRows = j.rows;
+          tk = v; allRows = j.rows || [];
+          allRows.sort(function(a,b){ return a.date_start<b.date_start?-1:1; });
+          ingestCampaigns(j.campaigns);
           try { localStorage.setItem('ads_t', tk); } catch(e) {}
           loginEl.classList.add('hidden');
           appEl.classList.remove('hidden');
@@ -290,8 +382,9 @@
 
       fetch(API+'?t='+encodeURIComponent(tk)).then(function(r){return r.json()}).then(function(j){
         if (!j.ok) throw new Error(j.error);
-        allRows = j.rows;
+        allRows = j.rows || [];
         allRows.sort(function(a,b){ return a.date_start<b.date_start?-1:1; });
+        ingestCampaigns(j.campaigns);
         draw();
       }).catch(function(e){
         document.getElementById('cards').innerHTML =
@@ -311,6 +404,13 @@
       };
     });
 
+    // --- Campaign dropdown ---
+    document.getElementById('camp').onchange = function() {
+      campId = this.value;
+      try { localStorage.setItem('ads_camp', campId); } catch(e) {}
+      draw();
+    };
+
     // --- Toggles ---
     cmpBox.onchange = draw;
     smoothBox.onchange = draw;
@@ -321,13 +421,14 @@
 
       var compare = cmpBox.checked;
       var smooth = smoothBox.checked;
+      var rows = viewRows();
 
-      var current = slicePeriod(allRows, days);
+      var current = slicePeriod(rows, days);
       var cur = sumRows(current);
       var label = days === 0 ? 'today' : days + 'd total';
 
       if (compare) {
-        var prev = slicePrev(allRows, days);
+        var prev = slicePrev(rows, days);
         var prv = sumRows(prev);
         var prevLabel = days === 0 ? 'vs yesterday' : 'vs prev ' + days + 'd';
 
@@ -423,7 +524,7 @@
       }
 
       // Build day-over-day lookup from all processed (possibly smoothed) rows
-      var allProcessed = smooth ? rollingAvg(allRows, 3) : allRows;
+      var allProcessed = smooth ? rollingAvg(rows, 3) : rows;
       var rowsByDate = {};
       allProcessed.forEach(function(r){ rowsByDate[r.date_start] = r; });
 
@@ -464,7 +565,8 @@
       }
 
       var n=new Date();
-      document.getElementById('foot').textContent='Updated '+n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+
+      document.getElementById('foot').textContent=campName()+
+        ' \u00b7 updated '+n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+
         ' \u00b7 '+n.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
     }
 
@@ -655,7 +757,8 @@
     document.getElementById('csv-btn').onclick = function() {
       var smooth = smoothBox.checked;
       var compare = cmpBox.checked;
-      var current = slicePeriod(allRows, days);
+      var rows = viewRows();
+      var current = slicePeriod(rows, days);
       var tableRows = smooth ? rollingAvg(current, 3) : current;
 
       function csvRow(r) {
@@ -671,7 +774,7 @@
       var lines = [];
 
       if (compare) {
-        var prev = slicePrev(allRows, days);
+        var prev = slicePrev(rows, days);
         var prevRows = smooth ? rollingAvg(prev, 3) : prev;
         lines = lines.concat(prevRows.map(csvRow));
       }
@@ -683,7 +786,9 @@
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
       a.href = url;
-      a.download = 'fluentish-ads-' + todayStr() + '.csv';
+      var slug = campId === 'all' ? 'all'
+        : campName().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40);
+      a.download = 'fluentish-ads-' + slug + '-' + todayStr() + '.csv';
       a.click();
       URL.revokeObjectURL(url);
     };
