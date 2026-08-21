@@ -67,7 +67,7 @@
 
     <!-- Funnel -->
     <div id="funnel" class="hidden mb-5">
-      <p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-2">Conversion funnel</p>
+      <p class="text-[10px] font-bold uppercase tracking-wide text-gray-400 mb-2">Lead form funnel</p>
       <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
         <div id="funnel-inner"></div>
       </div>
@@ -155,6 +155,20 @@
       var a = (r.actions||[]).find(function(x){
         return x.action_type==='lead'||x.action_type==='offsite_conversion.fb_pixel_lead'||
                x.action_type==='onsite_conversion.lead_grouped';
+      });
+      return a ? +a.value : 0;
+    }
+
+    function lc(r) {
+      var a = (r.actions||[]).find(function(x){
+        return x.action_type==='link_click';
+      });
+      return a ? +a.value : 0;
+    }
+
+    function lpv(r) {
+      var a = (r.actions||[]).find(function(x){
+        return x.action_type==='landing_page_view';
       });
       return a ? +a.value : 0;
     }
@@ -311,11 +325,12 @@
     }
 
     function sumRows(arr) {
-      var s=0,i=0,r=0,c=0,b=0,l=0;
+      var s=0,i=0,r=0,c=0,b=0,l=0,lk=0,lp=0;
       arr.forEach(function(x){
-        s+=+(x.spend||0); i+=+(x.impressions||0); r+=+(x.reach||0); c+=+(x.clicks||0); b+=bk(x); l+=ld(x);
+        s+=+(x.spend||0); i+=+(x.impressions||0); r+=+(x.reach||0); c+=+(x.clicks||0);
+        b+=bk(x); l+=ld(x); lk+=lc(x); lp+=lpv(x);
       });
-      return {spend:s, impr:i, reach:r, clicks:c, bkgs:b, leads:l};
+      return {spend:s, impr:i, reach:r, clicks:c, bkgs:b, leads:l, linkClicks:lk, lpViews:lp};
     }
 
     // --- Rolling average ---
@@ -336,6 +351,12 @@
           }, {
             action_type: 'lead',
             value: String(Math.round(slice.reduce(function(a,x){return a+ld(x)},0)/n * 10)/10)
+          }, {
+            action_type: 'link_click',
+            value: String(Math.round(slice.reduce(function(a,x){return a+lc(x)},0)/n * 10)/10)
+          }, {
+            action_type: 'landing_page_view',
+            value: String(Math.round(slice.reduce(function(a,x){return a+lpv(x)},0)/n * 10)/10)
           }]
         };
         return avg;
@@ -571,19 +592,14 @@
     }
 
     // --- Funnel ---
-    function funnelRow(d, label, colors) {
-      var ctr = d.impr ? d.clicks / d.impr * 100 : 0;
-      var cvr = d.clicks ? d.bkgs / d.clicks * 100 : 0;
-      var clickPct = d.impr ? d.clicks / d.impr * 100 : 0;
-      var bkgPct = d.impr ? d.bkgs / d.impr * 100 : 0;
-      return '<div class="flex items-center gap-2 mb-1">' +
-        '<span class="text-[10px] text-gray-400 w-14 shrink-0 text-right">' + label + '</span>' +
-        '<div class="flex items-center gap-0.5 flex-1 min-w-0">' +
-          '<div class="h-6 rounded-l" style="width:100%;background:' + colors[0] + '"></div>' +
-          '<div class="h-6" style="width:' + clickPct + '%;background:' + colors[1] + '"></div>' +
-          '<div class="h-6 rounded-r" style="width:' + bkgPct + '%;background:' + colors[2] + '"></div>' +
-        '</div>' +
-      '</div>';
+    function buildStages(d) {
+      return [
+        { label: 'Impressions',        value: d.impr,       color: '#3b82f6' },
+        { label: 'Link Clicks',        value: d.linkClicks,  color: '#f59e0b' },
+        { label: 'Landing Page Views', value: d.lpViews,    color: '#f97316' },
+        { label: 'Leads',              value: d.leads,       color: '#14b8a6' },
+        { label: 'Bookings',           value: d.bkgs,        color: '#a855f7' },
+      ];
     }
 
     function drawFunnel(cur, prv) {
@@ -592,45 +608,48 @@
       if (!cur.impr) { el.classList.add('hidden'); return; }
       el.classList.remove('hidden');
 
-      var curColors = ['#3b82f6', '#f59e0b', '#a855f7'];
-      var prvColors = ['#93bbfd', '#fcd07a', '#d4a5f5'];
-
+      var stages = buildStages(cur);
+      var maxVal = stages[0].value || 1;
       var html = '';
-      if (prv && prv.impr) {
-        html += funnelRow(cur, 'Current', curColors);
-        html += funnelRow(prv, 'Previous', prvColors);
-      } else {
-        html += funnelRow(cur, '', curColors);
+
+      for (var i = 0; i < stages.length; i++) {
+        var st = stages[i];
+        var pct = Math.max(8, st.value / maxVal * 100);
+        html += '<div class="flex flex-col items-center">';
+        html += '<div class="rounded-lg flex items-center justify-center px-3" ' +
+                'style="width:' + pct + '%;background:' + st.color + ';min-height:1.75rem">';
+        html += '<span class="text-white text-[11px] font-semibold truncate">' +
+                st.label + ': ' + fmt(st.value) + '</span>';
+        html += '</div>';
+
+        if (i < stages.length - 1) {
+          var next = stages[i + 1];
+          var convRate = st.value ? (next.value / st.value * 100) : 0;
+          var dropCount = st.value - next.value;
+          html += '<div class="text-[10px] text-gray-400 py-0.5">';
+          html += '\u2193 ' + fmt(dropCount) + ' dropped (' + fmt(100 - convRate, 1) + '%)';
+          html += ' \u00b7 ' + fmt(convRate, 1) + '% converted';
+          html += '</div>';
+        }
+        html += '</div>';
       }
 
-      // Legend / data table
-      var cCtr = cur.impr ? cur.clicks / cur.impr * 100 : 0;
-      var cCvr = cur.clicks ? cur.bkgs / cur.clicks * 100 : 0;
-      html += '<table class="w-full text-[11px] mt-2.5">' +
-        '<tr class="text-[10px] text-gray-400 uppercase tracking-wide">' +
-        '<td></td><td class="text-right pr-3">Impr</td><td class="text-right pr-3">Clicks</td>' +
-        '<td class="text-right pr-3">Bkgs</td><td class="text-right pr-3">CTR</td><td class="text-right">Conv</td></tr>';
-
-      html += '<tr>' +
-        '<td class="py-0.5 font-medium">' + (prv ? 'Current' : '') + '</td>' +
-        '<td class="text-right pr-3">' + fmt(cur.impr) + '</td>' +
-        '<td class="text-right pr-3">' + fmt(cur.clicks) + '</td>' +
-        '<td class="text-right pr-3">' + fmt(cur.bkgs) + '</td>' +
-        '<td class="text-right pr-3">' + fmt(cCtr, 2) + '%</td>' +
-        '<td class="text-right">' + fmt(cCvr, 2) + '%</td></tr>';
-
       if (prv && prv.impr) {
-        var pCtr = prv.impr ? prv.clicks / prv.impr * 100 : 0;
-        var pCvr = prv.clicks ? prv.bkgs / prv.clicks * 100 : 0;
-        html += '<tr class="text-gray-400">' +
-          '<td class="py-0.5 font-medium">Previous</td>' +
-          '<td class="text-right pr-3">' + fmt(prv.impr) + '</td>' +
-          '<td class="text-right pr-3">' + fmt(prv.clicks) + '</td>' +
-          '<td class="text-right pr-3">' + fmt(prv.bkgs) + '</td>' +
-          '<td class="text-right pr-3">' + fmt(pCtr, 2) + '%</td>' +
-          '<td class="text-right">' + fmt(pCvr, 2) + '%</td></tr>';
+        var pStages = buildStages(prv);
+        html += '<table class="w-full text-[11px] mt-3">';
+        html += '<tr class="text-[10px] text-gray-400 uppercase tracking-wide">' +
+          '<td class="py-1"></td><td class="text-right pr-3">Current</td>' +
+          '<td class="text-right pr-3">Previous</td><td class="text-right">Change</td></tr>';
+        for (var j = 0; j < stages.length; j++) {
+          var cv = stages[j].value, pv = pStages[j].value;
+          html += '<tr><td class="py-0.5 font-medium">' + stages[j].label + '</td>';
+          html += '<td class="text-right pr-3">' + fmt(cv) + '</td>';
+          html += '<td class="text-right pr-3 text-gray-400">' + fmt(pv) + '</td>';
+          html += '<td class="text-right">' + dUp(cv, pv) + '</td></tr>';
+        }
+        html += '</table>';
       }
-      html += '</table>';
+
       inner.innerHTML = html;
     }
 
