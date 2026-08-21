@@ -145,6 +145,7 @@
       <button @click="tab = 'l4'"   :class="tab === 'l4'   ? 'tab-btn active' : 'tab-btn'">Lesson 4</button>
       <button @click="tab = 'l5'"   :class="tab === 'l5'   ? 'tab-btn active' : 'tab-btn'">Lesson 5</button>
       <button @click="tab = 'l6'"   :class="tab === 'l6'   ? 'tab-btn active' : 'tab-btn'">Lesson 6</button>
+      <button @click="tab = 'l7'"   :class="tab === 'l7'   ? 'tab-btn active' : 'tab-btn'">Lesson 7</button>
     </div>
   </div>
 
@@ -325,6 +326,33 @@
           <div class="phrase-en">We're going to... (future, no conjugation needed!)</div>
         </div>
 
+        <h3 class="font-display text-lg font-bold text-navy mt-6 mb-4">Frame &amp; Slot phrases</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a... (+ noun)</div>
+          <div class="phrase-pron">eel ya</div>
+          <div class="phrase-en">There is / there are... (the most common frame in spoken French)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est... (+ adjective)</div>
+          <div class="phrase-pron">zhe ponss kuh say</div>
+          <div class="phrase-en">I think it's... (for opinions and descriptions)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a de... (+ noun)</div>
+          <div class="phrase-pron">eel ya duh</div>
+          <div class="phrase-en">There is some of... / there are some... (for quantities)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On ne sait pas.</div>
+          <div class="phrase-pron">on nuh say pah</div>
+          <div class="phrase-en">We don't know.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On gal&egrave;re.</div>
+          <div class="phrase-pron">on ga-lair</div>
+          <div class="phrase-en">We're struggling / it's a slog. (colloquial)</div>
+        </div>
+
         <h3 class="font-display text-lg font-bold text-navy mt-6 mb-4">At the builder's / shops</h3>
         <div class="phrase-row">
           <div class="phrase-fr">Il faut cr&eacute;er un compte.</div>
@@ -460,6 +488,20 @@
         <div class="vocab-row"><span class="vocab-fr">Un interrupteur</span><span class="vocab-pron">an-teh-roop-tuhr</span><span class="vocab-en">a light switch</span></div>
         <div class="vocab-row"><span class="vocab-fr">Un compte</span><span class="vocab-pron">kont</span><span class="vocab-en">an account</span></div>
         <div class="vocab-row"><span class="vocab-fr">Une brocante</span><span class="vocab-pron">bro-kont</span><span class="vocab-en">a flea market / antique fair</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Weather &amp; Wetness</h3>
+        <div class="vocab-row"><span class="vocab-fr">Tremp&eacute;(e)</span><span class="vocab-pron">trom-pay</span><span class="vocab-en">soaked / drenched</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Mouill&eacute;(e)</span><span class="vocab-pron">moo-yay</span><span class="vocab-en">wet</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Humide</span><span class="vocab-pron">oo-meed</span><span class="vocab-en">damp / humid</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un orage</span><span class="vocab-pron">or-azh</span><span class="vocab-en">a thunderstorm</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Builder's Merchant (continued)</h3>
+        <div class="vocab-row"><span class="vocab-fr">Un parpaing</span><span class="vocab-pron">par-pan</span><span class="vocab-en">breeze block / cinder block</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le sable</span><span class="vocab-pron">sahbl</span><span class="vocab-en">sand</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La peinture</span><span class="vocab-pron">pan-toor</span><span class="vocab-en">paint</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Poncer</span><span class="vocab-pron">pon-say</span><span class="vocab-en">to sand (a surface)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une sous-couche</span><span class="vocab-pron">soo-koosh</span><span class="vocab-en">a base coat / primer</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Gal&eacute;rer</span><span class="vocab-pron">ga-lay-ray</span><span class="vocab-en">to struggle / to have a hard time (slang)</span></div>
 
         <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">More Useful Verbs</h3>
         <div class="vocab-row"><span class="vocab-fr">Perdre</span><span class="vocab-pron">pair-dr</span><span class="vocab-en">to lose</span></div>
@@ -610,6 +652,36 @@
               <span class="text-xs bg-sand px-2 py-1 rounded text-navy">une voiture</span>
             </div>
           </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">Je pense que c'est... <span class="text-gray-400 font-normal text-sm italic ml-2">zhe ponss kuh say</span></div>
+            <div class="phrase-en mb-2">I think it's...</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">difficile</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">important</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">possible</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">impossible</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">loin</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">On ne sait pas... <span class="text-gray-400 font-normal text-sm italic ml-2">on nuh say pah</span></div>
+            <div class="phrase-en mb-2">We don't know...</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">pourquoi</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">o&ugrave;</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">quand</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">comment</span>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="phrase-fr">On gal&egrave;re... <span class="text-gray-400 font-normal text-sm italic ml-2">on ga-lair</span></div>
+            <div class="phrase-en mb-2">We're struggling with...</div>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">avec le fran&ccedil;ais</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">avec les travaux</span>
+              <span class="text-xs bg-sand px-2 py-1 rounded text-navy">un peu</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -730,6 +802,36 @@
         <div class="tip-card">
           <div class="tip-title">Carte grise vs UK logbook</div>
           <p>The <strong>carte grise</strong> is France's equivalent of the V5C. French car insurance typically covers the person rather than the car (unlike the UK).</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Frame and slot thinking</div>
+          <p>Stop translating whole sentences word by word. Automate the <strong>frame</strong> (il y a, je pense, on a) and focus all your brainpower on the <strong>slot</strong> (the noun, adjective, or verb). The frame should fire automatically; the slot is where you do the real work.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Priming your ear</div>
+          <p>Saying a frame dozens of times doesn't just improve your output. It primes your brain to <em>hear</em> it when someone says it back. Once you recognise "il y a" instantly, you skip straight to the important noun that follows.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Weaving = complex sentences</div>
+          <p>Link two or three frames with connectors (<strong>mais</strong>, <strong>parce que</strong>, <strong>et</strong>) to produce sophisticated-sounding French. It feels clunky at first, but the mechanism is what matters. Fluency comes from repetition.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Lupin for ear training</div>
+          <p>Watch <em>Lupin</em> (Omar Sy) with French audio and French subtitles. Subtitles sometimes differ from the spoken dialogue, which is normal. Focus on spotting the frames you've drilled: il y a, je pense, on a.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">English has more words, French has more structure</div>
+          <p>English has a far larger vocabulary (think of all the words for "wet": damp, soggy, soaked, moist, drenched). French compensates with more structured expressions. Don't look for 1:1 translations; look for the French way to express the idea.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Gal&eacute;rer = the feeling of struggling</div>
+          <p><strong>On gal&egrave;re</strong> is colloquial French for "we're struggling / it's a slog". Perfect for renovation, language learning, or bureaucracy. Very natural and widely used.</p>
         </div>
       </div>
 
@@ -1861,16 +1963,193 @@
 
       <!-- COMING UP -->
       <div class="card" style="background: #003359; color: white;">
-        <span class="section-label" style="color: #4DD4F5;">Coming Up - Lesson 7</span>
-        <h3 class="font-display text-lg font-bold mb-2" style="color: white;">Thursday</h3>
+        <span class="section-label" style="color: #4DD4F5;">Next - Lesson 7</span>
+        <h3 class="font-display text-lg font-bold mb-2" style="color: white;">21 August 2026</h3>
         <p class="text-sm" style="color: rgba(255,255,255,0.7);">
-          N-gram analysis: Dan will bring the most common phrases from French TV subtitles.
-          We'll drill the highest-frequency patterns so you can recognise and use them automatically
-          in conversation. Think of it as a shortcut to sounding natural.
+          Frame &amp; Slot method: n-gram analysis of real French conversation to identify the
+          highest-frequency frames. Drills on il y a, je pense, on a, and weaving them together.
         </p>
       </div>
 
     </div><!-- /l6 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 7                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l7'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 7 - 21 August 2026</div>
+        <h2>Frame &amp; Slot: Automating Your French</h2>
+        <div class="meta">N-gram analysis &middot; Il y a &middot; Je pense &middot; On a &middot; Weaving frames together</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Dan introduced the "frame and slot" method, built from statistical n-gram analysis of real
+          French conversation (YouTube, podcasts, footballer interviews). The idea: automate the stable
+          parts of sentences ("frames") so your brain can focus on the variable parts ("slots", the nouns,
+          adjectives, and verbs that actually carry meaning). You drilled four high-frequency frames in
+          timed exercises: <strong>il y a</strong> (there is/are), <strong>je pense</strong> (I think),
+          <strong>il y a de</strong> (there is some of), and <strong>on a</strong> (we did/have). You
+          then practised "weaving", linking multiple frames into a single continuous sentence. You smashed
+          the il y a exercise with nearly 30 items in one minute. You also reported a real-world win:
+          automatically using "on a" when ordering at a restaurant without thinking about it. Dan
+          introduced <em>Lupin</em> subtitles as an ear-training resource and discussed differences
+          between English and French vocabulary (particularly around weather and "wetness" words).
+        </p>
+      </div>
+
+      <!-- KEY PHRASES -->
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">The four frames</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a... (+ noun)</div>
+          <div class="phrase-pron">eel ya</div>
+          <div class="phrase-en">There is / there are... (the single most common frame in spoken French)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est... (+ adjective)</div>
+          <div class="phrase-pron">zhe ponss kuh say</div>
+          <div class="phrase-en">I think it's... (for opinions and descriptions)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a de... (+ noun)</div>
+          <div class="phrase-pron">eel ya duh</div>
+          <div class="phrase-en">There is some of... / there are some... (for quantities)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On a... (+ past participle / noun)</div>
+          <div class="phrase-pron">on a</div>
+          <div class="phrase-en">We did / we have... (for past actions and accomplishments)</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-6 mb-3">Weaving (combining frames)</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des probl&egrave;mes, mais je pense que c'est normal.</div>
+          <div class="phrase-pron">eel ya day pro-blem, may zhe ponss kuh say nor-mal</div>
+          <div class="phrase-en">There are some problems, but I think it's normal.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est difficile parce qu'il y a des probl&egrave;mes.</div>
+          <div class="phrase-pron">zhe ponss kuh say dee-fee-seel parss keel ya day pro-blem</div>
+          <div class="phrase-en">I think it's difficult because there are problems.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On a fait beaucoup, mais il y a encore du travail.</div>
+          <div class="phrase-pron">on a fay boh-koo, may eel ya on-kor doo tra-vye</div>
+          <div class="phrase-en">We've done a lot, but there's still work to do.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-6 mb-3">Useful expressions</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">On gal&egrave;re.</div>
+          <div class="phrase-pron">on ga-lair</div>
+          <div class="phrase-en">We're struggling / it's a slog. (very colloquial)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On ne sait pas.</div>
+          <div class="phrase-pron">on nuh say pah</div>
+          <div class="phrase-en">We don't know.</div>
+        </div>
+      </div>
+
+      <!-- VOCABULARY -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Frame &amp; Slot Method</h3>
+        <div class="vocab-row"><span class="vocab-fr">Un cadre</span><span class="vocab-pron">kadr</span><span class="vocab-en">a frame (the stable part of a sentence)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une case</span><span class="vocab-pron">kahz</span><span class="vocab-en">a slot (the variable part you fill in)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Gal&eacute;rer</span><span class="vocab-pron">ga-lay-ray</span><span class="vocab-en">to struggle / to have a hard time (slang)</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Weather &amp; Wetness</h3>
+        <div class="vocab-row"><span class="vocab-fr">Tremp&eacute;(e)</span><span class="vocab-pron">trom-pay</span><span class="vocab-en">soaked / drenched</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Mouill&eacute;(e)</span><span class="vocab-pron">moo-yay</span><span class="vocab-en">wet</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Humide</span><span class="vocab-pron">oo-meed</span><span class="vocab-en">damp / humid</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un orage</span><span class="vocab-pron">or-azh</span><span class="vocab-en">a thunderstorm</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Builder's Merchant (continued)</h3>
+        <div class="vocab-row"><span class="vocab-fr">Un parpaing</span><span class="vocab-pron">par-pan</span><span class="vocab-en">breeze block / cinder block</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le sable</span><span class="vocab-pron">sahbl</span><span class="vocab-en">sand</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La peinture</span><span class="vocab-pron">pan-toor</span><span class="vocab-en">paint</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Poncer</span><span class="vocab-pron">pon-say</span><span class="vocab-en">to sand (a surface)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une sous-couche</span><span class="vocab-pron">soo-koosh</span><span class="vocab-en">a base coat / primer</span></div>
+      </div>
+
+      <!-- WOW EXCHANGE -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Wow Exchange</span>
+        <p class="text-sm text-gray-400 italic mb-4">You rattled off nearly 30 "il y a de" phrases in one minute, outperforming most students who manage 15-20. And unprompted, at a restaurant this week, you automatically said "on a command&eacute;" without translating it in your head first. The frames are already embedding themselves.</p>
+      </div>
+
+      <!-- TIPS -->
+      <div class="card">
+        <span class="section-label">Tips &amp; Notes from This Lesson</span>
+
+        <div class="tip-card">
+          <div class="tip-title">Frame and slot thinking</div>
+          <p>Stop trying to translate whole sentences word by word. Instead, automate the <strong>frame</strong> (the structural glue: il y a, je pense, on a) and focus all your brainpower on the <strong>slot</strong> (the noun, adjective, or verb that carries the actual meaning). The frame should fire automatically; the slot is where you do the real work.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Priming your ear</div>
+          <p>Saying a frame dozens of times doesn't just improve your output. It primes your brain to <em>hear</em> it when someone says it back to you. Once you recognise "il y a" instantly, you can skip straight to the important noun that follows it.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Weaving = complex sentences</div>
+          <p>Link two or three frames with connectors (<strong>mais</strong>, <strong>parce que</strong>, <strong>et</strong>) and you suddenly sound like you're producing sophisticated French. It feels clunky at first, but the mechanism is what matters. Fluency comes from repetition.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">N-gram analysis: why these frames?</div>
+          <p>Dan analysed hours of real spoken French (influencers, podcasts, interviews) and measured not just frequency but <strong>dispersion</strong>, how evenly a phrase appears across different conversations. "Il y a" appeared more than double the next most common trigram. These aren't textbook phrases; they're the building blocks of how French is actually spoken.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Lupin for ear training</div>
+          <p>Watch <em>Lupin</em> (with Omar Sy) with French audio and French subtitles. The subtitles sometimes differ from the spoken dialogue, which is normal. Focus on spotting the frames you've drilled: il y a, je pense, on a. Hearing them in context reinforces the automaticity.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">English has more words, French has more structure</div>
+          <p>English has a far larger vocabulary than French (think of all the words for "wet": damp, soggy, soaked, moist, drenched). French compensates with more structured expressions. Don't look for a 1:1 translation; look for the French way to express the idea.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Gal&eacute;rer = the feeling of struggling</div>
+          <p><strong>On gal&egrave;re</strong> is colloquial French for "we're struggling / it's a slog". Perfect for describing renovation, language learning, or navigating bureaucracy. Very natural and widely used.</p>
+        </div>
+      </div>
+
+      <!-- PRACTICE GOALS -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Practise the four frames daily: say "il y a" + 10 random nouns, "je pense que c'est" + 10 adjectives, "on a" + 10 past actions</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Try weaving two frames together in your head whenever you're describing something ("il y a..., mais je pense que c'est...")</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Watch an episode of Lupin with French subtitles and note how many times you spot the frames</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Book your next 8 sessions via the booking link Dan will send</li>
+        </ul>
+      </div>
+
+      <!-- COMING UP -->
+      <div class="card" style="background: #003359; color: white;">
+        <span class="section-label" style="color: #4DD4F5;">Coming Up - Lesson 8</span>
+        <h3 class="font-display text-lg font-bold mb-2" style="color: white;">TBC</h3>
+        <p class="text-sm" style="color: rgba(255,255,255,0.7);">
+          More frame drilling with new frames from the n-gram analysis. Review of the four frames
+          from Lesson 7 to check they're becoming automatic. Dan will also revisit previously covered
+          material to consolidate everything.
+        </p>
+      </div>
+
+    </div><!-- /l7 -->
 
 
   </main>
