@@ -39,6 +39,12 @@ policy = "per_worker"
 [functions.crm-api]
 verify_jwt = true
 
+# dashboard: read-only Meta Ads reporting for ads.html. Called straight from
+# the browser with no Supabase session, so JWT verification must stay off --
+# the function authenticates on its own DASHBOARD_TOKEN via the ?t= param.
+[functions.dashboard]
+verify_jwt = false
+
 # inbound-webhook: receives ClickSend inbound SMS (not scheduled)
 [functions.inbound-webhook]
 verify_jwt = false
