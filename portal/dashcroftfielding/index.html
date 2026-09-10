@@ -123,8 +123,8 @@
         <h1 class="font-display text-2xl font-bold mt-1">Dawn's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">2 lessons</p>
-        <p class="text-xs text-blue-400 mt-0.5">Farm, horses &amp; writing</p>
+        <p class="text-sm text-blue-200 font-medium">7 lessons</p>
+        <p class="text-xs text-blue-400 mt-0.5">Farm, horses, writing &amp; military</p>
       </div>
     </div>
   </header>
@@ -134,7 +134,12 @@
     <div class="max-w-4xl mx-auto px-6 flex overflow-x-auto">
       <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
       <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
-      <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2 &#10022;</button>
+      <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
+      <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
+      <button @click="tab = 'l4'"   :class="tab === 'l4'   ? 'tab-btn active' : 'tab-btn'">Lesson 4</button>
+      <button @click="tab = 'l5'"   :class="tab === 'l5'   ? 'tab-btn active' : 'tab-btn'">Lesson 5</button>
+      <button @click="tab = 'l6'"   :class="tab === 'l6'   ? 'tab-btn active' : 'tab-btn'">Lesson 6</button>
+      <button @click="tab = 'l7'"   :class="tab === 'l7'   ? 'tab-btn active' : 'tab-btn'">Lesson 7 &#10022;</button>
     </div>
   </div>
 
@@ -203,6 +208,36 @@
           <div class="phrase-fr">Je rigole !</div>
           <div class="phrase-pron">zhuh ree-gol</div>
           <div class="phrase-en">I'm joking!</div>
+        </div>
+
+        <div class="mt-3 mb-2">
+          <span class="inline-block text-xs font-bold uppercase tracking-widest text-cyan bg-navy rounded-full px-3 py-1">New this lesson</span>
+        </div>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai grandi entre Manchester et Devon et de l&agrave; je me suis engag&eacute;e dans l'arm&eacute;e &agrave; l'&acirc;ge de 17 ans.</div>
+          <div class="phrase-pron">zhay gron-dee ontr Manchester ay Devon ay duh la zhuh muh swee on-ga-zhay don lar-may ah lazh duh dee-set on</div>
+          <div class="phrase-en">I grew up between Manchester and Devon and from there I joined the army at the age of 17.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">L&agrave; o&ugrave; la plupart des gens s'enfuiraient pour rejoindre le cirque, moi je me suis engag&eacute;e dans la vie militaire.</div>
+          <div class="phrase-pron">la oo la ploo-par day zhon son-fwee-ray poor ruh-zhwandr luh seerk, mwa zhuh muh swee on-ga-zhay don la vee mee-lee-tair</div>
+          <div class="phrase-en">Where most people would run away to join the circus, I signed up for military life.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je viens d'une famille privil&eacute;gi&eacute;e, et je peux dire que le privil&egrave;ge n'est pas aussi formidable qu'on le dit.</div>
+          <div class="phrase-pron">zhuh vee-en doon fa-mee pree-vee-lay-zhee-ay, ay zhuh puh deer kuh luh pree-vee-lezh nay pa oh-see for-mee-dabl kon luh dee</div>
+          <div class="phrase-en">I come from a privileged family, and I can say that privilege isn't as great as people make it out to be.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Apr&egrave;s ma carri&egrave;re dans l'arm&eacute;e, je suis pass&eacute;e dans le secteur priv&eacute; o&ugrave; je m'en suis plut&ocirc;t bien sortie.</div>
+          <div class="phrase-pron">ah-pray ma ka-ree-air don lar-may, zhuh swee pa-say don luh sek-tur pree-vay oo zhuh mon swee ploo-to bee-en sor-tee</div>
+          <div class="phrase-en">After my career in the army, I moved into the private sector where I did rather well for myself.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Vu que j'avais des moyens, et que je me suis sentie toujours en famille dans le militaire, je me suis dit TIENS je vais rejoindre l'arm&eacute;e de l'air, ce qu'on appelle la Royal Air Force, o&ugrave; je m'occupais de la famille royale &agrave; bord de leurs avions.</div>
+          <div class="phrase-pron">voo kuh zhah-vay day mwa-yen, ay kuh zhuh muh swee son-tee too-zhoor on fa-mee don luh mee-lee-tair, zhuh muh swee dee tee-en zhuh vay ruh-zhwandr lar-may duh lair, suh kon a-pel la Royal Air Force, oo zhuh mo-koo-pay duh la fa-mee rwa-yal ah bor duh lur za-vee-on</div>
+          <div class="phrase-en">Since I had the means, and since I'd always felt at home in the military, I thought RIGHT, I'm going to join the air force, what they call the Royal Air Force, where I looked after the royal family on board their planes.</div>
         </div>
       </div>
 
@@ -885,6 +920,515 @@
       </div>
 
     </div><!-- /l2 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 3                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l3'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 3 &middot; 17 August 2026</div>
+        <h2>Output &amp; Roleplay</h2>
+        <div class="meta">Speaking under pressure &middot; Recasting &middot; Professional vocabulary</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Big milestone: you did 7 minutes of uninterrupted French in a roleplay exercise. We used the
+          recasting technique (I repeat what you said back to you with the grammar corrected, without breaking
+          the conversation). The focus shifted towards professional terminology and tangible subjects to give
+          you more to say. We also talked about the output hypothesis: speaking is what builds fluency, not
+          just listening. Your brain notices the gap between what you want to say and what you can say, and
+          that's where the learning happens.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Key Concepts</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Recasting</h3>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+          When you make a mistake mid-conversation, I repeat your sentence back with the correction slotted in.
+          You don't stop, you don't freeze, you just hear the right version and carry on. This keeps the flow
+          going and lets you absorb corrections naturally.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">The Output Hypothesis</h3>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          The idea that actively producing language (speaking, writing) is what drives acquisition, not just
+          understanding input. When you try to say something and can't quite get there, your brain flags the gap.
+          That "noticing gap" is where real learning happens. Listening is necessary, but speaking is what makes
+          it stick.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">D&eacute;gage !</div>
+          <div class="phrase-pron">day-gazh</div>
+          <div class="phrase-en">Get lost! / Clear off! (very strong, use with care)</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Keep running the script. Think about professional vocabulary you'd want to use in conversation:
+          what do you actually talk about with people? Prepare some keywords from your world so we can
+          build them into the next session.
+        </p>
+      </div>
+
+    </div><!-- /l3 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 4                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l4'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 4 &middot; 20 August 2026</div>
+        <h2>Frames &amp; Slots</h2>
+        <div class="meta">Core frames &middot; Weaving technique &middot; Paris trip planning</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          We introduced the frame-and-slot method: high-frequency sentence starters that you can drop any
+          noun or idea into. Three core frames to start: <em>il y a</em> (there is/are), <em>je pense que</em>
+          (I think that), and <em>si</em> (if). We also practised "weaving," switching to English mid-sentence
+          when you don't have the French word, then carrying on in French. Keeps you talking instead of freezing.
+          You hit 99% accuracy in the translation drills. Paris trip booked: 13 hours of tutoring planned,
+          including 3 sessions on-site.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Core Frames</span>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a&hellip;</div>
+          <div class="phrase-pron">eel ee ah</div>
+          <div class="phrase-en">There is / there are&hellip; (works for everything)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que&hellip;</div>
+          <div class="phrase-pron">zhuh pons kuh</div>
+          <div class="phrase-en">I think that&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Si&hellip;</div>
+          <div class="phrase-pron">see</div>
+          <div class="phrase-en">If&hellip; (opens up hypotheticals)</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Key Concepts</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Weaving</h3>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          When you hit a word you don't know, drop into English for that word, then carry straight on in French.
+          <em>Je pense que c'est un</em> NIGHTMARE <em>pour les chevaux</em>. It sounds messy on paper but in
+          real conversation it keeps you moving. The French word will come later. Flow beats perfection.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Practise dropping the three frames into everyday thoughts. Walking the dogs: <em>il y a beaucoup
+          de boue</em> (there's lots of mud). Watching telly: <em>je pense que c'est nul</em> (I think it's
+          rubbish). The slot can be anything. The frame is what matters.
+        </p>
+        <p class="text-xs text-gray-400 mt-4">Paris trip: Eurostar recommended over flying. Look at the 6th arrondissement for accommodation.</p>
+      </div>
+
+    </div><!-- /l4 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 5                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l5'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 5 &middot; 28 August 2026</div>
+        <h2>Est-ce que &amp; Agility</h2>
+        <div class="meta">Question formation &middot; Conversational frames &middot; Staying pliable</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          You sent a written paragraph using the phrases from previous lessons, which we reviewed for
+          pronunciation (liaison and consistent letter sounds). We introduced <em>est-ce que</em> as a way
+          to turn any statement into a question, and new frames for navigating uncertainty: <em>plus</em>,
+          <em>moins</em>, <em>au lieu de</em>. The big theme was staying pliable in conversation: adapting
+          to interruptions rather than sticking rigidly to a script. We're applying the Pareto principle
+          to language learning, focusing on the 20% of frames that cover 80% of what you'll actually need to say.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Est-ce que&hellip; ?</div>
+          <div class="phrase-pron">ess kuh</div>
+          <div class="phrase-en">Is it that&hellip;? (turns any statement into a question)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Plus&hellip;</div>
+          <div class="phrase-pron">ploo / ploos</div>
+          <div class="phrase-en">More&hellip; (ploo before consonants, ploos before vowels)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Moins&hellip;</div>
+          <div class="phrase-pron">mwan</div>
+          <div class="phrase-en">Less&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Au lieu de&hellip;</div>
+          <div class="phrase-pron">oh lee-uh duh</div>
+          <div class="phrase-en">Instead of&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Comment j'ai pu penser que c'&eacute;tait une bonne id&eacute;e ?</div>
+          <div class="phrase-pron">ko-mon zhay poo pon-say kuh say-tay oon bon ee-day</div>
+          <div class="phrase-en">How did I think that was a good idea?</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Write down the new phrases from today into your study list. Try using <em>est-ce que</em> to turn
+          things you already know into questions. <em>Je suis passionn&eacute;e</em> becomes <em>est-ce que
+          tu es passionn&eacute;e par&hellip; ?</em> Same frame, new job.
+        </p>
+        <p class="text-xs text-gray-400 mt-4">Next session: 5-10 minute conversational drill to practise reacting in real time.</p>
+      </div>
+
+    </div><!-- /l5 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 6                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l6'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 6 &middot; 3 September 2026</div>
+        <h2>Building the Monologue</h2>
+        <div class="meta">Reflective frames &middot; 2-minute speech prep &middot; Paris planning</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          We shifted the curriculum towards building your 2-minute personal monologue for Paris, a
+          speed-dating-style "about me" that you can deliver confidently when you meet people. We practised
+          three new reflective frames: <em>je me suis dit</em> (I said to myself), <em>c'est-&agrave;-dire</em>
+          (that is to say), and <em>je me suis rendu compte</em> (I realised). The approach: you draft the
+          content in English, I convert it into a French script using the frames you already know, then you
+          practise with a voice recording. Paris is confirmed: arriving the 18th, lessons on the 19th, 20th,
+          and 21st.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit&hellip;</div>
+          <div class="phrase-pron">zhuh muh swee dee</div>
+          <div class="phrase-en">I said to myself&hellip; / I thought&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est-&agrave;-dire&hellip;</div>
+          <div class="phrase-pron">set-ah-deer</div>
+          <div class="phrase-en">That is to say&hellip; / In other words&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis rendu compte&hellip;</div>
+          <div class="phrase-pron">zhuh muh swee ron-doo kont</div>
+          <div class="phrase-en">I realised&hellip;</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Prepare your 2-minute personal introduction in English. Think speed-dating: who are you, what do you
+          do, what makes you interesting? Use as many of the frames you've learned as you can to structure it.
+          I'll turn it into French and send you a script with a voice recording.
+        </p>
+        <p class="text-xs text-gray-400 mt-4">Paris: arriving 18 September. Lessons on the 19th, 20th &amp; 21st.</p>
+      </div>
+
+    </div><!-- /l6 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 7                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l7'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 7 &middot; 9 September 2026</div>
+        <h2>The Backstory</h2>
+        <div class="meta">Military career &middot; 2-minute speech for Paris &middot; Frame-based approach</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          We built the backstory section of your 2-minute speech for Paris. You brought bullet points in English
+          and we turned them into French together using the frame-based approach: Royal Signals at 17, telecoms
+          contracting for the MoD, the tack shop in Staffordshire, then RAF cabin crew looking after the royal
+          family on the Voyager and the BAE 146. The script is heavier on past-tense narrative
+          (pass&eacute; compos&eacute;, imparfait, conditional) and reflexive verbs (s'engager, se sentir,
+          se dire). It's longer than the earlier blocks, but it tells a story, and stories are easier to
+          remember than isolated sentences.
+        </p>
+      </div>
+
+      <!-- Key Phrases -->
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai grandi&hellip;</div>
+          <div class="phrase-pron">zhay gron-dee</div>
+          <div class="phrase-en">I grew up&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis engag&eacute;e dans&hellip;</div>
+          <div class="phrase-pron">zhuh muh swee on-ga-zhay don</div>
+          <div class="phrase-en">I joined / signed up for&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je viens d'une famille&hellip;</div>
+          <div class="phrase-pron">zhuh vee-en doon fa-mee</div>
+          <div class="phrase-en">I come from a &hellip; family</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis pass&eacute;e dans&hellip;</div>
+          <div class="phrase-pron">zhuh swee pa-say don</div>
+          <div class="phrase-en">I moved into&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit TIENS&hellip;</div>
+          <div class="phrase-pron">zhuh muh swee dee tee-en</div>
+          <div class="phrase-en">I thought to myself RIGHT&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Ce qu'on appelle&hellip;</div>
+          <div class="phrase-pron">suh kon a-pel</div>
+          <div class="phrase-en">What they call&hellip; (handy for explaining something)</div>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Military &amp; Career</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">L'arm&eacute;e</span>
+          <span class="vocab-pron">lar-may</span>
+          <span class="vocab-en">The army</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">L'arm&eacute;e de l'air</span>
+          <span class="vocab-pron">lar-may duh lair</span>
+          <span class="vocab-en">The air force</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">La vie militaire</span>
+          <span class="vocab-pron">la vee mee-lee-tair</span>
+          <span class="vocab-en">Military life</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Le secteur priv&eacute;</span>
+          <span class="vocab-pron">luh sek-tur pree-vay</span>
+          <span class="vocab-en">The private sector</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">La famille royale</span>
+          <span class="vocab-pron">la fa-mee rwa-yal</span>
+          <span class="vocab-en">The royal family</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un avion</span>
+          <span class="vocab-pron">un a-vee-on</span>
+          <span class="vocab-en">A plane</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Useful Verbs</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">S'engager</span>
+          <span class="vocab-pron">son-ga-zhay</span>
+          <span class="vocab-en">To sign up / commit (reflexive)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">S'enfuir</span>
+          <span class="vocab-pron">son-fweer</span>
+          <span class="vocab-en">To run away / flee</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">S'en sortir</span>
+          <span class="vocab-pron">son sor-teer</span>
+          <span class="vocab-en">To manage / get by / do well</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">S'occuper de</span>
+          <span class="vocab-pron">so-koo-pay duh</span>
+          <span class="vocab-en">To look after / take care of</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Grandir</span>
+          <span class="vocab-pron">gron-deer</span>
+          <span class="vocab-en">To grow up</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Sounding Natural</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Privil&eacute;gi&eacute;e</span>
+          <span class="vocab-pron">pree-vee-lay-zhee-ay</span>
+          <span class="vocab-en">Privileged (feminine)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Formidable</span>
+          <span class="vocab-pron">for-mee-dabl</span>
+          <span class="vocab-en">Great / tremendous (NOT "formidable" in the English sense)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Vu que</span>
+          <span class="vocab-pron">voo kuh</span>
+          <span class="vocab-en">Since / given that (casual register)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Plut&ocirc;t</span>
+          <span class="vocab-pron">ploo-to</span>
+          <span class="vocab-en">Rather / quite</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Tiens !</span>
+          <span class="vocab-pron">tee-en</span>
+          <span class="vocab-en">Right! / Well! / Hey! (interjection, very French)</span>
+        </div>
+      </div>
+
+      <!-- Updated Script -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Your Script (Updated)</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          The full script so far. The original lines are on top, the new backstory section is at the bottom.
+          Same rules: say it out loud, flow beats detail.
+        </p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Bonjour !</div>
+          <div class="phrase-pron">bon-zhoor</div>
+          <div class="phrase-en">Hello!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je m'appelle Dawn.</div>
+          <div class="phrase-pron">zhuh ma-pel Dawn</div>
+          <div class="phrase-en">My name's Dawn.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vis &agrave; la ferme et je suis passionn&eacute;e par le monde &eacute;questre.</div>
+          <div class="phrase-pron">zhuh vee ah la fairm ay zhuh swee pass-yon-ay par luh mond ay-kestr</div>
+          <div class="phrase-en">I live on a farm and I'm passionate about the equestrian world.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai quatre chevaux et ils s'appellent Raven, Timothy, Alfie et Lily.</div>
+          <div class="phrase-pron">zhay katr shuh-vo ay eel sa-pel Raven, Timothy, Alfie ay Lily</div>
+          <div class="phrase-en">I have four horses and they're called Raven, Timothy, Alfie and Lily.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Mince, j'ai oubli&eacute; ! J'ai aussi un fils qui s'appelle James !</div>
+          <div class="phrase-pron">manss, zhay oo-blee-ay ! zhay oh-see un fees kee sa-pel James</div>
+          <div class="phrase-en">Oops, I forgot! I've also got a son called James!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">D'ailleurs, je suis &eacute;crivaine.</div>
+          <div class="phrase-pron">dye-yur, zhuh swee ay-kree-ven</div>
+          <div class="phrase-en">By the way, I'm a writer.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'&eacute;cris la chick lit, &ccedil;a veut dire la litt&eacute;rature f&eacute;minine.</div>
+          <div class="phrase-pron">zhay-kree la chick lit, sa vuh deer la lee-tay-ra-toor fay-mee-neen</div>
+          <div class="phrase-en">I write chick lit, that means women's fiction.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai &eacute;crit quatre livres.</div>
+          <div class="phrase-pron">zhay ay-kree katr leevr</div>
+          <div class="phrase-en">I've written four books.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On me consid&egrave;re un peu comme la prochaine JK Rowling !</div>
+          <div class="phrase-pron">on muh kon-see-dair un puh kom la pro-shen JK Rowling</div>
+          <div class="phrase-en">People consider me a bit like the next JK Rowling!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je rigole !</div>
+          <div class="phrase-pron">zhuh ree-gol</div>
+          <div class="phrase-en">I'm joking!</div>
+        </div>
+
+        <div class="mt-3 mb-2">
+          <span class="inline-block text-xs font-bold uppercase tracking-widest text-cyan bg-navy rounded-full px-3 py-1">New this lesson</span>
+        </div>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai grandi entre Manchester et Devon et de l&agrave; je me suis engag&eacute;e dans l'arm&eacute;e &agrave; l'&acirc;ge de 17 ans.</div>
+          <div class="phrase-pron">zhay gron-dee ontr Manchester ay Devon ay duh la zhuh muh swee on-ga-zhay don lar-may ah lazh duh dee-set on</div>
+          <div class="phrase-en">I grew up between Manchester and Devon and from there I joined the army at the age of 17.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">L&agrave; o&ugrave; la plupart des gens s'enfuiraient pour rejoindre le cirque, moi je me suis engag&eacute;e dans la vie militaire.</div>
+          <div class="phrase-pron">la oo la ploo-par day zhon son-fwee-ray poor ruh-zhwandr luh seerk, mwa zhuh muh swee on-ga-zhay don la vee mee-lee-tair</div>
+          <div class="phrase-en">Where most people would run away to join the circus, I signed up for military life.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je viens d'une famille privil&eacute;gi&eacute;e, et je peux dire que le privil&egrave;ge n'est pas aussi formidable qu'on le dit.</div>
+          <div class="phrase-pron">zhuh vee-en doon fa-mee pree-vee-lay-zhee-ay, ay zhuh puh deer kuh luh pree-vee-lezh nay pa oh-see for-mee-dabl kon luh dee</div>
+          <div class="phrase-en">I come from a privileged family, and I can say that privilege isn't as great as people make it out to be.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Apr&egrave;s ma carri&egrave;re dans l'arm&eacute;e, je suis pass&eacute;e dans le secteur priv&eacute; o&ugrave; je m'en suis plut&ocirc;t bien sortie.</div>
+          <div class="phrase-pron">ah-pray ma ka-ree-air don lar-may, zhuh swee pa-say don luh sek-tur pree-vay oo zhuh mon swee ploo-to bee-en sor-tee</div>
+          <div class="phrase-en">After my career in the army, I moved into the private sector where I did rather well for myself.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Vu que j'avais des moyens, et que je me suis sentie toujours en famille dans le militaire, je me suis dit TIENS je vais rejoindre l'arm&eacute;e de l'air, ce qu'on appelle la Royal Air Force, o&ugrave; je m'occupais de la famille royale &agrave; bord de leurs avions.</div>
+          <div class="phrase-pron">voo kuh zhah-vay day mwa-yen, ay kuh zhuh muh swee son-tee too-zhoor on fa-mee don luh mee-lee-tair, zhuh muh swee dee tee-en zhuh vay ruh-zhwandr lar-may duh lair, suh kon a-pel la Royal Air Force, oo zhuh mo-koo-pay duh la fa-mee rwa-yal ah bor duh lur za-vee-on</div>
+          <div class="phrase-en">Since I had the means, and since I'd always felt at home in the military, I thought RIGHT, I'm going to join the air force, what they call the Royal Air Force, where I looked after the royal family on board their planes.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          The new section is longer, so don't try to nail it in one go. Run through the original script
+          (Bonjour through Je rigole) until it's automatic, then bolt the backstory on sentence by sentence.
+          Use the voice recording to practise: listen and parrot, don't read off the page. The reflexive verbs
+          (je me suis engag&eacute;e, je me suis sentie) will feel awkward at first but they'll click with
+          repetition. Paris is on the 18th, so keep drilling.
+        </p>
+      </div>
+
+    </div><!-- /l7 -->
 
   </main>
 
