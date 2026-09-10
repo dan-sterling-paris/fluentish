@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patricia Goodwin – FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:  '#003359',
+            navyD: '#002040',
+            rouge: '#C8102E',
+            cyan:  '#4DD4F5',
+            sand:  '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+    [x-cloak] { display: none !important; }
+
+    .tab-btn {
+      padding: 0.9rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-bottom: 3px solid transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
+      color: #6b7280;
+    }
+    .tab-btn:hover { color: #003359; }
+    .tab-btn.active { color: #003359; border-bottom-color: #003359; }
+
+    /* Vocab table rows */
+    .vocab-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.6rem 0;
+      align-items: baseline;
+    }
+    .vocab-row:last-child { border-bottom: none; }
+    .vocab-fr   { font-weight: 600; color: #003359; }
+    .vocab-pron { font-style: italic; color: #8a9ab0; font-size: 0.8rem; padding: 0 0.5rem; }
+    .vocab-en   { color: #6b7280; font-size: 0.85rem; }
+
+    /* Phrase rows */
+    .phrase-row {
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.75rem 0;
+    }
+    .phrase-row:last-child { border-bottom: none; }
+    .phrase-fr   { font-weight: 600; color: #003359; font-size: 0.95rem; }
+    .phrase-pron { font-style: italic; color: #8a9ab0; font-size: 0.78rem; margin-top: 1px; }
+    .phrase-en   { color: #6b7280; font-size: 0.85rem; margin-top: 2px; }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #C8102E; margin-bottom: 0.75rem; display: block;
+    }
+
+    /* Pill */
+    .sound-pill {
+      display: inline-flex; flex-direction: column; align-items: center;
+      background: #f8f9fb; border: 1px solid #e5e9ef; border-radius: 10px;
+      padding: 0.5rem 0.85rem; text-align: center;
+    }
+    .sound-pill .fr   { font-weight: 700; color: #003359; font-size: 0.9rem; }
+    .sound-pill .pron { font-style: italic; color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+    .sound-pill .en   { color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+
+    /* Card */
+    .card { background: white; border: 1px solid #e8ecf0; border-radius: 1rem; padding: 1.5rem; }
+
+    /* Toolkit table */
+    .toolkit-row { display: grid; grid-template-columns: 1.2fr 1fr 1.4fr; gap: 0; border-bottom: 1px solid #f0f0f0; padding: 0.65rem 0; align-items: baseline; }
+    .toolkit-row:last-child { border-bottom: none; }
+
+    /* Lesson header strip */
+    .lesson-strip { background: #003359; color: white; border-radius: 0.75rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
+    .lesson-strip .num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #4DD4F5; }
+    .lesson-strip h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; margin-top: 2px; }
+    .lesson-strip .meta { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
+
+    /* Tip cards */
+    .tip-card {
+      background: #f8f9fb; border: 1px solid #e5e9ef; border-radius: 0.75rem;
+      padding: 1rem 1.25rem; margin-top: 0.5rem;
+    }
+    .tip-card .tip-title { font-weight: 700; color: #003359; font-size: 0.85rem; margin-bottom: 0.25rem; }
+    .tip-card p { font-size: 0.82rem; color: #6b7280; line-height: 1.5; }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen" x-data="{ tab: 'all' }" x-cloak>
+
+  <!-- Header -->
+  <header class="bg-navy text-white">
+    <div class="max-w-4xl mx-auto px-6 py-6 flex items-end justify-between gap-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest" style="color:#4DD4F5;">FluentISH</p>
+        <h1 class="font-display text-2xl font-bold mt-1">Patricia's Course</h1>
+      </div>
+      <div class="text-right">
+        <p class="text-sm text-blue-200 font-medium">1 lesson</p>
+        <p class="text-xs text-blue-400 mt-0.5">Frames &amp; fillers</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tab nav -->
+  <div class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-4xl mx-auto px-6 flex overflow-x-auto">
+      <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
+      <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
+    </div>
+  </div>
+
+  <main class="max-w-4xl mx-auto px-6 py-8 space-y-6">
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: EVERYTHING                           -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'all'" class="space-y-6">
+
+      <!-- The Premise -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Frames &amp; Fillers: The Idea</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Most people try to build French sentences word by word, translating from English in their head. It's slow, exhausting, and it sounds unnatural. The frames and fillers method flips this around.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          A <strong>frame</strong> is a fixed chunk of sentence that crops up constantly in real spoken French. Things like <em>il y a des</em> (there are some), <em>je pense que c'est</em> (I think it's), <em>je me suis dit</em> (I said to myself). These come from n-gram analysis of transcribed French speech corpora, not from textbooks.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          A <strong>filler</strong> (or "slot") is the variable part: the noun, adjective, or clause you drop into the frame. That's where the meaning lives.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          The trick: drill the frame until it fires automatically, like muscle memory. Then your brain only has to find <em>one</em> word (the filler) instead of assembling an entire sentence from scratch. Three frames and a handful of nouns gives you dozens of natural-sounding sentences, instantly.
+        </p>
+      </div>
+
+      <!-- Your Three Frames -->
+      <div class="card">
+        <span class="section-label">Your Three Frames</span>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des... <span class="text-gray-400 font-normal">(+ noun)</span></div>
+          <div class="phrase-pron">eel ya day</div>
+          <div class="phrase-en">There are some...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est... <span class="text-gray-400 font-normal">(+ adjective)</span></div>
+          <div class="phrase-pron">zhuh ponss kuh say</div>
+          <div class="phrase-en">I think that it's...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit... <span class="text-gray-400 font-normal">(+ clause)</span></div>
+          <div class="phrase-pron">zhuh muh swee dee</div>
+          <div class="phrase-en">I thought / I said to myself...</div>
+        </div>
+      </div>
+
+      <!-- Frames in Action -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">Frames in Action</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          Each frame below is the same automatic chunk you drilled. The only thing that changes is the filler at the end. Say them out loud. Speed beats perfection.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Il y a des...</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des restaurants.</div>
+          <div class="phrase-pron">eel ya day res-toh-ron</div>
+          <div class="phrase-en">There are some restaurants.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des probl&egrave;mes.</div>
+          <div class="phrase-pron">eel ya day pro-blem</div>
+          <div class="phrase-en">There are some problems.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des gens.</div>
+          <div class="phrase-pron">eel ya day zhon</div>
+          <div class="phrase-en">There are some people.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des options.</div>
+          <div class="phrase-pron">eel ya day op-syon</div>
+          <div class="phrase-en">There are some options.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des enfants.</div>
+          <div class="phrase-pron">eel ya day zon-fon</div>
+          <div class="phrase-en">There are some children.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des magasins.</div>
+          <div class="phrase-pron">eel ya day ma-ga-zan</div>
+          <div class="phrase-en">There are some shops.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des diff&eacute;rences.</div>
+          <div class="phrase-pron">eel ya day dee-fay-ronss</div>
+          <div class="phrase-en">There are some differences.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des moments.</div>
+          <div class="phrase-pron">eel ya day mo-mon</div>
+          <div class="phrase-en">There are some moments.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des choses.</div>
+          <div class="phrase-pron">eel ya day shohz</div>
+          <div class="phrase-en">There are some things.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des questions.</div>
+          <div class="phrase-pron">eel ya day kess-tyon</div>
+          <div class="phrase-en">There are some questions.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Je pense que c'est...</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est bien.</div>
+          <div class="phrase-pron">zhuh ponss kuh say byan</div>
+          <div class="phrase-en">I think it's good.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est difficile.</div>
+          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel</div>
+          <div class="phrase-en">I think it's difficult.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est normal.</div>
+          <div class="phrase-pron">zhuh ponss kuh say nor-mal</div>
+          <div class="phrase-en">I think it's normal.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est important.</div>
+          <div class="phrase-pron">zhuh ponss kuh say am-por-ton</div>
+          <div class="phrase-en">I think it's important.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est vrai.</div>
+          <div class="phrase-pron">zhuh ponss kuh say vray</div>
+          <div class="phrase-en">I think it's true.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est possible.</div>
+          <div class="phrase-pron">zhuh ponss kuh say poss-eebl</div>
+          <div class="phrase-en">I think it's possible.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est int&eacute;ressant.</div>
+          <div class="phrase-pron">zhuh ponss kuh say an-tay-ress-on</div>
+          <div class="phrase-en">I think it's interesting.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est facile.</div>
+          <div class="phrase-pron">zhuh ponss kuh say fa-seel</div>
+          <div class="phrase-en">I think it's easy.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est mieux.</div>
+          <div class="phrase-pron">zhuh ponss kuh say myuh</div>
+          <div class="phrase-en">I think it's better.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est n&eacute;cessaire.</div>
+          <div class="phrase-pron">zhuh ponss kuh say nay-seh-sair</div>
+          <div class="phrase-en">I think it's necessary.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Je me suis dit...</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que c'&eacute;tait bizarre.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh say-tay bee-zar</div>
+          <div class="phrase-en">I thought it was weird.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit pourquoi pas.</div>
+          <div class="phrase-pron">zhuh muh swee dee poor-kwah pah</div>
+          <div class="phrase-en">I said to myself, why not.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit qu'il fallait essayer.</div>
+          <div class="phrase-pron">zhuh muh swee dee keel fa-lay ess-ay-yay</div>
+          <div class="phrase-en">I thought I had to try.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que c'&eacute;tait une bonne id&eacute;e.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh say-tay oon bon ee-day</div>
+          <div class="phrase-en">I thought it was a good idea.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que c'&eacute;tait trop tard.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh say-tay troh tar</div>
+          <div class="phrase-en">I thought it was too late.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit bon, on y va.</div>
+          <div class="phrase-pron">zhuh muh swee dee bon, on ee va</div>
+          <div class="phrase-en">I said to myself, right, let's go.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que c'&eacute;tait pas possible.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh say-tay pah poss-eebl</div>
+          <div class="phrase-en">I thought it wasn't possible.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que c'&eacute;tait normal.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh say-tay nor-mal</div>
+          <div class="phrase-en">I thought it was normal.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit qu'il y avait un probl&egrave;me.</div>
+          <div class="phrase-pron">zhuh muh swee dee keel ya-vay un pro-blem</div>
+          <div class="phrase-en">I thought there was a problem.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit tant pis.</div>
+          <div class="phrase-pron">zhuh muh swee dee ton pee</div>
+          <div class="phrase-en">I said to myself, never mind.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Weaving (combining frames)</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des probl&egrave;mes, mais je pense que c'est normal.</div>
+          <div class="phrase-pron">eel ya day pro-blem, may zhuh ponss kuh say nor-mal</div>
+          <div class="phrase-en">There are some problems, but I think it's normal.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que c'&eacute;tait difficile, mais il y a des solutions.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh say-tay dee-fee-seel, may eel ya day sol-oo-syon</div>
+          <div class="phrase-en">I thought it was difficult, but there are solutions.</div>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="card">
+        <span class="section-label">Tips &amp; Notes</span>
+
+        <div class="tip-card">
+          <div class="tip-title">Frame and slot thinking</div>
+          <p>Stop trying to translate whole sentences word by word. Automate the <strong>frame</strong> (the structural glue: il y a des, je pense que c'est, je me suis dit) and focus all your brainpower on the <strong>slot</strong> (the noun, adjective, or clause that carries the actual meaning). The frame should fire automatically; the slot is where you do the real work.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Priming your ear</div>
+          <p>Saying a frame dozens of times doesn't just improve your output. It primes your brain to <em>hear</em> it when someone says it back to you. Once you recognise "il y a des" instantly, you can skip straight to the important noun that follows it.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Weaving = complex sentences</div>
+          <p>Link two or three frames with connectors (<strong>mais</strong>, <strong>parce que</strong>, <strong>et</strong>) and you suddenly sound like you're producing sophisticated French. It feels clunky at first, but the mechanism is what matters. Fluency comes from repetition.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Why these frames?</div>
+          <p>Dan ran n-gram extraction across transcribed French speech corpora and measured not just frequency but <strong>dispersion</strong>, how evenly a phrase appears across different speakers and conversations. "Il y a" appeared more than double the next most common trigram. These aren't textbook phrases; they're the building blocks of how French is actually spoken.</p>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Useful Fillers: Nouns</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des gens</span>
+          <span class="vocab-pron">day zhon</span>
+          <span class="vocab-en">People (very common filler for "il y a des")</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des probl&egrave;mes</span>
+          <span class="vocab-pron">day pro-blem</span>
+          <span class="vocab-en">Problems</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des options</span>
+          <span class="vocab-pron">day op-syon</span>
+          <span class="vocab-en">Options</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des restaurants</span>
+          <span class="vocab-pron">day res-toh-ron</span>
+          <span class="vocab-en">Restaurants</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des solutions</span>
+          <span class="vocab-pron">day sol-oo-syon</span>
+          <span class="vocab-en">Solutions</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des id&eacute;es</span>
+          <span class="vocab-pron">day ee-day</span>
+          <span class="vocab-en">Ideas</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Useful Fillers: Adjectives</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Bien</span>
+          <span class="vocab-pron">byan</span>
+          <span class="vocab-en">Good / fine</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Difficile</span>
+          <span class="vocab-pron">dee-fee-seel</span>
+          <span class="vocab-en">Difficult</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Normal</span>
+          <span class="vocab-pron">nor-mal</span>
+          <span class="vocab-en">Normal</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Important</span>
+          <span class="vocab-pron">am-por-ton</span>
+          <span class="vocab-en">Important</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Bizarre</span>
+          <span class="vocab-pron">bee-zar</span>
+          <span class="vocab-en">Weird / strange</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Int&eacute;ressant</span>
+          <span class="vocab-pron">an-tay-ress-on</span>
+          <span class="vocab-en">Interesting</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Connectors (for weaving)</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Mais</span>
+          <span class="vocab-pron">may</span>
+          <span class="vocab-en">But</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Parce que</span>
+          <span class="vocab-pron">parss kuh</span>
+          <span class="vocab-en">Because</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Et</span>
+          <span class="vocab-pron">ay</span>
+          <span class="vocab-en">And</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Aussi</span>
+          <span class="vocab-pron">oh-see</span>
+          <span class="vocab-en">Also</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Donc</span>
+          <span class="vocab-pron">donk</span>
+          <span class="vocab-en">So / therefore</span>
+        </div>
+      </div>
+
+    </div><!-- /all -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 1                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l1'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 1 &middot; 10 September 2026</div>
+        <h2>Frames &amp; Fillers</h2>
+        <div class="meta">The frame &amp; slot method &middot; Il y a des &middot; Je pense que c'est &middot; Je me suis dit</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          First lesson done! Dan introduced the "frames and fillers" method, built from n-gram analysis of transcribed French speech corpora. Instead of translating word by word from English, you learn to automate high-frequency sentence structures ("frames") so your brain only needs to find the variable word ("filler") to drop in. You drilled three frames: <strong>il y a des</strong> (there are some), <strong>je pense que c'est</strong> (I think it's), and <strong>je me suis dit</strong> (I said to myself). You then practised filling each frame with different nouns, adjectives, and clauses, and started weaving two frames together into longer sentences using connectors like <em>mais</em> and <em>parce que</em>.
+        </p>
+      </div>
+
+      <!-- The Premise -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">The Premise</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          A <strong>frame</strong> is a fixed chunk that fires automatically. A <strong>filler</strong> is the one word you swap in to change the meaning. Drill the frame until it's muscle memory, then your brain is free to focus on just the filler. Three frames and a handful of nouns gives you dozens of natural-sounding sentences.
+        </p>
+      </div>
+
+      <!-- Your Three Frames -->
+      <div class="card">
+        <span class="section-label">Your Three Frames</span>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des... <span class="text-gray-400 font-normal">(+ noun)</span></div>
+          <div class="phrase-pron">eel ya day</div>
+          <div class="phrase-en">There are some...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est... <span class="text-gray-400 font-normal">(+ adjective)</span></div>
+          <div class="phrase-pron">zhuh ponss kuh say</div>
+          <div class="phrase-en">I think that it's...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit... <span class="text-gray-400 font-normal">(+ clause)</span></div>
+          <div class="phrase-pron">zhuh muh swee dee</div>
+          <div class="phrase-en">I thought / I said to myself...</div>
+        </div>
+      </div>
+
+      <!-- Frames in Action -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">Frames in Action</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          Same frame every time. Only the filler changes. Say them out loud. Speed beats perfection.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Il y a des...</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des restaurants.</div>
+          <div class="phrase-pron">eel ya day res-toh-ron</div>
+          <div class="phrase-en">There are some restaurants.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des probl&egrave;mes.</div>
+          <div class="phrase-pron">eel ya day pro-blem</div>
+          <div class="phrase-en">There are some problems.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des gens.</div>
+          <div class="phrase-pron">eel ya day zhon</div>
+          <div class="phrase-en">There are some people.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des options.</div>
+          <div class="phrase-pron">eel ya day op-syon</div>
+          <div class="phrase-en">There are some options.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des enfants.</div>
+          <div class="phrase-pron">eel ya day zon-fon</div>
+          <div class="phrase-en">There are some children.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des magasins.</div>
+          <div class="phrase-pron">eel ya day ma-ga-zan</div>
+          <div class="phrase-en">There are some shops.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des diff&eacute;rences.</div>
+          <div class="phrase-pron">eel ya day dee-fay-ronss</div>
+          <div class="phrase-en">There are some differences.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des moments.</div>
+          <div class="phrase-pron">eel ya day mo-mon</div>
+          <div class="phrase-en">There are some moments.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des choses.</div>
+          <div class="phrase-pron">eel ya day shohz</div>
+          <div class="phrase-en">There are some things.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des questions.</div>
+          <div class="phrase-pron">eel ya day kess-tyon</div>
+          <div class="phrase-en">There are some questions.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Je pense que c'est...</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est bien.</div>
+          <div class="phrase-pron">zhuh ponss kuh say byan</div>
+          <div class="phrase-en">I think it's good.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est difficile.</div>
+          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel</div>
+          <div class="phrase-en">I think it's difficult.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est normal.</div>
+          <div class="phrase-pron">zhuh ponss kuh say nor-mal</div>
+          <div class="phrase-en">I think it's normal.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est important.</div>
+          <div class="phrase-pron">zhuh ponss kuh say am-por-ton</div>
+          <div class="phrase-en">I think it's important.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est vrai.</div>
+          <div class="phrase-pron">zhuh ponss kuh say vray</div>
+          <div class="phrase-en">I think it's true.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est possible.</div>
+          <div class="phrase-pron">zhuh ponss kuh say poss-eebl</div>
+          <div class="phrase-en">I think it's possible.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est int&eacute;ressant.</div>
+          <div class="phrase-pron">zhuh ponss kuh say an-tay-ress-on</div>
+          <div class="phrase-en">I think it's interesting.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est facile.</div>
+          <div class="phrase-pron">zhuh ponss kuh say fa-seel</div>
+          <div class="phrase-en">I think it's easy.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est mieux.</div>
+          <div class="phrase-pron">zhuh ponss kuh say myuh</div>
+          <div class="phrase-en">I think it's better.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est n&eacute;cessaire.</div>
+          <div class="phrase-pron">zhuh ponss kuh say nay-seh-sair</div>
+          <div class="phrase-en">I think it's necessary.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Je me suis dit...</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que c'&eacute;tait bizarre.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh say-tay bee-zar</div>
+          <div class="phrase-en">I thought it was weird.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit pourquoi pas.</div>
+          <div class="phrase-pron">zhuh muh swee dee poor-kwah pah</div>
+          <div class="phrase-en">I said to myself, why not.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit qu'il fallait essayer.</div>
+          <div class="phrase-pron">zhuh muh swee dee keel fa-lay ess-ay-yay</div>
+          <div class="phrase-en">I thought I had to try.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que c'&eacute;tait une bonne id&eacute;e.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh say-tay oon bon ee-day</div>
+          <div class="phrase-en">I thought it was a good idea.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que c'&eacute;tait trop tard.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh say-tay troh tar</div>
+          <div class="phrase-en">I thought it was too late.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit bon, on y va.</div>
+          <div class="phrase-pron">zhuh muh swee dee bon, on ee va</div>
+          <div class="phrase-en">I said to myself, right, let's go.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que c'&eacute;tait pas possible.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh say-tay pah poss-eebl</div>
+          <div class="phrase-en">I thought it wasn't possible.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que c'&eacute;tait normal.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh say-tay nor-mal</div>
+          <div class="phrase-en">I thought it was normal.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit qu'il y avait un probl&egrave;me.</div>
+          <div class="phrase-pron">zhuh muh swee dee keel ya-vay un pro-blem</div>
+          <div class="phrase-en">I thought there was a problem.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit tant pis.</div>
+          <div class="phrase-pron">zhuh muh swee dee ton pee</div>
+          <div class="phrase-en">I said to myself, never mind.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Weaving (combining frames)</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des probl&egrave;mes, mais je pense que c'est normal.</div>
+          <div class="phrase-pron">eel ya day pro-blem, may zhuh ponss kuh say nor-mal</div>
+          <div class="phrase-en">There are some problems, but I think it's normal.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que c'&eacute;tait difficile, mais il y a des solutions.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh say-tay dee-fee-seel, may eel ya day sol-oo-syon</div>
+          <div class="phrase-en">I thought it was difficult, but there are solutions.</div>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="card">
+        <span class="section-label">Tips &amp; Notes</span>
+
+        <div class="tip-card">
+          <div class="tip-title">Frame and slot thinking</div>
+          <p>Stop trying to translate whole sentences word by word. Automate the <strong>frame</strong> (the structural glue: il y a des, je pense que c'est, je me suis dit) and focus all your brainpower on the <strong>slot</strong> (the noun, adjective, or clause that carries the actual meaning). The frame should fire automatically; the slot is where you do the real work.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Priming your ear</div>
+          <p>Saying a frame dozens of times doesn't just improve your output. It primes your brain to <em>hear</em> it when someone says it back to you. Once you recognise "il y a des" instantly, you can skip straight to the important noun that follows it.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Weaving = complex sentences</div>
+          <p>Link two or three frames with connectors (<strong>mais</strong>, <strong>parce que</strong>, <strong>et</strong>) and you suddenly sound like you're producing sophisticated French. It feels clunky at first, but the mechanism is what matters. Fluency comes from repetition.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Why these frames?</div>
+          <p>Dan ran n-gram extraction across transcribed French speech corpora and measured not just frequency but <strong>dispersion</strong>, how evenly a phrase appears across different speakers and conversations. "Il y a" appeared more than double the next most common trigram. These aren't textbook phrases; they're the building blocks of how French is actually spoken.</p>
+        </div>
+      </div>
+
+      <!-- Before Next Lesson -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Practise each frame daily: say "il y a des" + 10 different nouns as fast as you can, then do the same with "je pense que c'est" + 10 adjectives, then "je me suis dit" + 10 clauses</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Try weaving two frames together in your head whenever you're describing something ("il y a des..., mais je pense que c'est...")</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Don't memorise from the page. Say it out loud. Speed and rhythm matter more than getting every word right.</li>
+        </ul>
+      </div>
+
+    </div><!-- /l1 -->
+
+  </main>
+
+  <footer class="max-w-4xl mx-auto px-6 py-8 text-center text-xs text-gray-400">
+    &copy; FluentISH &middot; Patricia Goodwin
+  </footer>
+
+</body>
+</html>
