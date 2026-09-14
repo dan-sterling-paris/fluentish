@@ -123,7 +123,7 @@
         <h1 class="font-display text-2xl font-bold mt-1">Dawn's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">7 lessons</p>
+        <p class="text-sm text-blue-200 font-medium">8 lessons</p>
         <p class="text-xs text-blue-400 mt-0.5">Farm, horses, writing &amp; military</p>
       </div>
     </div>
@@ -139,7 +139,8 @@
       <button @click="tab = 'l4'"   :class="tab === 'l4'   ? 'tab-btn active' : 'tab-btn'">Lesson 4</button>
       <button @click="tab = 'l5'"   :class="tab === 'l5'   ? 'tab-btn active' : 'tab-btn'">Lesson 5</button>
       <button @click="tab = 'l6'"   :class="tab === 'l6'   ? 'tab-btn active' : 'tab-btn'">Lesson 6</button>
-      <button @click="tab = 'l7'"   :class="tab === 'l7'   ? 'tab-btn active' : 'tab-btn'">Lesson 7 &#10022;</button>
+      <button @click="tab = 'l7'"   :class="tab === 'l7'   ? 'tab-btn active' : 'tab-btn'">Lesson 7</button>
+      <button @click="tab = 'l8'"   :class="tab === 'l8'   ? 'tab-btn active' : 'tab-btn'">Lesson 8 &#10022;</button>
     </div>
   </div>
 
@@ -210,10 +211,6 @@
           <div class="phrase-en">I'm joking!</div>
         </div>
 
-        <div class="mt-3 mb-2">
-          <span class="inline-block text-xs font-bold uppercase tracking-widest text-cyan bg-navy rounded-full px-3 py-1">New this lesson</span>
-        </div>
-
         <div class="phrase-row">
           <div class="phrase-fr">J'ai grandi entre Manchester et Devon et de l&agrave; je me suis engag&eacute;e dans l'arm&eacute;e &agrave; l'&acirc;ge de 17 ans.</div>
           <div class="phrase-pron">zhay gron-dee ontr Manchester ay Devon ay duh la zhuh muh swee on-ga-zhay don lar-may ah lazh duh dee-set on</div>
@@ -238,6 +235,26 @@
           <div class="phrase-fr">Vu que j'avais des moyens, et que je me suis sentie toujours en famille dans le militaire, je me suis dit TIENS je vais rejoindre l'arm&eacute;e de l'air, ce qu'on appelle la Royal Air Force, o&ugrave; je m'occupais de la famille royale &agrave; bord de leurs avions.</div>
           <div class="phrase-pron">voo kuh zhah-vay day mwa-yen, ay kuh zhuh muh swee son-tee too-zhoor on fa-mee don luh mee-lee-tair, zhuh muh swee dee tee-en zhuh vay ruh-zhwandr lar-may duh lair, suh kon a-pel la Royal Air Force, oo zhuh mo-koo-pay duh la fa-mee rwa-yal ah bor duh lur za-vee-on</div>
           <div class="phrase-en">Since I had the means, and since I'd always felt at home in the military, I thought RIGHT, I'm going to join the air force, what they call the Royal Air Force, where I looked after the royal family on board their planes.</div>
+        </div>
+
+        <div class="mt-3 mb-2">
+          <span class="inline-block text-xs font-bold uppercase tracking-widest text-cyan bg-navy rounded-full px-3 py-1">New this lesson</span>
+        </div>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Apr&egrave;s avoir &eacute;t&eacute; m&eacute;dicalement lib&eacute;r&eacute;e de l'arm&eacute;e de l'air, suite &agrave; une blessure, je suis rentr&eacute;e en Angleterre o&ugrave; je me suis install&eacute;e sur une ferme qui est &agrave; cheval sur deux comt&eacute;s, Hampshire et Surrey.</div>
+          <div class="phrase-pron">ah-pray ah-vwar ay-tay may-dee-kal-mon lee-bay-ray duh lar-may duh lair, sweet ah oon bleh-soor, zhuh swee ron-tray on ong-luh-tair oo zhuh muh swee an-sta-lay soor oon fairm kee ay ah shuh-val soor duh kom-tay, Hampshire ay Surrey</div>
+          <div class="phrase-en">After having been medically discharged from the air force, following an injury, I returned to England where I settled on a farm that straddles two counties, Hampshire and Surrey.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Peu apr&egrave;s, gr&acirc;ce &agrave; la FIV, mon fils James est n&eacute; et on y vit encore.</div>
+          <div class="phrase-pron">puh ah-pray, grahs ah la eff-ee-vay, mon fees James ay nay ay on ee vee on-kor</div>
+          <div class="phrase-en">Shortly after, thanks to IVF, my son James was born and we still live there.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Aujourd'hui, ma vie me permet de me concentrer sur mes livres. Je suis &eacute;crivaine et j'&eacute;cris la chick lit, &ccedil;a veut dire la litt&eacute;rature f&eacute;minine.</div>
+          <div class="phrase-pron">oh-zhoor-dwee, ma vee muh pair-may duh muh kon-son-tray soor may leevr. zhuh swee ay-kree-ven ay zhay-kree la chick lit, sa vuh deer la lee-tay-ra-toor fay-mee-neen</div>
+          <div class="phrase-en">Today, my life allows me to focus on my books. I'm a writer and I write chick lit, that means women's fiction.</div>
         </div>
       </div>
 
@@ -319,6 +336,48 @@
           <div class="phrase-fr">C'est-&agrave;-dire&hellip; / &Ccedil;a veut dire&hellip;</div>
           <div class="phrase-pron">set-ah-deer / sa vuh deer</div>
           <div class="phrase-en">That is to say&hellip; / That means&hellip;</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">About Your Backstory</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Apr&egrave;s avoir &eacute;t&eacute;&hellip;</div>
+          <div class="phrase-pron">ah-pray ah-vwar ay-tay</div>
+          <div class="phrase-en">After having been&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Suite &agrave;&hellip;</div>
+          <div class="phrase-pron">sweet ah</div>
+          <div class="phrase-en">Following / as a result of&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis rentr&eacute;e en&hellip;</div>
+          <div class="phrase-pron">zhuh swee ron-tray on</div>
+          <div class="phrase-en">I returned to&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis install&eacute;e sur&hellip;</div>
+          <div class="phrase-pron">zhuh muh swee an-sta-lay soor</div>
+          <div class="phrase-en">I settled on&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">&Agrave; cheval sur&hellip;</div>
+          <div class="phrase-pron">ah shuh-val soor</div>
+          <div class="phrase-en">Straddling / spanning&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Gr&acirc;ce &agrave;&hellip;</div>
+          <div class="phrase-pron">grahs ah</div>
+          <div class="phrase-en">Thanks to&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Ma vie me permet de&hellip;</div>
+          <div class="phrase-pron">ma vee muh pair-may duh</div>
+          <div class="phrase-en">My life allows me to&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Me concentrer sur&hellip;</div>
+          <div class="phrase-pron">muh kon-son-tray soor</div>
+          <div class="phrase-en">To focus on&hellip;</div>
         </div>
       </div>
 
@@ -435,6 +494,48 @@
           <span class="vocab-fr">Coucou</span>
           <span class="vocab-pron">koo-koo</span>
           <span class="vocab-en">Hiya: close friends, kids, very affectionate</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Settling Down</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Une blessure</span>
+          <span class="vocab-pron">oon bleh-soor</span>
+          <span class="vocab-en">An injury / a wound</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">M&eacute;dicalement lib&eacute;r&eacute;(e)</span>
+          <span class="vocab-pron">may-dee-kal-mon lee-bay-ray</span>
+          <span class="vocab-en">Medically discharged</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un comt&eacute;</span>
+          <span class="vocab-pron">un kom-tay</span>
+          <span class="vocab-en">A county</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">La FIV</span>
+          <span class="vocab-pron">la eff-ee-vay</span>
+          <span class="vocab-en">IVF (f&eacute;condation in vitro, feminine, hence <em>la</em>)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Se concentrer sur</span>
+          <span class="vocab-pron">suh kon-son-tray soor</span>
+          <span class="vocab-en">To focus on</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">S'installer</span>
+          <span class="vocab-pron">san-sta-lay</span>
+          <span class="vocab-en">To settle down / set up home</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Rentrer</span>
+          <span class="vocab-pron">ron-tray</span>
+          <span class="vocab-en">To return / come home</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">&Agrave; cheval sur</span>
+          <span class="vocab-pron">ah shuh-val soor</span>
+          <span class="vocab-en">Straddling (literally &ldquo;on horseback across&rdquo;)</span>
         </div>
       </div>
 
@@ -1429,6 +1530,269 @@
       </div>
 
     </div><!-- /l7 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 8                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l8'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 8 &middot; 14 September 2026</div>
+        <h2>Coming Home</h2>
+        <div class="meta">Medical discharge &middot; Settling in Hampshire &middot; IVF &amp; writing life</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          We continued building the backstory section of your 2-minute speech. This block covers the transition
+          from military to civilian life: the medical discharge from the RAF, returning to England, settling on
+          the farm that straddles Hampshire and Surrey, James arriving via IVF, and your writing life today.
+          We corrected a few things from the original draft: <em>d&eacute;partements</em> became
+          <em>comt&eacute;s</em> (Hampshire and Surrey are English counties, not French departments),
+          <em>gr&acirc;ce au FIV</em> became <em>gr&acirc;ce &agrave; la FIV</em> (feminine noun), and
+          <em>me permets</em> became <em>me permet</em> (third person, since <em>ma vie</em> is the subject).
+          New grammar: <em>apr&egrave;s avoir &eacute;t&eacute;</em> (after having been) and the reflexive
+          <em>se concentrer sur</em> (to focus on).
+        </p>
+      </div>
+
+      <!-- Key Phrases -->
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Apr&egrave;s avoir &eacute;t&eacute;&hellip;</div>
+          <div class="phrase-pron">ah-pray ah-vwar ay-tay</div>
+          <div class="phrase-en">After having been&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Suite &agrave;&hellip;</div>
+          <div class="phrase-pron">sweet ah</div>
+          <div class="phrase-en">Following / as a result of&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis rentr&eacute;e en&hellip;</div>
+          <div class="phrase-pron">zhuh swee ron-tray on</div>
+          <div class="phrase-en">I returned to&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis install&eacute;e sur&hellip;</div>
+          <div class="phrase-pron">zhuh muh swee an-sta-lay soor</div>
+          <div class="phrase-en">I settled on&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">&Agrave; cheval sur&hellip;</div>
+          <div class="phrase-pron">ah shuh-val soor</div>
+          <div class="phrase-en">Straddling / spanning&hellip; (literally &ldquo;on horseback across&rdquo;)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Gr&acirc;ce &agrave;&hellip;</div>
+          <div class="phrase-pron">grahs ah</div>
+          <div class="phrase-en">Thanks to&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Ma vie me permet de&hellip;</div>
+          <div class="phrase-pron">ma vee muh pair-may duh</div>
+          <div class="phrase-en">My life allows me to&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Me concentrer sur&hellip;</div>
+          <div class="phrase-pron">muh kon-son-tray soor</div>
+          <div class="phrase-en">To focus on&hellip;</div>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Settling Down</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Une blessure</span>
+          <span class="vocab-pron">oon bleh-soor</span>
+          <span class="vocab-en">An injury / a wound</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">M&eacute;dicalement lib&eacute;r&eacute;(e)</span>
+          <span class="vocab-pron">may-dee-kal-mon lee-bay-ray</span>
+          <span class="vocab-en">Medically discharged</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un comt&eacute;</span>
+          <span class="vocab-pron">un kom-tay</span>
+          <span class="vocab-en">A county</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">La FIV</span>
+          <span class="vocab-pron">la eff-ee-vay</span>
+          <span class="vocab-en">IVF (f&eacute;condation in vitro, feminine, hence <em>la</em>)</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Useful Verbs</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Se concentrer sur</span>
+          <span class="vocab-pron">suh kon-son-tray soor</span>
+          <span class="vocab-en">To focus on (reflexive)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">S'installer</span>
+          <span class="vocab-pron">san-sta-lay</span>
+          <span class="vocab-en">To settle down / set up home (reflexive)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Rentrer</span>
+          <span class="vocab-pron">ron-tray</span>
+          <span class="vocab-en">To return / come home</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Permettre</span>
+          <span class="vocab-pron">pair-metr</span>
+          <span class="vocab-en">To allow / permit</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Sounding Natural</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">&Agrave; cheval sur</span>
+          <span class="vocab-pron">ah shuh-val soor</span>
+          <span class="vocab-en">Straddling (literally &ldquo;on horseback across&rdquo;)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Peu apr&egrave;s</span>
+          <span class="vocab-pron">puh ah-pray</span>
+          <span class="vocab-en">Shortly after</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Aujourd'hui</span>
+          <span class="vocab-pron">oh-zhoor-dwee</span>
+          <span class="vocab-en">Today</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Encore</span>
+          <span class="vocab-pron">on-kor</span>
+          <span class="vocab-en">Still / again</span>
+        </div>
+      </div>
+
+      <!-- Updated Script -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Your Script (Updated)</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          The full script so far. The backstory now continues from the RAF into civilian life.
+          Same rules: say it out loud, flow beats detail.
+        </p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Bonjour !</div>
+          <div class="phrase-pron">bon-zhoor</div>
+          <div class="phrase-en">Hello!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je m'appelle Dawn.</div>
+          <div class="phrase-pron">zhuh ma-pel Dawn</div>
+          <div class="phrase-en">My name's Dawn.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vis &agrave; la ferme et je suis passionn&eacute;e par le monde &eacute;questre.</div>
+          <div class="phrase-pron">zhuh vee ah la fairm ay zhuh swee pass-yon-ay par luh mond ay-kestr</div>
+          <div class="phrase-en">I live on a farm and I'm passionate about the equestrian world.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai quatre chevaux et ils s'appellent Raven, Timothy, Alfie et Lily.</div>
+          <div class="phrase-pron">zhay katr shuh-vo ay eel sa-pel Raven, Timothy, Alfie ay Lily</div>
+          <div class="phrase-en">I have four horses and they're called Raven, Timothy, Alfie and Lily.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Mince, j'ai oubli&eacute; ! J'ai aussi un fils qui s'appelle James !</div>
+          <div class="phrase-pron">manss, zhay oo-blee-ay ! zhay oh-see un fees kee sa-pel James</div>
+          <div class="phrase-en">Oops, I forgot! I've also got a son called James!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">D'ailleurs, je suis &eacute;crivaine.</div>
+          <div class="phrase-pron">dye-yur, zhuh swee ay-kree-ven</div>
+          <div class="phrase-en">By the way, I'm a writer.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'&eacute;cris la chick lit, &ccedil;a veut dire la litt&eacute;rature f&eacute;minine.</div>
+          <div class="phrase-pron">zhay-kree la chick lit, sa vuh deer la lee-tay-ra-toor fay-mee-neen</div>
+          <div class="phrase-en">I write chick lit, that means women's fiction.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai &eacute;crit quatre livres.</div>
+          <div class="phrase-pron">zhay ay-kree katr leevr</div>
+          <div class="phrase-en">I've written four books.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">On me consid&egrave;re un peu comme la prochaine JK Rowling !</div>
+          <div class="phrase-pron">on muh kon-see-dair un puh kom la pro-shen JK Rowling</div>
+          <div class="phrase-en">People consider me a bit like the next JK Rowling!</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je rigole !</div>
+          <div class="phrase-pron">zhuh ree-gol</div>
+          <div class="phrase-en">I'm joking!</div>
+        </div>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai grandi entre Manchester et Devon et de l&agrave; je me suis engag&eacute;e dans l'arm&eacute;e &agrave; l'&acirc;ge de 17 ans.</div>
+          <div class="phrase-pron">zhay gron-dee ontr Manchester ay Devon ay duh la zhuh muh swee on-ga-zhay don lar-may ah lazh duh dee-set on</div>
+          <div class="phrase-en">I grew up between Manchester and Devon and from there I joined the army at the age of 17.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">L&agrave; o&ugrave; la plupart des gens s'enfuiraient pour rejoindre le cirque, moi je me suis engag&eacute;e dans la vie militaire.</div>
+          <div class="phrase-pron">la oo la ploo-par day zhon son-fwee-ray poor ruh-zhwandr luh seerk, mwa zhuh muh swee on-ga-zhay don la vee mee-lee-tair</div>
+          <div class="phrase-en">Where most people would run away to join the circus, I signed up for military life.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je viens d'une famille privil&eacute;gi&eacute;e, et je peux dire que le privil&egrave;ge n'est pas aussi formidable qu'on le dit.</div>
+          <div class="phrase-pron">zhuh vee-en doon fa-mee pree-vee-lay-zhee-ay, ay zhuh puh deer kuh luh pree-vee-lezh nay pa oh-see for-mee-dabl kon luh dee</div>
+          <div class="phrase-en">I come from a privileged family, and I can say that privilege isn't as great as people make it out to be.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Apr&egrave;s ma carri&egrave;re dans l'arm&eacute;e, je suis pass&eacute;e dans le secteur priv&eacute; o&ugrave; je m'en suis plut&ocirc;t bien sortie.</div>
+          <div class="phrase-pron">ah-pray ma ka-ree-air don lar-may, zhuh swee pa-say don luh sek-tur pree-vay oo zhuh mon swee ploo-to bee-en sor-tee</div>
+          <div class="phrase-en">After my career in the army, I moved into the private sector where I did rather well for myself.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Vu que j'avais des moyens, et que je me suis sentie toujours en famille dans le militaire, je me suis dit TIENS je vais rejoindre l'arm&eacute;e de l'air, ce qu'on appelle la Royal Air Force, o&ugrave; je m'occupais de la famille royale &agrave; bord de leurs avions.</div>
+          <div class="phrase-pron">voo kuh zhah-vay day mwa-yen, ay kuh zhuh muh swee son-tee too-zhoor on fa-mee don luh mee-lee-tair, zhuh muh swee dee tee-en zhuh vay ruh-zhwandr lar-may duh lair, suh kon a-pel la Royal Air Force, oo zhuh mo-koo-pay duh la fa-mee rwa-yal ah bor duh lur za-vee-on</div>
+          <div class="phrase-en">Since I had the means, and since I'd always felt at home in the military, I thought RIGHT, I'm going to join the air force, what they call the Royal Air Force, where I looked after the royal family on board their planes.</div>
+        </div>
+
+        <div class="mt-3 mb-2">
+          <span class="inline-block text-xs font-bold uppercase tracking-widest text-cyan bg-navy rounded-full px-3 py-1">New this lesson</span>
+        </div>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Apr&egrave;s avoir &eacute;t&eacute; m&eacute;dicalement lib&eacute;r&eacute;e de l'arm&eacute;e de l'air, suite &agrave; une blessure, je suis rentr&eacute;e en Angleterre o&ugrave; je me suis install&eacute;e sur une ferme qui est &agrave; cheval sur deux comt&eacute;s, Hampshire et Surrey.</div>
+          <div class="phrase-pron">ah-pray ah-vwar ay-tay may-dee-kal-mon lee-bay-ray duh lar-may duh lair, sweet ah oon bleh-soor, zhuh swee ron-tray on ong-luh-tair oo zhuh muh swee an-sta-lay soor oon fairm kee ay ah shuh-val soor duh kom-tay, Hampshire ay Surrey</div>
+          <div class="phrase-en">After having been medically discharged from the air force, following an injury, I returned to England where I settled on a farm that straddles two counties, Hampshire and Surrey.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Peu apr&egrave;s, gr&acirc;ce &agrave; la FIV, mon fils James est n&eacute; et on y vit encore.</div>
+          <div class="phrase-pron">puh ah-pray, grahs ah la eff-ee-vay, mon fees James ay nay ay on ee vee on-kor</div>
+          <div class="phrase-en">Shortly after, thanks to IVF, my son James was born and we still live there.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Aujourd'hui, ma vie me permet de me concentrer sur mes livres. Je suis &eacute;crivaine et j'&eacute;cris la chick lit, &ccedil;a veut dire la litt&eacute;rature f&eacute;minine.</div>
+          <div class="phrase-pron">oh-zhoor-dwee, ma vee muh pair-may duh muh kon-son-tray soor may leevr. zhuh swee ay-kree-ven ay zhay-kree la chick lit, sa vuh deer la lee-tay-ra-toor fay-mee-neen</div>
+          <div class="phrase-en">Today, my life allows me to focus on my books. I'm a writer and I write chick lit, that means women's fiction.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          The script is getting long now, so work in layers. First, make sure the original block (Bonjour through
+          Je rigole) is still automatic. Then run through the L7 backstory (J'ai grandi through the RAF line).
+          Only then bolt on the new section. The long first sentence is the hardest: break it at the commas
+          and build it up phrase by phrase. <em>Apr&egrave;s avoir &eacute;t&eacute;</em> is a lovely construction
+          that'll serve you well beyond this script.
+        </p>
+      </div>
+
+    </div><!-- /l8 -->
 
   </main>
 
