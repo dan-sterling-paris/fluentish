@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Louise Coultas-Pitman &ndash; FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:  '#003359',
+            navyD: '#002040',
+            rouge: '#C8102E',
+            cyan:  '#4DD4F5',
+            sand:  '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+    [x-cloak] { display: none !important; }
+
+    .tab-btn {
+      padding: 0.9rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-bottom: 3px solid transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
+      color: #6b7280;
+    }
+    .tab-btn:hover { color: #003359; }
+    .tab-btn.active { color: #003359; border-bottom-color: #003359; }
+
+    .vocab-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.6rem 0;
+      align-items: baseline;
+    }
+    .vocab-row:last-child { border-bottom: none; }
+    .vocab-fr   { font-weight: 600; color: #003359; }
+    .vocab-pron { font-style: italic; color: #8a9ab0; font-size: 0.8rem; padding: 0 0.5rem; }
+    .vocab-en   { color: #6b7280; font-size: 0.85rem; }
+
+    .phrase-row {
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.75rem 0;
+    }
+    .phrase-row:last-child { border-bottom: none; }
+    .phrase-fr   { font-weight: 600; color: #003359; font-size: 0.95rem; }
+    .phrase-pron { font-style: italic; color: #8a9ab0; font-size: 0.78rem; margin-top: 1px; }
+    .phrase-en   { color: #6b7280; font-size: 0.85rem; margin-top: 2px; }
+
+    .section-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #C8102E; margin-bottom: 0.75rem; display: block;
+    }
+
+    .sound-pill {
+      display: inline-flex; flex-direction: column; align-items: center;
+      background: #f8f9fb; border: 1px solid #e5e9ef; border-radius: 10px;
+      padding: 0.5rem 0.85rem; text-align: center;
+    }
+    .sound-pill .fr   { font-weight: 700; color: #003359; font-size: 0.9rem; }
+    .sound-pill .pron { font-style: italic; color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+    .sound-pill .en   { color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+
+    .card { background: white; border: 1px solid #e8ecf0; border-radius: 1rem; padding: 1.5rem; }
+
+    .toolkit-row { display: grid; grid-template-columns: 1.2fr 1fr 1.4fr; gap: 0; border-bottom: 1px solid #f0f0f0; padding: 0.65rem 0; align-items: baseline; }
+    .toolkit-row:last-child { border-bottom: none; }
+
+    .lesson-strip { background: #003359; color: white; border-radius: 0.75rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
+    .lesson-strip .num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #4DD4F5; }
+    .lesson-strip h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; margin-top: 2px; }
+    .lesson-strip .meta { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
+
+    .technique-step {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.5rem 0;
+    }
+    .technique-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.5rem; height: 1.5rem; border-radius: 999px;
+      background: #4DD4F5; color: #003359; font-size: 0.7rem; font-weight: 700;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen" x-data="{ tab: 'all' }" x-cloak>
+
+  <!-- Header -->
+  <header class="bg-navy text-white">
+    <div class="max-w-4xl mx-auto px-6 py-6 flex items-end justify-between gap-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest" style="color:#4DD4F5;">FluentISH</p>
+        <h1 class="font-display text-2xl font-bold mt-1">Louise's Course</h1>
+      </div>
+      <div class="text-right">
+        <p class="text-sm text-blue-200 font-medium">1 lesson</p>
+        <p class="text-xs text-blue-400 mt-0.5">Florist, flowers &amp; frames</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tab nav -->
+  <div class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-4xl mx-auto px-6 flex overflow-x-auto">
+      <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
+      <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1 &#10022;</button>
+    </div>
+  </div>
+
+  <main class="max-w-4xl mx-auto px-6 py-8 space-y-6">
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: EVERYTHING                           -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'all'" class="space-y-6">
+
+      <!-- Frames & Fillers -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Your 3 Frames: The Building Blocks</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          These three frames are your foundation. Slot any filler word onto the end and you've got a sentence. Don't overthink it, just play.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Frame 1: Il y a des&hellip;</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des&hellip;</div>
+          <div class="phrase-pron">ee-lee-ah day</div>
+          <div class="phrase-en">There are some&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des difficult&eacute;s</div>
+          <div class="phrase-pron">ee-lee-ah day dee-fee-kool-tay</div>
+          <div class="phrase-en">There are some difficulties</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des fleurs</div>
+          <div class="phrase-pron">ee-lee-ah day flur</div>
+          <div class="phrase-en">There are some flowers</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des saucisses</div>
+          <div class="phrase-pron">ee-lee-ah day so-sees</div>
+          <div class="phrase-en">There are some sausages</div>
+        </div>
+        <p class="text-xs text-gray-400 italic mt-2">Also works singular: "il y a un&hellip;" (masc) / "il y a une&hellip;" (fem) / "il y a du&hellip;" (uncountable, e.g. snow)</p>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Frame 2: Je pense que c'est&hellip;</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est&hellip;</div>
+          <div class="phrase-pron">zhuh ponss kuh say</div>
+          <div class="phrase-en">I think it's&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est difficile</div>
+          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel</div>
+          <div class="phrase-en">I think it's difficult</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est fun</div>
+          <div class="phrase-pron">zhuh ponss kuh say fun</div>
+          <div class="phrase-en">I think it's fun</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est difficile parce qu'il y a beaucoup de probl&egrave;mes</div>
+          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel parss kee-lee-ah bo-koo duh pro-blem</div>
+          <div class="phrase-en">I think it's difficult because there are a lot of problems</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Frame 3: Il y a [modifier] de&hellip;</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a beaucoup de&hellip;</div>
+          <div class="phrase-pron">ee-lee-ah bo-koo duh</div>
+          <div class="phrase-en">There are a lot of&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a trop de&hellip;</div>
+          <div class="phrase-pron">ee-lee-ah tro duh</div>
+          <div class="phrase-en">There are too many&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a plein de&hellip;</div>
+          <div class="phrase-pron">ee-lee-ah plan duh</div>
+          <div class="phrase-en">There are loads of&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a jamais de&hellip;</div>
+          <div class="phrase-pron">ee-lee-ah zhah-may duh</div>
+          <div class="phrase-en">There are never any&hellip;</div>
+        </div>
+        <p class="text-xs text-gray-400 italic mt-2">Swap in any of the 7 modifiers (see below) to change the meaning. With 7 modifiers and 21 filler words, that's 147 sentences from this one frame.</p>
+      </div>
+
+      <!-- Bonus Frame: Je me suis dit -->
+      <div class="card">
+        <span class="section-label">Bonus Frame: Je me suis dit</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          This sounds way more natural than "j'ai pens&eacute;" which is textbook but clunky. Think of it like saying "I was thinking&hellip;" in English rather than "I have thought&hellip;"
+        </p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit&hellip;</div>
+          <div class="phrase-pron">zhuh muh swee dee</div>
+          <div class="phrase-en">I was thinking&hellip; / I said to myself&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit qu'on pourrait aller au parc</div>
+          <div class="phrase-pron">zhuh muh swee dee kon poo-ray ah-lay oh park</div>
+          <div class="phrase-en">I was thinking we could go to the park</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit qu'on pourrait aller au pub</div>
+          <div class="phrase-pron">zhuh muh swee dee kon poo-ray ah-lay oh pub</div>
+          <div class="phrase-en">I was thinking we could go to the pub</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit qu'on pourrait d&icirc;ner</div>
+          <div class="phrase-pron">zhuh muh swee dee kon poo-ray dee-nay</div>
+          <div class="phrase-en">I was thinking we could have dinner</div>
+        </div>
+      </div>
+
+      <!-- Get out of jail cards -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">Get-Out-of-Jail Cards</span>
+        <p class="text-sm text-gray-400 mb-4 italic">Keep these loaded at all times. When you're stuck mid-conversation, reach for one instead of freezing up.</p>
+
+        <div class="toolkit-row">
+          <div class="vocab-fr">Comment dire&hellip;</div>
+          <div class="vocab-pron">ko-mon deer</div>
+          <div class="vocab-en">How can I say this&hellip; (buys you time)</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Pardon ?</div>
+          <div class="vocab-pron">par-don</div>
+          <div class="vocab-en">Sorry? / I didn't catch that</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">C'est-&agrave;-dire&hellip;</div>
+          <div class="vocab-pron">set-ah-deer</div>
+          <div class="vocab-en">That is to say&hellip; (regroup mid-sentence)</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">&Ccedil;a veut dire&hellip;</div>
+          <div class="vocab-pron">sa vuh deer</div>
+          <div class="vocab-en">That means&hellip; (clarify what you just said)</div>
+        </div>
+      </div>
+
+      <!-- Modifiers -->
+      <div class="card">
+        <span class="section-label">Your 7 Modifiers</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          Swap any of these into the middle of your "il y a" frame in place of "beaucoup". With 7 modifiers and 21 fillers, that's 147 sentences from one frame alone.
+        </p>
+
+        <div class="vocab-row">
+          <span class="vocab-fr">Beaucoup (de)</span>
+          <span class="vocab-pron">bo-koo (duh)</span>
+          <span class="vocab-en">A lot (of)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Trop (de)</span>
+          <span class="vocab-pron">tro (duh)</span>
+          <span class="vocab-en">Too many / too much</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Plus (de)</span>
+          <span class="vocab-pron">ploos (duh)</span>
+          <span class="vocab-en">More (of)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Assez (de)</span>
+          <span class="vocab-pron">ah-say (duh)</span>
+          <span class="vocab-en">Enough (of)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Plein (de)</span>
+          <span class="vocab-pron">plan (duh)</span>
+          <span class="vocab-en">Plenty (of) / loads (of)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Pas assez (de)</span>
+          <span class="vocab-pron">pah-zah-say (duh)</span>
+          <span class="vocab-en">Not enough (of)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Toujours</span>
+          <span class="vocab-pron">too-zhoor</span>
+          <span class="vocab-en">Always</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Jamais</span>
+          <span class="vocab-pron">zhah-may</span>
+          <span class="vocab-en">Never</span>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div class="card">
+        <span class="section-label">Your 21 Filler Words</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          You came up with 20 of these in under a minute. Stick any of them on the end of "il y a [modifier] de&hellip;" and you've got a sentence.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Things Around You</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des bonbons</span>
+          <span class="vocab-pron">day bon-bon</span>
+          <span class="vocab-en">Sweets</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des g&acirc;teaux</span>
+          <span class="vocab-pron">day gah-toh</span>
+          <span class="vocab-en">Cakes</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des tables</span>
+          <span class="vocab-pron">day tahbl</span>
+          <span class="vocab-en">Tables</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des saucisses</span>
+          <span class="vocab-pron">day so-sees</span>
+          <span class="vocab-en">Sausages</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des lampes</span>
+          <span class="vocab-pron">day lomp</span>
+          <span class="vocab-en">Lamps</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des livres</span>
+          <span class="vocab-pron">day leevr</span>
+          <span class="vocab-en">Books</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des r&egrave;gles</span>
+          <span class="vocab-pron">day regl</span>
+          <span class="vocab-en">Rulers</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des &eacute;crans</span>
+          <span class="vocab-pron">day ay-kron</span>
+          <span class="vocab-en">Screens</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des stylos</span>
+          <span class="vocab-pron">day stee-lo</span>
+          <span class="vocab-en">Pens</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des cartes</span>
+          <span class="vocab-pron">day kart</span>
+          <span class="vocab-en">Maps</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Nature &amp; Weather</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des parcs</span>
+          <span class="vocab-pron">day park</span>
+          <span class="vocab-en">Parks</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des nuages</span>
+          <span class="vocab-pron">day noo-azh</span>
+          <span class="vocab-en">Clouds</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">La neige</span>
+          <span class="vocab-pron">la nezh</span>
+          <span class="vocab-en">Snow</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des lumi&egrave;res</span>
+          <span class="vocab-pron">day loo-mee-air</span>
+          <span class="vocab-en">Lights</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des plantes</span>
+          <span class="vocab-pron">day plont</span>
+          <span class="vocab-en">Plants</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des fleurs</span>
+          <span class="vocab-pron">day flur</span>
+          <span class="vocab-en">Flowers</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">People &amp; Feelings</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des &eacute;motions</span>
+          <span class="vocab-pron">day ay-mo-see-on</span>
+          <span class="vocab-en">Emotions</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des sentiments</span>
+          <span class="vocab-pron">day son-tee-mon</span>
+          <span class="vocab-en">Feelings</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des gar&ccedil;ons</span>
+          <span class="vocab-pron">day gar-son</span>
+          <span class="vocab-en">Boys</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des filles</span>
+          <span class="vocab-pron">day fee</span>
+          <span class="vocab-en">Girls</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des animaux</span>
+          <span class="vocab-pron">day za-nee-mo</span>
+          <span class="vocab-en">Animals</span>
+        </div>
+      </div>
+
+      <!-- Key Concepts -->
+      <div class="card">
+        <span class="section-label">Key Concepts</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">The Past Tense Shortcut</h3>
+        <p class="text-sm text-gray-600 mb-3">
+          To make most verbs past tense, just add an "&eacute;" sound to the end. Don't overthink conjugation, let your ear do the work over time.
+        </p>
+        <div class="vocab-row">
+          <span class="vocab-fr">Je pense &rarr; J'ai pens&eacute;</span>
+          <span class="vocab-pron">zhuh ponss &rarr; zhay pon-say</span>
+          <span class="vocab-en">I think &rarr; I thought</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Je mange &rarr; J'ai mang&eacute;</span>
+          <span class="vocab-pron">zhuh monzh &rarr; zhay mon-zhay</span>
+          <span class="vocab-en">I eat &rarr; I ate</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Making "Il y a" Singular</h3>
+        <p class="text-sm text-gray-600 mb-3">
+          Switch from plural to singular by replacing "des" with "un" (masculine) or "une" (feminine), or "du" for uncountable things.
+        </p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des fleurs &rarr; Il y a une fleur</div>
+          <div class="phrase-pron">ee-lee-ah day flur &rarr; ee-lee-ah oon flur</div>
+          <div class="phrase-en">There are flowers &rarr; There is a flower</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a de la neige</div>
+          <div class="phrase-pron">ee-lee-ah duh la nezh</div>
+          <div class="phrase-en">There is some snow</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The Canada Story</h3>
+        <p class="text-sm text-gray-600">
+          You say "en France" (feminine country) but "au Canada" (masculine country). There's no intuitive rule for why. The French prioritise how things sound over strict logic. Keep this anecdote locked and loaded for when anyone criticises your French.
+        </p>
+      </div>
+
+      <!-- Sounding Natural -->
+      <div class="card">
+        <span class="section-label">Sounding Natural</span>
+
+        <div class="vocab-row">
+          <span class="vocab-fr">T&ecirc;te dans les nuages</span>
+          <span class="vocab-pron">tet don lay noo-azh</span>
+          <span class="vocab-en">Head in the clouds</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">En plein hiver</span>
+          <span class="vocab-pron">on plan ee-vair</span>
+          <span class="vocab-en">In the middle of winter</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">En plein &eacute;t&eacute;</span>
+          <span class="vocab-pron">on plan ay-tay</span>
+          <span class="vocab-en">In the middle of summer</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Pas mal de</span>
+          <span class="vocab-pron">pah mal duh</span>
+          <span class="vocab-en">Not a bad amount of / quite a lot of</span>
+        </div>
+      </div>
+
+      <!-- Example Sentences -->
+      <div class="card">
+        <span class="section-label">Example Sentences: Mix &amp; Match</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          These are just a few combinations. With 7 modifiers and 21 fillers, you can make over 140 sentences from the "il y a" frame alone.
+        </p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a trop de nuages</div>
+          <div class="phrase-pron">ee-lee-ah tro duh noo-azh</div>
+          <div class="phrase-en">There are too many clouds</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a jamais de nuages</div>
+          <div class="phrase-pron">ee-lee-ah zhah-may duh noo-azh</div>
+          <div class="phrase-en">There are never any clouds</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a plein de fleurs</div>
+          <div class="phrase-pron">ee-lee-ah plan duh flur</div>
+          <div class="phrase-en">There are loads of flowers</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a pas assez de g&acirc;teaux</div>
+          <div class="phrase-pron">ee-lee-ah pah-zah-say duh gah-toh</div>
+          <div class="phrase-en">There aren't enough cakes</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des saucisses mais il y a jamais de bonbons</div>
+          <div class="phrase-pron">ee-lee-ah day so-sees may ee-lee-ah zhah-may duh bon-bon</div>
+          <div class="phrase-en">There are sausages but there are never any sweets</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est difficile parce qu'il y a trop de saucisses</div>
+          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel parss kee-lee-ah tro duh so-sees</div>
+          <div class="phrase-en">I think it's difficult because there are too many sausages</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit qu'on pourrait aller au parc</div>
+          <div class="phrase-pron">zhuh muh swee dee kon poo-ray ah-lay oh park</div>
+          <div class="phrase-en">I was thinking we could go to the park</div>
+        </div>
+      </div>
+
+      <!-- Before Next Lesson -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <div class="technique-step">
+          <span class="technique-num">1</span>
+          <p class="text-sm text-gray-600"><strong>Don't cram.</strong> Have a good sleep and let it settle. Your brain is processing a lot right now.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">2</span>
+          <p class="text-sm text-gray-600"><strong>Play with the frames.</strong> Take "il y a", slot in a modifier, add a filler word. Say it out loud. Try different combinations. There's no wrong answer.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">3</span>
+          <p class="text-sm text-gray-600"><strong>Try "je me suis dit".</strong> Think of something you'd like to do and say it: "Je me suis dit qu'on pourrait&hellip;" followed by whatever comes to mind.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">4</span>
+          <p class="text-sm text-gray-600"><strong>Zero pressure.</strong> This isn't homework. Just enjoy creating sentences. The more you play, the more automatic the frames become.</p>
+        </div>
+        <p class="text-xs text-gray-400 italic mt-3">Next lesson: we'll start building your "speed dating" mini script, where you introduce yourself using the frames and vocab from today.</p>
+      </div>
+
+    </div>
+    <!-- end Everything tab -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 1                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l1'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 1</div>
+        <h2>Frames &amp; Fillers</h2>
+        <div class="meta">15 Sep 2026 &middot; il y a des, je pense que c'est, il y a [modifier] de &middot; 7 modifiers &middot; 21 vocab words</div>
+      </div>
+
+      <!-- What You Covered -->
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 mb-2">
+          Three foundational frames: <strong>il y a des</strong> (there are some), <strong>je pense que c'est</strong> (I think it's), and <strong>il y a [modifier] de</strong> (there are lots/too many/never any of). You proved that the cognitive load sits on the English, not the French, by rattling off 20 nouns in a minute without hesitating on the frame.
+        </p>
+        <p class="text-sm text-gray-600 mb-2">
+          You then learned 7 modifiers that slot into "il y a" in place of "beaucoup", giving you 140+ sentence combinations from just one frame.
+        </p>
+        <p class="text-sm text-gray-600">
+          You also explored the past tense shortcut (add an "&eacute;" sound), singular forms of "il y a", and the bonus frame "je me suis dit" which sounds far more natural than the textbook "j'ai pens&eacute;".
+        </p>
+      </div>
+
+      <!-- Frames -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Your 3 Frames: The Building Blocks</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          These three frames are your foundation. Slot any filler word onto the end and you've got a sentence. Don't overthink it, just play.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Frame 1: Il y a des&hellip;</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des&hellip;</div>
+          <div class="phrase-pron">ee-lee-ah day</div>
+          <div class="phrase-en">There are some&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des difficult&eacute;s</div>
+          <div class="phrase-pron">ee-lee-ah day dee-fee-kool-tay</div>
+          <div class="phrase-en">There are some difficulties</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des fleurs</div>
+          <div class="phrase-pron">ee-lee-ah day flur</div>
+          <div class="phrase-en">There are some flowers</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des saucisses</div>
+          <div class="phrase-pron">ee-lee-ah day so-sees</div>
+          <div class="phrase-en">There are some sausages</div>
+        </div>
+        <p class="text-xs text-gray-400 italic mt-2">Also works singular: "il y a un&hellip;" (masc) / "il y a une&hellip;" (fem) / "il y a du&hellip;" (uncountable, e.g. snow)</p>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Frame 2: Je pense que c'est&hellip;</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est&hellip;</div>
+          <div class="phrase-pron">zhuh ponss kuh say</div>
+          <div class="phrase-en">I think it's&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est difficile</div>
+          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel</div>
+          <div class="phrase-en">I think it's difficult</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est fun</div>
+          <div class="phrase-pron">zhuh ponss kuh say fun</div>
+          <div class="phrase-en">I think it's fun</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est difficile parce qu'il y a beaucoup de probl&egrave;mes</div>
+          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel parss kee-lee-ah bo-koo duh pro-blem</div>
+          <div class="phrase-en">I think it's difficult because there are a lot of problems</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Frame 3: Il y a [modifier] de&hellip;</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a beaucoup de&hellip;</div>
+          <div class="phrase-pron">ee-lee-ah bo-koo duh</div>
+          <div class="phrase-en">There are a lot of&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a trop de&hellip;</div>
+          <div class="phrase-pron">ee-lee-ah tro duh</div>
+          <div class="phrase-en">There are too many&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a plein de&hellip;</div>
+          <div class="phrase-pron">ee-lee-ah plan duh</div>
+          <div class="phrase-en">There are loads of&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a jamais de&hellip;</div>
+          <div class="phrase-pron">ee-lee-ah zhah-may duh</div>
+          <div class="phrase-en">There are never any&hellip;</div>
+        </div>
+        <p class="text-xs text-gray-400 italic mt-2">Swap in any of the 7 modifiers (see below) to change the meaning. With 7 modifiers and 21 filler words, that's 147 sentences from this one frame.</p>
+      </div>
+
+      <!-- Bonus Frame: Je me suis dit -->
+      <div class="card">
+        <span class="section-label">Bonus Frame: Je me suis dit</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          This sounds way more natural than "j'ai pens&eacute;" which is textbook but clunky. Think of it like saying "I was thinking&hellip;" in English rather than "I have thought&hellip;"
+        </p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit&hellip;</div>
+          <div class="phrase-pron">zhuh muh swee dee</div>
+          <div class="phrase-en">I was thinking&hellip; / I said to myself&hellip;</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit qu'on pourrait aller au parc</div>
+          <div class="phrase-pron">zhuh muh swee dee kon poo-ray ah-lay oh park</div>
+          <div class="phrase-en">I was thinking we could go to the park</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit qu'on pourrait aller au pub</div>
+          <div class="phrase-pron">zhuh muh swee dee kon poo-ray ah-lay oh pub</div>
+          <div class="phrase-en">I was thinking we could go to the pub</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit qu'on pourrait d&icirc;ner</div>
+          <div class="phrase-pron">zhuh muh swee dee kon poo-ray dee-nay</div>
+          <div class="phrase-en">I was thinking we could have dinner</div>
+        </div>
+      </div>
+
+      <!-- Modifiers -->
+      <div class="card">
+        <span class="section-label">Your 7 Modifiers</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          Swap any of these into the middle of your "il y a" frame in place of "beaucoup". With 7 modifiers and 21 fillers, that's 147 sentences from one frame alone.
+        </p>
+
+        <div class="vocab-row">
+          <span class="vocab-fr">Beaucoup (de)</span>
+          <span class="vocab-pron">bo-koo (duh)</span>
+          <span class="vocab-en">A lot (of)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Trop (de)</span>
+          <span class="vocab-pron">tro (duh)</span>
+          <span class="vocab-en">Too many / too much</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Plus (de)</span>
+          <span class="vocab-pron">ploos (duh)</span>
+          <span class="vocab-en">More (of)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Assez (de)</span>
+          <span class="vocab-pron">ah-say (duh)</span>
+          <span class="vocab-en">Enough (of)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Plein (de)</span>
+          <span class="vocab-pron">plan (duh)</span>
+          <span class="vocab-en">Plenty (of) / loads (of)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Pas assez (de)</span>
+          <span class="vocab-pron">pah-zah-say (duh)</span>
+          <span class="vocab-en">Not enough (of)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Toujours</span>
+          <span class="vocab-pron">too-zhoor</span>
+          <span class="vocab-en">Always</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Jamais</span>
+          <span class="vocab-pron">zhah-may</span>
+          <span class="vocab-en">Never</span>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div class="card">
+        <span class="section-label">Your 21 Filler Words</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          You came up with 20 of these in under a minute. Stick any of them on the end of "il y a [modifier] de&hellip;" and you've got a sentence.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Things Around You</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des bonbons</span>
+          <span class="vocab-pron">day bon-bon</span>
+          <span class="vocab-en">Sweets</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des g&acirc;teaux</span>
+          <span class="vocab-pron">day gah-toh</span>
+          <span class="vocab-en">Cakes</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des tables</span>
+          <span class="vocab-pron">day tahbl</span>
+          <span class="vocab-en">Tables</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des saucisses</span>
+          <span class="vocab-pron">day so-sees</span>
+          <span class="vocab-en">Sausages</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des lampes</span>
+          <span class="vocab-pron">day lomp</span>
+          <span class="vocab-en">Lamps</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des livres</span>
+          <span class="vocab-pron">day leevr</span>
+          <span class="vocab-en">Books</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des r&egrave;gles</span>
+          <span class="vocab-pron">day regl</span>
+          <span class="vocab-en">Rulers</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des &eacute;crans</span>
+          <span class="vocab-pron">day ay-kron</span>
+          <span class="vocab-en">Screens</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des stylos</span>
+          <span class="vocab-pron">day stee-lo</span>
+          <span class="vocab-en">Pens</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des cartes</span>
+          <span class="vocab-pron">day kart</span>
+          <span class="vocab-en">Maps</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Nature &amp; Weather</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des parcs</span>
+          <span class="vocab-pron">day park</span>
+          <span class="vocab-en">Parks</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des nuages</span>
+          <span class="vocab-pron">day noo-azh</span>
+          <span class="vocab-en">Clouds</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">La neige</span>
+          <span class="vocab-pron">la nezh</span>
+          <span class="vocab-en">Snow</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des lumi&egrave;res</span>
+          <span class="vocab-pron">day loo-mee-air</span>
+          <span class="vocab-en">Lights</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des plantes</span>
+          <span class="vocab-pron">day plont</span>
+          <span class="vocab-en">Plants</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des fleurs</span>
+          <span class="vocab-pron">day flur</span>
+          <span class="vocab-en">Flowers</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">People &amp; Feelings</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des &eacute;motions</span>
+          <span class="vocab-pron">day ay-mo-see-on</span>
+          <span class="vocab-en">Emotions</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des sentiments</span>
+          <span class="vocab-pron">day son-tee-mon</span>
+          <span class="vocab-en">Feelings</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des gar&ccedil;ons</span>
+          <span class="vocab-pron">day gar-son</span>
+          <span class="vocab-en">Boys</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des filles</span>
+          <span class="vocab-pron">day fee</span>
+          <span class="vocab-en">Girls</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des animaux</span>
+          <span class="vocab-pron">day za-nee-mo</span>
+          <span class="vocab-en">Animals</span>
+        </div>
+      </div>
+
+      <!-- Key Concepts -->
+      <div class="card">
+        <span class="section-label">Key Concepts</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">The Past Tense Shortcut</h3>
+        <p class="text-sm text-gray-600 mb-3">
+          To make most verbs past tense, just add an "&eacute;" sound to the end. Don't overthink conjugation, let your ear do the work over time.
+        </p>
+        <div class="vocab-row">
+          <span class="vocab-fr">Je pense &rarr; J'ai pens&eacute;</span>
+          <span class="vocab-pron">zhuh ponss &rarr; zhay pon-say</span>
+          <span class="vocab-en">I think &rarr; I thought</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Je mange &rarr; J'ai mang&eacute;</span>
+          <span class="vocab-pron">zhuh monzh &rarr; zhay mon-zhay</span>
+          <span class="vocab-en">I eat &rarr; I ate</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Making "Il y a" Singular</h3>
+        <p class="text-sm text-gray-600 mb-3">
+          Switch from plural to singular by replacing "des" with "un" (masculine) or "une" (feminine), or "du" for uncountable things.
+        </p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des fleurs &rarr; Il y a une fleur</div>
+          <div class="phrase-pron">ee-lee-ah day flur &rarr; ee-lee-ah oon flur</div>
+          <div class="phrase-en">There are flowers &rarr; There is a flower</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a de la neige</div>
+          <div class="phrase-pron">ee-lee-ah duh la nezh</div>
+          <div class="phrase-en">There is some snow</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The Canada Story</h3>
+        <p class="text-sm text-gray-600">
+          You say "en France" (feminine country) but "au Canada" (masculine country). There's no intuitive rule for why. The French prioritise how things sound over strict logic. Keep this anecdote locked and loaded for when anyone criticises your French.
+        </p>
+      </div>
+
+      <!-- Before Next Lesson -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <div class="technique-step">
+          <span class="technique-num">1</span>
+          <p class="text-sm text-gray-600"><strong>Don't cram.</strong> Have a good sleep and let it settle. Your brain is processing a lot right now.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">2</span>
+          <p class="text-sm text-gray-600"><strong>Play with the frames.</strong> Take "il y a", slot in a modifier, add a filler word. Say it out loud. Try different combinations. There's no wrong answer.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">3</span>
+          <p class="text-sm text-gray-600"><strong>Try "je me suis dit".</strong> Think of something you'd like to do and say it: "Je me suis dit qu'on pourrait&hellip;" followed by whatever comes to mind.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">4</span>
+          <p class="text-sm text-gray-600"><strong>Zero pressure.</strong> This isn't homework. Just enjoy creating sentences. The more you play, the more automatic the frames become.</p>
+        </div>
+        <p class="text-xs text-gray-400 italic mt-3">Next lesson: we'll start building your "speed dating" mini script, where you introduce yourself using the frames and vocab from today.</p>
+      </div>
+
+    </div>
+    <!-- end Lesson 1 tab -->
+
+  </main>
+
+  <footer class="text-center text-xs text-gray-300 py-6">&copy; FluentISH 2026</footer>
+
+</body>
+</html>
