@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Louise Coultas-Pitman &ndash; FluentISH</title>
+  <title>Louise Coultas-Pitman – FluentISH</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -68,49 +68,25 @@
     .technique-step { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.5rem 0; }
     .technique-num { display: inline-flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; border-radius: 999px; background: #4DD4F5; color: #003359; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
 
-    /* Frame + filler visual */
-    .frame-display {
-      display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem;
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.15rem; font-weight: 700; color: #003359;
-      padding: 1rem 1.25rem; background: #f0f5fa; border-radius: 0.75rem;
-      margin-bottom: 0.5rem;
-    }
-    .frame-display .fixed { white-space: nowrap; }
-    .frame-display .slot {
-      display: inline-block; min-width: 7rem; padding: 0.25rem 0.75rem;
-      border-bottom: 2.5px dashed #4DD4F5; color: #4DD4F5;
-      font-style: italic; font-weight: 600; font-size: 0.95rem;
-      font-family: 'Inter', sans-serif; text-align: center;
-    }
-    .frame-pron {
-      font-style: italic; color: #8a9ab0; font-size: 0.78rem;
-      font-family: 'Inter', sans-serif; margin-bottom: 1rem;
-      padding-left: 1.25rem;
-    }
-    .filler-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+    /* Pill grids */
+    .pill-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .pill-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #9ca3af; margin-bottom: 0.4rem; margin-top: 1rem; }
+
     .filler-pill {
       display: inline-flex; flex-direction: column; align-items: center;
-      background: white; border: 1px solid #e0e5eb; border-radius: 0.6rem;
+      background: #f8f9fb; border: 1px solid #e0e5eb; border-radius: 0.6rem;
       padding: 0.45rem 0.75rem; text-align: center;
-      transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .filler-pill:hover { border-color: #4DD4F5; box-shadow: 0 0 0 2px rgba(77,212,245,0.15); }
     .filler-pill .fr  { font-weight: 700; color: #003359; font-size: 0.82rem; white-space: nowrap; }
     .filler-pill .en  { color: #8a9ab0; font-size: 0.68rem; margin-top: 1px; }
 
     .modifier-pill {
       display: inline-flex; flex-direction: column; align-items: center;
-      background: #003359; border: 1px solid #003359; border-radius: 0.6rem;
+      background: #003359; border-radius: 0.6rem;
       padding: 0.45rem 0.75rem; text-align: center;
-      transition: opacity 0.15s;
     }
-    .modifier-pill:hover { opacity: 0.85; }
     .modifier-pill .fr { font-weight: 700; color: #4DD4F5; font-size: 0.82rem; white-space: nowrap; }
     .modifier-pill .en { color: rgba(255,255,255,0.6); font-size: 0.68rem; margin-top: 1px; }
-
-    .combo-arrow { display: flex; align-items: center; justify-content: center; color: #8a9ab0; font-size: 1.5rem; padding: 0.25rem 0; }
-    .pill-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #9ca3af; margin-bottom: 0.35rem; }
   </style>
 </head>
 
@@ -133,32 +109,26 @@
   <!-- Tab nav -->
   <div class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
     <div class="max-w-4xl mx-auto px-6 flex overflow-x-auto">
-      <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
-      <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1 &#10022;</button>
+      <button @click="tab = 'all'" :class="tab === 'all' ? 'tab-btn active' : 'tab-btn'">Everything</button>
+      <button @click="tab = 'l1'" :class="tab === 'l1' ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
     </div>
   </div>
 
   <main class="max-w-4xl mx-auto px-6 py-8 space-y-6">
-
 
     <!-- ══════════════════════════════════════════ -->
     <!-- TAB: EVERYTHING                           -->
     <!-- ══════════════════════════════════════════ -->
     <div x-show="tab === 'all'" class="space-y-6">
 
-      <!-- ─── FRAME 1: Il y a des ___ ─── -->
+      <!-- FRAME 1 -->
       <div class="card" style="border-color: #C8102E; border-width: 2px;">
-        <span class="section-label">Frame 1: Il y a des ___</span>
-        <p class="text-sm text-gray-400 italic mb-4">There are some ___. Pick any filler and slot it on the end.</p>
+        <span class="section-label">Frame 1</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">Il y a des ___ </h3>
+        <p class="text-sm text-gray-500 mb-4">There are some ___. Pick any filler word below and stick it on the end.</p>
 
-        <div class="frame-display">
-          <span class="fixed">Il y a des</span>
-          <span class="slot">filler</span>
-        </div>
-        <div class="frame-pron">ee-lee-ah day ___</div>
-
-        <p class="pill-label">Fillers you can swap in</p>
-        <div class="filler-grid">
+        <p class="pill-label">Swap in any of these fillers</p>
+        <div class="pill-grid">
           <div class="filler-pill"><span class="fr">bonbons</span><span class="en">sweets</span></div>
           <div class="filler-pill"><span class="fr">g&acirc;teaux</span><span class="en">cakes</span></div>
           <div class="filler-pill"><span class="fr">tables</span><span class="en">tables</span></div>
@@ -181,22 +151,34 @@
           <div class="filler-pill"><span class="fr">animaux</span><span class="en">animals</span></div>
         </div>
 
-        <p class="text-xs text-gray-400 italic mt-4">Also works singular: "il y a un ___" (masc) / "il y a une ___" (fem) / "il y a du ___" (uncountable, e.g. snow)</p>
+        <p class="pill-label">So you get sentences like</p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des <strong>fleurs</strong></div>
+          <div class="phrase-pron">ee-lee-ah day flur</div>
+          <div class="phrase-en">There are some flowers</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des <strong>saucisses</strong></div>
+          <div class="phrase-pron">ee-lee-ah day so-sees</div>
+          <div class="phrase-en">There are some sausages</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des <strong>nuages</strong></div>
+          <div class="phrase-pron">ee-lee-ah day noo-azh</div>
+          <div class="phrase-en">There are some clouds</div>
+        </div>
+
+        <p class="text-xs text-gray-400 italic mt-3">Also works singular: il y a un ___ (masc) / il y a une ___ (fem) / il y a du ___ (uncountable, e.g. de la neige = snow)</p>
       </div>
 
-      <!-- ─── FRAME 2: Je pense que c'est ___ ─── -->
+      <!-- FRAME 2 -->
       <div class="card" style="border-color: #C8102E; border-width: 2px;">
-        <span class="section-label">Frame 2: Je pense que c'est ___</span>
-        <p class="text-sm text-gray-400 italic mb-4">I think it's ___. Slot any adjective on the end.</p>
-
-        <div class="frame-display">
-          <span class="fixed">Je pense que c'est</span>
-          <span class="slot">adjective</span>
-        </div>
-        <div class="frame-pron">zhuh ponss kuh say ___</div>
+        <span class="section-label">Frame 2</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">Je pense que c'est ___</h3>
+        <p class="text-sm text-gray-500 mb-4">I think it's ___. Slot any adjective on the end.</p>
 
         <p class="pill-label">Example fillers</p>
-        <div class="filler-grid">
+        <div class="pill-grid">
           <div class="filler-pill"><span class="fr">difficile</span><span class="en">difficult</span></div>
           <div class="filler-pill"><span class="fr">fun</span><span class="en">fun</span></div>
           <div class="filler-pill"><span class="fr">int&eacute;ressant</span><span class="en">interesting</span></div>
@@ -205,29 +187,22 @@
           <div class="filler-pill"><span class="fr">super</span><span class="en">great</span></div>
         </div>
 
-        <p class="text-sm text-gray-500 mt-4 mb-1">Chain it with Frame 1 or 3:</p>
+        <p class="pill-label">Chain it with Frame 1 or 3</p>
         <div class="phrase-row">
-          <div class="phrase-fr">Je pense que c'est difficile parce qu'il y a beaucoup de probl&egrave;mes</div>
+          <div class="phrase-fr">Je pense que c'est <strong>difficile</strong> parce qu'il y a beaucoup de probl&egrave;mes</div>
           <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel parss kee-lee-ah bo-koo duh pro-blem</div>
           <div class="phrase-en">I think it's difficult because there are a lot of problems</div>
         </div>
       </div>
 
-      <!-- ─── FRAME 3: Il y a ___ de ___ ─── -->
+      <!-- FRAME 3 -->
       <div class="card" style="border-color: #C8102E; border-width: 2px;">
-        <span class="section-label">Frame 3: Il y a ___ de ___</span>
-        <p class="text-sm text-gray-400 italic mb-4">There are [lots / too many / never any] of ___. Two slots: pick a modifier, then pick a filler.</p>
+        <span class="section-label">Frame 3</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">Il y a ___ de ___</h3>
+        <p class="text-sm text-gray-500 mb-4">Two slots to fill. Pick a modifier to say how many, then pick a filler to say of what.</p>
 
-        <div class="frame-display">
-          <span class="fixed">Il y a</span>
-          <span class="slot">modifier</span>
-          <span class="fixed">de</span>
-          <span class="slot">filler</span>
-        </div>
-        <div class="frame-pron">ee-lee-ah ___ duh ___</div>
-
-        <p class="pill-label">Pick a modifier (dark pills)</p>
-        <div class="filler-grid">
+        <p class="pill-label">Slot 1: Pick a modifier</p>
+        <div class="pill-grid">
           <div class="modifier-pill"><span class="fr">beaucoup</span><span class="en">a lot</span></div>
           <div class="modifier-pill"><span class="fr">trop</span><span class="en">too many</span></div>
           <div class="modifier-pill"><span class="fr">plus</span><span class="en">more</span></div>
@@ -238,10 +213,8 @@
           <div class="modifier-pill"><span class="fr">jamais</span><span class="en">never</span></div>
         </div>
 
-        <div class="combo-arrow">&darr; + &darr;</div>
-
-        <p class="pill-label">Then add any filler (same 21 words from Frame 1)</p>
-        <div class="filler-grid">
+        <p class="pill-label">Slot 2: Pick a filler (same 21 words from Frame 1)</p>
+        <div class="pill-grid">
           <div class="filler-pill"><span class="fr">bonbons</span><span class="en">sweets</span></div>
           <div class="filler-pill"><span class="fr">g&acirc;teaux</span><span class="en">cakes</span></div>
           <div class="filler-pill"><span class="fr">tables</span><span class="en">tables</span></div>
@@ -264,23 +237,11 @@
           <div class="filler-pill"><span class="fr">animaux</span><span class="en">animals</span></div>
         </div>
 
-        <p class="text-sm text-gray-500 mt-4"><strong>8 modifiers &times; 21 fillers = 168 sentences</strong> from this one frame.</p>
-      </div>
-
-      <!-- ─── Example combos ─── -->
-      <div class="card">
-        <span class="section-label">Example Combos</span>
-        <p class="text-sm text-gray-400 italic mb-4">Just a few of the hundreds of sentences you can already make.</p>
-
+        <p class="pill-label">So you get sentences like</p>
         <div class="phrase-row">
           <div class="phrase-fr">Il y a <strong>trop</strong> de <strong>nuages</strong></div>
           <div class="phrase-pron">ee-lee-ah tro duh noo-azh</div>
           <div class="phrase-en">There are too many clouds</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a <strong>jamais</strong> de <strong>nuages</strong></div>
-          <div class="phrase-pron">ee-lee-ah zhah-may duh noo-azh</div>
-          <div class="phrase-en">There are never any clouds</div>
         </div>
         <div class="phrase-row">
           <div class="phrase-fr">Il y a <strong>plein</strong> de <strong>fleurs</strong></div>
@@ -288,34 +249,24 @@
           <div class="phrase-en">There are loads of flowers</div>
         </div>
         <div class="phrase-row">
+          <div class="phrase-fr">Il y a <strong>jamais</strong> de <strong>bonbons</strong></div>
+          <div class="phrase-pron">ee-lee-ah zhah-may duh bon-bon</div>
+          <div class="phrase-en">There are never any sweets</div>
+        </div>
+        <div class="phrase-row">
           <div class="phrase-fr">Il y a <strong>pas assez</strong> de <strong>g&acirc;teaux</strong></div>
           <div class="phrase-pron">ee-lee-ah pah-zah-say duh gah-toh</div>
           <div class="phrase-en">There aren't enough cakes</div>
         </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des <strong>saucisses</strong> mais il y a <strong>jamais</strong> de <strong>bonbons</strong></div>
-          <div class="phrase-pron">ee-lee-ah day so-sees may ee-lee-ah zhah-may duh bon-bon</div>
-          <div class="phrase-en">There are sausages but there are never any sweets</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je pense que c'est <strong>difficile</strong> parce qu'il y a <strong>trop</strong> de <strong>saucisses</strong></div>
-          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel parss kee-lee-ah tro duh so-sees</div>
-          <div class="phrase-en">I think it's difficult because there are too many sausages</div>
-        </div>
+
+        <p class="text-sm text-gray-500 mt-3"><strong>8 modifiers x 21 fillers = 168 sentences</strong> from this one frame alone.</p>
       </div>
 
-      <!-- ─── Bonus Frame: Je me suis dit ─── -->
+      <!-- Bonus Frame -->
       <div class="card">
-        <span class="section-label">Bonus Frame: Je me suis dit</span>
-        <p class="text-sm text-gray-400 italic mb-4">
-          Way more natural than "j'ai pens&eacute;". Think of it like "I was thinking&hellip;" rather than "I have thought&hellip;"
-        </p>
-
-        <div class="frame-display">
-          <span class="fixed">Je me suis dit qu'on pourrait</span>
-          <span class="slot">activity</span>
-        </div>
-        <div class="frame-pron">zhuh muh swee dee kon poo-ray ___</div>
+        <span class="section-label">Bonus Frame</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">Je me suis dit qu'on pourrait ___</h3>
+        <p class="text-sm text-gray-500 mb-4">I was thinking we could ___. Way more natural than the textbook "j'ai pens&eacute;".</p>
 
         <div class="phrase-row">
           <div class="phrase-fr">Je me suis dit qu'on pourrait aller au parc</div>
@@ -337,7 +288,7 @@
       <!-- Get out of jail cards -->
       <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
         <span class="section-label">Get-Out-of-Jail Cards</span>
-        <p class="text-sm text-gray-400 mb-4 italic">Keep these loaded at all times. When you're stuck mid-conversation, reach for one instead of freezing up.</p>
+        <p class="text-sm text-gray-400 mb-4 italic">Keep these loaded. When you're stuck mid-conversation, reach for one instead of freezing up.</p>
 
         <div class="toolkit-row">
           <div class="vocab-fr">Comment dire&hellip;</div>
@@ -366,9 +317,7 @@
         <span class="section-label">Key Concepts</span>
 
         <h3 class="font-display text-base font-bold text-navy mb-3">The Past Tense Shortcut</h3>
-        <p class="text-sm text-gray-600 mb-3">
-          To make most verbs past tense, just add an "&eacute;" sound to the end. Don't overthink conjugation, let your ear do the work over time.
-        </p>
+        <p class="text-sm text-gray-600 mb-3">Add an "&eacute;" sound to make most verbs past tense. Don't overthink conjugation.</p>
         <div class="vocab-row">
           <span class="vocab-fr">Je pense &rarr; J'ai pens&eacute;</span>
           <span class="vocab-pron">zhuh ponss &rarr; zhay pon-say</span>
@@ -381,9 +330,7 @@
         </div>
 
         <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Making "Il y a" Singular</h3>
-        <p class="text-sm text-gray-600 mb-3">
-          Switch from plural to singular by replacing "des" with "un" (masculine) or "une" (feminine), or "du" for uncountable things.
-        </p>
+        <p class="text-sm text-gray-600 mb-3">Replace "des" with "un" (masculine), "une" (feminine), or "du/de la" (uncountable).</p>
         <div class="phrase-row">
           <div class="phrase-fr">Il y a des fleurs &rarr; Il y a une fleur</div>
           <div class="phrase-pron">ee-lee-ah day flur &rarr; ee-lee-ah oon flur</div>
@@ -397,14 +344,13 @@
 
         <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The Canada Story</h3>
         <p class="text-sm text-gray-600">
-          You say "en France" (feminine country) but "au Canada" (masculine country). There's no intuitive rule for why. The French prioritise how things sound over strict logic. Keep this anecdote locked and loaded for when anyone criticises your French.
+          You say "en France" (feminine country) but "au Canada" (masculine country). There's no intuitive rule. The French prioritise how things sound over strict logic. Keep this anecdote locked and loaded for when anyone criticises your French.
         </p>
       </div>
 
       <!-- Sounding Natural -->
       <div class="card">
         <span class="section-label">Sounding Natural</span>
-
         <div class="vocab-row">
           <span class="vocab-fr">T&ecirc;te dans les nuages</span>
           <span class="vocab-pron">tet don lay noo-azh</span>
@@ -432,21 +378,21 @@
         <span class="section-label">Before Next Lesson</span>
         <div class="technique-step">
           <span class="technique-num">1</span>
-          <p class="text-sm text-gray-600"><strong>Don't cram.</strong> Have a good sleep and let it settle. Your brain is processing a lot right now.</p>
+          <p class="text-sm text-gray-600"><strong>Don't cram.</strong> Have a good sleep and let it settle.</p>
         </div>
         <div class="technique-step">
           <span class="technique-num">2</span>
-          <p class="text-sm text-gray-600"><strong>Play with the frames.</strong> Take "il y a", slot in a modifier, add a filler word. Say it out loud. Try different combinations. There's no wrong answer.</p>
+          <p class="text-sm text-gray-600"><strong>Play with the frames.</strong> Pick a modifier from the dark pills, pick a filler from the light pills, say the sentence out loud. No wrong answers.</p>
         </div>
         <div class="technique-step">
           <span class="technique-num">3</span>
-          <p class="text-sm text-gray-600"><strong>Try "je me suis dit".</strong> Think of something you'd like to do and say it: "Je me suis dit qu'on pourrait&hellip;" followed by whatever comes to mind.</p>
+          <p class="text-sm text-gray-600"><strong>Try "je me suis dit".</strong> Think of something you'd like to do and say "Je me suis dit qu'on pourrait&hellip;" followed by whatever comes to mind.</p>
         </div>
         <div class="technique-step">
           <span class="technique-num">4</span>
-          <p class="text-sm text-gray-600"><strong>Zero pressure.</strong> This isn't homework. Just enjoy creating sentences. The more you play, the more automatic the frames become.</p>
+          <p class="text-sm text-gray-600"><strong>Zero pressure.</strong> This isn't homework. Just enjoy creating sentences.</p>
         </div>
-        <p class="text-xs text-gray-400 italic mt-3">Next lesson: we'll start building your "speed dating" mini script, where you introduce yourself using the frames and vocab from today.</p>
+        <p class="text-xs text-gray-400 italic mt-3">Next lesson: we'll start building your "speed dating" mini script, introducing yourself using the frames and vocab from today.</p>
       </div>
 
     </div>
@@ -461,7 +407,7 @@
       <div class="lesson-strip">
         <div class="num">Lesson 1</div>
         <h2>Frames &amp; Fillers</h2>
-        <div class="meta">15 Sep 2026 &middot; il y a des, je pense que c'est, il y a [modifier] de &middot; 8 modifiers &middot; 21 filler words</div>
+        <div class="meta">15 Sep 2026 &middot; 3 frames &middot; 8 modifiers &middot; 21 filler words</div>
       </div>
 
       <!-- What You Covered -->
@@ -471,26 +417,21 @@
           Three foundational frames: <strong>il y a des ___</strong> (there are some), <strong>je pense que c'est ___</strong> (I think it's), and <strong>il y a [modifier] de ___</strong> (there are lots/too many/never any of). You proved that the cognitive load sits on the English, not the French, by rattling off 20 nouns in a minute without hesitating on the frame.
         </p>
         <p class="text-sm text-gray-600 mb-2">
-          You then learned 8 modifiers that slot into the third frame, giving you 168 sentence combinations from just one frame.
+          You then learned 8 modifiers that slot into the third frame, giving you 168 sentence combinations.
         </p>
         <p class="text-sm text-gray-600">
           You also explored the past tense shortcut (add an "&eacute;" sound), singular forms of "il y a", and the bonus frame "je me suis dit" which sounds far more natural than the textbook "j'ai pens&eacute;".
         </p>
       </div>
 
-      <!-- ─── FRAME 1 ─── -->
+      <!-- FRAME 1 -->
       <div class="card" style="border-color: #C8102E; border-width: 2px;">
-        <span class="section-label">Frame 1: Il y a des ___</span>
-        <p class="text-sm text-gray-400 italic mb-4">There are some ___. Pick any filler and slot it on the end.</p>
+        <span class="section-label">Frame 1</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">Il y a des ___</h3>
+        <p class="text-sm text-gray-500 mb-4">There are some ___. Pick any filler word below and stick it on the end.</p>
 
-        <div class="frame-display">
-          <span class="fixed">Il y a des</span>
-          <span class="slot">filler</span>
-        </div>
-        <div class="frame-pron">ee-lee-ah day ___</div>
-
-        <p class="pill-label">Fillers you can swap in</p>
-        <div class="filler-grid">
+        <p class="pill-label">Swap in any of these fillers</p>
+        <div class="pill-grid">
           <div class="filler-pill"><span class="fr">bonbons</span><span class="en">sweets</span></div>
           <div class="filler-pill"><span class="fr">g&acirc;teaux</span><span class="en">cakes</span></div>
           <div class="filler-pill"><span class="fr">tables</span><span class="en">tables</span></div>
@@ -513,22 +454,17 @@
           <div class="filler-pill"><span class="fr">animaux</span><span class="en">animals</span></div>
         </div>
 
-        <p class="text-xs text-gray-400 italic mt-4">Also works singular: "il y a un ___" (masc) / "il y a une ___" (fem) / "il y a du ___" (uncountable, e.g. snow)</p>
+        <p class="text-xs text-gray-400 italic mt-4">Also works singular: il y a un ___ (masc) / il y a une ___ (fem) / il y a de la neige (snow, uncountable)</p>
       </div>
 
-      <!-- ─── FRAME 2 ─── -->
+      <!-- FRAME 2 -->
       <div class="card" style="border-color: #C8102E; border-width: 2px;">
-        <span class="section-label">Frame 2: Je pense que c'est ___</span>
-        <p class="text-sm text-gray-400 italic mb-4">I think it's ___. Slot any adjective on the end.</p>
-
-        <div class="frame-display">
-          <span class="fixed">Je pense que c'est</span>
-          <span class="slot">adjective</span>
-        </div>
-        <div class="frame-pron">zhuh ponss kuh say ___</div>
+        <span class="section-label">Frame 2</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">Je pense que c'est ___</h3>
+        <p class="text-sm text-gray-500 mb-4">I think it's ___. Slot any adjective on the end.</p>
 
         <p class="pill-label">Example fillers</p>
-        <div class="filler-grid">
+        <div class="pill-grid">
           <div class="filler-pill"><span class="fr">difficile</span><span class="en">difficult</span></div>
           <div class="filler-pill"><span class="fr">fun</span><span class="en">fun</span></div>
           <div class="filler-pill"><span class="fr">int&eacute;ressant</span><span class="en">interesting</span></div>
@@ -536,30 +472,16 @@
           <div class="filler-pill"><span class="fr">bizarre</span><span class="en">weird</span></div>
           <div class="filler-pill"><span class="fr">super</span><span class="en">great</span></div>
         </div>
-
-        <p class="text-sm text-gray-500 mt-4 mb-1">Chain it with Frame 1 or 3:</p>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je pense que c'est difficile parce qu'il y a beaucoup de probl&egrave;mes</div>
-          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel parss kee-lee-ah bo-koo duh pro-blem</div>
-          <div class="phrase-en">I think it's difficult because there are a lot of problems</div>
-        </div>
       </div>
 
-      <!-- ─── FRAME 3 ─── -->
+      <!-- FRAME 3 -->
       <div class="card" style="border-color: #C8102E; border-width: 2px;">
-        <span class="section-label">Frame 3: Il y a ___ de ___</span>
-        <p class="text-sm text-gray-400 italic mb-4">There are [lots / too many / never any] of ___. Two slots: pick a modifier, then pick a filler.</p>
+        <span class="section-label">Frame 3</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">Il y a ___ de ___</h3>
+        <p class="text-sm text-gray-500 mb-4">Two slots. Pick a modifier to say how many, then pick a filler to say of what.</p>
 
-        <div class="frame-display">
-          <span class="fixed">Il y a</span>
-          <span class="slot">modifier</span>
-          <span class="fixed">de</span>
-          <span class="slot">filler</span>
-        </div>
-        <div class="frame-pron">ee-lee-ah ___ duh ___</div>
-
-        <p class="pill-label">Pick a modifier (dark pills)</p>
-        <div class="filler-grid">
+        <p class="pill-label">Slot 1: Pick a modifier</p>
+        <div class="pill-grid">
           <div class="modifier-pill"><span class="fr">beaucoup</span><span class="en">a lot</span></div>
           <div class="modifier-pill"><span class="fr">trop</span><span class="en">too many</span></div>
           <div class="modifier-pill"><span class="fr">plus</span><span class="en">more</span></div>
@@ -570,10 +492,8 @@
           <div class="modifier-pill"><span class="fr">jamais</span><span class="en">never</span></div>
         </div>
 
-        <div class="combo-arrow">&darr; + &darr;</div>
-
-        <p class="pill-label">Then add any filler (same 21 words from Frame 1)</p>
-        <div class="filler-grid">
+        <p class="pill-label">Slot 2: Pick a filler (same 21 words)</p>
+        <div class="pill-grid">
           <div class="filler-pill"><span class="fr">bonbons</span><span class="en">sweets</span></div>
           <div class="filler-pill"><span class="fr">g&acirc;teaux</span><span class="en">cakes</span></div>
           <div class="filler-pill"><span class="fr">tables</span><span class="en">tables</span></div>
@@ -596,21 +516,36 @@
           <div class="filler-pill"><span class="fr">animaux</span><span class="en">animals</span></div>
         </div>
 
-        <p class="text-sm text-gray-500 mt-4"><strong>8 modifiers &times; 21 fillers = 168 sentences</strong> from this one frame.</p>
+        <p class="pill-label">Example sentences</p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a <strong>trop</strong> de <strong>nuages</strong></div>
+          <div class="phrase-pron">ee-lee-ah tro duh noo-azh</div>
+          <div class="phrase-en">There are too many clouds</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a <strong>plein</strong> de <strong>fleurs</strong></div>
+          <div class="phrase-pron">ee-lee-ah plan duh flur</div>
+          <div class="phrase-en">There are loads of flowers</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a <strong>jamais</strong> de <strong>bonbons</strong></div>
+          <div class="phrase-pron">ee-lee-ah zhah-may duh bon-bon</div>
+          <div class="phrase-en">There are never any sweets</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a <strong>pas assez</strong> de <strong>g&acirc;teaux</strong></div>
+          <div class="phrase-pron">ee-lee-ah pah-zah-say duh gah-toh</div>
+          <div class="phrase-en">There aren't enough cakes</div>
+        </div>
+
+        <p class="text-sm text-gray-500 mt-3"><strong>8 modifiers x 21 fillers = 168 sentences</strong> from this one frame alone.</p>
       </div>
 
-      <!-- ─── Bonus Frame ─── -->
+      <!-- Bonus Frame -->
       <div class="card">
-        <span class="section-label">Bonus Frame: Je me suis dit</span>
-        <p class="text-sm text-gray-400 italic mb-4">
-          Way more natural than "j'ai pens&eacute;". Think of it like "I was thinking&hellip;" rather than "I have thought&hellip;"
-        </p>
-
-        <div class="frame-display">
-          <span class="fixed">Je me suis dit qu'on pourrait</span>
-          <span class="slot">activity</span>
-        </div>
-        <div class="frame-pron">zhuh muh swee dee kon poo-ray ___</div>
+        <span class="section-label">Bonus Frame</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">Je me suis dit qu'on pourrait ___</h3>
+        <p class="text-sm text-gray-500 mb-4">I was thinking we could ___. Way more natural than "j'ai pens&eacute;".</p>
 
         <div class="phrase-row">
           <div class="phrase-fr">Je me suis dit qu'on pourrait aller au parc</div>
@@ -634,9 +569,7 @@
         <span class="section-label">Key Concepts</span>
 
         <h3 class="font-display text-base font-bold text-navy mb-3">The Past Tense Shortcut</h3>
-        <p class="text-sm text-gray-600 mb-3">
-          To make most verbs past tense, just add an "&eacute;" sound to the end. Don't overthink conjugation, let your ear do the work over time.
-        </p>
+        <p class="text-sm text-gray-600 mb-3">Add an "&eacute;" sound to make most verbs past tense. Don't overthink conjugation.</p>
         <div class="vocab-row">
           <span class="vocab-fr">Je pense &rarr; J'ai pens&eacute;</span>
           <span class="vocab-pron">zhuh ponss &rarr; zhay pon-say</span>
@@ -648,24 +581,9 @@
           <span class="vocab-en">I eat &rarr; I ate</span>
         </div>
 
-        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Making "Il y a" Singular</h3>
-        <p class="text-sm text-gray-600 mb-3">
-          Switch from plural to singular by replacing "des" with "un" (masculine) or "une" (feminine), or "du" for uncountable things.
-        </p>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des fleurs &rarr; Il y a une fleur</div>
-          <div class="phrase-pron">ee-lee-ah day flur &rarr; ee-lee-ah oon flur</div>
-          <div class="phrase-en">There are flowers &rarr; There is a flower</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a de la neige</div>
-          <div class="phrase-pron">ee-lee-ah duh la nezh</div>
-          <div class="phrase-en">There is some snow</div>
-        </div>
-
         <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The Canada Story</h3>
         <p class="text-sm text-gray-600">
-          You say "en France" (feminine country) but "au Canada" (masculine country). There's no intuitive rule for why. The French prioritise how things sound over strict logic. Keep this anecdote locked and loaded for when anyone criticises your French.
+          You say "en France" (feminine country) but "au Canada" (masculine country). There's no intuitive rule. Keep this locked and loaded for when anyone criticises your French.
         </p>
       </div>
 
@@ -674,21 +592,21 @@
         <span class="section-label">Before Next Lesson</span>
         <div class="technique-step">
           <span class="technique-num">1</span>
-          <p class="text-sm text-gray-600"><strong>Don't cram.</strong> Have a good sleep and let it settle. Your brain is processing a lot right now.</p>
+          <p class="text-sm text-gray-600"><strong>Don't cram.</strong> Have a good sleep and let it settle.</p>
         </div>
         <div class="technique-step">
           <span class="technique-num">2</span>
-          <p class="text-sm text-gray-600"><strong>Play with the frames.</strong> Take "il y a", slot in a modifier, add a filler word. Say it out loud. Try different combinations. There's no wrong answer.</p>
+          <p class="text-sm text-gray-600"><strong>Play with the frames.</strong> Pick a modifier, pick a filler, say the sentence out loud. No wrong answers.</p>
         </div>
         <div class="technique-step">
           <span class="technique-num">3</span>
-          <p class="text-sm text-gray-600"><strong>Try "je me suis dit".</strong> Think of something you'd like to do and say it: "Je me suis dit qu'on pourrait&hellip;" followed by whatever comes to mind.</p>
+          <p class="text-sm text-gray-600"><strong>Try "je me suis dit".</strong> Think of something you'd like to do and say it.</p>
         </div>
         <div class="technique-step">
           <span class="technique-num">4</span>
-          <p class="text-sm text-gray-600"><strong>Zero pressure.</strong> This isn't homework. Just enjoy creating sentences. The more you play, the more automatic the frames become.</p>
+          <p class="text-sm text-gray-600"><strong>Zero pressure.</strong> This isn't homework. Just enjoy creating sentences.</p>
         </div>
-        <p class="text-xs text-gray-400 italic mt-3">Next lesson: we'll start building your "speed dating" mini script, where you introduce yourself using the frames and vocab from today.</p>
+        <p class="text-xs text-gray-400 italic mt-3">Next lesson: we'll start building your "speed dating" mini script.</p>
       </div>
 
     </div>
