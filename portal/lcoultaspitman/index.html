@@ -34,53 +34,26 @@
     [x-cloak] { display: none !important; }
 
     .tab-btn {
-      padding: 0.9rem 1.25rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      border-bottom: 3px solid transparent;
-      transition: all 0.15s;
-      white-space: nowrap;
-      color: #6b7280;
+      padding: 0.9rem 1.25rem; font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.04em; border-bottom: 3px solid transparent;
+      transition: all 0.15s; white-space: nowrap; color: #6b7280;
     }
     .tab-btn:hover { color: #003359; }
     .tab-btn.active { color: #003359; border-bottom-color: #003359; }
 
-    .vocab-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 0;
-      border-bottom: 1px solid #f0f0f0;
-      padding: 0.6rem 0;
-      align-items: baseline;
-    }
+    .vocab-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-bottom: 1px solid #f0f0f0; padding: 0.6rem 0; align-items: baseline; }
     .vocab-row:last-child { border-bottom: none; }
     .vocab-fr   { font-weight: 600; color: #003359; }
     .vocab-pron { font-style: italic; color: #8a9ab0; font-size: 0.8rem; padding: 0 0.5rem; }
     .vocab-en   { color: #6b7280; font-size: 0.85rem; }
 
-    .phrase-row {
-      border-bottom: 1px solid #f0f0f0;
-      padding: 0.75rem 0;
-    }
+    .phrase-row { border-bottom: 1px solid #f0f0f0; padding: 0.75rem 0; }
     .phrase-row:last-child { border-bottom: none; }
     .phrase-fr   { font-weight: 600; color: #003359; font-size: 0.95rem; }
     .phrase-pron { font-style: italic; color: #8a9ab0; font-size: 0.78rem; margin-top: 1px; }
     .phrase-en   { color: #6b7280; font-size: 0.85rem; margin-top: 2px; }
 
-    .section-label {
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
-      color: #C8102E; margin-bottom: 0.75rem; display: block;
-    }
-
-    .sound-pill {
-      display: inline-flex; flex-direction: column; align-items: center;
-      background: #f8f9fb; border: 1px solid #e5e9ef; border-radius: 10px;
-      padding: 0.5rem 0.85rem; text-align: center;
-    }
-    .sound-pill .fr   { font-weight: 700; color: #003359; font-size: 0.9rem; }
-    .sound-pill .pron { font-style: italic; color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
-    .sound-pill .en   { color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+    .section-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #C8102E; margin-bottom: 0.75rem; display: block; }
 
     .card { background: white; border: 1px solid #e8ecf0; border-radius: 1rem; padding: 1.5rem; }
 
@@ -92,16 +65,52 @@
     .lesson-strip h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; margin-top: 2px; }
     .lesson-strip .meta { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
 
-    .technique-step {
-      display: flex; align-items: flex-start; gap: 0.75rem;
-      padding: 0.5rem 0;
+    .technique-step { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.5rem 0; }
+    .technique-num { display: inline-flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; border-radius: 999px; background: #4DD4F5; color: #003359; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
+
+    /* Frame + filler visual */
+    .frame-display {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.15rem; font-weight: 700; color: #003359;
+      padding: 1rem 1.25rem; background: #f0f5fa; border-radius: 0.75rem;
+      margin-bottom: 0.5rem;
     }
-    .technique-num {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 1.5rem; height: 1.5rem; border-radius: 999px;
-      background: #4DD4F5; color: #003359; font-size: 0.7rem; font-weight: 700;
-      flex-shrink: 0;
+    .frame-display .fixed { white-space: nowrap; }
+    .frame-display .slot {
+      display: inline-block; min-width: 7rem; padding: 0.25rem 0.75rem;
+      border-bottom: 2.5px dashed #4DD4F5; color: #4DD4F5;
+      font-style: italic; font-weight: 600; font-size: 0.95rem;
+      font-family: 'Inter', sans-serif; text-align: center;
     }
+    .frame-pron {
+      font-style: italic; color: #8a9ab0; font-size: 0.78rem;
+      font-family: 'Inter', sans-serif; margin-bottom: 1rem;
+      padding-left: 1.25rem;
+    }
+    .filler-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+    .filler-pill {
+      display: inline-flex; flex-direction: column; align-items: center;
+      background: white; border: 1px solid #e0e5eb; border-radius: 0.6rem;
+      padding: 0.45rem 0.75rem; text-align: center;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .filler-pill:hover { border-color: #4DD4F5; box-shadow: 0 0 0 2px rgba(77,212,245,0.15); }
+    .filler-pill .fr  { font-weight: 700; color: #003359; font-size: 0.82rem; white-space: nowrap; }
+    .filler-pill .en  { color: #8a9ab0; font-size: 0.68rem; margin-top: 1px; }
+
+    .modifier-pill {
+      display: inline-flex; flex-direction: column; align-items: center;
+      background: #003359; border: 1px solid #003359; border-radius: 0.6rem;
+      padding: 0.45rem 0.75rem; text-align: center;
+      transition: opacity 0.15s;
+    }
+    .modifier-pill:hover { opacity: 0.85; }
+    .modifier-pill .fr { font-weight: 700; color: #4DD4F5; font-size: 0.82rem; white-space: nowrap; }
+    .modifier-pill .en { color: rgba(255,255,255,0.6); font-size: 0.68rem; margin-top: 1px; }
+
+    .combo-arrow { display: flex; align-items: center; justify-content: center; color: #8a9ab0; font-size: 1.5rem; padding: 0.25rem 0; }
+    .pill-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #9ca3af; margin-bottom: 0.35rem; }
   </style>
 </head>
 
@@ -137,93 +146,177 @@
     <!-- ══════════════════════════════════════════ -->
     <div x-show="tab === 'all'" class="space-y-6">
 
-      <!-- Frames & Fillers -->
+      <!-- ─── FRAME 1: Il y a des ___ ─── -->
       <div class="card" style="border-color: #C8102E; border-width: 2px;">
-        <span class="section-label">Your 3 Frames: The Building Blocks</span>
-        <p class="text-sm text-gray-400 italic mb-4">
-          These three frames are your foundation. Slot any filler word onto the end and you've got a sentence. Don't overthink it, just play.
-        </p>
+        <span class="section-label">Frame 1: Il y a des ___</span>
+        <p class="text-sm text-gray-400 italic mb-4">There are some ___. Pick any filler and slot it on the end.</p>
 
-        <h3 class="font-display text-base font-bold text-navy mb-3">Frame 1: Il y a des&hellip;</h3>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des&hellip;</div>
-          <div class="phrase-pron">ee-lee-ah day</div>
-          <div class="phrase-en">There are some&hellip;</div>
+        <div class="frame-display">
+          <span class="fixed">Il y a des</span>
+          <span class="slot">filler</span>
         </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des difficult&eacute;s</div>
-          <div class="phrase-pron">ee-lee-ah day dee-fee-kool-tay</div>
-          <div class="phrase-en">There are some difficulties</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des fleurs</div>
-          <div class="phrase-pron">ee-lee-ah day flur</div>
-          <div class="phrase-en">There are some flowers</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des saucisses</div>
-          <div class="phrase-pron">ee-lee-ah day so-sees</div>
-          <div class="phrase-en">There are some sausages</div>
-        </div>
-        <p class="text-xs text-gray-400 italic mt-2">Also works singular: "il y a un&hellip;" (masc) / "il y a une&hellip;" (fem) / "il y a du&hellip;" (uncountable, e.g. snow)</p>
+        <div class="frame-pron">ee-lee-ah day ___</div>
 
-        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Frame 2: Je pense que c'est&hellip;</h3>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je pense que c'est&hellip;</div>
-          <div class="phrase-pron">zhuh ponss kuh say</div>
-          <div class="phrase-en">I think it's&hellip;</div>
+        <p class="pill-label">Fillers you can swap in</p>
+        <div class="filler-grid">
+          <div class="filler-pill"><span class="fr">bonbons</span><span class="en">sweets</span></div>
+          <div class="filler-pill"><span class="fr">g&acirc;teaux</span><span class="en">cakes</span></div>
+          <div class="filler-pill"><span class="fr">tables</span><span class="en">tables</span></div>
+          <div class="filler-pill"><span class="fr">parcs</span><span class="en">parks</span></div>
+          <div class="filler-pill"><span class="fr">saucisses</span><span class="en">sausages</span></div>
+          <div class="filler-pill"><span class="fr">lampes</span><span class="en">lamps</span></div>
+          <div class="filler-pill"><span class="fr">livres</span><span class="en">books</span></div>
+          <div class="filler-pill"><span class="fr">r&egrave;gles</span><span class="en">rulers</span></div>
+          <div class="filler-pill"><span class="fr">&eacute;crans</span><span class="en">screens</span></div>
+          <div class="filler-pill"><span class="fr">nuages</span><span class="en">clouds</span></div>
+          <div class="filler-pill"><span class="fr">lumi&egrave;res</span><span class="en">lights</span></div>
+          <div class="filler-pill"><span class="fr">plantes</span><span class="en">plants</span></div>
+          <div class="filler-pill"><span class="fr">fleurs</span><span class="en">flowers</span></div>
+          <div class="filler-pill"><span class="fr">stylos</span><span class="en">pens</span></div>
+          <div class="filler-pill"><span class="fr">cartes</span><span class="en">maps</span></div>
+          <div class="filler-pill"><span class="fr">&eacute;motions</span><span class="en">emotions</span></div>
+          <div class="filler-pill"><span class="fr">sentiments</span><span class="en">feelings</span></div>
+          <div class="filler-pill"><span class="fr">gar&ccedil;ons</span><span class="en">boys</span></div>
+          <div class="filler-pill"><span class="fr">filles</span><span class="en">girls</span></div>
+          <div class="filler-pill"><span class="fr">animaux</span><span class="en">animals</span></div>
         </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je pense que c'est difficile</div>
-          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel</div>
-          <div class="phrase-en">I think it's difficult</div>
+
+        <p class="text-xs text-gray-400 italic mt-4">Also works singular: "il y a un ___" (masc) / "il y a une ___" (fem) / "il y a du ___" (uncountable, e.g. snow)</p>
+      </div>
+
+      <!-- ─── FRAME 2: Je pense que c'est ___ ─── -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Frame 2: Je pense que c'est ___</span>
+        <p class="text-sm text-gray-400 italic mb-4">I think it's ___. Slot any adjective on the end.</p>
+
+        <div class="frame-display">
+          <span class="fixed">Je pense que c'est</span>
+          <span class="slot">adjective</span>
         </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je pense que c'est fun</div>
-          <div class="phrase-pron">zhuh ponss kuh say fun</div>
-          <div class="phrase-en">I think it's fun</div>
+        <div class="frame-pron">zhuh ponss kuh say ___</div>
+
+        <p class="pill-label">Example fillers</p>
+        <div class="filler-grid">
+          <div class="filler-pill"><span class="fr">difficile</span><span class="en">difficult</span></div>
+          <div class="filler-pill"><span class="fr">fun</span><span class="en">fun</span></div>
+          <div class="filler-pill"><span class="fr">int&eacute;ressant</span><span class="en">interesting</span></div>
+          <div class="filler-pill"><span class="fr">bien</span><span class="en">good</span></div>
+          <div class="filler-pill"><span class="fr">bizarre</span><span class="en">weird</span></div>
+          <div class="filler-pill"><span class="fr">super</span><span class="en">great</span></div>
         </div>
+
+        <p class="text-sm text-gray-500 mt-4 mb-1">Chain it with Frame 1 or 3:</p>
         <div class="phrase-row">
           <div class="phrase-fr">Je pense que c'est difficile parce qu'il y a beaucoup de probl&egrave;mes</div>
           <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel parss kee-lee-ah bo-koo duh pro-blem</div>
           <div class="phrase-en">I think it's difficult because there are a lot of problems</div>
         </div>
-
-        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Frame 3: Il y a [modifier] de&hellip;</h3>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a beaucoup de&hellip;</div>
-          <div class="phrase-pron">ee-lee-ah bo-koo duh</div>
-          <div class="phrase-en">There are a lot of&hellip;</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a trop de&hellip;</div>
-          <div class="phrase-pron">ee-lee-ah tro duh</div>
-          <div class="phrase-en">There are too many&hellip;</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a plein de&hellip;</div>
-          <div class="phrase-pron">ee-lee-ah plan duh</div>
-          <div class="phrase-en">There are loads of&hellip;</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a jamais de&hellip;</div>
-          <div class="phrase-pron">ee-lee-ah zhah-may duh</div>
-          <div class="phrase-en">There are never any&hellip;</div>
-        </div>
-        <p class="text-xs text-gray-400 italic mt-2">Swap in any of the 7 modifiers (see below) to change the meaning. With 7 modifiers and 21 filler words, that's 147 sentences from this one frame.</p>
       </div>
 
-      <!-- Bonus Frame: Je me suis dit -->
+      <!-- ─── FRAME 3: Il y a ___ de ___ ─── -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Frame 3: Il y a ___ de ___</span>
+        <p class="text-sm text-gray-400 italic mb-4">There are [lots / too many / never any] of ___. Two slots: pick a modifier, then pick a filler.</p>
+
+        <div class="frame-display">
+          <span class="fixed">Il y a</span>
+          <span class="slot">modifier</span>
+          <span class="fixed">de</span>
+          <span class="slot">filler</span>
+        </div>
+        <div class="frame-pron">ee-lee-ah ___ duh ___</div>
+
+        <p class="pill-label">Pick a modifier (dark pills)</p>
+        <div class="filler-grid">
+          <div class="modifier-pill"><span class="fr">beaucoup</span><span class="en">a lot</span></div>
+          <div class="modifier-pill"><span class="fr">trop</span><span class="en">too many</span></div>
+          <div class="modifier-pill"><span class="fr">plus</span><span class="en">more</span></div>
+          <div class="modifier-pill"><span class="fr">assez</span><span class="en">enough</span></div>
+          <div class="modifier-pill"><span class="fr">plein</span><span class="en">plenty</span></div>
+          <div class="modifier-pill"><span class="fr">pas assez</span><span class="en">not enough</span></div>
+          <div class="modifier-pill"><span class="fr">toujours</span><span class="en">always</span></div>
+          <div class="modifier-pill"><span class="fr">jamais</span><span class="en">never</span></div>
+        </div>
+
+        <div class="combo-arrow">&darr; + &darr;</div>
+
+        <p class="pill-label">Then add any filler (same 21 words from Frame 1)</p>
+        <div class="filler-grid">
+          <div class="filler-pill"><span class="fr">bonbons</span><span class="en">sweets</span></div>
+          <div class="filler-pill"><span class="fr">g&acirc;teaux</span><span class="en">cakes</span></div>
+          <div class="filler-pill"><span class="fr">tables</span><span class="en">tables</span></div>
+          <div class="filler-pill"><span class="fr">parcs</span><span class="en">parks</span></div>
+          <div class="filler-pill"><span class="fr">saucisses</span><span class="en">sausages</span></div>
+          <div class="filler-pill"><span class="fr">lampes</span><span class="en">lamps</span></div>
+          <div class="filler-pill"><span class="fr">livres</span><span class="en">books</span></div>
+          <div class="filler-pill"><span class="fr">r&egrave;gles</span><span class="en">rulers</span></div>
+          <div class="filler-pill"><span class="fr">&eacute;crans</span><span class="en">screens</span></div>
+          <div class="filler-pill"><span class="fr">nuages</span><span class="en">clouds</span></div>
+          <div class="filler-pill"><span class="fr">lumi&egrave;res</span><span class="en">lights</span></div>
+          <div class="filler-pill"><span class="fr">plantes</span><span class="en">plants</span></div>
+          <div class="filler-pill"><span class="fr">fleurs</span><span class="en">flowers</span></div>
+          <div class="filler-pill"><span class="fr">stylos</span><span class="en">pens</span></div>
+          <div class="filler-pill"><span class="fr">cartes</span><span class="en">maps</span></div>
+          <div class="filler-pill"><span class="fr">&eacute;motions</span><span class="en">emotions</span></div>
+          <div class="filler-pill"><span class="fr">sentiments</span><span class="en">feelings</span></div>
+          <div class="filler-pill"><span class="fr">gar&ccedil;ons</span><span class="en">boys</span></div>
+          <div class="filler-pill"><span class="fr">filles</span><span class="en">girls</span></div>
+          <div class="filler-pill"><span class="fr">animaux</span><span class="en">animals</span></div>
+        </div>
+
+        <p class="text-sm text-gray-500 mt-4"><strong>8 modifiers &times; 21 fillers = 168 sentences</strong> from this one frame.</p>
+      </div>
+
+      <!-- ─── Example combos ─── -->
+      <div class="card">
+        <span class="section-label">Example Combos</span>
+        <p class="text-sm text-gray-400 italic mb-4">Just a few of the hundreds of sentences you can already make.</p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a <strong>trop</strong> de <strong>nuages</strong></div>
+          <div class="phrase-pron">ee-lee-ah tro duh noo-azh</div>
+          <div class="phrase-en">There are too many clouds</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a <strong>jamais</strong> de <strong>nuages</strong></div>
+          <div class="phrase-pron">ee-lee-ah zhah-may duh noo-azh</div>
+          <div class="phrase-en">There are never any clouds</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a <strong>plein</strong> de <strong>fleurs</strong></div>
+          <div class="phrase-pron">ee-lee-ah plan duh flur</div>
+          <div class="phrase-en">There are loads of flowers</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a <strong>pas assez</strong> de <strong>g&acirc;teaux</strong></div>
+          <div class="phrase-pron">ee-lee-ah pah-zah-say duh gah-toh</div>
+          <div class="phrase-en">There aren't enough cakes</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des <strong>saucisses</strong> mais il y a <strong>jamais</strong> de <strong>bonbons</strong></div>
+          <div class="phrase-pron">ee-lee-ah day so-sees may ee-lee-ah zhah-may duh bon-bon</div>
+          <div class="phrase-en">There are sausages but there are never any sweets</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est <strong>difficile</strong> parce qu'il y a <strong>trop</strong> de <strong>saucisses</strong></div>
+          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel parss kee-lee-ah tro duh so-sees</div>
+          <div class="phrase-en">I think it's difficult because there are too many sausages</div>
+        </div>
+      </div>
+
+      <!-- ─── Bonus Frame: Je me suis dit ─── -->
       <div class="card">
         <span class="section-label">Bonus Frame: Je me suis dit</span>
         <p class="text-sm text-gray-400 italic mb-4">
-          This sounds way more natural than "j'ai pens&eacute;" which is textbook but clunky. Think of it like saying "I was thinking&hellip;" in English rather than "I have thought&hellip;"
+          Way more natural than "j'ai pens&eacute;". Think of it like "I was thinking&hellip;" rather than "I have thought&hellip;"
         </p>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je me suis dit&hellip;</div>
-          <div class="phrase-pron">zhuh muh swee dee</div>
-          <div class="phrase-en">I was thinking&hellip; / I said to myself&hellip;</div>
+
+        <div class="frame-display">
+          <span class="fixed">Je me suis dit qu'on pourrait</span>
+          <span class="slot">activity</span>
         </div>
+        <div class="frame-pron">zhuh muh swee dee kon poo-ray ___</div>
+
         <div class="phrase-row">
           <div class="phrase-fr">Je me suis dit qu'on pourrait aller au parc</div>
           <div class="phrase-pron">zhuh muh swee dee kon poo-ray ah-lay oh park</div>
@@ -265,174 +358,6 @@
           <div class="vocab-fr">&Ccedil;a veut dire&hellip;</div>
           <div class="vocab-pron">sa vuh deer</div>
           <div class="vocab-en">That means&hellip; (clarify what you just said)</div>
-        </div>
-      </div>
-
-      <!-- Modifiers -->
-      <div class="card">
-        <span class="section-label">Your 7 Modifiers</span>
-        <p class="text-sm text-gray-400 italic mb-4">
-          Swap any of these into the middle of your "il y a" frame in place of "beaucoup". With 7 modifiers and 21 fillers, that's 147 sentences from one frame alone.
-        </p>
-
-        <div class="vocab-row">
-          <span class="vocab-fr">Beaucoup (de)</span>
-          <span class="vocab-pron">bo-koo (duh)</span>
-          <span class="vocab-en">A lot (of)</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Trop (de)</span>
-          <span class="vocab-pron">tro (duh)</span>
-          <span class="vocab-en">Too many / too much</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Plus (de)</span>
-          <span class="vocab-pron">ploos (duh)</span>
-          <span class="vocab-en">More (of)</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Assez (de)</span>
-          <span class="vocab-pron">ah-say (duh)</span>
-          <span class="vocab-en">Enough (of)</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Plein (de)</span>
-          <span class="vocab-pron">plan (duh)</span>
-          <span class="vocab-en">Plenty (of) / loads (of)</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Pas assez (de)</span>
-          <span class="vocab-pron">pah-zah-say (duh)</span>
-          <span class="vocab-en">Not enough (of)</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Toujours</span>
-          <span class="vocab-pron">too-zhoor</span>
-          <span class="vocab-en">Always</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Jamais</span>
-          <span class="vocab-pron">zhah-may</span>
-          <span class="vocab-en">Never</span>
-        </div>
-      </div>
-
-      <!-- Vocabulary -->
-      <div class="card">
-        <span class="section-label">Your 21 Filler Words</span>
-        <p class="text-sm text-gray-400 italic mb-4">
-          You came up with 20 of these in under a minute. Stick any of them on the end of "il y a [modifier] de&hellip;" and you've got a sentence.
-        </p>
-
-        <h3 class="font-display text-base font-bold text-navy mb-3">Things Around You</h3>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des bonbons</span>
-          <span class="vocab-pron">day bon-bon</span>
-          <span class="vocab-en">Sweets</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des g&acirc;teaux</span>
-          <span class="vocab-pron">day gah-toh</span>
-          <span class="vocab-en">Cakes</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des tables</span>
-          <span class="vocab-pron">day tahbl</span>
-          <span class="vocab-en">Tables</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des saucisses</span>
-          <span class="vocab-pron">day so-sees</span>
-          <span class="vocab-en">Sausages</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des lampes</span>
-          <span class="vocab-pron">day lomp</span>
-          <span class="vocab-en">Lamps</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des livres</span>
-          <span class="vocab-pron">day leevr</span>
-          <span class="vocab-en">Books</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des r&egrave;gles</span>
-          <span class="vocab-pron">day regl</span>
-          <span class="vocab-en">Rulers</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des &eacute;crans</span>
-          <span class="vocab-pron">day ay-kron</span>
-          <span class="vocab-en">Screens</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des stylos</span>
-          <span class="vocab-pron">day stee-lo</span>
-          <span class="vocab-en">Pens</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des cartes</span>
-          <span class="vocab-pron">day kart</span>
-          <span class="vocab-en">Maps</span>
-        </div>
-
-        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Nature &amp; Weather</h3>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des parcs</span>
-          <span class="vocab-pron">day park</span>
-          <span class="vocab-en">Parks</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des nuages</span>
-          <span class="vocab-pron">day noo-azh</span>
-          <span class="vocab-en">Clouds</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">La neige</span>
-          <span class="vocab-pron">la nezh</span>
-          <span class="vocab-en">Snow</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des lumi&egrave;res</span>
-          <span class="vocab-pron">day loo-mee-air</span>
-          <span class="vocab-en">Lights</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des plantes</span>
-          <span class="vocab-pron">day plont</span>
-          <span class="vocab-en">Plants</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des fleurs</span>
-          <span class="vocab-pron">day flur</span>
-          <span class="vocab-en">Flowers</span>
-        </div>
-
-        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">People &amp; Feelings</h3>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des &eacute;motions</span>
-          <span class="vocab-pron">day ay-mo-see-on</span>
-          <span class="vocab-en">Emotions</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des sentiments</span>
-          <span class="vocab-pron">day son-tee-mon</span>
-          <span class="vocab-en">Feelings</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des gar&ccedil;ons</span>
-          <span class="vocab-pron">day gar-son</span>
-          <span class="vocab-en">Boys</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des filles</span>
-          <span class="vocab-pron">day fee</span>
-          <span class="vocab-en">Girls</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des animaux</span>
-          <span class="vocab-pron">day za-nee-mo</span>
-          <span class="vocab-en">Animals</span>
         </div>
       </div>
 
@@ -502,50 +427,6 @@
         </div>
       </div>
 
-      <!-- Example Sentences -->
-      <div class="card">
-        <span class="section-label">Example Sentences: Mix &amp; Match</span>
-        <p class="text-sm text-gray-400 italic mb-4">
-          These are just a few combinations. With 7 modifiers and 21 fillers, you can make over 140 sentences from the "il y a" frame alone.
-        </p>
-
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a trop de nuages</div>
-          <div class="phrase-pron">ee-lee-ah tro duh noo-azh</div>
-          <div class="phrase-en">There are too many clouds</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a jamais de nuages</div>
-          <div class="phrase-pron">ee-lee-ah zhah-may duh noo-azh</div>
-          <div class="phrase-en">There are never any clouds</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a plein de fleurs</div>
-          <div class="phrase-pron">ee-lee-ah plan duh flur</div>
-          <div class="phrase-en">There are loads of flowers</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a pas assez de g&acirc;teaux</div>
-          <div class="phrase-pron">ee-lee-ah pah-zah-say duh gah-toh</div>
-          <div class="phrase-en">There aren't enough cakes</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des saucisses mais il y a jamais de bonbons</div>
-          <div class="phrase-pron">ee-lee-ah day so-sees may ee-lee-ah zhah-may duh bon-bon</div>
-          <div class="phrase-en">There are sausages but there are never any sweets</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je pense que c'est difficile parce qu'il y a trop de saucisses</div>
-          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel parss kee-lee-ah tro duh so-sees</div>
-          <div class="phrase-en">I think it's difficult because there are too many sausages</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je me suis dit qu'on pourrait aller au parc</div>
-          <div class="phrase-pron">zhuh muh swee dee kon poo-ray ah-lay oh park</div>
-          <div class="phrase-en">I was thinking we could go to the park</div>
-        </div>
-      </div>
-
       <!-- Before Next Lesson -->
       <div class="card">
         <span class="section-label">Before Next Lesson</span>
@@ -580,110 +461,157 @@
       <div class="lesson-strip">
         <div class="num">Lesson 1</div>
         <h2>Frames &amp; Fillers</h2>
-        <div class="meta">15 Sep 2026 &middot; il y a des, je pense que c'est, il y a [modifier] de &middot; 7 modifiers &middot; 21 vocab words</div>
+        <div class="meta">15 Sep 2026 &middot; il y a des, je pense que c'est, il y a [modifier] de &middot; 8 modifiers &middot; 21 filler words</div>
       </div>
 
       <!-- What You Covered -->
       <div class="card">
         <span class="section-label">What You Covered</span>
         <p class="text-sm text-gray-600 mb-2">
-          Three foundational frames: <strong>il y a des</strong> (there are some), <strong>je pense que c'est</strong> (I think it's), and <strong>il y a [modifier] de</strong> (there are lots/too many/never any of). You proved that the cognitive load sits on the English, not the French, by rattling off 20 nouns in a minute without hesitating on the frame.
+          Three foundational frames: <strong>il y a des ___</strong> (there are some), <strong>je pense que c'est ___</strong> (I think it's), and <strong>il y a [modifier] de ___</strong> (there are lots/too many/never any of). You proved that the cognitive load sits on the English, not the French, by rattling off 20 nouns in a minute without hesitating on the frame.
         </p>
         <p class="text-sm text-gray-600 mb-2">
-          You then learned 7 modifiers that slot into "il y a" in place of "beaucoup", giving you 140+ sentence combinations from just one frame.
+          You then learned 8 modifiers that slot into the third frame, giving you 168 sentence combinations from just one frame.
         </p>
         <p class="text-sm text-gray-600">
           You also explored the past tense shortcut (add an "&eacute;" sound), singular forms of "il y a", and the bonus frame "je me suis dit" which sounds far more natural than the textbook "j'ai pens&eacute;".
         </p>
       </div>
 
-      <!-- Frames -->
+      <!-- ─── FRAME 1 ─── -->
       <div class="card" style="border-color: #C8102E; border-width: 2px;">
-        <span class="section-label">Your 3 Frames: The Building Blocks</span>
-        <p class="text-sm text-gray-400 italic mb-4">
-          These three frames are your foundation. Slot any filler word onto the end and you've got a sentence. Don't overthink it, just play.
-        </p>
+        <span class="section-label">Frame 1: Il y a des ___</span>
+        <p class="text-sm text-gray-400 italic mb-4">There are some ___. Pick any filler and slot it on the end.</p>
 
-        <h3 class="font-display text-base font-bold text-navy mb-3">Frame 1: Il y a des&hellip;</h3>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des&hellip;</div>
-          <div class="phrase-pron">ee-lee-ah day</div>
-          <div class="phrase-en">There are some&hellip;</div>
+        <div class="frame-display">
+          <span class="fixed">Il y a des</span>
+          <span class="slot">filler</span>
         </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des difficult&eacute;s</div>
-          <div class="phrase-pron">ee-lee-ah day dee-fee-kool-tay</div>
-          <div class="phrase-en">There are some difficulties</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des fleurs</div>
-          <div class="phrase-pron">ee-lee-ah day flur</div>
-          <div class="phrase-en">There are some flowers</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des saucisses</div>
-          <div class="phrase-pron">ee-lee-ah day so-sees</div>
-          <div class="phrase-en">There are some sausages</div>
-        </div>
-        <p class="text-xs text-gray-400 italic mt-2">Also works singular: "il y a un&hellip;" (masc) / "il y a une&hellip;" (fem) / "il y a du&hellip;" (uncountable, e.g. snow)</p>
+        <div class="frame-pron">ee-lee-ah day ___</div>
 
-        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Frame 2: Je pense que c'est&hellip;</h3>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je pense que c'est&hellip;</div>
-          <div class="phrase-pron">zhuh ponss kuh say</div>
-          <div class="phrase-en">I think it's&hellip;</div>
+        <p class="pill-label">Fillers you can swap in</p>
+        <div class="filler-grid">
+          <div class="filler-pill"><span class="fr">bonbons</span><span class="en">sweets</span></div>
+          <div class="filler-pill"><span class="fr">g&acirc;teaux</span><span class="en">cakes</span></div>
+          <div class="filler-pill"><span class="fr">tables</span><span class="en">tables</span></div>
+          <div class="filler-pill"><span class="fr">parcs</span><span class="en">parks</span></div>
+          <div class="filler-pill"><span class="fr">saucisses</span><span class="en">sausages</span></div>
+          <div class="filler-pill"><span class="fr">lampes</span><span class="en">lamps</span></div>
+          <div class="filler-pill"><span class="fr">livres</span><span class="en">books</span></div>
+          <div class="filler-pill"><span class="fr">r&egrave;gles</span><span class="en">rulers</span></div>
+          <div class="filler-pill"><span class="fr">&eacute;crans</span><span class="en">screens</span></div>
+          <div class="filler-pill"><span class="fr">nuages</span><span class="en">clouds</span></div>
+          <div class="filler-pill"><span class="fr">lumi&egrave;res</span><span class="en">lights</span></div>
+          <div class="filler-pill"><span class="fr">plantes</span><span class="en">plants</span></div>
+          <div class="filler-pill"><span class="fr">fleurs</span><span class="en">flowers</span></div>
+          <div class="filler-pill"><span class="fr">stylos</span><span class="en">pens</span></div>
+          <div class="filler-pill"><span class="fr">cartes</span><span class="en">maps</span></div>
+          <div class="filler-pill"><span class="fr">&eacute;motions</span><span class="en">emotions</span></div>
+          <div class="filler-pill"><span class="fr">sentiments</span><span class="en">feelings</span></div>
+          <div class="filler-pill"><span class="fr">gar&ccedil;ons</span><span class="en">boys</span></div>
+          <div class="filler-pill"><span class="fr">filles</span><span class="en">girls</span></div>
+          <div class="filler-pill"><span class="fr">animaux</span><span class="en">animals</span></div>
         </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je pense que c'est difficile</div>
-          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel</div>
-          <div class="phrase-en">I think it's difficult</div>
+
+        <p class="text-xs text-gray-400 italic mt-4">Also works singular: "il y a un ___" (masc) / "il y a une ___" (fem) / "il y a du ___" (uncountable, e.g. snow)</p>
+      </div>
+
+      <!-- ─── FRAME 2 ─── -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Frame 2: Je pense que c'est ___</span>
+        <p class="text-sm text-gray-400 italic mb-4">I think it's ___. Slot any adjective on the end.</p>
+
+        <div class="frame-display">
+          <span class="fixed">Je pense que c'est</span>
+          <span class="slot">adjective</span>
         </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je pense que c'est fun</div>
-          <div class="phrase-pron">zhuh ponss kuh say fun</div>
-          <div class="phrase-en">I think it's fun</div>
+        <div class="frame-pron">zhuh ponss kuh say ___</div>
+
+        <p class="pill-label">Example fillers</p>
+        <div class="filler-grid">
+          <div class="filler-pill"><span class="fr">difficile</span><span class="en">difficult</span></div>
+          <div class="filler-pill"><span class="fr">fun</span><span class="en">fun</span></div>
+          <div class="filler-pill"><span class="fr">int&eacute;ressant</span><span class="en">interesting</span></div>
+          <div class="filler-pill"><span class="fr">bien</span><span class="en">good</span></div>
+          <div class="filler-pill"><span class="fr">bizarre</span><span class="en">weird</span></div>
+          <div class="filler-pill"><span class="fr">super</span><span class="en">great</span></div>
         </div>
+
+        <p class="text-sm text-gray-500 mt-4 mb-1">Chain it with Frame 1 or 3:</p>
         <div class="phrase-row">
           <div class="phrase-fr">Je pense que c'est difficile parce qu'il y a beaucoup de probl&egrave;mes</div>
           <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel parss kee-lee-ah bo-koo duh pro-blem</div>
           <div class="phrase-en">I think it's difficult because there are a lot of problems</div>
         </div>
-
-        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Frame 3: Il y a [modifier] de&hellip;</h3>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a beaucoup de&hellip;</div>
-          <div class="phrase-pron">ee-lee-ah bo-koo duh</div>
-          <div class="phrase-en">There are a lot of&hellip;</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a trop de&hellip;</div>
-          <div class="phrase-pron">ee-lee-ah tro duh</div>
-          <div class="phrase-en">There are too many&hellip;</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a plein de&hellip;</div>
-          <div class="phrase-pron">ee-lee-ah plan duh</div>
-          <div class="phrase-en">There are loads of&hellip;</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a jamais de&hellip;</div>
-          <div class="phrase-pron">ee-lee-ah zhah-may duh</div>
-          <div class="phrase-en">There are never any&hellip;</div>
-        </div>
-        <p class="text-xs text-gray-400 italic mt-2">Swap in any of the 7 modifiers (see below) to change the meaning. With 7 modifiers and 21 filler words, that's 147 sentences from this one frame.</p>
       </div>
 
-      <!-- Bonus Frame: Je me suis dit -->
+      <!-- ─── FRAME 3 ─── -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Frame 3: Il y a ___ de ___</span>
+        <p class="text-sm text-gray-400 italic mb-4">There are [lots / too many / never any] of ___. Two slots: pick a modifier, then pick a filler.</p>
+
+        <div class="frame-display">
+          <span class="fixed">Il y a</span>
+          <span class="slot">modifier</span>
+          <span class="fixed">de</span>
+          <span class="slot">filler</span>
+        </div>
+        <div class="frame-pron">ee-lee-ah ___ duh ___</div>
+
+        <p class="pill-label">Pick a modifier (dark pills)</p>
+        <div class="filler-grid">
+          <div class="modifier-pill"><span class="fr">beaucoup</span><span class="en">a lot</span></div>
+          <div class="modifier-pill"><span class="fr">trop</span><span class="en">too many</span></div>
+          <div class="modifier-pill"><span class="fr">plus</span><span class="en">more</span></div>
+          <div class="modifier-pill"><span class="fr">assez</span><span class="en">enough</span></div>
+          <div class="modifier-pill"><span class="fr">plein</span><span class="en">plenty</span></div>
+          <div class="modifier-pill"><span class="fr">pas assez</span><span class="en">not enough</span></div>
+          <div class="modifier-pill"><span class="fr">toujours</span><span class="en">always</span></div>
+          <div class="modifier-pill"><span class="fr">jamais</span><span class="en">never</span></div>
+        </div>
+
+        <div class="combo-arrow">&darr; + &darr;</div>
+
+        <p class="pill-label">Then add any filler (same 21 words from Frame 1)</p>
+        <div class="filler-grid">
+          <div class="filler-pill"><span class="fr">bonbons</span><span class="en">sweets</span></div>
+          <div class="filler-pill"><span class="fr">g&acirc;teaux</span><span class="en">cakes</span></div>
+          <div class="filler-pill"><span class="fr">tables</span><span class="en">tables</span></div>
+          <div class="filler-pill"><span class="fr">parcs</span><span class="en">parks</span></div>
+          <div class="filler-pill"><span class="fr">saucisses</span><span class="en">sausages</span></div>
+          <div class="filler-pill"><span class="fr">lampes</span><span class="en">lamps</span></div>
+          <div class="filler-pill"><span class="fr">livres</span><span class="en">books</span></div>
+          <div class="filler-pill"><span class="fr">r&egrave;gles</span><span class="en">rulers</span></div>
+          <div class="filler-pill"><span class="fr">&eacute;crans</span><span class="en">screens</span></div>
+          <div class="filler-pill"><span class="fr">nuages</span><span class="en">clouds</span></div>
+          <div class="filler-pill"><span class="fr">lumi&egrave;res</span><span class="en">lights</span></div>
+          <div class="filler-pill"><span class="fr">plantes</span><span class="en">plants</span></div>
+          <div class="filler-pill"><span class="fr">fleurs</span><span class="en">flowers</span></div>
+          <div class="filler-pill"><span class="fr">stylos</span><span class="en">pens</span></div>
+          <div class="filler-pill"><span class="fr">cartes</span><span class="en">maps</span></div>
+          <div class="filler-pill"><span class="fr">&eacute;motions</span><span class="en">emotions</span></div>
+          <div class="filler-pill"><span class="fr">sentiments</span><span class="en">feelings</span></div>
+          <div class="filler-pill"><span class="fr">gar&ccedil;ons</span><span class="en">boys</span></div>
+          <div class="filler-pill"><span class="fr">filles</span><span class="en">girls</span></div>
+          <div class="filler-pill"><span class="fr">animaux</span><span class="en">animals</span></div>
+        </div>
+
+        <p class="text-sm text-gray-500 mt-4"><strong>8 modifiers &times; 21 fillers = 168 sentences</strong> from this one frame.</p>
+      </div>
+
+      <!-- ─── Bonus Frame ─── -->
       <div class="card">
         <span class="section-label">Bonus Frame: Je me suis dit</span>
         <p class="text-sm text-gray-400 italic mb-4">
-          This sounds way more natural than "j'ai pens&eacute;" which is textbook but clunky. Think of it like saying "I was thinking&hellip;" in English rather than "I have thought&hellip;"
+          Way more natural than "j'ai pens&eacute;". Think of it like "I was thinking&hellip;" rather than "I have thought&hellip;"
         </p>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je me suis dit&hellip;</div>
-          <div class="phrase-pron">zhuh muh swee dee</div>
-          <div class="phrase-en">I was thinking&hellip; / I said to myself&hellip;</div>
+
+        <div class="frame-display">
+          <span class="fixed">Je me suis dit qu'on pourrait</span>
+          <span class="slot">activity</span>
         </div>
+        <div class="frame-pron">zhuh muh swee dee kon poo-ray ___</div>
+
         <div class="phrase-row">
           <div class="phrase-fr">Je me suis dit qu'on pourrait aller au parc</div>
           <div class="phrase-pron">zhuh muh swee dee kon poo-ray ah-lay oh park</div>
@@ -698,174 +626,6 @@
           <div class="phrase-fr">Je me suis dit qu'on pourrait d&icirc;ner</div>
           <div class="phrase-pron">zhuh muh swee dee kon poo-ray dee-nay</div>
           <div class="phrase-en">I was thinking we could have dinner</div>
-        </div>
-      </div>
-
-      <!-- Modifiers -->
-      <div class="card">
-        <span class="section-label">Your 7 Modifiers</span>
-        <p class="text-sm text-gray-400 italic mb-4">
-          Swap any of these into the middle of your "il y a" frame in place of "beaucoup". With 7 modifiers and 21 fillers, that's 147 sentences from one frame alone.
-        </p>
-
-        <div class="vocab-row">
-          <span class="vocab-fr">Beaucoup (de)</span>
-          <span class="vocab-pron">bo-koo (duh)</span>
-          <span class="vocab-en">A lot (of)</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Trop (de)</span>
-          <span class="vocab-pron">tro (duh)</span>
-          <span class="vocab-en">Too many / too much</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Plus (de)</span>
-          <span class="vocab-pron">ploos (duh)</span>
-          <span class="vocab-en">More (of)</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Assez (de)</span>
-          <span class="vocab-pron">ah-say (duh)</span>
-          <span class="vocab-en">Enough (of)</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Plein (de)</span>
-          <span class="vocab-pron">plan (duh)</span>
-          <span class="vocab-en">Plenty (of) / loads (of)</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Pas assez (de)</span>
-          <span class="vocab-pron">pah-zah-say (duh)</span>
-          <span class="vocab-en">Not enough (of)</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Toujours</span>
-          <span class="vocab-pron">too-zhoor</span>
-          <span class="vocab-en">Always</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Jamais</span>
-          <span class="vocab-pron">zhah-may</span>
-          <span class="vocab-en">Never</span>
-        </div>
-      </div>
-
-      <!-- Vocabulary -->
-      <div class="card">
-        <span class="section-label">Your 21 Filler Words</span>
-        <p class="text-sm text-gray-400 italic mb-4">
-          You came up with 20 of these in under a minute. Stick any of them on the end of "il y a [modifier] de&hellip;" and you've got a sentence.
-        </p>
-
-        <h3 class="font-display text-base font-bold text-navy mb-3">Things Around You</h3>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des bonbons</span>
-          <span class="vocab-pron">day bon-bon</span>
-          <span class="vocab-en">Sweets</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des g&acirc;teaux</span>
-          <span class="vocab-pron">day gah-toh</span>
-          <span class="vocab-en">Cakes</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des tables</span>
-          <span class="vocab-pron">day tahbl</span>
-          <span class="vocab-en">Tables</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des saucisses</span>
-          <span class="vocab-pron">day so-sees</span>
-          <span class="vocab-en">Sausages</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des lampes</span>
-          <span class="vocab-pron">day lomp</span>
-          <span class="vocab-en">Lamps</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des livres</span>
-          <span class="vocab-pron">day leevr</span>
-          <span class="vocab-en">Books</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des r&egrave;gles</span>
-          <span class="vocab-pron">day regl</span>
-          <span class="vocab-en">Rulers</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des &eacute;crans</span>
-          <span class="vocab-pron">day ay-kron</span>
-          <span class="vocab-en">Screens</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des stylos</span>
-          <span class="vocab-pron">day stee-lo</span>
-          <span class="vocab-en">Pens</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des cartes</span>
-          <span class="vocab-pron">day kart</span>
-          <span class="vocab-en">Maps</span>
-        </div>
-
-        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Nature &amp; Weather</h3>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des parcs</span>
-          <span class="vocab-pron">day park</span>
-          <span class="vocab-en">Parks</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des nuages</span>
-          <span class="vocab-pron">day noo-azh</span>
-          <span class="vocab-en">Clouds</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">La neige</span>
-          <span class="vocab-pron">la nezh</span>
-          <span class="vocab-en">Snow</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des lumi&egrave;res</span>
-          <span class="vocab-pron">day loo-mee-air</span>
-          <span class="vocab-en">Lights</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des plantes</span>
-          <span class="vocab-pron">day plont</span>
-          <span class="vocab-en">Plants</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des fleurs</span>
-          <span class="vocab-pron">day flur</span>
-          <span class="vocab-en">Flowers</span>
-        </div>
-
-        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">People &amp; Feelings</h3>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des &eacute;motions</span>
-          <span class="vocab-pron">day ay-mo-see-on</span>
-          <span class="vocab-en">Emotions</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des sentiments</span>
-          <span class="vocab-pron">day son-tee-mon</span>
-          <span class="vocab-en">Feelings</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des gar&ccedil;ons</span>
-          <span class="vocab-pron">day gar-son</span>
-          <span class="vocab-en">Boys</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des filles</span>
-          <span class="vocab-pron">day fee</span>
-          <span class="vocab-en">Girls</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Des animaux</span>
-          <span class="vocab-pron">day za-nee-mo</span>
-          <span class="vocab-en">Animals</span>
         </div>
       </div>
 
