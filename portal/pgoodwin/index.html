@@ -119,8 +119,8 @@
         <h1 class="font-display text-2xl font-bold mt-1">Patricia's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">1 lesson</p>
-        <p class="text-xs text-blue-400 mt-0.5">Frames &amp; fillers</p>
+        <p class="text-sm text-blue-200 font-medium">2 lessons</p>
+        <p class="text-xs text-blue-400 mt-0.5">Frames, fillers &amp; past tense</p>
       </div>
     </div>
   </header>
@@ -130,6 +130,7 @@
     <div class="max-w-4xl mx-auto px-6 flex overflow-x-auto">
       <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
       <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
+      <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
     </div>
   </div>
 
@@ -158,9 +159,10 @@
         </p>
       </div>
 
-      <!-- Your Three Frames -->
+      <!-- Your Frames -->
       <div class="card">
-        <span class="section-label">Your Three Frames</span>
+        <span class="section-label">Your Frames</span>
+        <h3 class="font-display text-base font-bold text-navy mb-3">From Lesson 1</h3>
 
         <div class="phrase-row">
           <div class="phrase-fr">Il y a des... <span class="text-gray-400 font-normal">(+ noun)</span></div>
@@ -176,6 +178,28 @@
           <div class="phrase-fr">Je me suis dit... <span class="text-gray-400 font-normal">(+ clause)</span></div>
           <div class="phrase-pron">zhuh muh swee dee</div>
           <div class="phrase-en">I thought / I said to myself...</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">From Lesson 2</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e... <span class="text-gray-400 font-normal">(+ verb or place)</span></div>
+          <div class="phrase-pron">zhuh swee za-lay</div>
+          <div class="phrase-en">I went...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis rentr&eacute;e... <span class="text-gray-400 font-normal">(+ place)</span></div>
+          <div class="phrase-pron">zhuh swee ron-tray</div>
+          <div class="phrase-en">I came back / I got home...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Chez... <span class="text-gray-400 font-normal">(+ person)</span></div>
+          <div class="phrase-pron">shay</div>
+          <div class="phrase-en">At / to someone's place</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a beaucoup de... <span class="text-gray-400 font-normal">(+ noun)</span></div>
+          <div class="phrase-pron">eel ya boh-koo duh</div>
+          <div class="phrase-en">There are a lot of...</div>
         </div>
       </div>
 
@@ -353,6 +377,87 @@
           <div class="phrase-pron">zhuh muh swee dee kuh say-tay dee-fee-seel, may eel ya day sol-oo-syon</div>
           <div class="phrase-en">I thought it was difficult, but there are solutions.</div>
         </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Je suis all&eacute;e... / Je suis rentr&eacute;e...</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e nager.</div>
+          <div class="phrase-pron">zhuh swee za-lay na-zhay</div>
+          <div class="phrase-en">I went swimming.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e nager dans la rivi&egrave;re.</div>
+          <div class="phrase-pron">zhuh swee za-lay na-zhay don la ree-vyair</div>
+          <div class="phrase-en">I went swimming in the river.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e au supermarch&eacute;.</div>
+          <div class="phrase-pron">zhuh swee za-lay oh soo-pair-mar-shay</div>
+          <div class="phrase-en">I went to the supermarket.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis rentr&eacute;e chez moi.</div>
+          <div class="phrase-pron">zhuh swee ron-tray shay mwah</div>
+          <div class="phrase-en">I went back home.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis rentr&eacute;e chez mon amie.</div>
+          <div class="phrase-pron">zhuh swee ron-tray shay mon-a-mee</div>
+          <div class="phrase-en">I went back to my friend's place.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e nager dans la rivi&egrave;re et je suis rentr&eacute;e chez Catherine.</div>
+          <div class="phrase-pron">zhuh swee za-lay na-zhay don la ree-vyair ay zhuh swee ron-tray shay ka-treen</div>
+          <div class="phrase-en">I went swimming in the river and I went back to Catherine's.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Il y a beaucoup de...</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a beaucoup de rivi&egrave;res ici.</div>
+          <div class="phrase-pron">eel ya boh-koo duh ree-vyair ee-see</div>
+          <div class="phrase-en">There are a lot of rivers here.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a beaucoup de gens.</div>
+          <div class="phrase-pron">eel ya boh-koo duh zhon</div>
+          <div class="phrase-en">There are a lot of people.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a beaucoup de choses &agrave; faire.</div>
+          <div class="phrase-pron">eel ya boh-koo duh shohz a fair</div>
+          <div class="phrase-en">There are a lot of things to do.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a assez de temps.</div>
+          <div class="phrase-pron">eel ya ass-ay duh ton</div>
+          <div class="phrase-en">There's enough time.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a trop de monde.</div>
+          <div class="phrase-pron">eel ya troh duh mond</div>
+          <div class="phrase-en">There are too many people.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a un peu de vent.</div>
+          <div class="phrase-pron">eel ya un puh duh von</div>
+          <div class="phrase-en">There's a bit of wind.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Saying what you&rsquo;re doing (present tense)</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je mange avec mes amis ce soir.</div>
+          <div class="phrase-pron">zhuh monzh a-vek may za-mee suh swar</div>
+          <div class="phrase-en">I'm eating with my friends this evening.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je regarde la t&eacute;l&eacute;.</div>
+          <div class="phrase-pron">zhuh ruh-gard la tay-lay</div>
+          <div class="phrase-en">I'm watching TV.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Qu'est-ce que tu fais ce soir&nbsp;?</div>
+          <div class="phrase-pron">kess-kuh too fay suh swar</div>
+          <div class="phrase-en">What are you doing this evening?</div>
+        </div>
       </div>
 
       <!-- Tips -->
@@ -377,6 +482,41 @@
         <div class="tip-card">
           <div class="tip-title">Why these frames?</div>
           <p>Dan ran n-gram extraction across transcribed French speech corpora and measured not just frequency but <strong>dispersion</strong>, how evenly a phrase appears across different speakers and conversations. "Il y a" appeared more than double the next most common trigram. These aren't textbook phrases; they're the building blocks of how French is actually spoken.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">The seesaw: aller and rentrer</div>
+          <p><strong>Je suis all&eacute;e</strong> (I went) and <strong>je suis rentr&eacute;e</strong> (I came back) are a mirror image: out and back. Point one finger out and bring it back as you say them. It feels ridiculous, but the physical cue is what makes the pair fire together later, and eventually you drop the gesture and the words come on their own.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">The liaison z (and where not to put it)</div>
+          <p><em>Je suis all&eacute;e</em> gets a <strong>z</strong> sound joining the two words: <em>zhuh swee <strong>za</strong>-lay</em>. That's because <em>all&eacute;e</em> starts with a vowel. <em>Je suis rentr&eacute;e</em> gets <strong>no z</strong>, because <em>rentr&eacute;e</em> starts with a consonant: <em>zhuh swee ron-tray</em>. Sprinkling extra z's where they don't belong is one of the small things that gives you away.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Learn it as one word</div>
+          <p>Don't unpick <em>je suis all&eacute;e</em> into "I am gone" &mdash; that route through English is what slows you down. <em>Je suis all&eacute;e</em> = "I went". One word, one meaning. Think of a small child saying "more juice": they have no idea that <em>more</em> is a quantity and <em>juice</em> is squeezed oranges. They just know the chunk gets them the thing. That's the level of automation you're after.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">"I am ...ing" is a false friend</div>
+          <p>French has no separate "I am eating" form. You just use the present tense: <strong>je mange</strong> (I eat / I'm eating), <strong>je regarde</strong> (I watch / I'm watching). Trying to build the "am" part is what tips you into <em>je suis en train de...</em> territory, and you don't need it.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Mon amie vs mes amis</div>
+          <p><strong>Mon amie</strong> (mon-a-mee) is one friend. <strong>Mes amis</strong> (may za-mee) is several. And keep the <em>avec</em> in: <em>je mange <strong>avec</strong> mes amis</em>. Drop it and you've announced that you're eating your friends.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Beaucoup, carefully</div>
+          <p>It's <em>boh-<strong>koo</strong></em>, with a full round "oo" at the end. Clip it to <em>boh-kuh</em> and you've said <em>beau cul</em> &mdash; "nice bum". So <em>merci beaucoup</em> said carelessly becomes "thanks, nice bum". Worth a laugh with Catherine and Cynthia, and worth getting right with everyone else.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Rhythm beats accuracy</div>
+          <p>When a sentence is correct but still sounds clunky, the problem is pacing, not vocabulary. Parrot the sounds back without attaching any meaning to them &mdash; treat it as music rather than language. Flow is what makes people hear you as a French speaker.</p>
         </div>
       </div>
 
@@ -473,6 +613,102 @@
           <span class="vocab-fr">Donc</span>
           <span class="vocab-pron">donk</span>
           <span class="vocab-en">So / therefore</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Verbs</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Aller</span>
+          <span class="vocab-pron">a-lay</span>
+          <span class="vocab-en">To go &rarr; je suis all&eacute;e (I went)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Rentrer</span>
+          <span class="vocab-pron">ron-tray</span>
+          <span class="vocab-en">To come back / go home &rarr; je suis rentr&eacute;e</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Nager</span>
+          <span class="vocab-pron">na-zhay</span>
+          <span class="vocab-en">To swim</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Manger</span>
+          <span class="vocab-pron">mon-zhay</span>
+          <span class="vocab-en">To eat &rarr; je mange</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Regarder</span>
+          <span class="vocab-pron">ruh-gar-day</span>
+          <span class="vocab-en">To watch &rarr; je regarde</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Nettoyer</span>
+          <span class="vocab-pron">net-wah-yay</span>
+          <span class="vocab-en">To clean &rarr; j'ai nettoy&eacute; les fen&ecirc;tres</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Everyday Words</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">La rivi&egrave;re</span>
+          <span class="vocab-pron">la ree-vyair</span>
+          <span class="vocab-en">The river</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Le supermarch&eacute;</span>
+          <span class="vocab-pron">luh soo-pair-mar-shay</span>
+          <span class="vocab-en">The supermarket (au supermarch&eacute; = to the supermarket)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Les fen&ecirc;tres</span>
+          <span class="vocab-pron">lay fuh-netr</span>
+          <span class="vocab-en">The windows</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Le petit d&eacute;jeuner</span>
+          <span class="vocab-pron">luh puh-tee day-zhuh-nay</span>
+          <span class="vocab-en">Breakfast (literally "the little lunch")</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Le d&eacute;jeuner</span>
+          <span class="vocab-pron">luh day-zhuh-nay</span>
+          <span class="vocab-en">Lunch</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Chez</span>
+          <span class="vocab-pron">shay</span>
+          <span class="vocab-en">At / to someone's place (chez moi, chez Catherine)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Ce soir</span>
+          <span class="vocab-pron">suh swar</span>
+          <span class="vocab-en">This evening / tonight</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Ici</span>
+          <span class="vocab-pron">ee-see</span>
+          <span class="vocab-en">Here</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Quantifiers (swap into "il y a ... de")</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Beaucoup de</span>
+          <span class="vocab-pron">boh-koo duh</span>
+          <span class="vocab-en">A lot of</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Assez de</span>
+          <span class="vocab-pron">ass-ay duh</span>
+          <span class="vocab-en">Enough</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Trop de</span>
+          <span class="vocab-pron">troh duh</span>
+          <span class="vocab-en">Too many / too much</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un peu de</span>
+          <span class="vocab-pron">un puh duh</span>
+          <span class="vocab-en">A bit of</span>
         </div>
       </div>
 
@@ -738,6 +974,363 @@
       </div>
 
     </div><!-- /l1 -->
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 2                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l2'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 2 &middot; 15 September 2026</div>
+        <h2>Out and Back</h2>
+        <div class="meta">Je suis all&eacute;e &middot; Je suis rentr&eacute;e &middot; chez &middot; Il y a beaucoup de</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          You came into this one off the back of a knock: a gathering in Corsica where you could follow the conversation, but someone called on another person to interpret for you, and your confidence in your pronunciation went with it. So the lesson was built around getting that back &mdash; taking one real sentence about your own day and drilling it until it came out clean and fast.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          After a quick recap of your three frames from Lesson 1, you moved into the past tense with movement verbs: <strong>je suis all&eacute;e</strong> (I went) and <strong>je suis rentr&eacute;e</strong> (I came back). You added <strong>chez</strong> for going to someone's place, fixed the liaison and the <em>nager</em> / <em>rentrer</em> pronunciations under a bit of deliberate pressure, and worked on rhythm so the whole sentence lands as one flowing chunk rather than five separate words. You also cleared up the "I am ...ing" false friend and locked in <strong>il y a beaucoup de</strong>.
+        </p>
+      </div>
+
+      <!-- Recap -->
+      <div class="card">
+        <span class="section-label">Recap from Lesson 1</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          Straight out of the gate, from memory. All three came back.
+        </p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des probl&egrave;mes.</div>
+          <div class="phrase-pron">eel ya day pro-blem</div>
+          <div class="phrase-en">There are some problems.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est difficile de parler fran&ccedil;ais.</div>
+          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel duh par-lay fron-say</div>
+          <div class="phrase-en">I think it's difficult to speak French.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je me suis dit que j'allais essayer d'apprendre le fran&ccedil;ais.</div>
+          <div class="phrase-pron">zhuh muh swee dee kuh zha-lay ess-ay-yay da-prondr luh fron-say</div>
+          <div class="phrase-en">I said to myself I'd try to learn French.</div>
+        </div>
+      </div>
+
+      <!-- The sentence -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">The Sentence You Built</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+          It started as a description of your actual day &mdash; the windows, breakfast, a swim in the river &mdash; and got rebuilt piece by piece into this:
+        </p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e nager dans la rivi&egrave;re et je suis rentr&eacute;e chez mon amie.</div>
+          <div class="phrase-pron">zhuh swee za-lay na-zhay don la ree-vyair ay zhuh swee ron-tray shay mon-a-mee</div>
+          <div class="phrase-en">I went swimming in the river and I came back to my friend's place.</div>
+        </div>
+        <p class="text-sm text-gray-600 leading-relaxed mt-4">
+          Broken into its chunks: <strong>je suis all&eacute;e</strong> + <strong>nager</strong> + <strong>dans la rivi&egrave;re</strong> + <strong>et</strong> + <strong>je suis rentr&eacute;e</strong> + <strong>chez mon amie</strong>. Every one of those is reusable. Swap the filler and you have a different day.
+        </p>
+      </div>
+
+      <!-- The pair -->
+      <div class="card">
+        <span class="section-label">Your Past-Tense Pair</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          A small group of French verbs &mdash; the movement ones &mdash; build the past with <em>je suis</em> rather than <em>j'ai</em>. These two are the pair to own first.
+        </p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e... <span class="text-gray-400 font-normal">(+ verb or place)</span></div>
+          <div class="phrase-pron">zhuh swee za-lay</div>
+          <div class="phrase-en">I went...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis rentr&eacute;e... <span class="text-gray-400 font-normal">(+ place)</span></div>
+          <div class="phrase-pron">zhuh swee ron-tray</div>
+          <div class="phrase-en">I came back / I got home...</div>
+        </div>
+        <p class="text-sm text-gray-600 leading-relaxed mt-4">
+          <strong>Note on the spelling:</strong> you'll see <em>all&eacute;</em> and <em>rentr&eacute;</em> written with an extra <strong>-e</strong> for a woman &mdash; <em>all&eacute;e</em>, <em>rentr&eacute;e</em>. It's completely silent. Nothing changes in your mouth.
+        </p>
+      </div>
+
+      <!-- Frames in action -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">Frames in Action</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          The frame stays fixed. Only what comes after it changes. Out loud, at speed.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Je suis all&eacute;e...</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e nager.</div>
+          <div class="phrase-pron">zhuh swee za-lay na-zhay</div>
+          <div class="phrase-en">I went swimming.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e au supermarch&eacute;.</div>
+          <div class="phrase-pron">zhuh swee za-lay oh soo-pair-mar-shay</div>
+          <div class="phrase-en">I went to the supermarket.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e au restaurant.</div>
+          <div class="phrase-pron">zhuh swee za-lay oh res-toh-ron</div>
+          <div class="phrase-en">I went to the restaurant.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e en Corse.</div>
+          <div class="phrase-pron">zhuh swee za-lay on korss</div>
+          <div class="phrase-en">I went to Corsica.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e chez Catherine.</div>
+          <div class="phrase-pron">zhuh swee za-lay shay ka-treen</div>
+          <div class="phrase-en">I went to Catherine's.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Je suis rentr&eacute;e...</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis rentr&eacute;e chez moi.</div>
+          <div class="phrase-pron">zhuh swee ron-tray shay mwah</div>
+          <div class="phrase-en">I went back home.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis rentr&eacute;e chez mon amie.</div>
+          <div class="phrase-pron">zhuh swee ron-tray shay mon-a-mee</div>
+          <div class="phrase-en">I came back to my friend's place.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis rentr&eacute;e chez Cynthia.</div>
+          <div class="phrase-pron">zhuh swee ron-tray shay sin-tya</div>
+          <div class="phrase-en">I came back to Cynthia's.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis rentr&eacute;e tard.</div>
+          <div class="phrase-pron">zhuh swee ron-tray tar</div>
+          <div class="phrase-en">I got back late.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The seesaw (both together)</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e nager et je suis rentr&eacute;e chez moi.</div>
+          <div class="phrase-pron">zhuh swee za-lay na-zhay ay zhuh swee ron-tray shay mwah</div>
+          <div class="phrase-en">I went swimming and I came back home.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis all&eacute;e au supermarch&eacute; et je suis rentr&eacute;e chez Catherine.</div>
+          <div class="phrase-pron">zhuh swee za-lay oh soo-pair-mar-shay ay zhuh swee ron-tray shay ka-treen</div>
+          <div class="phrase-en">I went to the supermarket and I came back to Catherine's.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Il y a beaucoup de...</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a beaucoup de rivi&egrave;res ici.</div>
+          <div class="phrase-pron">eel ya boh-koo duh ree-vyair ee-see</div>
+          <div class="phrase-en">There are a lot of rivers here.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a beaucoup de gens.</div>
+          <div class="phrase-pron">eel ya boh-koo duh zhon</div>
+          <div class="phrase-en">There are a lot of people.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a beaucoup de choses &agrave; faire.</div>
+          <div class="phrase-pron">eel ya boh-koo duh shohz a fair</div>
+          <div class="phrase-en">There are a lot of things to do.</div>
+        </div>
+        <p class="text-sm text-gray-600 leading-relaxed mt-4">
+          Once the frame is automatic, <em>beaucoup</em> is just a slot of its own: swap in <strong>assez de</strong> (enough), <strong>trop de</strong> (too many), <strong>un peu de</strong> (a bit of) and you get a whole family of sentences for free.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Saying what you&rsquo;re doing</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je mange avec mes amis ce soir.</div>
+          <div class="phrase-pron">zhuh monzh a-vek may za-mee suh swar</div>
+          <div class="phrase-en">I'm eating with my friends this evening.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je regarde la t&eacute;l&eacute;.</div>
+          <div class="phrase-pron">zhuh ruh-gard la tay-lay</div>
+          <div class="phrase-en">I'm watching TV.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Qu'est-ce que tu fais ce soir&nbsp;?</div>
+          <div class="phrase-pron">kess-kuh too fay suh swar</div>
+          <div class="phrase-en">What are you doing this evening?</div>
+        </div>
+      </div>
+
+      <!-- Pronunciation -->
+      <div class="card">
+        <span class="section-label">Pronunciation Fixes from This Lesson</span>
+
+        <div class="tip-card">
+          <div class="tip-title">The liaison z &mdash; and where it doesn't go</div>
+          <p><em>Je suis all&eacute;e</em> joins up with a <strong>z</strong>: <em>zhuh swee <strong>za</strong>-lay</em>, because <em>all&eacute;e</em> starts with a vowel. <em>Je suis rentr&eacute;e</em> gets <strong>no z</strong>, because <em>rentr&eacute;e</em> starts with a consonant. You were adding z's into places they don't belong, and that's exactly the kind of small thing that makes a French ear pause.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Nager</div>
+          <p>Two syllables, nothing more: <strong>na-zhay</strong>. Something extra was creeping in and polluting it. Strip it back &mdash; <em>na-zhay</em>, clean, no consonants smuggled into the middle.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Rentr&eacute;e</div>
+          <p><strong>ron-tray</strong>. It helps to know where it comes from: <em>entrer</em> is to enter, so <em>rentrer</em> is literally to re-enter &mdash; the same <em>re-</em> you already know from <em>au revoir</em> (until I see you again). You're saying "I went, and I re-entered".</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Chez, not "&agrave; chez"</div>
+          <p><em>Chez</em> does the whole job on its own. <strong>Chez mon amie</strong>, <strong>chez Catherine</strong>, <strong>chez moi</strong> &mdash; nothing goes in front of it, and the person's name goes straight after.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Beaucoup, carefully</div>
+          <p><em>boh-<strong>koo</strong></em>, with a full round "oo". Clipped to <em>boh-kuh</em> it becomes <em>beau cul</em> &mdash; "nice bum". <em>Merci beaucoup</em> is worth getting right.</p>
+        </div>
+      </div>
+
+      <!-- Grammar -->
+      <div class="card">
+        <span class="section-label">Grammar &amp; Notes</span>
+
+        <div class="tip-card">
+          <div class="tip-title">Don't translate it &mdash; learn it as one word</div>
+          <p><em>Je suis all&eacute;e</em> is not "I am gone". The moment you try to decode it through English you've lost the speed. <em>Je suis all&eacute;e</em> = "I went". <em>Je suis rentr&eacute;e</em> = "I came back". One chunk, one meaning, no working out.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">"I am eating" doesn't exist in French</div>
+          <p>English has a separate form for "I am ...ing". French doesn't &mdash; it just uses the present tense. <strong>Je mange</strong> covers both "I eat" and "I'm eating"; <strong>je regarde</strong> covers "I watch" and "I'm watching". The encouraging part: you already had <em>manger</em> and <em>regarder</em>. It was only the "am" that was tripping you.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Mon amie / mes amis &mdash; and keep the avec</div>
+          <p><strong>Mon amie</strong> (mon-a-mee) is one friend; <strong>mes amis</strong> (may za-mee) is several. And say <em>je mange <strong>avec</strong> mes amis</em>. Without the <em>avec</em>, you've just said you're eating them.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Petit d&eacute;jeuner</div>
+          <p>Breakfast is <strong>le petit d&eacute;jeuner</strong> &mdash; literally "the little lunch". Which makes lunch itself simply <strong>le d&eacute;jeuner</strong>.</p>
+        </div>
+      </div>
+
+      <!-- Drills -->
+      <div class="card">
+        <span class="section-label">The Drills We Used</span>
+
+        <div class="tip-card">
+          <div class="tip-title">Three strikes, then two lives</div>
+          <p>Dan stopped correcting on the spot and gave you three attempts before stepping in, then narrowed it to two on <em>nager</em> and <em>rentrer</em>. Knowing the lives were limited slowed you down &mdash; and you got them first time. That mild pressure is deliberate: it's a rehearsal for the real conversation, where people's patience is finite too.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Flipped frame and filler</div>
+          <p>Keep the French word constant and let everything else be English: "I can <em>nager</em>, I want to <em>nager</em>, I have <em>nag&eacute;</em>, the dog can <em>nager</em>, the children will <em>nager</em>." All your attention goes on the English, so the French word has to come out on its own. Then you do the same with <em>rentrer</em>.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">The seesaw gesture</div>
+          <p>One finger out for <em>je suis all&eacute;e</em>, back in for <em>je suis rentr&eacute;e</em>. A physical cue feels absurd, and it works: after enough repetitions the gesture drops away and the pair arrives together on its own. Do it in the shower, cooking, with a glass of wine in hand.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Parroting for flow</div>
+          <p>Repeat the sentence after Dan without attaching any meaning to it &mdash; just copy the sounds, like music. Meaning is what makes you slow down and translate. Take it away and the rhythm turns up immediately.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">The emphasis game</div>
+          <p>Say <em>je mange avec mes amis ce soir</em> five times, stressing a different word each time. It's an acting exercise, not a language one &mdash; while your brain is busy deciding where the emphasis goes, the French comes out correctly without supervision. That's the whole point.</p>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+        <div class="vocab-row">
+          <span class="vocab-fr">Nager</span>
+          <span class="vocab-pron">na-zhay</span>
+          <span class="vocab-en">To swim</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Rentrer</span>
+          <span class="vocab-pron">ron-tray</span>
+          <span class="vocab-en">To come back / go home (literally: to re-enter)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">La rivi&egrave;re</span>
+          <span class="vocab-pron">la ree-vyair</span>
+          <span class="vocab-en">The river</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Le supermarch&eacute;</span>
+          <span class="vocab-pron">luh soo-pair-mar-shay</span>
+          <span class="vocab-en">The supermarket</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Les fen&ecirc;tres</span>
+          <span class="vocab-pron">lay fuh-netr</span>
+          <span class="vocab-en">The windows</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Le petit d&eacute;jeuner</span>
+          <span class="vocab-pron">luh puh-tee day-zhuh-nay</span>
+          <span class="vocab-en">Breakfast</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Chez</span>
+          <span class="vocab-pron">shay</span>
+          <span class="vocab-en">At / to someone's place</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Mon amie / mes amis</span>
+          <span class="vocab-pron">mon-a-mee / may za-mee</span>
+          <span class="vocab-en">My friend / my friends</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Ce soir</span>
+          <span class="vocab-pron">suh swar</span>
+          <span class="vocab-en">This evening</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Beaucoup de</span>
+          <span class="vocab-pron">boh-koo duh</span>
+          <span class="vocab-en">A lot of</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Assez de / trop de / un peu de</span>
+          <span class="vocab-pron">ass-ay / troh / un puh duh</span>
+          <span class="vocab-en">Enough / too many / a bit of</span>
+        </div>
+      </div>
+
+      <!-- Homework -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          Two things only this week. Ignore everything else.
+        </p>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Je suis all&eacute;e / je suis rentr&eacute;e.</strong> Do the seesaw whenever you have two or three spare minutes &mdash; finger out, finger back. Vary what follows (nager, au supermarch&eacute;, chez Catherine), never the frame itself.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Il y a beaucoup de...</strong> Memorise it 100%. Full round <em>boh-koo</em>.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Listen to Dan's WhatsApp voice note for both of these and copy the sounds, not the meaning. At this stage they're sounds.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Ask Catherine and Cynthia for 10 minutes of French each day &mdash; and ask them to correct your pronunciation, since they will.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Watch for bad habits setting in. A caricatured liaison is better than a missing one; exaggerate it if you need to.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label" style="color: #4DD4F5;">Coming Up</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          A tongue twister, for accent work &mdash; it pulls your pronunciation towards the centre of your mouth, where French lives, and it's a very good party trick with a glass of wine in your hand. You've already done this once with Welsh, so you know the muscle exists. Plus more frames broken out of that river sentence, so you're not repeating one line all week.
+        </p>
+      </div>
+
+    </div><!-- /l2 -->
+
 
   </main>
 
