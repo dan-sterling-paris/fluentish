@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curriculum Planner | FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preload" as="font" href="fonts/playfair-display.woff2" type="font/woff2" crossorigin />
+  <link rel="preload" as="font" href="fonts/inter.woff2" type="font/woff2" crossorigin />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:   '#003359',
+            navyD:  '#002040',
+            rouge:  '#C8102E',
+            rougeH: '#A50D25',
+            cyan:   '#4DD4F5',
+            sand:   '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <style>
+    @font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(fonts/playfair-display.woff2) format('woff2'); }
+    @font-face { font-family: 'Inter'; font-style: normal; font-weight: 300 700; font-display: swap; src: url(fonts/inter.woff2) format('woff2'); }
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; }
+    .section-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #C8102E;
+      margin-bottom: 1.25rem;
+    }
+    [x-cloak] { display: none !important; }
+    .stage-pill { transition: all 0.15s; }
+    .stage-pill:hover { transform: translateY(-1px); }
+    .frame-card { transition: all 0.15s; }
+    .frame-card:hover { box-shadow: 0 4px 12px rgba(0,51,89,0.12); }
+    .activity-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    details summary::-webkit-details-marker { display: none; }
+    details summary { list-style: none; }
+  </style>
+</head>
+
+<body class="bg-white" x-data="curriculum()" x-cloak>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="bg-navy text-white py-12 md:py-16">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <p class="section-label" style="color:#4DD4F5;">Teacher Reference</p>
+      <h1 class="font-display text-3xl sm:text-4xl font-bold leading-tight mb-4">
+        Curriculum<br/><em class="not-italic text-rouge">Planner</em>
+      </h1>
+      <p class="text-blue-200 text-base leading-relaxed max-w-xl mx-auto">
+        Your session-by-session playbook. Select a stage to see frames, activities,
+        session plans, and transition criteria. Built around progressive overload
+        so every week the bar goes up.
+      </p>
+    </div>
+  </section>
+
+  <main class="max-w-4xl mx-auto px-6 py-10">
+
+    <!-- ===================== QUICK NAV ===================== -->
+    <div class="flex flex-wrap gap-2 mb-4">
+      <template x-for="link in [
+        {id:'assessment',label:'Entry Assessment'},
+        {id:'template',label:'Session Template'},
+        {id:'pi',label:'Processing Instruction'},
+        {id:'overload',label:'Progressive Overload'},
+        {id:'spaced-rep',label:'Spaced Repetition'},
+        {id:'interleaving',label:'Interleaving'},
+        {id:'prosody',label:'Prosody'},
+        {id:'feedback',label:'Corrective Feedback'},
+        {id:'deliberate-practice',label:'Deliberate Practice'},
+        {id:'stages',label:'All Stages'},
+        {id:'exercises',label:'Exercise Catalogue'},
+        {id:'tasks',label:'Task-Based Activities'},
+        {id:'research',label:'Research'},
+      ]" :key="link.id">
+        <button @click="scrollTo(link.id)" class="text-xs font-semibold text-navy border border-navy/20 rounded-full px-3 py-1.5 hover:bg-navy hover:text-white transition-colors" x-text="link.label"></button>
+      </template>
+    </div>
+
+    <!-- ===================== ENTRY ASSESSMENT ===================== -->
+    <section id="assessment" class="mb-14">
+      <p class="section-label">First 15 minutes of session 1</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-6">Entry Assessment</h2>
+
+      <div class="space-y-4">
+        <!-- Probe 1 -->
+        <div class="bg-sand rounded-xl p-5 border border-stone-200">
+          <div class="flex items-start gap-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-navy text-white text-xs font-bold flex items-center justify-center mt-0.5">1</span>
+            <div>
+              <h4 class="font-display text-base font-bold text-navy mb-1">The Greeting</h4>
+              <p class="text-sm text-gray-600 mb-2">Open with <span class="font-semibold text-navy">"Bonjour ! Comment allez-vous ?"</span> at natural pace.</p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <div class="bg-white rounded-lg p-3 border border-stone-200">
+                  <span class="font-bold text-rouge">Zero signal:</span> Complete freeze, nervous laugh, "I have no idea what you said"
+                </div>
+                <div class="bg-white rounded-lg p-3 border border-stone-200">
+                  <span class="font-bold text-green-700">Rustbuster signal:</span> Produces something, even "Bien, merci" however haltingly
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Probe 2 -->
+        <div class="bg-sand rounded-xl p-5 border border-stone-200">
+          <div class="flex items-start gap-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-navy text-white text-xs font-bold flex items-center justify-center mt-0.5">2</span>
+            <div>
+              <h4 class="font-display text-base font-bold text-navy mb-1">The Word Harvest</h4>
+              <p class="text-sm text-gray-600 mb-2">"Say any French words you know. Anything at all. Food, places, random things. Just fire them out."</p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                <div class="bg-white rounded-lg p-3 border border-stone-200">
+                  <span class="font-bold text-rouge">0-5 words</span><br/>True zero
+                </div>
+                <div class="bg-white rounded-lg p-3 border border-stone-200">
+                  <span class="font-bold text-amber-600">6-20 words</span><br/>Passive rustbuster
+                </div>
+                <div class="bg-white rounded-lg p-3 border border-stone-200">
+                  <span class="font-bold text-green-700">20+ words</span><br/>Active rustbuster
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Probe 3 -->
+        <div class="bg-sand rounded-xl p-5 border border-stone-200">
+          <div class="flex items-start gap-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-navy text-white text-xs font-bold flex items-center justify-center mt-0.5">3</span>
+            <div>
+              <h4 class="font-display text-base font-bold text-navy mb-1">The Accent Check</h4>
+              <p class="text-sm text-gray-600 mb-2">Say three words and ask them to repeat: <span class="font-semibold text-navy">bonjour, merci, s'il vous plait.</span></p>
+              <p class="text-xs text-gray-500">Listen for: nasal vowels (the "on" in bonjour), French r vs English r, final-syllable stress.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Probe 4 -->
+        <div class="bg-sand rounded-xl p-5 border border-stone-200">
+          <div class="flex items-start gap-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-navy text-white text-xs font-bold flex items-center justify-center mt-0.5">4</span>
+            <div>
+              <h4 class="font-display text-base font-bold text-navy mb-1">The Goal Anchor</h4>
+              <p class="text-sm text-gray-600 mb-2">"When you imagine yourself speaking French successfully, what does that scene look like?"</p>
+              <div class="flex flex-wrap gap-2 text-xs">
+                <span class="bg-white border border-stone-200 rounded-full px-3 py-1 font-semibold text-navy">Holiday survival</span>
+                <span class="bg-white border border-stone-200 rounded-full px-3 py-1 font-semibold text-navy">Relocation readiness</span>
+                <span class="bg-white border border-stone-200 rounded-full px-3 py-1 font-semibold text-navy">Professional French</span>
+                <span class="bg-white border border-stone-200 rounded-full px-3 py-1 font-semibold text-navy">Personal enrichment</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Probe 5 -->
+        <div class="bg-sand rounded-xl p-5 border border-stone-200">
+          <div class="flex items-start gap-3">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full bg-navy text-white text-xs font-bold flex items-center justify-center mt-0.5">5</span>
+            <div>
+              <h4 class="font-display text-base font-bold text-navy mb-1">The Sentence Attempt</h4>
+              <p class="text-sm text-gray-600 mb-2">"Try to tell me one thing about yourself in French. Anything. Even one word is fine."</p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <div class="bg-white rounded-lg p-3 border border-stone-200">
+                  <span class="font-bold text-rouge">Zero:</span> "Je suis [name]" or nothing
+                </div>
+                <div class="bg-white rounded-lg p-3 border border-stone-200">
+                  <span class="font-bold text-green-700">Rustbuster:</span> "J'habite a Manchester" or similar
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placement outcome -->
+      <div class="mt-6 bg-navy rounded-xl p-6 text-white">
+        <h4 class="font-display text-lg font-bold mb-4">Placement Outcome</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+          <div class="bg-white/10 rounded-lg p-4">
+            <span class="text-rouge font-bold text-xs uppercase tracking-wide">Ground Zero</span>
+            <p class="mt-2 text-blue-200 text-xs">No French sounds, no vocab. Starts Stage 1, Session 1.</p>
+          </div>
+          <div class="bg-white/10 rounded-lg p-4">
+            <span class="text-amber-400 font-bold text-xs uppercase tracking-wide">Warm Engine</span>
+            <p class="mt-2 text-blue-200 text-xs">Some dormant vocab, poor accent. Starts Stage 1, Session 2 (accent compressed).</p>
+          </div>
+          <div class="bg-white/10 rounded-lg p-4">
+            <span class="text-green-400 font-bold text-xs uppercase tracking-wide">Rust Buster</span>
+            <p class="mt-2 text-blue-200 text-xs">Can produce basic sentences. Starts Stage 2, Session 1. Stage 1 toolkit as handout.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SESSION TEMPLATE ===================== -->
+    <section id="template" class="mb-14">
+      <p class="section-label">Every session, every stage</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-6">The 60-Minute Template</h2>
+
+      <div class="space-y-3">
+        <template x-for="block in sessionBlocks" :key="block.name">
+          <div class="bg-sand rounded-xl p-5 border border-stone-200 flex gap-4 items-start">
+            <div class="flex-shrink-0 w-14 text-center">
+              <span class="text-2xl font-bold text-navy" x-text="block.duration"></span>
+              <span class="block text-[0.6rem] text-gray-400 uppercase tracking-wider font-semibold">min</span>
+            </div>
+            <div class="flex-1">
+              <h4 class="font-display text-base font-bold text-navy mb-1" x-text="block.name"></h4>
+              <p class="text-sm text-gray-600 mb-2" x-text="block.purpose"></p>
+              <div x-show="block.variants" class="flex flex-wrap gap-1.5">
+                <template x-for="v in block.variants || []" :key="v">
+                  <span class="bg-white text-navy border border-stone-200 rounded-full px-2.5 py-0.5 text-[0.65rem] font-medium" x-text="v"></span>
+                </template>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <!-- 3-session pattern -->
+      <div class="mt-6 bg-white border-2 border-navy rounded-xl p-5">
+        <h4 class="font-display text-base font-bold text-navy mb-3">The 3-Session Pattern</h4>
+        <div class="grid grid-cols-3 gap-3 text-center text-sm">
+          <div class="bg-sand rounded-lg p-4">
+            <span class="block text-2xl mb-1">1</span>
+            <span class="font-bold text-navy">Learn</span>
+            <p class="text-xs text-gray-500 mt-1">New frames, drilling</p>
+          </div>
+          <div class="bg-sand rounded-lg p-4">
+            <span class="block text-2xl mb-1">2</span>
+            <span class="font-bold text-navy">Practice</span>
+            <p class="text-xs text-gray-500 mt-1">Guided scenarios</p>
+          </div>
+          <div class="bg-sand rounded-lg p-4">
+            <span class="block text-2xl mb-1">3</span>
+            <span class="font-bold text-navy">Perform</span>
+            <p class="text-xs text-gray-500 mt-1">Less-structured context</p>
+          </div>
+        </div>
+        <p class="text-xs text-gray-500 mt-3">No two consecutive sessions use the same Core Work format. Topic and fillers customised to student goals.</p>
+      </div>
+    </section>
+
+    <!-- ===================== PROCESSING INSTRUCTION ===================== -->
+    <section id="pi" class="mb-14">
+      <p class="section-label">Hear it before you say it</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-2">Processing Instruction</h2>
+      <p class="text-sm text-gray-600 mb-6" x-text="processingInstruction.principle"></p>
+
+      <!-- 3 Phases -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+        <template x-for="phase in processingInstruction.phases" :key="phase.name">
+          <div class="bg-sand rounded-xl p-5 border border-stone-200 text-center">
+            <span class="text-3xl" x-text="phase.icon"></span>
+            <h4 class="font-display text-base font-bold text-navy mt-2 mb-1" x-text="phase.name"></h4>
+            <p class="text-xs text-gray-500 mb-2" x-text="phase.duration"></p>
+            <p class="text-sm text-gray-600 leading-relaxed" x-text="phase.description"></p>
+          </div>
+        </template>
+      </div>
+
+      <!-- PI Activities -->
+      <div class="space-y-3">
+        <template x-for="act in processingInstruction.activities" :key="act.name">
+          <details class="group bg-sand rounded-xl border border-stone-200 overflow-hidden">
+            <summary class="cursor-pointer p-4 flex items-center gap-3 select-none">
+              <svg class="w-3.5 h-3.5 shrink-0 transition-transform group-open:rotate-90 text-navy" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              <div>
+                <span class="font-bold text-navy text-sm" x-text="act.name"></span>
+                <span class="activity-badge bg-cyan/20 text-navy ml-2" x-text="act.phase"></span>
+              </div>
+            </summary>
+            <div class="px-4 pb-4 pl-10">
+              <p class="text-sm text-gray-600 mb-3" x-text="act.description"></p>
+              <div class="bg-white rounded-lg p-4 border border-stone-200">
+                <span class="text-xs font-bold text-navy uppercase tracking-wide">Example</span>
+                <template x-if="act.example.frame">
+                  <p class="text-xs text-gray-500 mt-1">Frame: <span class="font-bold text-navy" x-text="act.example.frame"></span></p>
+                </template>
+                <template x-if="act.example.monologue">
+                  <p class="text-sm text-gray-700 mt-2 italic leading-relaxed" x-text="act.example.monologue"></p>
+                </template>
+                <template x-if="act.example.sentence_a">
+                  <div class="mt-2 space-y-1">
+                    <p class="text-sm text-gray-700">A: <span x-text="act.example.sentence_a"></span></p>
+                    <p class="text-sm text-gray-700">B: <span x-text="act.example.sentence_b"></span></p>
+                    <p class="text-xs text-green-700 font-bold mt-1">Correct: <span x-text="act.example.correct"></span></p>
+                  </div>
+                </template>
+                <template x-if="act.example.dan_says">
+                  <div class="mt-2">
+                    <p class="text-sm text-gray-700 italic" x-text="act.example.dan_says"></p>
+                    <p class="text-xs text-gray-500 mt-1" x-text="act.example.questions"></p>
+                  </div>
+                </template>
+              </div>
+              <p class="text-xs text-gray-400 mt-2 italic" x-text="act.research"></p>
+            </div>
+          </details>
+        </template>
+      </div>
+
+      <div class="mt-4 text-xs text-gray-500 italic" x-text="processingInstruction.research"></div>
+    </section>
+
+    <!-- ===================== PROGRESSIVE OVERLOAD ===================== -->
+    <section id="overload" class="mb-14">
+      <p class="section-label">The "2.5kg on the bar"</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-2">Progressive Overload</h2>
+      <p class="text-sm text-gray-600 mb-6">Five measurable dimensions. Push one harder each week. At The Landing, tell the student which one improved.</p>
+
+      <div class="space-y-3">
+        <template x-for="dim in overloadDims" :key="dim.name">
+          <div class="bg-sand rounded-xl border border-stone-200 overflow-hidden">
+            <div class="p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="text-lg" x-text="dim.icon"></span>
+                <h4 class="font-display text-base font-bold text-navy" x-text="dim.name"></h4>
+              </div>
+              <!-- Progress bar showing stages -->
+              <div class="flex gap-1 mb-3">
+                <template x-for="(level, i) in dim.levels" :key="i">
+                  <div class="flex-1 rounded-md overflow-hidden">
+                    <div class="h-1.5" :class="[
+                      i === 0 ? 'bg-red-300' :
+                      i === 1 ? 'bg-amber-300' :
+                      i === 2 ? 'bg-yellow-300' :
+                      i === 3 ? 'bg-lime-400' :
+                      'bg-green-500'
+                    ]"></div>
+                    <p class="text-[0.6rem] text-gray-500 mt-1.5 leading-snug" x-text="level"></p>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <div class="mt-6 bg-navy rounded-xl p-5 text-white">
+        <p class="text-sm text-blue-200 leading-relaxed">
+          <span class="font-bold text-white">At The Landing:</span> "Last week your longest sentence was 6 words. Today you hit 14. That's the progress."
+          Always name one specific overload dimension that improved. Make the weight increase visible.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== SPACED REPETITION ===================== -->
+    <section id="spaced-rep" class="mb-14">
+      <p class="section-label">Evidence-based recall</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-2">Spaced Repetition Protocol</h2>
+      <p class="text-sm text-gray-600 mb-6" x-text="spacedRepetition.principle"></p>
+
+      <!-- 5 Boxes -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6">
+        <template x-for="box in spacedRepetition.boxes" :key="box.name">
+          <div class="rounded-xl p-4 border border-stone-200 bg-sand">
+            <div class="h-2 rounded-full mb-3" :class="box.colour"></div>
+            <h4 class="font-display text-sm font-bold text-navy mb-1" x-text="box.name"></h4>
+            <p class="text-xs text-rouge font-semibold mb-1" x-text="box.interval"></p>
+            <p class="text-xs text-gray-500 leading-snug" x-text="box.description"></p>
+          </div>
+        </template>
+      </div>
+
+      <!-- Rules -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+        <div class="bg-green-50 rounded-xl p-4 border border-green-200">
+          <span class="text-xs font-bold text-green-700 uppercase tracking-wide">Promotion</span>
+          <p class="text-sm text-green-800 mt-1 leading-relaxed" x-text="spacedRepetition.promotionRule"></p>
+        </div>
+        <div class="bg-red-50 rounded-xl p-4 border border-red-200">
+          <span class="text-xs font-bold text-rouge uppercase tracking-wide">Demotion</span>
+          <p class="text-sm text-red-800 mt-1 leading-relaxed" x-text="spacedRepetition.demotionRule"></p>
+        </div>
+      </div>
+
+      <!-- Warm-Up Formats -->
+      <h4 class="font-display text-base font-bold text-navy mb-3">Warm-Up Formats by Box</h4>
+      <div class="space-y-3">
+        <template x-for="fmt in spacedRepetition.warmUpFormats" :key="fmt.format">
+          <div class="bg-sand rounded-xl p-4 border border-stone-200">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="font-bold text-navy text-sm" x-text="fmt.format"></span>
+              <span class="activity-badge bg-navy/10 text-navy" x-text="fmt.boxes"></span>
+            </div>
+            <p class="text-sm text-gray-600 mb-2" x-text="fmt.description"></p>
+            <div class="bg-white rounded-lg p-3 border border-stone-200">
+              <span class="text-xs font-bold text-navy">Example:</span>
+              <p class="text-xs text-gray-600 mt-1 italic" x-text="fmt.example"></p>
+            </div>
+          </div>
+        </template>
+      </div>
+      <p class="text-xs text-gray-400 mt-3 italic" x-text="spacedRepetition.research"></p>
+    </section>
+
+    <!-- ===================== INTERLEAVING ===================== -->
+    <section id="interleaving" class="mb-14">
+      <p class="section-label">Desirable difficulties</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-2">Interleaving Protocol</h2>
+      <p class="text-sm text-gray-600 mb-6" x-text="interleavingProtocol.principle"></p>
+
+      <!-- Ratios by stage -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
+        <template x-for="r in interleavingProtocol.ratios" :key="r.stage">
+          <div class="bg-sand rounded-xl p-4 border border-stone-200">
+            <span class="text-xs font-bold text-navy uppercase tracking-wide" x-text="r.stage"></span>
+            <p class="text-base font-bold text-rouge mt-1" x-text="r.ratio"></p>
+            <p class="text-xs text-gray-500 mt-1 leading-snug" x-text="r.description"></p>
+          </div>
+        </template>
+      </div>
+
+      <!-- Techniques -->
+      <h4 class="font-display text-base font-bold text-navy mb-3">Techniques</h4>
+      <div class="space-y-3">
+        <template x-for="tech in interleavingProtocol.techniques" :key="tech.name">
+          <details class="group bg-sand rounded-xl border border-stone-200 overflow-hidden">
+            <summary class="cursor-pointer p-4 flex items-center gap-3 select-none">
+              <svg class="w-3.5 h-3.5 shrink-0 transition-transform group-open:rotate-90 text-navy" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              <span class="font-bold text-navy text-sm" x-text="tech.name"></span>
+              <span class="activity-badge bg-navy/10 text-navy ml-auto" x-text="'Stages ' + tech.stages"></span>
+            </summary>
+            <div class="px-4 pb-4 pl-10">
+              <p class="text-sm text-gray-600 mb-3" x-text="tech.description"></p>
+              <div class="bg-white rounded-lg p-3 border border-stone-200">
+                <span class="text-xs font-bold text-navy">Example drill items:</span>
+                <ul class="mt-1 space-y-1">
+                  <template x-for="item in tech.example.items || []" :key="item">
+                    <li class="text-xs text-gray-600 flex items-start gap-2">
+                      <span class="text-rouge mt-0.5">&#9654;</span>
+                      <span x-text="item"></span>
+                    </li>
+                  </template>
+                  <template x-if="tech.example.old_version">
+                    <div>
+                      <p class="text-xs text-gray-500 mt-1"><span class="font-bold">Old frames only:</span> <span x-text="tech.example.old_version" class="italic"></span></p>
+                      <p class="text-xs text-gray-700 mt-1"><span class="font-bold">With new frames:</span> <span x-text="tech.example.new_version" class="italic"></span></p>
+                    </div>
+                  </template>
+                </ul>
+              </div>
+              <p class="text-xs text-gray-400 mt-2 italic" x-text="tech.research"></p>
+            </div>
+          </details>
+        </template>
+      </div>
+      <p class="text-xs text-gray-400 mt-3 italic" x-text="interleavingProtocol.research"></p>
+    </section>
+
+    <!-- ===================== PROSODY STRAND ===================== -->
+    <section id="prosody" class="mb-14">
+      <p class="section-label">Rhythm, melody, flow</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-2">Prosody Strand</h2>
+      <p class="text-sm text-gray-600 mb-6" x-text="prosodyStrand.principle"></p>
+
+      <!-- Stage-by-stage focus -->
+      <div class="space-y-3 mb-6">
+        <template x-for="s in prosodyStrand.strandByStage" :key="s.stage">
+          <div class="bg-sand rounded-xl p-5 border border-stone-200">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-navy text-white text-xs font-bold flex items-center justify-center" x-text="s.stage"></span>
+              <h4 class="font-display text-base font-bold text-navy" x-text="s.focus"></h4>
+            </div>
+            <p class="text-sm text-gray-600 mb-3 leading-relaxed" x-text="s.description"></p>
+            <div class="flex flex-wrap gap-1.5">
+              <template x-for="act in s.activities" :key="act">
+                <span class="bg-white text-navy border border-stone-200 rounded-full px-2.5 py-0.5 text-[0.65rem] font-medium" x-text="act"></span>
+              </template>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <!-- Prosody Exercises -->
+      <h4 class="font-display text-base font-bold text-navy mb-3">Exercises</h4>
+      <div class="space-y-3">
+        <template x-for="ex in prosodyStrand.exercises" :key="ex.name">
+          <details class="group bg-sand rounded-xl border border-stone-200 overflow-hidden">
+            <summary class="cursor-pointer p-4 flex items-center gap-3 select-none">
+              <svg class="w-3.5 h-3.5 shrink-0 transition-transform group-open:rotate-90 text-navy" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              <span class="font-bold text-navy text-sm" x-text="ex.name"></span>
+              <span class="activity-badge bg-navy/10 text-navy ml-auto" x-text="'Stages ' + ex.stages"></span>
+            </summary>
+            <div class="px-4 pb-4 pl-10">
+              <p class="text-sm text-gray-600 mb-3" x-text="ex.description"></p>
+              <div class="bg-white rounded-lg p-3 border border-stone-200">
+                <span class="text-xs font-bold text-navy">Example:</span>
+                <template x-if="ex.example.sentence">
+                  <p class="text-sm text-gray-700 mt-1 italic" x-text="ex.example.sentence"></p>
+                </template>
+                <template x-if="ex.example.claps">
+                  <p class="text-xs text-gray-600 mt-1" x-text="ex.example.claps"></p>
+                </template>
+                <template x-if="ex.example.contrast">
+                  <p class="text-xs text-rouge mt-1" x-text="'Contrast: ' + ex.example.contrast"></p>
+                </template>
+                <template x-if="ex.example.hum">
+                  <p class="text-xs text-gray-600 mt-1" x-text="'Hum: ' + ex.example.hum"></p>
+                </template>
+                <template x-if="ex.example.words">
+                  <p class="text-sm text-gray-700 mt-1 italic" x-text="ex.example.words"></p>
+                </template>
+                <template x-if="ex.example.snake">
+                  <p class="text-xs text-gray-600 mt-1" x-text="'As one stream: ' + ex.example.snake"></p>
+                </template>
+                <template x-if="ex.example.performances">
+                  <ul class="mt-1 space-y-1">
+                    <template x-for="p in ex.example.performances" :key="p">
+                      <li class="text-xs text-gray-600" x-text="p"></li>
+                    </template>
+                  </ul>
+                </template>
+                <template x-if="ex.example.procedure">
+                  <ol class="mt-1 space-y-1">
+                    <template x-for="p in ex.example.procedure" :key="p">
+                      <li class="text-xs text-gray-600" x-text="p"></li>
+                    </template>
+                  </ol>
+                </template>
+              </div>
+              <p class="text-xs text-gray-400 mt-2 italic" x-text="ex.research"></p>
+            </div>
+          </details>
+        </template>
+      </div>
+      <p class="text-xs text-gray-400 mt-3 italic" x-text="prosodyStrand.research"></p>
+    </section>
+
+    <!-- ===================== CORRECTIVE FEEDBACK ===================== -->
+    <section id="feedback" class="mb-14">
+      <p class="section-label">When and how to correct</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-2">Corrective Feedback Strategy</h2>
+      <p class="text-sm text-gray-600 mb-6" x-text="correctiveFeedback.principle"></p>
+
+      <!-- Stage strategies -->
+      <div class="space-y-3 mb-6">
+        <template x-for="strat in correctiveFeedback.strategies" :key="strat.stage">
+          <div class="bg-sand rounded-xl p-5 border border-stone-200">
+            <div class="flex items-center gap-3 mb-2">
+              <span class="flex-shrink-0 bg-navy text-white text-xs font-bold rounded-full px-3 py-1" x-text="'Stage ' + strat.stage"></span>
+              <h4 class="font-display text-base font-bold text-navy" x-text="strat.name"></h4>
+            </div>
+            <p class="text-sm text-gray-600 mb-3" x-text="strat.description"></p>
+            <div class="bg-white rounded-lg p-3 border border-stone-200">
+              <div class="space-y-1">
+                <p class="text-xs text-gray-500"><span class="font-bold text-rouge">Student:</span> <span x-text="strat.example.student"></span></p>
+                <p class="text-xs text-gray-500"><span class="font-bold text-navy">Dan:</span> <span x-text="strat.example.dan || strat.example.at_landing"></span></p>
+                <template x-if="strat.example.student_corrects">
+                  <p class="text-xs text-green-700"><span class="font-bold">Student corrects:</span> <span x-text="strat.example.student_corrects"></span></p>
+                </template>
+              </div>
+              <p class="text-xs text-gray-400 mt-2 italic" x-text="strat.example.why"></p>
+            </div>
+            <p class="text-xs text-gray-400 mt-2 italic" x-text="strat.research"></p>
+          </div>
+        </template>
+      </div>
+
+      <!-- Error Priority Pyramid -->
+      <h4 class="font-display text-base font-bold text-navy mb-3">Error Prioritisation</h4>
+      <div class="space-y-2">
+        <template x-for="err in correctiveFeedback.errorPriority" :key="err.priority">
+          <div class="flex items-start gap-3 bg-sand rounded-xl p-4 border border-stone-200">
+            <span class="flex-shrink-0 w-7 h-7 rounded-full text-white text-xs font-bold flex items-center justify-center"
+                  :class="err.priority === 1 ? 'bg-rouge' : err.priority === 2 ? 'bg-amber-500' : err.priority === 3 ? 'bg-yellow-500' : 'bg-gray-400'"
+                  x-text="err.priority"></span>
+            <div>
+              <span class="font-bold text-navy text-sm" x-text="err.type"></span>
+              <p class="text-xs text-gray-600 mt-1" x-text="err.description"></p>
+              <p class="text-xs text-gray-500 mt-1 italic" x-text="'e.g. ' + err.example"></p>
+            </div>
+          </div>
+        </template>
+      </div>
+      <p class="text-xs text-gray-400 mt-3 italic" x-text="correctiveFeedback.research"></p>
+    </section>
+
+    <!-- ===================== DELIBERATE PRACTICE ===================== -->
+    <section id="deliberate-practice" class="mb-14">
+      <p class="section-label">Between sessions</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-2">Deliberate Practice Protocol</h2>
+      <p class="text-sm text-gray-600 mb-6" x-text="deliberatePractice.principle"></p>
+
+      <!-- Weekly Diagnostic -->
+      <div class="bg-navy rounded-xl p-6 text-white mb-6">
+        <h4 class="font-display text-lg font-bold mb-3">Weekly Diagnostic (at The Landing)</h4>
+        <p class="text-sm text-blue-200 mb-3" x-text="deliberatePractice.weeklyDiagnostic.description"></p>
+        <ol class="space-y-2">
+          <template x-for="step in deliberatePractice.weeklyDiagnostic.procedure" :key="step">
+            <li class="text-sm text-blue-200 flex items-start gap-2">
+              <span class="text-cyan mt-0.5 text-xs">&#9654;</span>
+              <span x-text="step"></span>
+            </li>
+          </template>
+        </ol>
+      </div>
+
+      <!-- Portal Tasks -->
+      <h4 class="font-display text-base font-bold text-navy mb-3">Homework Task Types</h4>
+      <div class="space-y-3">
+        <template x-for="task in deliberatePractice.portalTasks" :key="task.name">
+          <details class="group bg-sand rounded-xl border border-stone-200 overflow-hidden">
+            <summary class="cursor-pointer p-4 flex items-center gap-3 select-none">
+              <svg class="w-3.5 h-3.5 shrink-0 transition-transform group-open:rotate-90 text-navy" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              <span class="font-bold text-navy text-sm" x-text="task.name"></span>
+            </summary>
+            <div class="px-4 pb-4 pl-10">
+              <p class="text-sm text-gray-600 mb-3" x-text="task.description"></p>
+              <div class="bg-white rounded-lg p-3 border border-stone-200">
+                <span class="text-xs font-bold text-navy">Example:</span>
+                <p class="text-xs text-gray-500 mt-1">Frame: <span class="font-bold text-navy" x-text="task.example.frame"></span></p>
+                <p class="text-sm text-gray-700 mt-1 italic" x-text="task.example.task || task.example.instruction || task.example.clip"></p>
+              </div>
+              <p class="text-xs text-gray-400 mt-2 italic" x-text="task.research"></p>
+            </div>
+          </details>
+        </template>
+      </div>
+      <p class="text-xs text-gray-400 mt-3 italic" x-text="deliberatePractice.research"></p>
+    </section>
+
+    <!-- ===================== STAGES ===================== -->
+    <section id="stages">
+      <p class="section-label">The curriculum</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-6">Six Stages</h2>
+
+      <!-- Stage pills -->
+      <div class="flex flex-wrap gap-2 mb-8">
+        <template x-for="(stage, i) in stages" :key="i">
+          <button @click="activeStage = i"
+                  :class="activeStage === i
+                    ? 'bg-navy text-white shadow-md'
+                    : 'bg-white text-navy border border-stone-200 hover:border-navy'"
+                  class="stage-pill rounded-full px-4 py-2 text-sm font-semibold transition-colors">
+            <span x-text="stage.number"></span>. <span x-text="stage.name"></span>
+          </button>
+        </template>
+      </div>
+
+      <!-- Active stage detail -->
+      <div class="space-y-6">
+        <!-- Stage header -->
+        <div class="bg-navy rounded-2xl p-6 md:p-8 text-white">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="text-3xl font-bold text-rouge" x-text="'Stage ' + stages[activeStage].number"></span>
+          </div>
+          <h3 class="font-display text-2xl md:text-3xl font-bold mb-3" x-text="'&quot;' + stages[activeStage].name + '&quot;'"></h3>
+          <p class="text-sm text-blue-200 mb-4" x-text="stages[activeStage].sessions"></p>
+          <div class="bg-white/10 rounded-xl p-4 mb-3">
+            <span class="text-cyan text-xs font-bold uppercase tracking-wide">Can-Do Milestone</span>
+            <p class="mt-1 text-white text-sm leading-relaxed" x-text="stages[activeStage].milestone"></p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div class="bg-white/10 rounded-lg p-3" x-show="stages[activeStage].prosodyFocus">
+              <span class="text-[0.6rem] font-bold text-cyan uppercase tracking-wide">Prosody Focus</span>
+              <p class="text-xs text-blue-200 mt-1" x-text="stages[activeStage].prosodyFocus"></p>
+            </div>
+            <div class="bg-white/10 rounded-lg p-3" x-show="stages[activeStage].feedbackStrategy">
+              <span class="text-[0.6rem] font-bold text-cyan uppercase tracking-wide">Feedback Strategy</span>
+              <p class="text-xs text-blue-200 mt-1" x-text="stages[activeStage].feedbackStrategy"></p>
+            </div>
+            <div class="bg-white/10 rounded-lg p-3" x-show="stages[activeStage].interleavingRatio">
+              <span class="text-[0.6rem] font-bold text-cyan uppercase tracking-wide">Interleaving</span>
+              <p class="text-xs text-blue-200 mt-1" x-text="stages[activeStage].interleavingRatio"></p>
+            </div>
+            <div class="bg-white/10 rounded-lg p-3" x-show="stages[activeStage].piNote">
+              <span class="text-[0.6rem] font-bold text-cyan uppercase tracking-wide">Processing Instruction</span>
+              <p class="text-xs text-blue-200 mt-1" x-text="stages[activeStage].piNote"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Frames for this stage -->
+        <div>
+          <h4 class="font-display text-lg font-bold text-navy mb-3">Frames Introduced</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <template x-for="frame in stages[activeStage].frames" :key="frame.pattern">
+              <div class="frame-card bg-sand rounded-xl p-4 border border-stone-200">
+                <p class="text-base font-bold text-navy mb-1">
+                  <span x-text="frame.pattern.replace('___', '')" class="text-navy"></span><span class="text-rouge font-extrabold" x-show="frame.pattern.includes('___')">___</span>
+                </p>
+                <p class="text-xs text-gray-500 italic mb-2" x-text="frame.english"></p>
+                <div class="flex flex-wrap gap-1.5" x-show="frame.corpus">
+                  <span class="bg-white text-navy border border-stone-200 rounded-full px-2 py-0.5 text-[0.6rem] font-semibold" x-text="frame.corpus" x-show="frame.corpus"></span>
+                </div>
+                <p class="text-xs text-gray-600 mt-2 leading-relaxed" x-text="frame.why"></p>
+              </div>
+            </template>
+          </div>
+          <p class="text-xs text-gray-500 mt-3 italic" x-text="stages[activeStage].frameRationale"></p>
+        </div>
+
+        <!-- Session plans -->
+        <div>
+          <h4 class="font-display text-lg font-bold text-navy mb-3">Session Plans</h4>
+          <div class="space-y-3">
+            <template x-for="session in stages[activeStage].sessionPlans" :key="session.num">
+              <details class="group bg-sand rounded-xl border border-stone-200 overflow-hidden">
+                <summary class="cursor-pointer p-4 flex items-center gap-3 select-none">
+                  <svg class="w-3.5 h-3.5 shrink-0 transition-transform group-open:rotate-90 text-navy"
+                       fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                  </svg>
+                  <span class="flex-shrink-0 w-8 h-8 rounded-full bg-navy text-white text-xs font-bold flex items-center justify-center" x-text="session.num"></span>
+                  <div class="flex-1">
+                    <span class="font-bold text-navy text-sm" x-text="session.title"></span>
+                    <div class="flex flex-wrap gap-1 mt-1">
+                      <span class="activity-badge"
+                            :class="session.type === 'Learn' ? 'bg-rouge/10 text-rouge' : session.type === 'Practice' ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'"
+                            x-text="session.type"></span>
+                    </div>
+                  </div>
+                </summary>
+                <div class="px-4 pb-4 pl-[3.75rem]">
+                  <ul class="space-y-2">
+                    <template x-for="item in session.activities" :key="item">
+                      <li class="text-sm text-gray-600 flex items-start gap-2">
+                        <span class="text-rouge mt-0.5 text-xs">&#9654;</span>
+                        <span x-text="item"></span>
+                      </li>
+                    </template>
+                  </ul>
+                  <div x-show="session.comprehension" class="mt-3 bg-white rounded-lg p-3 border border-stone-200">
+                    <span class="text-xs font-bold text-navy uppercase tracking-wide">Comprehension</span>
+                    <p class="text-xs text-gray-600 mt-1" x-text="session.comprehension"></p>
+                  </div>
+                </div>
+              </details>
+            </template>
+          </div>
+        </div>
+
+        <!-- Stall point solutions -->
+        <div>
+          <h4 class="font-display text-lg font-bold text-navy mb-3">How This Stage Beats the Stall Points</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <template x-for="sp in stages[activeStage].stallPoints" :key="sp.name">
+              <div class="bg-white rounded-xl p-4 border-2" :class="sp.addressed ? 'border-green-300' : 'border-stone-200'">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-sm" x-text="sp.addressed ? '&#10003;' : '&#8212;'"></span>
+                  <span class="text-xs font-bold uppercase tracking-wide" :class="sp.addressed ? 'text-green-700' : 'text-gray-400'" x-text="sp.name"></span>
+                </div>
+                <p class="text-xs text-gray-600 leading-relaxed" x-text="sp.how"></p>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- Rustbuster acceleration -->
+        <div class="bg-amber-50 rounded-xl p-5 border border-amber-200">
+          <h4 class="font-display text-base font-bold text-amber-800 mb-2">Rustbuster Acceleration</h4>
+          <p class="text-sm text-amber-700 leading-relaxed" x-text="stages[activeStage].rustbuster"></p>
+        </div>
+
+        <!-- Transition criteria -->
+        <div class="bg-white rounded-xl p-5 border-2 border-navy">
+          <h4 class="font-display text-base font-bold text-navy mb-3">Transition Criteria</h4>
+          <p class="text-xs text-gray-500 mb-3">Student is ready for the next stage when all of these are true:</p>
+          <ul class="space-y-2">
+            <template x-for="c in stages[activeStage].transition" :key="c">
+              <li class="text-sm text-gray-700 flex items-start gap-2">
+                <span class="text-green-600 mt-0.5 font-bold text-xs">&#9632;</span>
+                <span x-text="c"></span>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FRAME MAP ===================== -->
+    <section class="mt-14 mb-14">
+      <p class="section-label">Complete sequence</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-6">All 30 Frames in Order</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left text-xs uppercase tracking-wider text-gray-400 border-b border-stone-200">
+              <th class="py-2 pr-3">#</th>
+              <th class="py-2 pr-3">Frame</th>
+              <th class="py-2 pr-3">English</th>
+              <th class="py-2 pr-3">Stage</th>
+              <th class="py-2 pr-3 text-right">Uses</th>
+              <th class="py-2 text-right">Fillers</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-for="(f, i) in allFrames" :key="i">
+              <tr class="border-b border-stone-100 hover:bg-sand/50 transition-colors">
+                <td class="py-2.5 pr-3 text-gray-400 font-mono text-xs" x-text="i + 1"></td>
+                <td class="py-2.5 pr-3 font-bold text-navy" x-text="f.pattern"></td>
+                <td class="py-2.5 pr-3 text-gray-500 italic text-xs" x-text="f.english"></td>
+                <td class="py-2.5 pr-3">
+                  <span class="inline-block bg-navy text-white rounded-full px-2 py-0.5 text-[0.6rem] font-bold" x-text="f.stage"></span>
+                </td>
+                <td class="py-2.5 pr-3 text-right font-mono text-xs" x-text="f.uses || '-'"></td>
+                <td class="py-2.5 text-right font-mono text-xs" x-text="f.fillers || '-'"></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Fixed phrases -->
+      <div class="mt-6">
+        <h4 class="font-display text-base font-bold text-navy mb-3">+ 5 Fixed Phrases (Stage 4)</h4>
+        <div class="flex flex-wrap gap-2">
+          <template x-for="fp in fixedPhrases" :key="fp.french">
+            <div class="bg-sand rounded-lg px-3 py-2 border border-stone-200">
+              <span class="text-sm font-bold text-navy" x-text="fp.french"></span>
+              <span class="text-xs text-gray-500 ml-1" x-text="'(' + fp.english + ')'"></span>
+            </div>
+          </template>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== COMPREHENSION PRINCIPLE ===================== -->
+    <section class="mb-14 bg-sand rounded-2xl p-6 md:p-8 border border-stone-200">
+      <h3 class="font-display text-xl font-bold text-navy mb-3">Comprehension Principle</h3>
+      <p class="text-sm text-gray-600 leading-relaxed mb-3">
+        Comprehension training uses only material the student has already learned to produce.
+        This means listening exercises reinforce production rather than creating a separate cognitive burden.
+      </p>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        <span class="font-bold text-navy">The exception:</span> authentic audio clips where the student's task is to identify
+        known frames amid noise (not understand everything). This teaches the real-world skill of
+        extracting meaning from partial comprehension.
+      </p>
+    </section>
+
+    <!-- ===================== EXERCISE CATALOGUE ===================== -->
+    <section id="exercises" class="mb-14">
+      <p class="section-label">Complete reference</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-2">Exercise Catalogue</h2>
+      <p class="text-sm text-gray-600 mb-6">Every exercise type with step-by-step teacher instructions and concrete French examples. Filter by category, stage, or session type.</p>
+
+      <!-- Filters -->
+      <div class="flex flex-wrap gap-2 mb-6">
+        <select x-model="exerciseFilter.category" class="text-xs font-semibold text-navy border border-navy/20 rounded-full px-3 py-1.5 bg-white">
+          <option value="all">All categories</option>
+          <template x-for="cat in exerciseCategories" :key="cat">
+            <option :value="cat" x-text="cat"></option>
+          </template>
+        </select>
+        <select x-model="exerciseFilter.stage" class="text-xs font-semibold text-navy border border-navy/20 rounded-full px-3 py-1.5 bg-white">
+          <option value="all">All stages</option>
+          <option value="1">Stage 1</option>
+          <option value="2">Stage 2</option>
+          <option value="3">Stage 3</option>
+          <option value="4">Stage 4</option>
+          <option value="5">Stage 5</option>
+          <option value="6">Stage 6</option>
+        </select>
+        <select x-model="exerciseFilter.sessionType" class="text-xs font-semibold text-navy border border-navy/20 rounded-full px-3 py-1.5 bg-white">
+          <option value="all">All types</option>
+          <option value="Learn">Learn</option>
+          <option value="Practice">Practice</option>
+          <option value="Perform">Perform</option>
+        </select>
+      </div>
+
+      <!-- Exercise Cards -->
+      <div class="space-y-3">
+        <template x-for="ex in exerciseCatalogue.filter(e => {
+          if (exerciseFilter.category !== 'all' && e.category !== exerciseFilter.category) return false;
+          if (exerciseFilter.stage !== 'all' && !e.stages.includes(parseInt(exerciseFilter.stage))) return false;
+          if (exerciseFilter.sessionType !== 'all' && !e.sessionType.includes(exerciseFilter.sessionType)) return false;
+          return true;
+        })" :key="ex.name">
+          <details class="group bg-sand rounded-xl border border-stone-200 overflow-hidden">
+            <summary class="cursor-pointer p-4 flex items-center gap-3 select-none">
+              <svg class="w-3.5 h-3.5 shrink-0 transition-transform group-open:rotate-90 text-navy" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              <div class="flex-1">
+                <span class="font-bold text-navy text-sm" x-text="ex.name"></span>
+                <div class="flex flex-wrap gap-1 mt-1">
+                  <span class="activity-badge bg-rouge/10 text-rouge" x-text="ex.category"></span>
+                  <span class="activity-badge bg-navy/10 text-navy" x-text="'Stages ' + ex.stages.join(', ')"></span>
+                  <span class="activity-badge bg-green-100 text-green-700" x-text="ex.duration"></span>
+                </div>
+              </div>
+            </summary>
+            <div class="px-4 pb-4 pl-10">
+              <p class="text-sm text-gray-600 mb-3" x-text="ex.description"></p>
+
+              <!-- Teacher Instructions -->
+              <div class="mb-3">
+                <span class="text-xs font-bold text-navy uppercase tracking-wide">Teacher Instructions</span>
+                <ol class="mt-2 space-y-1.5">
+                  <template x-for="step in ex.instructions" :key="step">
+                    <li class="text-sm text-gray-600 flex items-start gap-2">
+                      <span class="text-rouge mt-0.5 text-xs">&#9654;</span>
+                      <span x-text="step"></span>
+                    </li>
+                  </template>
+                </ol>
+              </div>
+
+              <!-- Example -->
+              <div class="bg-white rounded-lg p-4 border border-stone-200">
+                <span class="text-xs font-bold text-navy uppercase tracking-wide">Concrete Example</span>
+                <template x-if="ex.example.output">
+                  <ul class="mt-2 space-y-1">
+                    <template x-for="line in (Array.isArray(ex.example.output) ? ex.example.output : [ex.example.output])" :key="line">
+                      <li class="text-sm text-gray-700 italic" x-text="line"></li>
+                    </template>
+                  </ul>
+                </template>
+                <template x-if="ex.example.dialogue">
+                  <ul class="mt-2 space-y-1">
+                    <template x-for="line in ex.example.dialogue" :key="line">
+                      <li class="text-sm text-gray-700" x-text="line"></li>
+                    </template>
+                  </ul>
+                </template>
+                <template x-if="ex.example.exchanges">
+                  <ul class="mt-2 space-y-1">
+                    <template x-for="line in ex.example.exchanges" :key="line">
+                      <li class="text-sm text-gray-700" x-text="line"></li>
+                    </template>
+                  </ul>
+                </template>
+                <template x-if="ex.example.pairs">
+                  <ul class="mt-2 space-y-1">
+                    <template x-for="line in (Array.isArray(ex.example.pairs) ? ex.example.pairs : [ex.example.pairs])" :key="line">
+                      <li class="text-sm text-gray-700" x-text="line"></li>
+                    </template>
+                  </ul>
+                </template>
+                <template x-if="ex.example.items">
+                  <ul class="mt-2 space-y-1">
+                    <template x-for="line in ex.example.items" :key="line">
+                      <li class="text-sm text-gray-700" x-text="line"></li>
+                    </template>
+                  </ul>
+                </template>
+                <template x-if="ex.example.frame">
+                  <p class="text-xs text-gray-500 mt-1">Frame: <span class="font-bold text-navy" x-text="ex.example.frame"></span></p>
+                </template>
+                <template x-if="ex.example.monologue">
+                  <p class="text-sm text-gray-700 mt-2 italic" x-text="ex.example.monologue"></p>
+                </template>
+                <template x-if="ex.example.passage">
+                  <p class="text-sm text-gray-700 mt-2 italic" x-text="ex.example.passage"></p>
+                </template>
+                <template x-if="ex.example.dan_says">
+                  <p class="text-sm text-gray-700 mt-2 italic" x-text="ex.example.dan_says"></p>
+                </template>
+                <template x-if="ex.example.target">
+                  <p class="text-xs text-gray-500 mt-1">Target: <span class="italic" x-text="ex.example.target"></span></p>
+                </template>
+                <template x-if="ex.example.steps">
+                  <ol class="mt-2 space-y-0.5">
+                    <template x-for="step in ex.example.steps" :key="step">
+                      <li class="text-xs text-gray-600" x-text="step"></li>
+                    </template>
+                  </ol>
+                </template>
+                <template x-if="ex.example.sentence">
+                  <p class="text-sm text-gray-700 mt-1 italic" x-text="ex.example.sentence"></p>
+                </template>
+                <template x-if="ex.example.emotions">
+                  <ul class="mt-1 space-y-0.5">
+                    <template x-for="e in ex.example.emotions" :key="e">
+                      <li class="text-xs text-gray-600" x-text="e"></li>
+                    </template>
+                  </ul>
+                </template>
+                <template x-if="ex.example.tracking">
+                  <p class="text-xs text-gray-500 mt-2" x-text="ex.example.tracking"></p>
+                </template>
+                <template x-if="ex.example.scenario">
+                  <p class="text-sm text-gray-700 mt-2 italic" x-text="ex.example.scenario"></p>
+                </template>
+                <template x-if="ex.example.success">
+                  <p class="text-xs text-green-700 mt-1 font-bold" x-text="ex.example.success"></p>
+                </template>
+              </div>
+
+              <p class="text-xs text-gray-400 mt-3 italic" x-text="ex.research"></p>
+            </div>
+          </details>
+        </template>
+      </div>
+    </section>
+
+    <!-- ===================== TASK-BASED ACTIVITIES ===================== -->
+    <section id="tasks" class="mb-14">
+      <p class="section-label">Real-world outcomes</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-2">Task-Based Activities</h2>
+      <p class="text-sm text-gray-600 mb-6">Activities with genuine communicative purpose. Information gaps, opinion gaps, and reasoning gaps, not just "practise this frame." The student needs the information to complete a real task.</p>
+
+      <div class="space-y-3">
+        <template x-for="task in taskBasedActivities" :key="task.name">
+          <details class="group bg-sand rounded-xl border border-stone-200 overflow-hidden">
+            <summary class="cursor-pointer p-4 flex items-center gap-3 select-none">
+              <svg class="w-3.5 h-3.5 shrink-0 transition-transform group-open:rotate-90 text-navy" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              <div class="flex-1">
+                <span class="font-bold text-navy text-sm" x-text="task.name"></span>
+                <div class="flex flex-wrap gap-1 mt-1">
+                  <span class="activity-badge bg-rouge/10 text-rouge" x-text="task.type"></span>
+                  <span class="activity-badge bg-navy/10 text-navy" x-text="'Stages ' + task.stages"></span>
+                </div>
+              </div>
+            </summary>
+            <div class="px-4 pb-4 pl-10">
+              <p class="text-sm text-gray-600 mb-3" x-text="task.description"></p>
+
+              <!-- Frames Used -->
+              <div class="flex flex-wrap gap-1.5 mb-3">
+                <template x-for="frame in task.frames_used" :key="frame">
+                  <span class="bg-white text-navy border border-stone-200 rounded-full px-2.5 py-0.5 text-[0.65rem] font-bold" x-text="frame"></span>
+                </template>
+              </div>
+
+              <!-- Example -->
+              <div class="bg-white rounded-lg p-4 border border-stone-200">
+                <span class="text-xs font-bold text-navy uppercase tracking-wide">How It Works</span>
+                <template x-if="task.example.student_sheet">
+                  <div class="mt-2 space-y-1">
+                    <p class="text-xs text-gray-500"><span class="font-bold">Student sees:</span> <span x-text="task.example.student_sheet"></span></p>
+                    <p class="text-xs text-gray-500"><span class="font-bold">Dan has:</span> <span x-text="task.example.dan_sheet"></span></p>
+                    <p class="text-sm text-gray-700 mt-2 italic" x-text="task.example.interaction"></p>
+                  </div>
+                </template>
+                <template x-if="task.example.dan_story">
+                  <div class="mt-2">
+                    <p class="text-sm text-gray-700 italic" x-text="task.example.dan_story"></p>
+                    <p class="text-xs text-gray-500 mt-2" x-text="task.example.student_task || task.example.student_question"></p>
+                  </div>
+                </template>
+                <template x-if="task.example.apartments">
+                  <div class="mt-2 space-y-1">
+                    <template x-for="apt in task.example.apartments" :key="apt">
+                      <p class="text-xs text-gray-600" x-text="apt"></p>
+                    </template>
+                    <p class="text-sm text-gray-700 mt-2 italic" x-text="task.example.target_output"></p>
+                  </div>
+                </template>
+                <template x-if="task.example.scenario">
+                  <div class="mt-2">
+                    <p class="text-sm text-gray-700 italic" x-text="task.example.scenario"></p>
+                    <template x-if="task.example.key_questions">
+                      <ul class="mt-2 space-y-1">
+                        <template x-for="q in task.example.key_questions" :key="q">
+                          <li class="text-xs text-gray-600" x-text="q"></li>
+                        </template>
+                      </ul>
+                    </template>
+                  </div>
+                </template>
+                <template x-if="task.example.dilemma">
+                  <div class="mt-2">
+                    <p class="text-sm text-gray-700 italic" x-text="task.example.dilemma"></p>
+                    <p class="text-sm text-green-700 mt-2 italic" x-text="task.example.target_output"></p>
+                  </div>
+                </template>
+              </div>
+
+              <p class="text-xs text-gray-400 mt-3 italic" x-text="task.research"></p>
+            </div>
+          </details>
+        </template>
+      </div>
+    </section>
+
+    <!-- ===================== RETRIEVAL PRACTICE ===================== -->
+    <section class="mb-14">
+      <p class="section-label">Testing is learning</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-2">Retrieval Practice Protocol</h2>
+      <p class="text-sm text-gray-600 mb-6" x-text="retrievalPractice.principle"></p>
+
+      <div class="space-y-3">
+        <template x-for="ex in retrievalPractice.exercises" :key="ex.name">
+          <div class="bg-sand rounded-xl p-5 border border-stone-200">
+            <div class="flex items-center gap-3 mb-2">
+              <h4 class="font-display text-base font-bold text-navy" x-text="ex.name"></h4>
+              <span class="activity-badge bg-navy/10 text-navy" x-text="'Stages: ' + ex.stages"></span>
+            </div>
+            <p class="text-xs text-gray-500 mb-2" x-text="'When: ' + ex.when"></p>
+            <p class="text-sm text-gray-600 mb-3" x-text="ex.description"></p>
+            <div class="bg-white rounded-lg p-3 border border-stone-200">
+              <span class="text-xs font-bold text-navy">Example:</span>
+              <template x-if="ex.example.instruction">
+                <p class="text-sm text-gray-700 mt-1 italic" x-text="ex.example.instruction"></p>
+              </template>
+              <template x-if="ex.example.cue">
+                <div class="mt-1">
+                  <p class="text-xs text-gray-500">Cue: <span x-text="ex.example.cue" class="italic"></span></p>
+                  <p class="text-xs text-green-700">Target: <span x-text="ex.example.target" class="italic font-bold"></span></p>
+                </div>
+              </template>
+              <template x-if="ex.example.sentences">
+                <ul class="mt-1 space-y-0.5">
+                  <template x-for="s in ex.example.sentences" :key="s">
+                    <li class="text-xs text-gray-600" x-text="s"></li>
+                  </template>
+                </ul>
+              </template>
+              <template x-if="ex.example.items">
+                <ul class="mt-1 space-y-0.5">
+                  <template x-for="item in ex.example.items" :key="item">
+                    <li class="text-xs text-gray-600" x-text="item"></li>
+                  </template>
+                </ul>
+              </template>
+              <template x-if="ex.example.questions">
+                <ul class="mt-1 space-y-0.5">
+                  <template x-for="q in ex.example.questions" :key="q">
+                    <li class="text-xs text-gray-600" x-text="q"></li>
+                  </template>
+                </ul>
+              </template>
+            </div>
+            <p class="text-xs text-gray-400 mt-2 italic" x-text="ex.research"></p>
+          </div>
+        </template>
+      </div>
+      <p class="text-xs text-gray-400 mt-3 italic" x-text="retrievalPractice.research"></p>
+    </section>
+
+    <!-- ===================== PHONOLOGICAL LOOP ===================== -->
+    <section class="mb-14">
+      <p class="section-label">Working memory training</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-2">Phonological Loop Training</h2>
+      <p class="text-sm text-gray-600 mb-6" x-text="phonologicalLoop.principle"></p>
+
+      <div class="space-y-3">
+        <template x-for="ex in phonologicalLoop.exercises" :key="ex.name">
+          <details class="group bg-sand rounded-xl border border-stone-200 overflow-hidden">
+            <summary class="cursor-pointer p-4 flex items-center gap-3 select-none">
+              <svg class="w-3.5 h-3.5 shrink-0 transition-transform group-open:rotate-90 text-navy" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+              <span class="font-bold text-navy text-sm" x-text="ex.name"></span>
+              <span class="activity-badge bg-navy/10 text-navy ml-auto" x-text="'Stages: ' + ex.stages"></span>
+            </summary>
+            <div class="px-4 pb-4 pl-10">
+              <p class="text-sm text-gray-600 mb-3" x-text="ex.description"></p>
+              <template x-if="ex.progression">
+                <div class="mb-3">
+                  <span class="text-xs font-bold text-navy uppercase tracking-wide">Progression</span>
+                  <ul class="mt-1 space-y-0.5">
+                    <template x-for="p in ex.progression" :key="p">
+                      <li class="text-xs text-gray-600" x-text="p"></li>
+                    </template>
+                  </ul>
+                </div>
+              </template>
+              <div class="bg-white rounded-lg p-3 border border-stone-200">
+                <span class="text-xs font-bold text-navy">Example:</span>
+                <template x-if="ex.example.dan_says">
+                  <p class="text-sm text-gray-700 mt-1 italic" x-text="ex.example.dan_says"></p>
+                </template>
+                <template x-if="ex.example.delay">
+                  <p class="text-xs text-gray-500 mt-1" x-text="'Delay: ' + ex.example.delay"></p>
+                </template>
+                <template x-if="ex.example.steps">
+                  <ol class="mt-1 space-y-0.5">
+                    <template x-for="step in ex.example.steps" :key="step">
+                      <li class="text-xs text-gray-600" x-text="step"></li>
+                    </template>
+                  </ol>
+                </template>
+                <template x-if="ex.example.target">
+                  <p class="text-sm text-gray-700 mt-1 italic" x-text="ex.example.target"></p>
+                </template>
+                <template x-if="ex.example.growth">
+                  <ol class="mt-1 space-y-0.5">
+                    <template x-for="g in ex.example.growth" :key="g">
+                      <li class="text-xs text-gray-600 italic" x-text="g"></li>
+                    </template>
+                  </ol>
+                </template>
+                <template x-if="ex.example.procedure">
+                  <ol class="mt-1 space-y-0.5">
+                    <template x-for="p in ex.example.procedure" :key="p">
+                      <li class="text-xs text-gray-600" x-text="p"></li>
+                    </template>
+                  </ol>
+                </template>
+                <template x-if="ex.example.why">
+                  <p class="text-xs text-gray-500 mt-2 italic" x-text="ex.example.why"></p>
+                </template>
+              </div>
+              <p class="text-xs text-gray-400 mt-2 italic" x-text="ex.research"></p>
+            </div>
+          </details>
+        </template>
+      </div>
+      <p class="text-xs text-gray-400 mt-3 italic" x-text="phonologicalLoop.research"></p>
+    </section>
+
+    <!-- ===================== RESEARCH CITATIONS ===================== -->
+    <section id="research" class="mb-14">
+      <p class="section-label">The evidence base</p>
+      <h2 class="font-display text-2xl font-bold text-navy mb-6">Research Citations</h2>
+      <p class="text-sm text-gray-600 mb-6">Every technique in this curriculum is grounded in peer-reviewed second language acquisition research. No fluff, no pseudoscience. If it is not proven, it is not here.</p>
+
+      <div class="space-y-4">
+        <template x-for="group in researchCitations" :key="group.area">
+          <div class="bg-sand rounded-xl p-4 border border-stone-200">
+            <h4 class="font-display text-sm font-bold text-navy mb-2" x-text="group.area"></h4>
+            <ul class="space-y-1">
+              <template x-for="ref in group.refs" :key="ref">
+                <li class="text-xs text-gray-600 leading-relaxed" x-text="ref"></li>
+              </template>
+            </ul>
+          </div>
+        </template>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-navy text-blue-200 text-center text-xs py-6">
+    FluentISH Curriculum Planner. Teacher reference only.
+  </footer>
+
+  <script>
+  function curriculum() {
+    return {
+      activeStage: 0,
+
+      scrollTo(id) {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      },
+
+      sessionBlocks: [
+        { name: 'Free Recall Blast', duration: '1', purpose: 'Before anything else: "60 seconds. Tell me anything from last week. Go." No prompts, no cues. Dan notes what surfaced and what didn\'t. Feeds directly into the spaced repetition system.', variants: null, research: 'Roediger & Karpicke (2006) testing effect' },
+        { name: 'Warm-Up Recall', duration: '5', purpose: 'Activate material from the spaced repetition boxes. Box 1-2 frames tested every session, Box 3 every other session. Format rotates to match box level.', variants: ['Speed Round (all boxes)', 'Reverse Recall (Box 1-2)', 'Frame Roulette (Box 2-3)', 'Story Chain (Box 3-4)', 'The Ambush (Box 4-5)'], research: 'Pimsleur (1967); Leitner (1972)' },
+        { name: 'The Weigh-In', duration: '2', purpose: 'Student reports on real-world French usage since last session. Probe for stories and anecdotes. "Did you use any French this week?"', variants: null },
+        { name: 'Processing Instruction', duration: '3', purpose: 'Structured input phase for any new frame being introduced this session. Hear before you speak. Only runs on Learn sessions; on Practice/Perform sessions, this time rolls into Core Work.', variants: ['Input Flood (Noticing)', 'Binary Choice (Structured Input)', 'Who Did What? (Structured Input)'], research: 'VanPatten (1996, 2004)' },
+        { name: 'Core Work', duration: '22', purpose: 'New frame introduction, frame deepening, scenario workshop, or weaving session. Rotates each week. Practice sessions use interleaved drills (old + new frames mixed per the stage ratio).', variants: ['Frame Introduction', 'Frame Deepening', 'Scenario Workshop', 'Weaving Session', 'Task-Based Activity'], research: 'DeKeyser (2007) skill acquisition' },
+        { name: 'Comprehension Sprint', duration: '10', purpose: 'Listening and decoding practice. Format and difficulty scale with stage. Alternates weekly between comprehension-focused (Gist Listening, Shadow Listening, Dictation) and retrieval-focused (Recognition Task, Sentence Auction, Prediction).', variants: ['Gist Listening', 'Shadow Listening', 'Full-Speed Dictation', 'Recognition Task', 'Sentence Auction', 'Prediction Exercise'], research: 'Vandergrift (2007); Roediger & Butler (2011)' },
+        { name: 'Free Flight', duration: '12', purpose: 'Unstructured conversation using everything learned so far. Topic changes each week, driven by student interest. Prosody micro-drill (1-2 min) embedded here, matching the stage\'s prosody focus.', variants: null, research: 'Segalowitz (2010) automaticity' },
+        { name: 'The Landing', duration: '5', purpose: '"Three things you nailed today" + one specific overload metric improvement + weak frame diagnosis for homework. Name the progress, prescribe the practice.', variants: null, research: 'Ericsson et al. (1993) deliberate practice' },
+      ],
+
+      overloadDims: [
+        { name: 'Sentence Length', icon: '\u{1F4CF}', levels: ['S1: 3-5 words', 'S2: 5-8 words', 'S3: 8-15 words', 'S4: 15-25 words', 'S5: 30+ words'] },
+        { name: 'Pause Duration', icon: '\u{23F1}', levels: ['S1: 3-5s pauses', 'S2: 2-3s pauses', 'S3: 1-2s pauses', 'S4: Sub-second', 'S5: Pauses for effect'] },
+        { name: 'Dan\'s Speaking Speed', icon: '\u{1F3A4}', levels: ['S1: 40% speed', 'S2: 60% speed', 'S3: 80% speed', 'S4: 90% speed', 'S5: Natural pace'] },
+        { name: 'Recovery Time', icon: '\u{1F6E1}', levels: ['S1: Full freeze', 'S2: "Pardon?" in 3s', 'S3: Buying Time phrase', 'S4: Paraphrases back', 'S5: Clarifying Q in French'] },
+        { name: 'Frame Density', icon: '\u{1F9E9}', levels: ['S1: 1 frame/turn', 'S2: 1-2 frames', 'S3: 2-3 connected', 'S4: 3-4 with nuance', 'S5: Unconscious'] },
+        { name: 'Prosodic Accuracy', icon: '\u{1F3B5}', levels: ['S1: Syllable timing attempted', 'S2: Questions rise, statements fall', 'S3: Liaison on common pairs', 'S4: Rhythm groups emerging', 'S5: Expressive prosody'], research: 'Derwing & Munro (1997)' },
+      ],
+
+      fixedPhrases: [
+        { french: "c'est pas du tout", english: "it's not at all" },
+        { french: 'depuis que je suis', english: 'since I was' },
+        { french: 'parce que du coup', english: 'because as a result' },
+        { french: 'est-ce que y a', english: 'is there' },
+        { french: 'une autre langue que le', english: 'another language than' },
+      ],
+
+      allFrames: [
+        { pattern: 'je suis ___', english: 'I am...', stage: '1', uses: '', fillers: '' },
+        { pattern: 'il y a des ___', english: 'there are...', stage: '1', uses: '235', fillers: '49' },
+        { pattern: 'je suis de ___', english: "I'm from...", stage: '1', uses: '', fillers: '' },
+        { pattern: 'vous avez ___ ?', english: 'do you have...?', stage: '1', uses: '', fillers: '' },
+        { pattern: 'je peux/veux/dois/vais ___', english: 'I can/want/must/will...', stage: '2', uses: '', fillers: '20 verbs' },
+        { pattern: 'je prends ___', english: "I'll have...", stage: '2', uses: '', fillers: '' },
+        { pattern: "c'est ___", english: "it's / that's...", stage: '2', uses: '', fillers: '' },
+        { pattern: 'je trouve ca ___', english: 'I find that...', stage: '2', uses: '46', fillers: '13' },
+        { pattern: 'est-ce que ___ ?', english: '[question machine]', stage: '2', uses: '33 (fixed)', fillers: '' },
+        { pattern: 'je sais pas ___', english: "I don't know...", stage: '2', uses: '478', fillers: '57' },
+        { pattern: 'je me suis ___', english: 'I [past]...', stage: '3', uses: '159', fillers: '27' },
+        { pattern: 'quand je suis ___', english: 'when I was/am...', stage: '3', uses: '37', fillers: '11' },
+        { pattern: 'la premiere ___ que', english: 'the first...that', stage: '3', uses: '29', fillers: '3' },
+        { pattern: 'du coup ___', english: 'so then...', stage: '3', uses: '34', fillers: '12' },
+        { pattern: 'parce que ___', english: 'because...', stage: '3', uses: '', fillers: '' },
+        { pattern: 'ce qui se ___', english: "what's happening...", stage: '3', uses: '47', fillers: '4' },
+        { pattern: 'je vais te ___', english: "I'm going to [tell/show] you...", stage: '3', uses: '18', fillers: '4' },
+        { pattern: 'moi je suis ___', english: "me, I'm...", stage: '3', uses: '40', fillers: '12' },
+        { pattern: 'en fait ___', english: 'actually...', stage: '4', uses: '', fillers: '' },
+        { pattern: 'en tant que ___', english: 'as a [role]...', stage: '4', uses: '20', fillers: '7' },
+        { pattern: 'par rapport au ___', english: 'compared to...', stage: '4', uses: '8', fillers: '4' },
+        { pattern: "ca c'est un ___", english: "that's a...", stage: '4', uses: '25', fillers: '8' },
+        { pattern: 'mais y a ___', english: 'but there is...', stage: '4', uses: '51', fillers: '12' },
+        { pattern: 'ca fait ___ de', english: 'it makes/does...', stage: '4', uses: '16', fillers: '4' },
+        { pattern: 'je viens de ___', english: 'I just.../I come from...', stage: '5', uses: '14', fillers: '6' },
+        { pattern: 'tres ___ parce que', english: 'very...because', stage: '5', uses: '9', fillers: '3' },
+        { pattern: 'tu peux pas ___', english: "you can't...", stage: '5', uses: '17', fillers: '8' },
+        { pattern: 'au mois de ___', english: 'in the month of...', stage: '5', uses: '21', fillers: '6' },
+        { pattern: 'je fais des ___', english: 'I do/make some...', stage: '5', uses: '12', fillers: '4' },
+        { pattern: 'ca ___ un peu', english: 'that [verb] a little...', stage: '5', uses: '30', fillers: '8' },
+      ],
+
+      stages: [
+        // ── Stage 1: The Ignition ──
+        {
+          number: 1,
+          name: 'The Ignition',
+          sessions: 'Sessions 1-3',
+          milestone: "I can introduce myself in French, produce 5+ simple sentences, and French speakers don't immediately switch to English.",
+          frameRationale: 'These four frames cover the most common first-encounter situations. A student who masters all four can walk into any French establishment and introduce themselves, describe what they see, say where they\'re from, and ask for things.',
+          prosodyFocus: 'Syllable timing + final-syllable stress. French is syllable-timed, not stress-timed like English. Every syllable gets equal weight, with slight lengthening on the final syllable of each phrase group.',
+          feedbackStrategy: 'Recasts only. Dan repeats the student\'s utterance correctly without flagging the error. Zero explicit correction. Confidence is more important than accuracy at this stage.',
+          interleavingRatio: '100% new. Nothing to interleave yet.',
+          piNote: 'Input Flood before "il y a" (Session 2) and "vous avez" (Session 3). Binary Choice not yet needed as frames are simple.',
+          frames: [
+            { pattern: 'je suis ___', english: 'I am...', corpus: '', why: 'The identity frame. Highest personal relevance. First frame for every student because it lets them talk about themselves immediately.' },
+            { pattern: 'il y a ___', english: 'there is/are...', corpus: '235 uses, 49 fillers', why: 'The observation frame. Highest filler diversity in the corpus. Immediately useful for describing what exists around you.' },
+            { pattern: 'je suis de ___', english: "I'm from...", corpus: '', why: 'Social opener. Every conversation starts here. Taught as a separate mini-frame because of its social utility.' },
+            { pattern: 'vous avez ___ ?', english: 'do you have...?', corpus: '', why: 'The request frame. Immediately transactional. Restaurant, shop, hotel.' },
+          ],
+          sessionPlans: [
+            { num: '1', title: 'Accent Bootcamp + Personal Script', type: 'Learn',
+              activities: [
+                'Entry assessment (first 15 min, see protocol above)',
+                'Accent bootcamp: nasal vowels, French r, liaison rules',
+                'PROSODY: Rhythm Clapping exercise. Clap each syllable of "bon-JOUR", "mer-CI", "s\'il-vous-PLAIT". Establish syllable-timed rhythm from minute one.',
+                'Personal Script construction: 3-5 sentences about themselves using "je suis" and "je suis de"',
+                'PHONOLOGICAL LOOP: Delayed Repetition on Personal Script sentences. Dan says each sentence, counts to 3, student repeats.',
+                'Talk Back Toolkit introduced as a safety net: Pardon? / Vous pouvez repeter? / Plus lentement / C\'est quoi en anglais?',
+              ],
+              comprehension: 'Dan delivers Talk Back Toolkit phrases at varying speeds. Student identifies which phrase Dan said.'
+            },
+            { num: '2', title: 'Il y a + Natural Sound Kit', type: 'Learn',
+              activities: [
+                'INPUT FLOOD: Before teaching "il y a", Dan uses it 5 times in natural speech. Student counts occurrences. "I\'m going to talk for 30 seconds. Count how many times you hear a particular phrase."',
+                '"Il y a" frame introduced and explained',
+                'Timed Noun Blast: name 20 nouns in 60 seconds that can follow "il y a"',
+                'Natural Sound Kit introduced: Ah bon? / Ah oui! / Exactement! / Tout a fait! / Alors... / Donc...',
+                'Dan speaks using only "il y a" + taught fillers. Student practises Natural Sound Kit reactions.',
+                'PROSODY: Final-syllable stress on new vocabulary. "res-tau-RANT", "crois-SANT", "bou-lan-ge-RIE".',
+              ],
+              comprehension: 'Dan uses Natural Sound Kit in conversation. Student must respond appropriately (Dan says something surprising, student produces "Ah bon?").'
+            },
+            { num: '3', title: 'Vous avez + First Wow Exchange', type: 'Perform',
+              activities: [
+                'INPUT FLOOD: Dan uses "vous avez" 4 times in quick speech. Student counts.',
+                '"Vous avez" frame introduced',
+                'First Wow Exchange built and rehearsed: a scripted cafe or shop dialogue designed to land a laugh',
+                'PHONOLOGICAL LOOP: Backwards Buildup on the longest Wow Exchange line.',
+                'First scenario: ordering at a cafe using all four frames together',
+                'Student leaves with a concrete "party trick" they can perform for friends/family',
+                'HOMEWORK: Frame Sprint on weakest frame (identified at Landing). Record 5 sentences, send voice note.',
+              ],
+              comprehension: 'Dan delivers the Wow Exchange at varying speeds. Student must identify key words and respond in character.'
+            },
+          ],
+          stallPoints: [
+            { name: 'Frame fatigue', addressed: false, how: 'Not possible yet. Everything is new. Variety comes from the Personal Script being unique to each student.' },
+            { name: 'Comprehension wall', addressed: true, how: 'Talk Back Toolkit introduced immediately. Students learn that not understanding is normal and they have tools for it.' },
+            { name: 'Script-to-improv gap', addressed: false, how: 'Not addressed yet. This stage IS scripted, deliberately. The student needs wins first.' },
+            { name: 'Motivation fade', addressed: true, how: 'The Wow Exchange provides a concrete, tangible "party trick." Students leave Session 3 with something they can perform.' },
+          ],
+          rustbuster: 'Skip Session 1. Enter at Session 2 with compressed accent polish (not rebuilt from scratch). Talk Back Toolkit and Natural Sound Kit given as portal handout, not drilled in session. Get "il y a" and "vous avez" in the same session because they already have dormant sentence-construction instincts.',
+          transition: [
+            'Personal Script (5+ sentences) delivered with pauses under 2 seconds between sentences',
+            'Can produce at least 3 sentences for each of the 4 frames',
+            'Deploys at least 2 Talk Back Toolkit phrases unprompted when Dan speaks too fast',
+          ],
+        },
+
+        // ── Stage 2: The Toolkit ──
+        {
+          number: 2,
+          name: 'The Toolkit',
+          sessions: 'Sessions 4-7',
+          milestone: 'I can handle a basic transactional conversation (ordering, asking directions, small talk) and recover when I don\'t understand.',
+          frameRationale: 'The Beermat modals unlock combinatorial sentence production. "Est-ce que" doubles everything. "Je sais pas" is the most-used frame in real French and lets the student express uncertainty, which is their actual state.',
+          prosodyFocus: 'Intonation contours. French questions with "est-ce que" rise at the end. Statements fall. The pitch pattern carries meaning independently of the words.',
+          feedbackStrategy: 'Recasts only. Still too early for explicit correction. Dan repeats correctly, the student hears the right form. No commentary.',
+          interleavingRatio: '70% new / 30% old. Every 3rd drill item uses a Stage 1 frame. Student revisits "je suis", "il y a", "vous avez" while learning modals.',
+          piNote: 'Binary Choice before Beermat modals (Session 4). Input Flood before "je sais pas" (Session 6). "Est-ce que" (Session 5) gets full PI treatment as it is structurally complex.',
+          frames: [
+            { pattern: 'je peux/veux/dois/vais ___', english: 'I can/want/must/will...', corpus: '4 modals x 20 verbs = 80 sentences', why: 'The Beermat modals. The single biggest unlock. Four modals x 20 infinitives = 80 sentences from 24 memory items.' },
+            { pattern: 'je prends ___', english: "I'll have...", corpus: '', why: 'The ordering frame. Most common restaurant/bar phrase.' },
+            { pattern: "c'est ___", english: "it's / that's...", corpus: '', why: 'The evaluation frame. Lets them express simple opinions.' },
+            { pattern: 'je trouve ca ___', english: 'I find that...', corpus: '46 uses, 13 fillers', why: 'The opinion frame. Slightly more sophisticated than "c\'est" but introduces subjective judgement.' },
+            { pattern: 'est-ce que ___ ?', english: '[question machine]', corpus: '33 (fixed)', why: 'Turns any statement into a question. The biggest force-multiplier because it doubles every frame.' },
+            { pattern: 'je sais pas ___', english: "I don't know...", corpus: '478 uses, 57 fillers', why: 'Highest-frequency frame in the corpus. Taught here because it requires existing content to negate.' },
+          ],
+          sessionPlans: [
+            { num: '4', title: 'The Beermat Modals', type: 'Learn',
+              activities: [
+                'PROCESSING INSTRUCTION: Binary Choice on modal sentences. "Which means I want to eat? A: Je peux manger. B: Je veux manger." (3 pairs)',
+                'Introduce the Beermat grid (beer-mat.html) as "the cheat code"',
+                'Students construct sentences by picking one item from each row',
+                'Beermat Grid Race: how many valid sentences in 2 minutes?',
+                '"Je prends" introduced alongside as the ordering shortcut',
+                'INTERLEAVING: After every 3 Beermat drills, insert a Stage 1 frame. "Now make a sentence with il y a."',
+                'PROSODY: The Melody First on "Est-ce que je peux manger?" Hum the rising melody before speaking.',
+              ],
+              comprehension: 'Dan delivers a 30-second monologue using only frames and vocab the student knows. Student summarises in English.'
+            },
+            { num: '5', title: 'Est-ce que: The Question Machine', type: 'Learn',
+              activities: [
+                'INPUT FLOOD: Dan uses "est-ce que" 6 times in a 45-second monologue. Student counts occurrences.',
+                'BINARY CHOICE: "Which is a question? A: Tu veux manger. B: Est-ce que tu veux manger?" (3 pairs)',
+                '"Est-ce que" taught as a converter, not a standalone phrase',
+                'Every statement from Sessions 1-4 turned into a question',
+                'Buying Time Toolkit introduced: Comment on dit...? / C\'est quoi en francais? / the puff',
+                'Deliberate comprehension failure drill: Dan speaks at speed, student practises recovery',
+                'PROSODY: Rising intonation on all "est-ce que" questions. Hum the contour before speaking.',
+              ],
+              comprehension: 'Dan speaks fast using known material. Student practises using Buying Time Toolkit rather than freezing.'
+            },
+            { num: '6', title: 'Je sais pas + Je trouve ca', type: 'Practice',
+              activities: [
+                'INPUT FLOOD: Dan uses "je sais pas" 5 times in natural speech. Student counts.',
+                '"Je sais pas" + "je trouve ca" introduced together: uncertainty + opinion',
+                'Opinion Drill: Dan names 10 things, student gives opinion using "je trouve ca" + reaction',
+                'Uncertainty chain: "Je sais pas pourquoi... Je sais pas comment... Je sais pas si..."',
+                '"C\'est" used as quick evaluation alongside "je trouve ca" for contrast',
+                'INTERLEAVING: Cocktail drill mixing "je sais pas" (new) with "vous avez" and "je suis de" (old)',
+              ],
+              comprehension: 'Gist Listening: Dan speaks a passage at speed. Student identifies any frame they recognise. Not full comprehension, just pattern spotting.'
+            },
+            { num: '7', title: 'Integration Scenario', type: 'Perform',
+              activities: [
+                'TASK: The Menu Puzzle (information gap). Student has incomplete menu, must ask questions to fill gaps.',
+                'Full simulated cafe or shop encounter using all 10 frames',
+                'Dan plays the French speaker with natural delivery',
+                'Student must navigate the entire interaction without English',
+                'Dan goes slightly off-script to force adaptation. First taste of unscripted interaction.',
+                'PHONOLOGICAL LOOP: Sentence Growing on the longest sentence the student produced.',
+                'HOMEWORK: Shadowing Clip targeting weakest frame from today\'s session.',
+              ],
+              comprehension: 'Dan speaks a sentence at natural speed. Student must repeat any word they caught (Shadow Listening).'
+            },
+          ],
+          stallPoints: [
+            { name: 'Frame fatigue', addressed: true, how: 'The Beermat modals are a completely different format from individual frames. The grid feels like a game, not a drill. "Est-ce que" isn\'t a new frame so much as a superpower that transforms all existing ones.' },
+            { name: 'Comprehension wall', addressed: true, how: 'Session 5 introduces deliberate comprehension failure and recovery. Dan speaks at speed, student practises the Buying Time Toolkit. The explicit lesson: "You will not understand. That is fine. Here is what you do."' },
+            { name: 'Script-to-improv gap', addressed: true, how: 'Session 7\'s scenario is semi-improvised. Dan goes slightly off-script to force adaptation. First taste of unscripted interaction.' },
+            { name: 'Motivation fade', addressed: true, how: 'The force-multiplier effect of "est-ce que" and the Beermat modals gives students a sudden explosion of capability. They go from around 20 sentences to 200+ in two sessions. This is the window-pane-dough moment.' },
+          ],
+          rustbuster: 'May already know "je veux" and "je peux" from school. Compress Sessions 4-5 into a single session. The Beermat is a review, not a revelation. Spend more time on "est-ce que" and "je sais pas" which are more sophisticated. Their Session 7 scenario is more complex.',
+          transition: [
+            'Can construct sentences using 4 modal verbs + at least 10 infinitives without the Beermat grid',
+            'Can turn any statement into a question using "est-ce que"',
+            'Uses "je sais pas" with at least 3 different completions',
+            'Navigates a simulated transactional scenario lasting 2+ minutes with no English',
+          ],
+        },
+
+        // ── Stage 3: The Weave ──
+        {
+          number: 3,
+          name: 'The Weave',
+          sessions: 'Sessions 8-12',
+          milestone: 'I can link multiple ideas together, express past events, give opinions with reasons, and hold a conversation for 5+ minutes.',
+          frameRationale: 'This stage is about building sentences longer than one clause. "Du coup" and "parce que" are connectors. "Je me suis" unlocks the past. "La premiere fois que" and "ce qui se passe" enable narrative. "Moi je suis" adds personality.',
+          prosodyFocus: 'Liaison and enchainement. Words connect across boundaries in French. "les amis" = "lay-za-mee". The Snake exercise trains continuous speech production without word-boundary pauses.',
+          feedbackStrategy: 'Clarification Requests. Dan signals non-understanding: "Pardon? Je n\'ai pas compris." This pushes the student to reformulate and self-correct. Self-correction is more durable than being told the answer.',
+          interleavingRatio: '60% new / 40% old. Old frames from Stages 1-2 woven into every drill set. Nearly half of structured practice uses older material.',
+          piNote: 'Full PI treatment for "je me suis" (structurally complex reflexive). Input Flood for connectors "du coup" and "parce que". Binary Choice for "ce qui se passe".',
+          frames: [
+            { pattern: 'je me suis ___', english: 'I [past reflexive]...', corpus: '159 uses, 27 fillers', why: 'The past tense gateway. "dit" (66 uses), "rendu compte" (12), "mariee" (11). Swiss Army knife for talking about what happened.' },
+            { pattern: 'quand je suis ___', english: 'when I was/am...', corpus: '37 uses, 11 fillers', why: 'Temporal framing. Lets them set scenes and give time context to stories.' },
+            { pattern: 'la premiere ___ que', english: 'the first...that', corpus: '29 uses', why: 'Narrative opener. Every good story starts here.' },
+            { pattern: 'du coup ___', english: 'so then...', corpus: '34 uses, 12 fillers', why: 'The consequence connector. The first explicit "weaving" frame. Exists to link two other frames.' },
+            { pattern: 'parce que ___', english: 'because...', corpus: '', why: 'The reason connector. The most essential connector for giving opinions with justification.' },
+            { pattern: 'ce qui se ___', english: "what's happening...", corpus: '47 uses, 4 fillers', why: 'Narrative frame for describing events. "passe" (33), "passait" (9).' },
+            { pattern: 'je vais te ___', english: "I'm going to [tell/show] you...", corpus: '18 uses, 4 fillers', why: 'The social frame. Signals intent to the listener before delivering content.' },
+            { pattern: 'moi je suis ___', english: "me, I'm...", corpus: '40 uses, 12 fillers', why: 'The emphasis frame. Lets students express contrast and personal stance ("Moi je suis pas d\'accord").' },
+          ],
+          sessionPlans: [
+            { num: '8', title: 'Past Tense Gateway: Je me suis', type: 'Learn',
+              activities: [
+                'INPUT FLOOD: Dan tells a 45-second anecdote using "je me suis" 5 times. Student counts.',
+                'BINARY CHOICE: 3 pairs. "Which means I said to myself? A: Je me suis dit. B: Je suis dit." Forces processing of the reflexive.',
+                '"Je me suis dit" as the entry point: I was thinking / I said to myself',
+                'Swiss Army knife drill: dit, rendu compte, mariee, sentie, arretee',
+                'INTERLEAVING: After every 3 new-frame drills, insert a Stage 1-2 frame: "Now say that same idea starting with il y a."',
+                'Students build personal past-tense sentences about real experiences',
+                '"Quand je suis" introduced as the scene-setter for temporal context',
+                'PROSODY: The Snake on "je-me-suis-ren-du-compte" as one unbroken sound stream. Liaison between "suis" and following word.',
+              ],
+              comprehension: 'Dan tells a short anecdote using only known frames. Student must ask a follow-up question.'
+            },
+            { num: '9', title: 'The Connectors: Du coup + Parce que', type: 'Learn',
+              activities: [
+                'INPUT FLOOD: Dan uses "du coup" 4 times in 30 seconds. Student counts.',
+                '"Du coup" and "parce que" taught as connectors, not standalone frames',
+                'Weaving Drill: take any two existing frames and connect them',
+                'Examples: "Je suis de Manchester, du coup je connais pas trop la France"',
+                '"Je trouve ca difficile parce que je sais pas les mots"',
+                'INTERLEAVING: The Sandwich technique. New connector between two old frames: "vous avez du cafe?" (old) then "du coup je prends un the" (new) then "il y a du lait?" (old).',
+                'PROSODY: Liaison drill on connector boundaries: "du-cou-pon", "parce-qu\'il".',
+              ],
+              comprehension: 'Shadow Listening: Dan says a 3-sentence passage at 70%, 80%, 90% speed. Student repeats as much as they can each time.'
+            },
+            { num: '10', title: 'Narrative Construction', type: 'Practice',
+              activities: [
+                'INPUT FLOOD for "la premiere fois que" and "ce qui se passe". Dan tells a story using both 3 times each.',
+                'WHO DID WHAT: Dan tells a narrative. Student must identify: who did what, when, and what happened next.',
+                'Students construct a 5-sentence story about a real experience',
+                'Use all narrative frames: quand, la premiere fois que, ce qui se passe, du coup',
+                'INTERLEAVING: The Time Machine. Tell the same story twice: first with only old frames, then again adding the new narrative frames. Notice how much richer version 2 is.',
+                'This is the emotionally powerful session: telling YOUR story in French',
+                'PHONOLOGICAL LOOP: Backwards Buildup on the student\'s longest narrative sentence.',
+              ],
+              comprehension: 'Gist Listening: Dan speaks a 60-second passage. Student identifies the topic and two specific frames used.'
+            },
+            { num: '11', title: 'Opinion and Emphasis', type: 'Practice',
+              activities: [
+                '"Moi je suis" + "je vais te raconter" introduced via Binary Choice',
+                'Opinion debates: Dan states a position, student agrees or disagrees using frames',
+                '"Moi je suis pas d\'accord parce que..." / "Moi je trouve ca..."',
+                'Students practise expressing contrast and personal stance',
+                'INTERLEAVING: Cocktail drill mixing all Stage 3 frames with 2 Stage 1-2 frames.',
+                'RETRIEVAL: The Interrogation. 10 rapid-fire questions. Target: 4/10 within 3 seconds.',
+              ],
+              comprehension: 'Dan tells an anecdote with one deliberately wrong detail. Student must catch it and correct using "en fait" (preview of Stage 4).'
+            },
+            { num: '12', title: 'The Long Flight', type: 'Perform',
+              activities: [
+                'TASK: The Alibi Game. Dan and student each tell their story of last night. Then cross-examine to find 3 inconsistencies.',
+                '10-minute unstructured conversation in French',
+                'Dan speaks French throughout, at 80% speed',
+                'Student must sustain the conversation using everything learned',
+                'Dan only intervenes to help, not to teach. FEEDBACK: Clarification Requests only ("Pardon? Tu as dit quoi?")',
+                'First session where student spends more time in free conversation than in drills',
+                'HOMEWORK: Translation Snap on the 2 weakest frames from today. 8 English sentences, produce French.',
+              ],
+              comprehension: 'Embedded in the conversation. Dan increases speed incrementally during the 10 minutes.'
+            },
+          ],
+          stallPoints: [
+            { name: 'Frame fatigue', addressed: true, how: 'Weaving is a fundamentally different cognitive task from frame drilling. The student is now composing, not repeating. Output is their own, not recitation.' },
+            { name: 'Comprehension wall', addressed: true, how: 'Dan increases speaking speed incrementally from Session 9 onward. Session 12 is at near-natural speed using only known material. Comprehension improves without the student being told.' },
+            { name: 'Script-to-improv gap', addressed: true, how: 'Session 12\'s Long Flight is the key transition. First session where the student spends more time in free conversation than in drills.' },
+            { name: 'Motivation fade', addressed: true, how: 'Narrative construction (Session 10) is a breakthrough moment. Students tell a real story from their life in French. Emotionally powerful and personally meaningful.' },
+          ],
+          rustbuster: 'Rustbusters who entered at Stage 2 will have latent knowledge of "parce que" and basic past tense. Compress Sessions 8-9 into one. Their narrative construction (Session 10) is more ambitious. They may reach The Long Flight by Session 10.',
+          transition: [
+            'Can link 3+ frames in a single multi-clause sentence',
+            'Can tell a 5-sentence story about a past event',
+            'Can sustain 5 minutes of conversation with no English',
+            'Can express an opinion with a reason',
+          ],
+        },
+
+        // ── Stage 4: The Ring ──
+        {
+          number: 4,
+          name: 'The Ring',
+          sessions: 'Sessions 13-18',
+          milestone: 'I can have a real conversation with a French speaker on a familiar topic for 10+ minutes, navigate unexpected responses, and sound natural.',
+          frameRationale: 'These frames add nuance, contrast, and professional register. "En fait" and "mais y a" let students correct misunderstandings and push back. "En tant que" and "par rapport a" add sophistication for business or relocation contexts.',
+          prosodyFocus: 'Rhythm groups and breath groups. French speakers chunk words into 2-4 syllable groups, each with slight stress on the final syllable. This is what makes French sound "flowing" rather than choppy.',
+          feedbackStrategy: 'Elicitation. Dan starts the correct form and pauses, letting the student complete it: "Tu veux dire: je me suis..." This gives scaffolding without giving the full answer.',
+          interleavingRatio: '50% new / 50% old. Equal split. Half of every structured practice uses older frames from Stages 1-3.',
+          piNote: 'Full PI treatment for "en tant que" (unusual structure) and "par rapport a" (prepositional complexity). "En fait" and "mais y a" are structurally simple, need Input Flood only.',
+          frames: [
+            { pattern: 'en fait ___', english: 'actually...', corpus: '', why: 'The correction/clarification frame. Very high frequency in real speech. Lets students redirect conversations.' },
+            { pattern: 'en tant que ___', english: 'as a [role]...', corpus: '20 uses, 7 fillers', why: 'Professional and identity framing. Useful for business and relocation contexts.' },
+            { pattern: 'par rapport au ___', english: 'compared to / regarding...', corpus: '8 uses, 4 fillers', why: 'Sophistication frame. Allows nuanced comparison.' },
+            { pattern: "ca c'est un ___", english: "that's a...", corpus: '25 uses, 8 fillers', why: 'The naming frame. Points at things and categorises them.' },
+            { pattern: 'mais y a ___', english: 'but there is...', corpus: '51 uses, 12 fillers', why: 'The objection frame. Lets students introduce counterpoints.' },
+            { pattern: 'ca fait ___ de', english: 'it makes/does...', corpus: '16 uses, 4 fillers', why: 'Versatile causation frame.' },
+          ],
+          sessionPlans: [
+            { num: '13', title: 'Disagreement and Correction', type: 'Learn',
+              activities: [
+                'INPUT FLOOD: Dan uses "en fait" 5 times and "mais y a" 4 times in a 45-second story. Student counts each separately.',
+                '"En fait" and "mais y a" introduced as correction/objection tools',
+                'Fun drill: Dan makes intentionally wrong statements about the student. Student corrects with "en fait".',
+                '"En fait, je suis pas de Londres, je suis de Manchester"',
+                '"Mais y a un probleme..." / "Mais y a aussi..."',
+                'INTERLEAVING: The Cocktail. 5-item drill mixing "en fait" and "mais y a" (new) with "du coup" and "parce que" (old).',
+                'PROSODY: Rhythm group drill. "En fait / je suis pas / de Londres / je suis / de Manchester." Five groups, stress on final syllable of each.',
+              ],
+              comprehension: 'Full-Speed Dictation: Dan says a sentence at natural speed, once only. Student writes what they heard (even phonetically). Compare.'
+            },
+            { num: '14', title: 'Professional Register', type: 'Learn',
+              activities: [
+                'PROCESSING INSTRUCTION: Binary Choice on "en tant que". "Which means as a teacher? A: En tant que professeur. B: En temps que professeur." (3 pairs)',
+                'WHO DID WHAT on "par rapport a": Dan compares two things, student identifies what is being compared.',
+                '"En tant que" and "par rapport a" introduced for professional context',
+                'Students describe their work using actual job/life context',
+                'Comparison drill: "Par rapport a l\'Angleterre..." / "En tant que [their job]..."',
+                '"Ca c\'est un" for naming and categorising',
+                'PROSODY: Rhythm group drill. "En tant que / professeur / je trouve ca / tres important." Four groups.',
+              ],
+              comprehension: 'Authentic audio: a 2-minute podcast clip. Student summarises the gist and identifies 3 specific things said.'
+            },
+            { num: '15', title: 'Scenario Escalation', type: 'Practice',
+              activities: [
+                'TASK: The Flat Hunt (reasoning gap). 3 apartment descriptions, student must choose and justify using opinion + comparison frames.',
+                'Complete real-world scenario at increased complexity: doctor\'s appointment, hotel problem, dietary requirements',
+                'Multiple frames required in sequence',
+                'Dan plays increasingly unhelpful French speakers to test recovery',
+                'INTERLEAVING: Every scenario must include at least 2 Stage 1-2 frames alongside Stage 4 frames.',
+                'RETRIEVAL: Sentence Auction. 8 sentences, 100 imaginary euros. Buy the correct ones.',
+              ],
+              comprehension: 'Prediction Exercise: Dan starts a sentence and pauses. Student predicts the ending based on the frame pattern.'
+            },
+            { num: '16', title: 'The Curveball', type: 'Perform',
+              activities: [
+                'Dan role-plays a French speaker who goes completely off-script',
+                'After 2 min: unexpected topic change. After 4 min: speak faster. After 6 min: unknown vocabulary.',
+                'Student must navigate without freezing',
+                'FEEDBACK: Elicitation. Dan starts the correct form and pauses, student completes.',
+                'Deliberate comprehension stress test in a controlled environment',
+                'The explicit lesson: failure is survivable. Debrief: "You didn\'t freeze. That\'s the win."',
+              ],
+              comprehension: 'The entire session is comprehension training. Dan\'s unpredictability IS the exercise.'
+            },
+            { num: '17', title: 'Cultural Fluency', type: 'Practice',
+              activities: [
+                'Parisian slang and register: chais pas, bah non / bah si, the puff',
+                'The "du coup" verbal tic explained and practised',
+                'Informal contractions: "y a" vs "il y a", "chuis" vs "je suis"',
+                'PROSODY: The Conductor. Dan gestures for rhythm groups while student speaks in Parisian register.',
+                'RETRIEVAL: The Interrogation in Parisian register. 10 rapid-fire questions. Target: 6/10.',
+                'Fun, light session. Learning slang and sounding Parisian.',
+              ],
+              comprehension: 'Dan speaks in full Parisian register. Student identifies contractions and slang they now recognise.'
+            },
+            { num: '18', title: 'The Sparring Match', type: 'Perform',
+              activities: [
+                'TASK: The Advice Column. Dan describes a dilemma. Student gives advice using opinion, reason, and suggestion frames.',
+                '15-minute conversation entirely in French',
+                'Topic chosen by the student',
+                'Dan speaks at near-natural speed',
+                'FEEDBACK: Elicitation only. No recasts, no explicit correction. Student must self-correct.',
+                'This is the ring, not the heavy bag',
+                'HOMEWORK: Shadowing Clip targeting the 2 weakest frames. Shadow daily for a week.',
+              ],
+              comprehension: 'Embedded. Dan at near-natural speed for 15 minutes.'
+            },
+          ],
+          stallPoints: [
+            { name: 'Frame fatigue', addressed: true, how: 'Frames are no longer being "drilled." They are tools being deployed in conversation. The activity format has shifted from practice to performance.' },
+            { name: 'Comprehension wall', addressed: true, how: 'The Curveball (Session 16) is the deliberate stress test. The student is forced to fail and recover in a controlled environment. Builds confidence that failure is survivable.' },
+            { name: 'Script-to-improv gap', addressed: true, how: 'Sessions 16 and 18 are almost entirely improvised. The student is now in the ring, not at the heavy bag.' },
+            { name: 'Motivation fade', addressed: true, how: 'Cultural fluency (Session 17) is the fun session. Learning slang and sounding Parisian is inherently motivating. "Chais pas" with a shrug always gets a laugh.' },
+          ],
+          rustbuster: 'Rustbusters who entered at Stage 2 may reach Stage 4 by session 10-11. They already have passive familiarity with "en fait" and "par rapport a." Their cultural fluency session can be more adventurous.',
+          transition: [
+            'Can sustain 10+ minutes of French-only conversation',
+            'Can handle unexpected questions or topic changes without freezing',
+            'Uses at least 5 Natural Sound Kit items unprompted',
+            'French speakers respond to them in French (not switching to English)',
+          ],
+        },
+
+        // ── Stage 5: The Road ──
+        {
+          number: 5,
+          name: 'The Road',
+          sessions: 'Sessions 19-24',
+          milestone: 'I can operate independently in a French-speaking environment for an entire day: navigate transport, check into accommodation, eat out, ask for help, make small talk with strangers, and recover from any misunderstanding.',
+          frameRationale: 'These remaining frames add temporal specificity, hedging, activities, and impossibility. They are introduced in context, not as standalone drills. The student barely notices new frames because they are already conversing.',
+          prosodyFocus: 'Expressive prosody. Same sentence, different meanings through prosody. "C\'est pas mal" can mean "pretty good" (genuine) or "not bad I suppose" (lukewarm). Emotion Roulette becomes a regular exercise.',
+          feedbackStrategy: 'Metalinguistic Clues. Brief hints about the nature of the error, in French. "Attention au genre." "C\'est reflexif, ca." The student can now handle grammar talk in French.',
+          interleavingRatio: '40% new / 60% old. New frames introduced lightly, mostly in context. Most work reviews and deepens older frames in new combinations.',
+          piNote: 'New frames are introduced in context during scenarios, not via standalone PI. The student barely notices them. "Je viens de" gets a brief Input Flood because of its double meaning (temporal + geographical).',
+          frames: [
+            { pattern: 'je viens de ___', english: 'I just [did]... / I come from...', corpus: '14 uses, 6 fillers', why: 'Double meaning frame. Temporal (recent past) and geographical (origin).' },
+            { pattern: 'tres ___ parce que', english: 'very [adj] because...', corpus: '9 uses, 3 fillers', why: 'Opinion + justification structure. Compact and natural.' },
+            { pattern: 'tu peux pas ___', english: "you can't...", corpus: '17 uses, 8 fillers', why: 'Prohibition/impossibility frame.' },
+            { pattern: 'au mois de ___', english: 'in the month of...', corpus: '21 uses, 6 fillers', why: 'Temporal specificity for planning and storytelling.' },
+            { pattern: 'je fais des ___', english: 'I do/make some...', corpus: '12 uses, 4 fillers', why: 'Activity frame for describing habits and hobbies.' },
+            { pattern: 'ca ___ un peu', english: 'that [verb] a little...', corpus: '30 uses, 8 fillers', why: 'Softening/hedging frame. Adds politeness and nuance.' },
+          ],
+          sessionPlans: [
+            { num: '19', title: 'The Full Day: Morning + Midday', type: 'Practice',
+              activities: [
+                'Simulated morning: hotel check-out, breakfast order, asking for directions',
+                'Simulated midday: buying a metro ticket, navigating transport, finding a restaurant',
+                'New frames ("je viens de", "au mois de") introduced in context as they arise naturally',
+                'INTERLEAVING: Every scenario must draw from at least 3 different stages of frames.',
+                'PROSODY: Emotion Roulette embedded in scenarios. Same request expressed politely, then urgently, then frustrated.',
+              ],
+              comprehension: 'Dan plays multiple characters (hotel receptionist, metro attendant, waiter) at natural speed with register variation.'
+            },
+            { num: '20', title: 'The Full Day: Afternoon + Evening', type: 'Practice',
+              activities: [
+                'Simulated afternoon: shopping at a market, visiting a museum, making small talk',
+                'Simulated evening: restaurant reservation, ordering, splitting the bill, taxi home',
+                'Student must maintain French across all scenario changes',
+                'Dan introduces unexpected complications in each scenario',
+                'RETRIEVAL: The Interrogation embedded in the market scene. Vendor fires questions, student responds within 3 seconds.',
+                'PROSODY: Register switching. Formal at the museum, informal at the market. Notice how prosody changes.',
+              ],
+              comprehension: 'Embedded in scenarios. Dan varies register between formal (museum) and informal (market).'
+            },
+            { num: '21', title: 'The Telephone Session', type: 'Perform',
+              activities: [
+                'Phone calls in French: no visual cues, no body language, no lip-reading',
+                'Make a restaurant reservation',
+                'Change a hotel booking',
+                'Ask for information from a tourist office',
+                'TASK: The Travel Agent. Dan plays a travel agent. Student plans a trip by asking the right questions.',
+                'This is harder than face-to-face. That\'s the point.',
+                'FEEDBACK: Metalinguistic Clues. Brief hints in French: "Attention au genre" / "C\'est reflexif".',
+              ],
+              comprehension: 'The entire session is comprehension-intensive. Audio-only forces reliance on listening.'
+            },
+            { num: '22', title: 'The Difficult Conversation', type: 'Perform',
+              activities: [
+                'Problem scenario: lost luggage, wrong order at restaurant, overcharge on a bill',
+                'Student must resolve the situation politely but firmly',
+                'Dan plays an unhelpful/confused French speaker',
+                'Multiple recovery strategies tested under pressure',
+                'PHONOLOGICAL LOOP: Delayed Repetition on difficult phrases Dan uses. 7-second delay at this stage.',
+                'PROSODY: Same complaint expressed calmly, firmly, and angrily. Only the prosody changes, not the words.',
+              ],
+              comprehension: 'Dan deliberately mumbles or speaks fast. Student uses clarification strategies in real time.'
+            },
+            { num: '23', title: 'Extended Life Story', type: 'Perform',
+              activities: [
+                '5-minute monologue: tell the story of your life in French',
+                'This is the evolved version of the Personal Script from Stage 1',
+                'Uses narrative frames, connectors, opinions, temporal markers, all 30 frames available',
+                'Dan provides minimal intervention, only noting areas for polish',
+                'PROSODY: Podcast Shadow. After the monologue, Dan plays 30 seconds of a French podcast. Student shadows, matching prosody.',
+              ],
+              comprehension: 'Dan asks follow-up questions about the monologue, requiring elaboration and clarification in French.'
+            },
+            { num: '24', title: 'The Test Drive Debrief', type: 'Perform',
+              activities: [
+                'Student reports on a real French interaction (restaurant, phone call, colleague)',
+                'Session debriefs what worked and what didn\'t',
+                'Dan fills gaps revealed by the real-world test',
+                'If no real interaction, simulate the student\'s specific upcoming scenario',
+                'FEEDBACK: Delayed Feedback. Dan notes errors during the session, reviews 3 at The Landing.',
+                'HOMEWORK: Frame Sprint on any frames that failed during the real-world test.',
+              ],
+              comprehension: 'Student describes what the French speaker said. Dan helps decode phrases they couldn\'t catch.'
+            },
+          ],
+          stallPoints: [
+            { name: 'Frame fatigue', addressed: true, how: 'Non-issue. Remaining frames are introduced in context, not as standalone drills. The student barely notices new frames because they are already conversing.' },
+            { name: 'Comprehension wall', addressed: true, how: 'By Session 21 (telephone), the student has survived comprehension challenges multiple times. The wall has been incrementally dismantled.' },
+            { name: 'Script-to-improv gap', addressed: true, how: 'Sessions 22 and 24 are entirely improvised. The student is now an improviser, not a reciter.' },
+            { name: 'Motivation fade', addressed: true, how: 'The Test Drive (Session 24) provides a real-world proof point. When the student succeeds in an actual French interaction, motivation becomes self-sustaining.' },
+          ],
+          rustbuster: 'Rustbusters may reach Stage 5 by session 16-17. Their Full Day simulation is more ambitious. The telephone session may use more complex scenarios (e.g. negotiating a contract change, speaking to a French administration office).',
+          transition: [
+            'Can navigate a simulated full day in French with no English',
+            'Can handle a problem scenario and reach a resolution',
+            'Has had at least one real-world French interaction and reports positive results',
+          ],
+        },
+
+        // ── Stage 6: Freestyle ──
+        {
+          number: 6,
+          name: 'Freestyle',
+          sessions: 'Session 25+, ongoing',
+          milestone: "I am FluentISH. I can hold my own in French. Locals respond to me in French. I don't freeze when I don't understand. I recover. I have a personality in French.",
+          frameRationale: 'No new frames. This stage is pure conversation practice. The progressive overload comes from topic complexity, speed, and register rather than new frames.',
+          prosodyFocus: 'Natural register variation. Formal French has wider pitch range and clearer rhythm groups. Informal French compresses everything. Students shift between registers fluidly.',
+          feedbackStrategy: 'Delayed Feedback. No interruption during conversation. Dan notes errors mentally, reviews 2-3 at The Landing. Student explains the rule themselves.',
+          interleavingRatio: '0% new / 100% review. All 30 frames interleaved across conversation and retrieval exercises.',
+          piNote: 'No Processing Instruction needed. All frames already acquired. Time reallocated to Free Flight.',
+          frames: [
+            { pattern: 'No new frames', english: 'Consolidation and refinement', corpus: '', why: 'All 30 frames have been introduced. This stage is about unconscious deployment, not learning new patterns.' },
+          ],
+          sessionPlans: [
+            { num: '25+', title: 'Themed Conversations', type: 'Perform',
+              activities: [
+                'A different topic each week, chosen by the student',
+                'Politics, food, travel stories, family, work, current events, philosophy',
+                'Dan speaks at natural speed throughout',
+                'Corrections only for persistent errors or when meaning is unclear',
+              ],
+              comprehension: 'Student and Dan discuss authentic French media (podcast segment, news article, film scene) together.'
+            },
+            { num: '', title: 'Debate Sessions', type: 'Perform',
+              activities: [
+                'Dan takes a contrarian position on a topic the student cares about',
+                'Student must argue back, defend their view, concede points',
+                'Tests full range of frames: opinion, contrast, evidence, concession',
+                'Register may shift between formal debate and casual argument',
+              ],
+              comprehension: null
+            },
+            { num: '', title: 'Student-Led Sessions', type: 'Perform',
+              activities: [
+                'Student prepares a topic and leads the entire conversation',
+                'Dan follows the student\'s lead, asks questions, plays the audience',
+                'Tests whether the student can initiate and sustain without support',
+                'The ultimate graduation exercise: teaching Dan something in French',
+              ],
+              comprehension: null
+            },
+          ],
+          stallPoints: [
+            { name: 'Frame fatigue', addressed: true, how: 'Frames are deployed unconsciously. The student doesn\'t think about frames any more, just as a native speaker doesn\'t think about grammar.' },
+            { name: 'Comprehension wall', addressed: true, how: 'Natural-speed conversation is the default. Comprehension gaps are handled in French using clarification strategies.' },
+            { name: 'Script-to-improv gap', addressed: true, how: 'Every session is improvised. There are no scripts. The student has a personality in French.' },
+            { name: 'Motivation fade', addressed: true, how: 'Motivation is self-sustaining. The student books because they enjoy speaking French, not because they feel they should.' },
+          ],
+          rustbuster: 'No special acceleration needed. All students who reach this stage are operating at the same level regardless of entry point.',
+          transition: [
+            'No transition criteria. This stage continues as long as the student wants to keep improving.',
+            'The overload now comes from topic complexity, speed, register variety, and cultural depth.',
+          ],
+        },
+      ],
+
+      // =====================================================================
+      // SPACED REPETITION PROTOCOL
+      // =====================================================================
+      spacedRepetition: {
+        principle: 'Frames follow a graduated-interval recall schedule. Each frame lives in one of five boxes. Successful unprompted retrieval promotes a frame; failure demotes it. The warm-up block tests frames drawn from the boxes, not random selection.',
+        research: 'Pimsleur (1967) graduated-interval recall; Ebbinghaus (1885) forgetting curve; Leitner (1972) cardbox system; Cepeda et al. (2006) spacing effect meta-analysis',
+        boxes: [
+          { name: 'Box 1: New', interval: 'Every session', colour: 'bg-red-400', description: 'Just introduced. Tested at every session until the student can produce it correctly, unprompted, within 2 seconds.' },
+          { name: 'Box 2: Shaky', interval: 'Every 2nd session', colour: 'bg-amber-400', description: 'Produced once correctly but not yet reliable. Tested every other session.' },
+          { name: 'Box 3: Growing', interval: 'Every 4th session', colour: 'bg-yellow-400', description: 'Reliable under low pressure. Tested monthly to prevent decay.' },
+          { name: 'Box 4: Strong', interval: 'Every 8th session', colour: 'bg-lime-400', description: 'Automatic in structured drills. Tested via The Ambush (unprompted, mid-conversation).' },
+          { name: 'Box 5: Secure', interval: 'Spot-check only', colour: 'bg-green-500', description: 'Deployed unconsciously in free conversation. Spot-checked to confirm.' },
+        ],
+        promotionRule: 'A frame moves UP one box when the student produces it correctly, unprompted, within 2 seconds. It moves DOWN one box on any failure: hesitation over 3 seconds, error, or prompted recall. This asymmetry is deliberate (Bjork, 1994: desirable difficulties).',
+        demotionRule: 'If a Box 4 or 5 frame fails during The Ambush, it drops to Box 3. This prevents false confidence from masking decay.',
+        warmUpFormats: [
+          { format: 'Speed Round', boxes: 'All boxes', description: 'Dan names the English meaning. Student must produce the French frame plus a filler within 3 seconds. Test 8-10 frames across boxes.', example: 'Dan: "I don\'t know..." Student: "Je sais pas pourquoi!" (under 3 seconds)', research: 'Roediger & Karpicke (2006) testing effect' },
+          { format: 'Reverse Recall', boxes: 'Box 1-2 (newest)', description: 'Dan gives a completed French sentence. Student must identify the frame being used. Tests recognition, not production. Easier than production, appropriate for newest frames.', example: 'Dan: "Il y a des restaurants a Paris." Student: "Il y a des ___"', research: 'VanPatten (2004) input processing' },
+          { format: 'Frame Roulette', boxes: 'Box 2-3', description: 'Random frame selected. Student must produce 3 different sentences with it in 15 seconds. Tests filler diversity, not just the frame itself.', example: 'Frame: "je trouve ca ___" Student: "Je trouve ca beau. Je trouve ca difficile. Je trouve ca interessant."', research: 'Bjork (1994) desirable difficulties' },
+          { format: 'Story Chain', boxes: 'Box 3-4', description: 'Student builds a 5-sentence story. Each sentence must use a different frame from those due for review. Tests weaving, not just isolated recall.', example: '"Je suis de Manchester. Il y a des usines. Je trouve ca triste. Du coup je suis parti. Quand je suis arrive a Paris, je me suis dit: c\'est mieux."', research: 'Craik & Lockhart (1972) levels of processing' },
+          { format: 'The Ambush', boxes: 'Box 4-5', description: 'Dan casually asks a question mid-conversation that requires a specific frame. Tests whether the frame is truly automatic. The student does not know it is a test.', example: 'Mid-conversation, Dan: "Et par rapport a ton ancien boulot, c\'est comment?" (tests "par rapport a" frame)', research: 'DeKeyser (2007) automatisation' },
+        ],
+      },
+
+      // =====================================================================
+      // INTERLEAVING PROTOCOL
+      // =====================================================================
+      interleavingProtocol: {
+        principle: 'Old frames are deliberately mixed into drills for new frames. This is harder than blocked practice but produces significantly better long-term retention. The mixing forces the brain to discriminate between frames, strengthening retrieval pathways.',
+        research: 'Rohrer & Taylor (2007) interleaving effect; Bjork & Bjork (2011) desirable difficulties; Kornell & Bjork (2008) learning concepts and categories',
+        ratios: [
+          { stage: 'Stage 1', ratio: '100% new', description: 'Everything is new. No old material exists to interleave.' },
+          { stage: 'Stage 2', ratio: '70% new / 30% old', description: 'Every 3rd drill item uses a Stage 1 frame. Student revisits "je suis", "il y a", "vous avez" while learning modals.' },
+          { stage: 'Stage 3', ratio: '60% new / 40% old', description: 'Old frames from Stages 1-2 woven into every drill set. Nearly half of structured practice uses older material.' },
+          { stage: 'Stage 4', ratio: '50% new / 50% old', description: 'Equal split. Half of every structured practice uses older frames from Stages 1-3.' },
+          { stage: 'Stage 5', ratio: '40% new / 60% old', description: 'New frames introduced lightly. Most work reviews and deepens older frames in new combinations.' },
+          { stage: 'Stage 6', ratio: '0% new / 100% review', description: 'No new frames. All practice is interleaved review across all 30 frames.' },
+        ],
+        techniques: [
+          { name: 'The Sandwich', description: 'New frame drilled between two old-frame items. The old frames provide contrast and force discrimination.', example: { items: ['je vais te raconter une histoire (new, Stage 3)', 'vous avez du lait? (old, Stage 1)', 'je vais te montrer quelque chose (new, Stage 3)', 'je suis de Manchester (old, Stage 1)'] }, stages: '2-5', research: 'Rohrer & Taylor (2007)' },
+          { name: 'The Cocktail', description: 'Five-item drill set mixing 3 new and 2 old frames. Student does not know which is which. The mixing forces discrimination.', example: { items: ['je me suis dit (new)', 'je peux partir (old)', 'quand je suis arrive (new)', 'il y a des gens (old)', 'du coup je suis reste (new)'] }, stages: '3-5', research: 'Kornell & Bjork (2008)' },
+          { name: 'The Time Machine', description: 'Student tells the same story twice: once using only old frames, once incorporating the new frame. Highlights what the new frame adds to their expressive range.', example: { old_version: 'Je suis alle en France. Il y a des bons restaurants. Je veux manger du fromage.', new_version: 'La premiere fois que je suis alle en France, il y a des bons restaurants. Du coup je veux manger du fromage.' }, stages: '3-4', research: 'Bjork & Bjork (2011)' },
+        ],
+      },
+
+      // =====================================================================
+      // PROCESSING INSTRUCTION
+      // =====================================================================
+      processingInstruction: {
+        principle: 'Every new frame goes through a structured input phase (2-3 minutes) before the student produces it. The brain needs to hear and process a form before it can produce it reliably. This is not passive listening; the student must process the form to extract meaning.',
+        research: 'VanPatten (1996, 2004) Input Processing theory; VanPatten & Cadierno (1993); Schmidt (1990) Noticing Hypothesis; Sharwood Smith (1993) input enhancement',
+        phases: [
+          { name: 'Phase 1: Noticing', duration: '30-45 sec', description: 'Dan uses the target frame 4-5 times in natural speech. Student just listens. No production required. The brain starts to notice the pattern.', icon: '\u{1F442}' },
+          { name: 'Phase 2: Structured Input', duration: '60-90 sec', description: 'Student hears sentences and must make a meaning-based judgement. Not "what form did you hear?" but "what does this mean?" The form-meaning connection is forged through comprehension.', icon: '\u{1F9E0}' },
+          { name: 'Phase 3: Guided Output', duration: '60-90 sec', description: 'Student produces the frame with heavy scaffolding. Dan provides the sentence start, student completes. Errors are expected and welcomed.', icon: '\u{1F5E3}' },
+        ],
+        activities: [
+          { name: 'Input Flood', phase: 'Noticing', description: 'Dan delivers a 30-45 second monologue deliberately packed with the target frame (4-6 uses). Student counts how many times they heard it. Not production, just noticing.', example: { frame: 'du coup', instruction: '"I\'m going to talk for 30 seconds. Count how many times you hear a particular phrase."', monologue: 'Hier j\'etais fatigue. Du coup je suis reste a la maison. Ma femme voulait sortir, du coup elle est allee au restaurant. Du coup j\'ai mange tout seul. C\'etait bien, du coup j\'ai regarde un film.', student_answer: '"I heard it 4 times. It means something like so or as a result."' }, research: 'Sharwood Smith (1993) input flooding; Schmidt (1990)' },
+          { name: 'Binary Choice', phase: 'Structured Input', description: 'Dan says two sentences. One uses the target frame correctly, one does not. Student identifies which one matches the meaning given. Forces processing of form to extract meaning.', example: { frame: 'je me suis ___', instruction: '"Which sentence means I said to myself that it\'s hard?"', sentence_a: 'Je me suis dit que c\'est difficile.', sentence_b: 'Je suis dit que c\'est difficile.', correct: 'A', why: 'Student must process the reflexive "me" to get the meaning. The error in B is subtle but meaning-bearing.' }, research: 'VanPatten & Cadierno (1993)' },
+          { name: 'Who Did What?', phase: 'Structured Input', description: 'Dan says a sentence using the frame. Student identifies who is doing the action, to whom, and about what. Forces deep processing of the frame structure.', example: { frame: 'je vais te ___', dan_says: 'Je vais te raconter une histoire de quand je suis arrive en Angleterre.', questions: 'Who is telling a story? (Dan). To whom? (the student). About what? (when Dan arrived in England).', why: 'The student must parse the frame components to answer. This builds the form-meaning connection before production.' }, research: 'VanPatten (2004)' },
+        ],
+      },
+
+      // =====================================================================
+      // PROSODY STRAND
+      // =====================================================================
+      prosodyStrand: {
+        principle: 'Prosody (rhythm, stress, intonation) is more important than individual sounds for being understood. French is syllable-timed with final-syllable stress; English is stress-timed. This mismatch is the single biggest barrier to sounding natural. Prosody training runs through the entire curriculum, not just Session 1.',
+        research: 'Derwing & Munro (1997, 2005) prosody more important than segments for intelligibility; Trouvain & Gut (2012) rhythm; Hahn (2004) primary stress and comprehensibility',
+        strandByStage: [
+          { stage: 1, focus: 'Syllable timing + final-syllable stress', description: 'French is syllable-timed (equal weight on each syllable) unlike English stress-timed. Stress falls on the LAST syllable of a phrase group. "Je suis de Man-ches-TER" not "MAN-ches-ter".', activities: ['Rhythm clapping: clap once per syllable while speaking', 'Stress shifting: say the same word with English stress, then French stress', 'The Robot: speak in perfectly equal syllables, then add slight final-syllable lengthening'] },
+          { stage: 2, focus: 'Intonation contours (questions vs statements)', description: 'French questions with "est-ce que" use rising intonation. Statements fall. The pitch pattern carries meaning independent of the words.', activities: ['Humming: hum the melody of a sentence before saying the words', 'Rising/falling: same sentence as statement (falling) then question (rising)', 'The Roller Coaster: trace intonation with your hand while speaking'] },
+          { stage: 3, focus: 'Liaison and enchainement', description: 'Words in French connect across boundaries. "les amis" is "lay-za-mee" not "lay ah-mee". Enchainement: final consonant of one word becomes the first sound of the next.', activities: ['Chain drill: practise common liaison pairs', 'The Snake: speak a sentence as one unbroken sound stream', 'Spot the link: Dan says phrases with and without liaison, student identifies which has it'] },
+          { stage: 4, focus: 'Rhythm groups and breath groups', description: 'French speakers chunk words into rhythm groups (2-4 syllables). Each group has one slight stress on the final syllable. This is what makes French sound "flowing".', activities: ['Chunking: mark rhythm group boundaries in written sentences, then read aloud', 'The Conductor: Dan gestures for each rhythm group as student speaks', 'Speed-up/slow-down: same sentence at 3 speeds, maintaining rhythm group structure'] },
+          { stage: 5, focus: 'Expressive prosody (emotions, emphasis, attitude)', description: 'Same sentence, different meanings through prosody. "C\'est pas mal" can mean "it\'s pretty good" (genuine) or "it\'s not bad I suppose" (lukewarm). Prosody carries pragmatic meaning.', activities: ['Emotion Roulette: same sentence expressing surprise, boredom, excitement, sarcasm', 'The Actor: deliver a line as different characters', 'Shadowing authentic speech: match a native speaker\'s exact prosody'] },
+          { stage: 6, focus: 'Natural register variation', description: 'Prosody changes with register. Formal French has wider pitch range and clearer rhythm groups. Informal French compresses everything. Students learn to shift between registers.', activities: ['Register switching: same anecdote formally then informally', 'Podcast shadowing: shadow 60 seconds matching prosody exactly', 'The Newsreader: formal newsreader prosody then casual retelling'] },
+        ],
+        exercises: [
+          { name: 'Rhythm Clapping', stages: '1-2', description: 'Student claps once per syllable while speaking a sentence. Dan models first. Trains the syllable-timed rhythm that English speakers struggle with.', example: { sentence: 'Je suis de Man-ches-ter', claps: '1-2-3-4-5-6 (six equal claps)', contrast: 'English would stress MAN-ches-ter (3 unequal beats)' }, research: 'Trouvain & Gut (2012)' },
+          { name: 'The Melody First', stages: '2-3', description: 'Student hums the melody/intonation of a sentence before saying any words. Strips away segmental concerns and focuses purely on pitch contour.', example: { sentence: 'Est-ce que vous avez du pain?', hum: 'Mm-mm-mm mm-mm-mm mm MM? (rising at end)', then_speak: 'Est-ce que vous avez du pain? (same rising contour with words)' }, research: 'Derwing & Munro (2005)' },
+          { name: 'The Snake', stages: '3-4', description: 'Student speaks a multi-word phrase as one continuous sound, eliminating pauses between words. Trains enchainement and liaison.', example: { words: 'il y a des amis ici', snake: 'ee-lee-ya-day-za-mee-zee-see (one unbroken stream)', why: 'Native French has no silence between words. English speakers insert micro-pauses at word boundaries.' }, research: 'Hahn (2004)' },
+          { name: 'Emotion Roulette', stages: '4-6', description: 'Dan gives a neutral sentence. Names an emotion. Student says the sentence conveying that emotion through prosody alone, no extra words.', example: { sentence: 'Il y a des gens dans le restaurant.', performances: ['Surprised: rising pitch, emphasis on GENS, wide eyes', 'Bored: flat, trailing off, monotone', 'Excited: fast, high pitch, wide range', 'Worried: slow, descending, pauses between groups'] }, research: 'Derwing & Munro (1997)' },
+          { name: 'Podcast Shadow', stages: '5-6', description: 'Play 15-30 seconds of a French podcast. Student shadows (speaks simultaneously) matching the speaker\'s prosody. Not about getting every word, but matching the melody, rhythm, and pacing.', example: { procedure: ['1. Listen once (no speaking)', '2. Listen + shadow simultaneously', '3. Shadow from memory', '4. Compare your recording to the original'] }, research: 'Hamada (2016) shadowing; Derwing & Munro (2005)' },
+        ],
+      },
+
+      // =====================================================================
+      // CORRECTIVE FEEDBACK STRATEGY
+      // =====================================================================
+      correctiveFeedback: {
+        principle: 'The type of correction varies by stage. Early stages use recasts (least disruptive, keeps the student talking). Later stages use prompts (more effective for uptake but require more confidence). The key insight: recasts are the most common correction type but the least effective for learning. Prompts force self-correction, which is more durable.',
+        research: 'Lyster & Ranta (1997) corrective feedback types and uptake; Sheen (2006) focused recasts; Lyster (2004) differential effects; Li (2010) meta-analysis',
+        strategies: [
+          { stage: '1-2', name: 'Recasts + Positive Evidence', description: 'Dan repeats the student\'s utterance correctly, without flagging the error. Low anxiety, keeps the student talking. The student is too fragile for explicit correction.', example: { student: '"Je suis de Manchesteur"', dan: '"Ah, tu es de Manchester!" (correct pronunciation, no commentary)', why: 'The recast provides the correct form. The student hears it. No flow break. At this stage, confidence matters more than accuracy.' }, research: 'Sheen (2006) focused recasts' },
+          { stage: '3', name: 'Clarification Requests', description: 'Dan signals non-understanding, pushing the student to reformulate. This forces the student to notice their own error and self-correct.', example: { student: '"Je me suis dit que... um... je suis alle au..."', dan: '"Pardon? Tu as fait quoi?" (clarification request)', why: 'The student must try again. Self-correction is more durable than being told the answer.' }, research: 'Lyster & Ranta (1997)' },
+          { stage: '4', name: 'Elicitation', description: 'Dan starts the correct form and pauses, letting the student complete it. Gives scaffolding to self-correct without giving the full answer.', example: { student: '"Quand je suis arrive, du coup je suis..."', dan: '"Quand tu es arrive, qu\'est-ce qui s\'est passe? Tu..."', why: 'The student fills in the correct form themselves. Active retrieval is more effective than passive reception.' }, research: 'Lyster (2004)' },
+          { stage: '5', name: 'Metalinguistic Clues', description: 'Dan gives a brief hint about the nature of the error. Quick, in French, and the student corrects.', example: { student: '"Le premiere fois que..."', dan: '"Attention: premiere, c\'est feminin..."', student_corrects: '"LA premiere fois que..."', why: 'By Stage 5, the student can handle grammar talk in French. The clue helps them build an internal monitor.' }, research: 'Li (2010) meta-analysis' },
+          { stage: '6', name: 'Delayed Feedback', description: 'No interruption during conversation. Dan notes errors mentally, reviews 2-3 at The Landing. Student explains the rule themselves.', example: { noted_error: 'Student said "je suis alle" but is female', at_landing: '"Tu as dit \'je suis alle.\' Mais toi, tu es...?" Student: "Allee! Avec un E!"', why: 'At this level, conversation flow is sacred. Correction happens in the debrief, not mid-sentence.' }, research: 'Lyster & Ranta (1997)' },
+        ],
+        errorPriority: [
+          { priority: 1, type: 'Meaning-obscuring errors', description: 'Errors that cause genuine misunderstanding. Always correct, at any stage.', example: '"Je suis chaud" (I\'m horny) vs "J\'ai chaud" (I\'m warm)' },
+          { priority: 2, type: 'Frame-structural errors', description: 'Errors in the frame itself (wrong preposition, missing reflexive). Correct from Stage 2 onward.', example: '"Je sais pas de..." vs "Je sais pas si..."' },
+          { priority: 3, type: 'Gender/agreement errors', description: 'Correct from Stage 4 onward. Before that, ignore completely.', example: '"Le premiere fois" vs "La premiere fois"' },
+          { priority: 4, type: 'Accent refinements', description: 'Correct from Stage 5 onward. Before that, only correct sounds that cause misunderstanding.', example: 'Subtle vowel distinctions like "u" vs "ou"' },
+        ],
+      },
+
+      // =====================================================================
+      // DELIBERATE PRACTICE PROTOCOL
+      // =====================================================================
+      deliberatePractice: {
+        principle: 'Between sessions, students work on their specific weak points. The most effective practice targets identified weaknesses, not general revision. Dan diagnoses at The Landing, prescribes specific homework via the portal.',
+        research: 'Ericsson, Krampe & Tesch-Romer (1993) deliberate practice; Ericsson & Pool (2016) Peak',
+        weeklyDiagnostic: {
+          description: 'At The Landing, Dan identifies 1-2 frames the student struggled with. These become the homework frames for the week.',
+          procedure: [
+            'Dan notes which frames had >2s hesitation, errors, or required prompting during the session',
+            'At The Landing: "Your strong frames today were X and Y. The one that needs work is Z."',
+            'Dan sends a practice task to the student\'s portal targeting that specific frame',
+          ],
+        },
+        portalTasks: [
+          { name: 'Frame Sprint', description: 'Student records themselves saying 10 sentences using the weak frame, each with a different filler. Send the voice note to Dan via WhatsApp.', example: { frame: 'je me suis ___', task: 'Record 10 sentences: je me suis dit..., je me suis rendu compte..., je me suis marie(e)..., je me suis arrete(e)..., etc.', why: 'Production practice with feedback loop. Dan listens and notes which fillers are solid and which need work.' }, research: 'Ericsson et al. (1993)' },
+          { name: 'Translation Snap', description: 'Portal shows 8 English sentences. Student must produce the French using the target frame. Self-timed. Track personal best.', example: { frame: 'du coup', prompts: ['So I went home.', 'So she called the doctor.', 'So we decided to stay.', 'So I ordered a coffee.'], target_output: ['Du coup je suis rentre.', 'Du coup elle a appele le medecin.', 'Du coup on a decide de rester.', 'Du coup j\'ai commande un cafe.'] }, research: 'DeKeyser (2007) automatisation' },
+          { name: 'Shadowing Clip', description: 'Dan records a 30-second passage heavy with the target frame. Student shadows it daily for a week. The repetition builds automatic retrieval.', example: { frame: 'parce que', clip: 'J\'aime Paris parce que c\'est beau. Je reste parce que j\'ai des amis. Je parle francais parce que c\'est utile. Et je continue parce que j\'adore ca.', instruction: 'Listen once. Then speak along with me, matching my speed and rhythm. Do this once a day for 7 days.' }, research: 'Hamada (2016) shadowing' },
+        ],
+      },
+
+      // =====================================================================
+      // RETRIEVAL PRACTICE PROTOCOL
+      // =====================================================================
+      retrievalPractice: {
+        principle: 'Retrieval (pulling information out of memory) is more effective than re-study (putting information back in). The act of retrieving strengthens the memory trace. Every session should include retrieval exercises beyond the warm-up.',
+        research: 'Roediger & Karpicke (2006) testing effect; Karpicke & Roediger (2008) retrieval for learning; Roediger & Butler (2011) retrieval practice',
+        exercises: [
+          { name: 'Free Recall Blast', when: 'Start of every session, before Warm-Up', stages: 'All', description: 'Student has 60 seconds. "Tell me everything you remember from last week." No prompts, no cues. Whatever comes out. Dan notes what was retrieved and what was missed.', example: { instruction: '"Sixty seconds. Tell me anything you remember from our last session. Frames, words, phrases, anything. Go."', what_dan_tracks: 'Which frames were recalled (candidates for Box promotion) and which were forgotten (need more practice). This directly feeds the spaced repetition system.' }, research: 'Roediger & Karpicke (2006)' },
+          { name: 'Cued Recall', when: 'Warm-Up block, 2-3 times per session', stages: 'All', description: 'Dan gives the English meaning or the first word of a frame. Student produces the complete French frame with a filler.', example: { cue: '"How do you say I said to myself?"', target: '"Je me suis dit"', harder_cue: '"What frame starts with du...?"', harder_target: '"Du coup! Du coup je suis parti."' }, research: 'Karpicke & Roediger (2008)' },
+          { name: 'Recognition Task', when: 'Comprehension Sprint, alternating weeks', stages: '2-4', description: 'Dan says 5 sentences. Some use frames correctly, some have subtle errors. Student gives thumbs up or thumbs down for each.', example: { sentences: ['"Je me suis dit que c\'est bien." (CORRECT: thumbs up)', '"Je suis me dit que c\'est bien." (INCORRECT: wrong word order, thumbs down)', '"Du coup elle est partie." (CORRECT: thumbs up)'] }, research: 'Roediger & Butler (2011)' },
+          { name: 'Sentence Auction', when: 'Every 4th session, during Core Work', stages: '3-5', description: 'Gamified error-detection. Student has 100 imaginary euros. Dan "sells" 8 sentences. Student bids on ones they believe are correct. Wrong bids lose money. Correct bids double.', example: { items: ['"Du coup je suis parti." (correct, worth buying at 15 euros)', '"Du coup je suis allez." (incorrect: "allez" should be "alle", trap!)', '"La premiere fois que je suis venue en France, il y a des croissants partout." (correct, worth buying at 20 euros)', '"Moi je suis pas du tout d\'accord." (correct, worth buying at 10 euros)'] }, research: 'Roediger & Butler (2011) with gamification' },
+          { name: 'The Interrogation', when: 'Core Work, Practice sessions', stages: '3-6', description: '10 rapid-fire questions in French. Student must answer using known frames within 3 seconds. No time to translate mentally. Forces automatic retrieval.', example: { questions: ['"D\'ou tu viens?" \u2192 "Je viens de Manchester."', '"Qu\'est-ce que tu fais dans la vie?" \u2192 "Je suis professeur."', '"Tu aimes la France?" \u2192 "Oui, je trouve ca magnifique."', '"Pourquoi tu apprends le francais?" \u2192 "Parce que j\'adore la culture."', '"T\'as fait quoi ce weekend?" \u2192 "Je me suis dit que je vais rester a la maison."'] }, research: 'DeKeyser (2007) automatisation; Segalowitz (2010)' },
+        ],
+      },
+
+      // =====================================================================
+      // PHONOLOGICAL LOOP TRAINING
+      // =====================================================================
+      phonologicalLoop: {
+        principle: 'The phonological loop (a component of working memory) is the bottleneck for L2 vocabulary acquisition. It holds speech sounds for 1-2 seconds while the brain processes them. Training it directly accelerates how fast students can absorb and reproduce new French.',
+        research: 'Baddeley (2003) working memory model; Service (1992) phonological memory predicts L2 learning; Speciale, Ellis & Bywater (2004); O\'Brien et al. (2006)',
+        exercises: [
+          { name: 'Delayed Repetition', stages: 'All', description: 'Dan says a French sentence. Student waits 5 seconds (Dan counts on fingers). Then student repeats. The delay forces the phonological loop to hold the sounds without articulatory rehearsal.', progression: ['Stage 1: 3-word phrases, 3-second delay', 'Stage 2: 5-word phrases, 5-second delay', 'Stage 3: 8-word phrases, 5-second delay', 'Stage 4: 10-word phrases, 7-second delay', 'Stage 5-6: Full sentences, 10-second delay'], example: { dan_says: '"Je me suis rendu compte que c\'est difficile."', delay: '5 seconds (Dan holds up fingers: 1...2...3...4...5)', student_repeats: '"Je me suis rendu compte que c\'est difficile."', fail_response: 'If student can\'t remember, say: "Let\'s build it up. Start from the end."' }, research: 'Baddeley (2003)' },
+          { name: 'Backwards Buildup', stages: '2-5', description: 'Long sentences are built from the END, not the start. This is counterintuitive but keeps the prosody of the final phrase intact as the sentence grows. The student always finishes strongly.', example: { target: 'Je me suis dit que c\'est vraiment difficile', steps: ['difficile', 'vraiment difficile', 'c\'est vraiment difficile', 'que c\'est vraiment difficile', 'dit que c\'est vraiment difficile', 'suis dit que c\'est vraiment difficile', 'me suis dit que c\'est vraiment difficile', 'Je me suis dit que c\'est vraiment difficile'], why: 'Building forward means the student fumbles the ending (the newest part). Building backward means the ending is always the most practised part. The sentence always sounds confident at the finish.' }, research: 'Service (1992)' },
+          { name: 'Sentence Growing', stages: 'All', description: 'Dan says a 3-word phrase. Student repeats. Dan adds a word. Student repeats the longer version. Continue until the sentence is 12+ words. Tests how long the phonological loop can hold.', example: { growth: ['Je suis content.', 'Je suis tres content.', 'Je suis tres content aujourd\'hui.', 'Je suis tres content aujourd\'hui parce que...', 'Je suis tres content aujourd\'hui parce que il fait beau.', 'Je suis tres content aujourd\'hui parce que il fait beau et...', 'Je suis tres content aujourd\'hui parce que il fait beau et je suis en vacances.'] }, research: 'Speciale, Ellis & Bywater (2004)' },
+          { name: 'Simultaneous Shadowing', stages: '3-6', description: 'Student speaks at the same time as Dan (or an audio recording), matching words, speed, and prosody in real time. Not repetition (which has a delay) but simultaneous production. Extremely demanding but highly effective.', example: { procedure: ['1. Dan speaks at 70% speed. Student shadows simultaneously, staying within 0.5 seconds.', '2. Repeat at 80% speed.', '3. Repeat at 90% speed.', '4. Student attempts from memory without Dan speaking.'] }, research: 'Hamada (2016); Lambert (1992)' },
+        ],
+      },
+
+      // =====================================================================
+      // TASK-BASED ACTIVITIES
+      // =====================================================================
+      taskBasedActivities: [
+        { name: 'The Menu Puzzle', type: 'Information Gap', stages: '2-3', description: 'Student has a menu with 3 items missing. Dan has the full menu. Student must ask questions in French to discover the missing items and their prices. Genuine information gap: the student needs the information to complete a task.', frames_used: ['vous avez ___', 'c\'est ___', 'je prends ___', 'est-ce que ___'], example: { student_sheet: 'Menu: 1. Soupe a l\'oignon, 8 euros. 2. ??? 3. Tarte tatin, ???. 4. ???', dan_sheet: 'Full menu: 1. Soupe a l\'oignon, 8 euros. 2. Croque-monsieur, 12 euros. 3. Tarte tatin, 9 euros. 4. Salade nicoise, 11 euros.', interaction: '"Est-ce que vous avez un plat principal?" "Oui, on a un croque-monsieur." "C\'est combien?" "Douze euros."' }, research: 'Long (1985) information gap; Pica, Kanagy & Falodun (1993)' },
+        { name: 'The Alibi Game', type: 'Opinion Gap', stages: '3-4', description: 'Dan and the student each describe where they were last night using past tense frames. Then they must find 3 inconsistencies in each other\'s stories. Tests comprehension and production simultaneously.', frames_used: ['je me suis ___', 'quand je suis ___', 'du coup ___', 'parce que ___'], example: { dan_story: '"Hier soir, je me suis dit que je vais aller au cinema. Quand je suis arrive, il y a des gens partout. Du coup j\'ai pris un cafe a cote."', student_task: 'Listen, then tell YOUR story. Then cross-examine: "Est-ce que tu es alle tout seul?" "A quelle heure?" Find the holes.' }, research: 'Ellis (2003) task-based language teaching' },
+        { name: 'The Flat Hunt', type: 'Reasoning Gap', stages: '4-5', description: 'Student sees 3 apartment descriptions in French. Each has pros and cons. Student must choose one and justify using opinion and comparison frames. No single right answer.', frames_used: ['en fait ___', 'par rapport au ___', 'mais y a ___', 'je trouve ca ___', 'ca fait ___ de'], example: { apartments: ['Appart A: grand, cher, centre-ville, pas de balcon', 'Appart B: petit, pas cher, banlieue, jardin', 'Appart C: moyen, beau, loin du metro, lumineux'], target_output: '"Je prends l\'appart B parce que c\'est pas cher. Par rapport au centre-ville, la banlieue c\'est plus calme. Mais y a un probleme: c\'est loin du metro. En fait, ca fait rien, je peux marcher."' }, research: 'Prabhu (1987) reasoning gaps; Ellis (2003)' },
+        { name: 'The Travel Agent', type: 'Information + Reasoning', stages: '5-6', description: 'Dan plays a travel agent. Student must plan a trip to France: choose a destination, book accommodation, plan activities. Dan only gives information when asked. Student must ask the right questions to get what they need.', frames_used: ['est-ce que ___', 'je veux ___', 'au mois de ___', 'ca fait ___ de', 'je viens de ___'], example: { scenario: 'Student wants to plan a week in the south of France. Dan has brochures for Nice, Marseille, and Montpellier. Student must ask about prices, weather, activities, transport.', key_questions: ['"Au mois de juin, il fait beau a Nice?"', '"Est-ce que vous avez un hotel pas cher?"', '"Ca fait combien de temps en train?"'] }, research: 'Long (1985); Willis & Willis (2007)' },
+        { name: 'The Advice Column', type: 'Opinion Gap', stages: '4-6', description: 'Dan describes a dilemma in French. Student must give advice. Tests ability to express opinions, reasons, and suggestions spontaneously.', frames_used: ['je trouve ca ___', 'en fait ___', 'tu peux pas ___', 'parce que ___', 'moi je suis ___'], example: { dilemma: '"Mon ami veut demenager a Paris mais il parle pas francais. Il a un bon travail a Londres. Sa copine est francaise. Qu\'est-ce que tu en penses?"', target_output: '"Moi je trouve ca difficile. En fait, tu peux pas vivre a Paris sans parler francais. Mais y a des cours. Du coup, moi je suis pour. Parce que l\'amour c\'est important!"' }, research: 'Ellis (2003)' },
+      ],
+
+      // =====================================================================
+      // EXERCISE CATALOGUE
+      // =====================================================================
+      exerciseFilter: { category: 'all', stage: 'all', sessionType: 'all' },
+
+      exerciseCategories: ['Production', 'Retrieval', 'Structured Input', 'Comprehension', 'Prosody', 'Phonological Loop', 'Task', 'Performance'],
+
+      exerciseCatalogue: [
+        // --- PRODUCTION ---
+        {
+          name: 'Personal Script Construction',
+          category: 'Production', stages: [1], sessionType: 'Learn', duration: '8-10 min',
+          research: 'Dornyei (2009) L2 Motivational Self System; Pavlenko (2006) autobiographical memory in L2',
+          description: 'Student builds 5+ sentences about themselves using current frames. This becomes their baseline and their first "party trick".',
+          instructions: [
+            '1. Write the available frames on screen: "je suis ___", "je suis de ___"',
+            '2. Ask: "Tell me about yourself. Use these frames. I\'ll help with vocabulary."',
+            '3. Student constructs sentences one at a time. Help with vocabulary, not grammar.',
+            '4. Once they have 5 sentences, student delivers the full script from memory.',
+            '5. Record delivery time. This is the baseline for progressive overload.',
+          ],
+          example: { output: ['Je suis Sarah.', 'Je suis anglaise.', 'Je suis de Birmingham.', 'Je suis professeur.', 'Je suis contente d\'apprendre le francais.'] },
+        },
+        {
+          name: 'Timed Noun Blast',
+          category: 'Production', stages: [1, 2], sessionType: 'Learn', duration: '2 min',
+          research: 'Roediger & Karpicke (2006) retrieval practice; Nation (2001) vocabulary size',
+          description: 'Student lists as many French nouns as possible in 60 seconds that can follow a given frame.',
+          instructions: [
+            '1. State the frame: "Il y a des ___"',
+            '2. Start timer: 60 seconds.',
+            '3. Student fires out nouns. Accept anything in French, even borrowed words (restaurant, cafe).',
+            '4. Count total. Record as baseline.',
+            '5. Repeat in a future session. "Last time you got 14. Let\'s beat that."',
+          ],
+          example: { frame: 'il y a des ___', output: 'gens, choses, restaurants, cafes, maisons, voitures, chiens, chats, arbres, fleurs, problemes, ecoles, magasins, hotels, boulangeries...' },
+        },
+        {
+          name: 'Beermat Grid Race',
+          category: 'Production', stages: [2], sessionType: 'Learn', duration: '5 min',
+          research: 'Ellis (2012) formulaic sequences; Wray (2002) formulaic language',
+          description: 'Student constructs as many valid sentences as possible in 2 minutes by picking one item from each column of the Beermat grid.',
+          instructions: [
+            '1. Open beer-mat.html or show the grid.',
+            '2. Explain: "Pick one from each column. Any combination that makes sense is valid."',
+            '3. Model 2-3 examples: "Je peux manger", "Tu veux partir?"',
+            '4. Timer: 2 minutes. Student produces as fast as possible.',
+            '5. Count valid sentences. Target: 15-20. "You just learned 80 sentences from 24 words."',
+          ],
+          example: { output: ['Je peux manger.', 'Tu veux partir?', 'On doit rester.', 'Il va dormir.', 'Est-ce que je peux voir?', 'Comment tu veux faire?'] },
+        },
+        {
+          name: 'Opinion Drill',
+          category: 'Production', stages: [2, 3], sessionType: 'Practice', duration: '5 min',
+          research: 'Swain (1985) Output Hypothesis; Skehan (1998) task conditions',
+          description: 'Dan names 10 things. Student gives an opinion on each using "je trouve ca" plus an adjective. Then adds "parce que" for a reason.',
+          instructions: [
+            '1. Prepare 10 items relevant to the student (foods, places, activities, people).',
+            '2. Say each item. Student responds: "Je trouve ca + adjective".',
+            '3. Push for variety: "Can you use a different word than bien?"',
+            '4. After 10 items, challenge: "Now add parce que and give a reason."',
+            '5. This doubles the output length and practises connectors.',
+          ],
+          example: { exchanges: ['Dan: "Le fromage." Student: "Je trouve ca delicieux parce que j\'adore le gout."', 'Dan: "La pluie." Student: "Je trouve ca deprimant parce que je suis de Manchester."', 'Dan: "Le football." Student: "Je trouve ca ennuyeux parce que je prefere le rugby."'] },
+        },
+        {
+          name: 'Weaving Drill',
+          category: 'Production', stages: [3, 4], sessionType: 'Practice', duration: '5 min',
+          research: 'Skehan (1998) task demands; Ellis (2012) formulaic sequences',
+          description: 'Student takes two existing frames and connects them with "du coup" or "parce que" into a single multi-clause sentence.',
+          instructions: [
+            '1. Display two frames on screen.',
+            '2. Student connects them into one meaningful sentence.',
+            '3. Do 5 pairs. Each uses a different connector.',
+            '4. Challenge round: connect THREE frames in one sentence.',
+            '5. Celebrate the longest grammatical sentence.',
+          ],
+          example: { pairs: ['"je suis de Manchester" + "du coup" = "Je suis de Manchester, du coup je connais pas trop la France."', '"je trouve ca difficile" + "parce que" = "Je trouve ca difficile parce que je sais pas les mots."', 'Three-frame: "Quand je suis arrive a Paris, il y a des gens partout, du coup je me suis dit que c\'est une grande ville."'] },
+        },
+        {
+          name: 'Wow Exchange',
+          category: 'Performance', stages: [1], sessionType: 'Perform', duration: '10 min',
+          research: 'Gatbonton & Segalowitz (2005) creative automatisation; DeKeyser (2007)',
+          description: 'A scripted cafe dialogue designed as the student\'s first "party trick" in French. Rehearsed then disrupted.',
+          instructions: [
+            '1. Co-write a 6-8 line cafe dialogue using only known frames.',
+            '2. Student = customer, Dan = waiter.',
+            '3. Rehearse 3 times at increasing speed.',
+            '4. Final run: Dan adds one unexpected element (out of stock, wrong order). Student adapts.',
+            '5. "This is your party trick. Go home and perform it for someone this week."',
+          ],
+          example: { dialogue: ['Dan: "Bonjour! Qu\'est-ce que vous prenez?"', 'Student: "Bonjour! Je prends un cafe, s\'il vous plait."', 'Dan: "Et avec ca?"', 'Student: "Vous avez des croissants?"', 'Dan: "Oui, bien sur!"', 'Student: "Je prends un croissant aussi. Merci!"', 'Dan: "Ah, desole, il y a plus de croissants..." (curveball)', 'Student: "Ah bon? Vous avez des pains au chocolat?"'] },
+        },
+        // --- RETRIEVAL ---
+        {
+          name: 'Free Recall Blast',
+          category: 'Retrieval', stages: [1, 2, 3, 4, 5, 6], sessionType: 'All', duration: '1-2 min',
+          research: 'Roediger & Karpicke (2006) testing effect',
+          description: '60-second free recall. Student says everything they remember from last week. No prompts, no cues. Dan notes what surfaced and what didn\'t.',
+          instructions: [
+            '1. Before Warm-Up: "Sixty seconds. Tell me anything from last week. Go."',
+            '2. Don\'t prompt. Let the student struggle. The struggle IS the exercise.',
+            '3. Note what was recalled (spaced rep box promotion candidates).',
+            '4. Note what was forgotten (needs more practice).',
+            '5. After 60 seconds: "Great. You pulled out X things. Let\'s see if we can beat that next week."',
+          ],
+          example: { output: 'Student: "Um... je suis de Manchester... il y a des... restaurants? Je peux... manger? Du coup... je sais pas... parce que... um..."', tracking: 'Retrieved 6 frames. Forgot: vous avez, je prends, c\'est, je trouve ca.' },
+        },
+        {
+          name: 'Sentence Auction',
+          category: 'Retrieval', stages: [3, 4, 5], sessionType: 'Practice', duration: '8 min',
+          research: 'Roediger & Butler (2011) testing effect; gamified retrieval',
+          description: 'Gamified error-detection. Student has 100 imaginary euros and bids on sentences they believe are correct.',
+          instructions: [
+            '1. Prepare 8 sentences. 5 correct, 3 with frame errors.',
+            '2. Student starts with 100 euros.',
+            '3. Read each sentence. Student bids (5-20 euros) or passes.',
+            '4. Correct bid = double return. Incorrect bid = money lost.',
+            '5. Track balance across sessions. "Last time you finished with 140. Can you beat that?"',
+          ],
+          example: { items: ['"Du coup je suis parti." (correct, bid 15 euros, win 30)', '"Du coup je suis allez." (trap! "allez" should be "alle")', '"Moi je suis pas du tout d\'accord." (correct, bid 10 euros, win 20)'] },
+        },
+        {
+          name: 'The Interrogation',
+          category: 'Retrieval', stages: [3, 4, 5, 6], sessionType: 'Practice', duration: '3 min',
+          research: 'DeKeyser (2007) automatisation; Segalowitz (2010)',
+          description: '10 rapid-fire questions in French. Student answers within 3 seconds using known frames. No time to translate.',
+          instructions: [
+            '1. Prepare 10 questions answerable with known frames.',
+            '2. Fire them one after another, no pause between.',
+            '3. If student hesitates >3 seconds, say "Next!" and move on.',
+            '4. Count successes. Target: Stage 3 = 4/10, Stage 4 = 6/10, Stage 5 = 8/10, Stage 6 = 10/10.',
+            '5. Track across sessions. This is the purest measure of automatisation.',
+          ],
+          example: { exchanges: ['"D\'ou tu viens?" \u2192 "Je viens de Manchester."', '"Tu aimes la France?" \u2192 "Je trouve ca magnifique."', '"Pourquoi?" \u2192 "Parce que j\'adore la culture."', '"T\'as fait quoi ce weekend?" \u2192 "Je me suis dit que je vais rester a la maison."'] },
+        },
+        // --- STRUCTURED INPUT ---
+        {
+          name: 'Input Flood',
+          category: 'Structured Input', stages: [1, 2, 3, 4, 5], sessionType: 'Learn', duration: '1-2 min',
+          research: 'Sharwood Smith (1993) input enhancement; Schmidt (1990) Noticing Hypothesis',
+          description: 'Dan delivers a monologue packed with the target frame. Student counts occurrences. Primes the brain before production.',
+          instructions: [
+            '1. Before introducing a new frame, FLOOD the student with it.',
+            '2. "I\'m going to talk for 30 seconds. Count how many times you hear a particular phrase."',
+            '3. Deliver a short monologue with 4-6 uses woven into natural speech.',
+            '4. Student reports count. "You heard it 5 times. What do you think it means?"',
+            '5. This primes the brain. Then move to Binary Choice, then production.',
+          ],
+          example: { frame: 'du coup', monologue: 'Hier j\'etais fatigue. Du coup je suis reste a la maison. Ma femme voulait sortir, du coup elle est allee au restaurant avec une amie. Du coup j\'ai mange tout seul. C\'etait bien, du coup j\'ai regarde un film tranquillement.', count: '4 (actual: 4)' },
+        },
+        {
+          name: 'Binary Choice',
+          category: 'Structured Input', stages: [1, 2, 3, 4, 5], sessionType: 'Learn', duration: '2 min',
+          research: 'VanPatten & Cadierno (1993) Processing Instruction',
+          description: 'Dan says two sentences. One correct, one with a subtle error. Student picks which matches the English meaning. Builds form-meaning connections.',
+          instructions: [
+            '1. Before production of any new frame, present it for comprehension.',
+            '2. "I\'ll say two sentences. Which one means [English meaning]?"',
+            '3. Read both at normal pace. One correct, one with subtle frame error.',
+            '4. Student chooses. If wrong, explain WHY the correct one matches.',
+            '5. Do 3 pairs. Then move to guided production.',
+          ],
+          example: { frame: 'je me suis ___', pairs: ['A: "Je me suis dit que c\'est difficile." vs B: "Je suis dit que c\'est difficile." Meaning: "I said to myself it\'s hard." Correct: A (the reflexive "me" is required).', 'A: "Je me suis rendu compte." vs B: "Je suis rendu compte." Meaning: "I realised." Correct: A.'] },
+        },
+        // --- COMPREHENSION ---
+        {
+          name: 'Gist Listening',
+          category: 'Comprehension', stages: [2, 3], sessionType: 'Practice', duration: '3-5 min',
+          research: 'Vandergrift (2007) metacognitive listening; Rost (2011)',
+          description: 'Dan plays or speaks a passage at natural speed. Student identifies any words or frames they recognise. Not full comprehension, just pattern spotting.',
+          instructions: [
+            '1. Speak a 30-60 second passage at natural speed using known frames.',
+            '2. "What did you catch? Any words? Any frames?"',
+            '3. Student reports whatever they heard. Even one word counts.',
+            '4. Play again. Student catches more.',
+            '5. Third time: student gets the gist (topic, not details).',
+          ],
+          example: { passage: '"Alors hier je me suis dit que je vais aller au marche. Il y a des legumes magnifiques. Du coup j\'ai pris des tomates et des courgettes."', first_listen: '"marche... legumes... tomates."', second_listen: '"je me suis dit... il y a des... du coup."', third_listen: '"He went to the market, bought tomatoes and courgettes."' },
+        },
+        {
+          name: 'Shadow Listening',
+          category: 'Comprehension', stages: [3, 4, 5], sessionType: 'Learn', duration: '3 min',
+          research: 'Hamada (2016) shadowing; Lambert (1992)',
+          description: 'Dan says a 3-sentence passage. Student repeats as much as they can, even partial words. Speed increases over 3 attempts.',
+          instructions: [
+            '1. Speak a 3-sentence passage at 70% speed using known frames.',
+            '2. Student repeats immediately, whatever they caught.',
+            '3. Speak again at 80%. Student repeats again.',
+            '4. Third time at 90%. Student repeats.',
+            '5. "First time you got 4 words. Now you got 12. That\'s your ear getting faster."',
+          ],
+          example: { passage: '"La premiere fois que je suis alle en France, je me suis dit que c\'est beau. Il y a des gens partout."', attempt_1: '"La premiere... France... je me suis... beau... gens."', attempt_3: '"La premiere fois que je suis alle en France, je me suis dit que c\'est beau. Il y a des gens..."' },
+        },
+        {
+          name: 'Full-Speed Dictation',
+          category: 'Comprehension', stages: [4, 5], sessionType: 'Learn', duration: '5 min',
+          research: 'Kiany & Shiramiry (2002) dictation; Oller (1979)',
+          description: 'Dan says a sentence at full natural speed, once only. Student writes what they heard, even phonetically. Reveals exact listening gaps.',
+          instructions: [
+            '1. Say a sentence at full natural speed. Once only.',
+            '2. Student writes whatever they heard. Spelling doesn\'t matter.',
+            '3. Reveal the sentence. Compare.',
+            '4. "You got most of the sounds right! Decoding is working."',
+            '5. Repeat the sentence: student hears it clearly now that they know the words.',
+          ],
+          example: { dan_says: '"En fait, par rapport au prix, ca fait beaucoup de choses."', student_writes: '"on fay, par rapor o pree, sa fay boku de shoz"', reveal: 'Compare: most sounds correct! Decoding works. Spelling is separate from listening.' },
+        },
+        {
+          name: 'Prediction Exercise',
+          category: 'Comprehension', stages: [4, 5], sessionType: 'Practice', duration: '3 min',
+          research: 'Vandergrift (2007) metacognitive approach',
+          description: 'Dan starts a sentence and pauses. Student predicts the ending based on the frame pattern. Trains predictive listening.',
+          instructions: [
+            '1. Start a sentence using a known frame. Pause at the slot.',
+            '2. Student predicts what comes next.',
+            '3. Dan reveals the actual ending.',
+            '4. The point: frames are predictable. Once you recognise the frame, you can anticipate.',
+            '5. Do 5-6 sentences. Mix easy and hard predictions.',
+          ],
+          example: { sentences: ['Dan: "La premiere fois que..." Student predicts: "...je suis alle en France."', 'Dan: "En fait, par rapport au..." Student predicts: "...prix? ...travail?"', 'Dan: "Du coup, je me suis dit que..." Student predicts: "...c\'est important."'] },
+        },
+        // --- PROSODY ---
+        {
+          name: 'Rhythm Clapping',
+          category: 'Prosody', stages: [1, 2], sessionType: 'Learn', duration: '2 min',
+          research: 'Trouvain & Gut (2012)',
+          description: 'Student claps once per syllable while speaking. Trains syllable-timed rhythm.',
+          instructions: [
+            '1. Model: clap each syllable of a phrase equally. "Je-suis-de-Man-ches-ter" (6 equal claps).',
+            '2. Contrast with English stress: "MAN-ches-ter" (3 unequal beats).',
+            '3. Student claps and speaks simultaneously.',
+            '4. Start with 3-syllable words, build to full sentences.',
+            '5. Do this for 2 minutes at the start of every Stage 1-2 Learn session.',
+          ],
+          example: { sentence: 'Bon-jour, je-suis-de-Man-ches-ter', claps: '8 equal claps, slight lengthening on final syllable "ter"' },
+        },
+        {
+          name: 'Emotion Roulette',
+          category: 'Prosody', stages: [4, 5, 6], sessionType: 'Practice', duration: '3 min',
+          research: 'Derwing & Munro (1997)',
+          description: 'Same sentence, different emotions through prosody alone. Dan must be able to guess the emotion.',
+          instructions: [
+            '1. Choose a neutral sentence the student knows well.',
+            '2. Name an emotion: surprised, bored, excited, angry, sarcastic.',
+            '3. Student says the sentence conveying that emotion through voice alone.',
+            '4. Dan guesses. If he can\'t tell, coach the prosody.',
+            '5. Do 4-5 emotions per sentence, then change the sentence.',
+          ],
+          example: { sentence: 'Il y a des gens dans le restaurant.', emotions: ['Surprised: rising pitch, emphasis on GENS', 'Bored: flat, trailing off', 'Excited: fast, high pitch, wide range', 'Worried: slow, descending, pauses'] },
+        },
+        // --- PHONOLOGICAL LOOP ---
+        {
+          name: 'Backwards Buildup',
+          category: 'Phonological Loop', stages: [2, 3, 4, 5], sessionType: 'Learn', duration: '3 min',
+          research: 'Baddeley (2003); Service (1992)',
+          description: 'Build long sentences from the end backwards. Student always finishes strongly because the ending is the most practised part.',
+          instructions: [
+            '1. Choose a target sentence (8-15 words).',
+            '2. Start with the LAST word or phrase. Student repeats.',
+            '3. Add one element to the left. Student repeats the growing phrase.',
+            '4. Continue until full sentence assembled.',
+            '5. Why backwards? The ending always sounds confident. Forward buildup makes students fumble the finish.',
+          ],
+          example: { target: 'Je me suis rendu compte que c\'est vraiment difficile.', steps: ['difficile', 'vraiment difficile', 'c\'est vraiment difficile', 'que c\'est vraiment difficile', 'compte que c\'est vraiment difficile', 'rendu compte que c\'est vraiment difficile', 'suis rendu compte que c\'est vraiment difficile', 'me suis rendu compte que c\'est vraiment difficile', 'Je me suis rendu compte que c\'est vraiment difficile.'] },
+        },
+        {
+          name: 'Delayed Repetition',
+          category: 'Phonological Loop', stages: [1, 2, 3, 4, 5, 6], sessionType: 'Learn', duration: '2 min',
+          research: 'Baddeley (2003) working memory',
+          description: 'Dan speaks, student waits 5 seconds (counted on fingers), then repeats. The delay forces the phonological loop to hold sounds without articulatory rehearsal.',
+          instructions: [
+            '1. Say a sentence appropriate to the student\'s level.',
+            '2. Hold up fingers: count 1...2...3...4...5.',
+            '3. Student repeats.',
+            '4. If they fail, say: "Let\'s build it. Start from the end." (use Backwards Buildup).',
+            '5. Increase delay and sentence length as the student progresses.',
+          ],
+          example: { dan_says: '"Je me suis rendu compte que c\'est difficile."', delay: '5 seconds', student_repeats: '"Je me suis rendu compte que c\'est difficile."' },
+        },
+        // --- TASK ---
+        {
+          name: 'The Alibi Game',
+          category: 'Task', stages: [3, 4], sessionType: 'Perform', duration: '10 min',
+          research: 'Ellis (2003) TBLT; Long (1985)',
+          description: 'Both Dan and student describe their evening. Then each cross-examines to find inconsistencies. Genuine communicative purpose.',
+          instructions: [
+            '1. "Last night, something happened. We\'re both suspects. We need alibis."',
+            '2. Dan tells his story (2 min, using known frames).',
+            '3. Student tells their story (2 min).',
+            '4. Dan cross-examines. Student cross-examines.',
+            '5. Whoever finds more inconsistencies wins. The real win: 10 minutes of French.',
+          ],
+          example: { dan_story: '"Hier soir, je me suis dit que je vais aller au cinema. Quand je suis arrive, il y a des gens partout. J\'ai pris du popcorn. Du coup j\'ai regarde un film d\'action."', student_question: '"Est-ce que tu es alle tout seul?"' },
+        },
+        // --- PERFORMANCE ---
+        {
+          name: 'The Curveball',
+          category: 'Performance', stages: [4], sessionType: 'Perform', duration: '15 min',
+          research: 'Skehan (1998) cognitive demands; DeKeyser (2007)',
+          description: 'Dan role-plays a French speaker who goes completely off-script. Unexpected topics, fast speech, unknown vocabulary. Tests recovery under pressure.',
+          instructions: [
+            '1. Begin a normal conversation.',
+            '2. After 2 min: unexpected topic change.',
+            '3. After 4 min: speak noticeably faster.',
+            '4. After 6 min: use a phrase the student doesn\'t know. See if they ask for clarification.',
+            '5. After 8 min: express a strong opinion. Ask the student to agree or disagree.',
+            '6. Debrief: "You didn\'t freeze. That\'s the win."',
+          ],
+          example: { scenario: 'Start discussing the student\'s weekend. Then: "Et tu sais quoi? J\'ai lu un article qui dit que le fromage francais va disparaitre. T\'en penses quoi?"', success: 'Even "Ah bon? Je sais pas... je trouve ca triste" counts as a win.' },
+        },
+        {
+          name: 'The Sparring Match',
+          category: 'Performance', stages: [4, 5, 6], sessionType: 'Perform', duration: '15 min',
+          research: 'DeKeyser (2007) transfer-appropriate processing; Segalowitz (2010) automaticity',
+          description: '15-minute conversation entirely in French. Topic chosen by student. Dan at near-natural speed. Corrections only for misunderstandings.',
+          instructions: [
+            '1. Student chooses the topic. Anything.',
+            '2. Dan speaks at near-natural speed throughout.',
+            '3. Correct ONLY what causes misunderstanding, not every error.',
+            '4. This is the ring, not the heavy bag.',
+            '5. At The Landing, note one thing that improved since last Sparring Match.',
+          ],
+          example: { topics: ['My weekend', 'Why I love food', 'My job', 'A holiday disaster', 'My family'] },
+        },
+      ],
+
+      // =====================================================================
+      // RESEARCH CITATIONS
+      // =====================================================================
+      researchCitations: [
+        { area: 'Formulaic Sequences', refs: ['Wray, A. (2002). Formulaic Language and the Lexicon. Cambridge University Press.', 'Ellis, N. (2012). Formulaic language and second language acquisition. Annual Review of Applied Linguistics, 32, 17-44.', 'Pawley, A. & Syder, F.H. (1983). Two puzzles for linguistic theory: nativelike selection and nativelike fluency.'] },
+        { area: 'Skill Acquisition', refs: ['DeKeyser, R. (2007). Skill Acquisition Theory. In B. VanPatten & J. Williams (Eds.), Theories in SLA.', 'Anderson, J.R. (1993). Rules of the Mind. Lawrence Erlbaum.'] },
+        { area: 'Spaced Repetition', refs: ['Pimsleur, P. (1967). A memory schedule. Modern Language Journal, 51(2), 73-75.', 'Ebbinghaus, H. (1885). Memory: A Contribution to Experimental Psychology.', 'Cepeda, N.J. et al. (2006). Distributed practice in verbal recall tasks. Psychological Bulletin, 132(3), 354-380.'] },
+        { area: 'Interleaving & Desirable Difficulties', refs: ['Rohrer, D. & Taylor, K. (2007). The shuffling of mathematics problems improves learning. Instructional Science, 35, 481-498.', 'Bjork, R.A. & Bjork, E.L. (2011). Making things hard on yourself, but in a good way.', 'Kornell, N. & Bjork, R.A. (2008). Learning concepts and categories. Psychological Science, 19, 585-592.'] },
+        { area: 'Processing Instruction', refs: ['VanPatten, B. (1996). Input Processing and Grammar Instruction in Second Language Acquisition. Ablex.', 'VanPatten, B. (2004). Processing Instruction: Theory, Research, and Commentary. Lawrence Erlbaum.', 'VanPatten, B. & Cadierno, T. (1993). Explicit instruction and input processing. Studies in SLA, 15, 225-243.'] },
+        { area: 'Noticing & Input Enhancement', refs: ['Schmidt, R. (1990). The role of consciousness in second language learning. Applied Linguistics, 11, 129-158.', 'Sharwood Smith, M. (1993). Input enhancement in instructed SLA. Studies in SLA, 15, 165-179.'] },
+        { area: 'Prosody & Pronunciation', refs: ['Derwing, T.M. & Munro, M.J. (1997). Accent, intelligibility, and comprehensibility. Studies in SLA, 19, 1-16.', 'Derwing, T.M. & Munro, M.J. (2005). Second language accent and pronunciation teaching. TESOL Quarterly, 39, 379-397.', 'Trouvain, J. & Gut, U. (2012). Non-native Prosody. Mouton de Gruyter.', 'Hahn, L.D. (2004). Primary stress and intelligibility. TESOL Quarterly, 38, 201-223.'] },
+        { area: 'Corrective Feedback', refs: ['Lyster, R. & Ranta, L. (1997). Corrective feedback and learner uptake. Studies in SLA, 19, 37-66.', 'Sheen, Y. (2006). Exploring the relationship between characteristics of recasts and learner uptake. Language Teaching Research, 10, 361-392.', 'Lyster, R. (2004). Differential effects of prompts and recasts in form-focused instruction. Studies in SLA, 26, 399-432.', 'Li, S. (2010). The effectiveness of corrective feedback in SLA: A meta-analysis. Language Learning, 60, 309-365.'] },
+        { area: 'Deliberate Practice', refs: ['Ericsson, K.A., Krampe, R.T. & Tesch-Romer, C. (1993). The role of deliberate practice in the acquisition of expert performance. Psychological Review, 100, 363-406.', 'Ericsson, A. & Pool, R. (2016). Peak: Secrets from the New Science of Expertise. Houghton Mifflin Harcourt.'] },
+        { area: 'Retrieval Practice & Testing Effect', refs: ['Roediger, H.L. & Karpicke, J.D. (2006). Test-enhanced learning. Psychological Science, 17, 249-255.', 'Karpicke, J.D. & Roediger, H.L. (2008). The critical importance of retrieval for learning. Science, 319, 966-968.', 'Roediger, H.L. & Butler, A.C. (2011). The critical role of retrieval practice in long-term retention. Trends in Cognitive Sciences, 15, 20-27.'] },
+        { area: 'Working Memory & Phonological Loop', refs: ['Baddeley, A.D. (2003). Working memory and language: an overview. Journal of Communication Disorders, 36, 189-208.', 'Service, E. (1992). Phonology, working memory, and foreign-language learning. Quarterly Journal of Experimental Psychology, 45A, 21-50.', 'Speciale, G., Ellis, N. & Bywater, T. (2004). Phonological sequence learning and short-term store capacity. Applied Psycholinguistics, 25, 293-321.'] },
+        { area: 'Shadowing', refs: ['Hamada, Y. (2016). Shadowing: Who benefits and how? Uncovering a booming EFL teaching technique. Language Teaching Research, 20, 35-52.', 'Lambert, S. (1992). Shadowing. Meta, 37(2), 263-273.'] },
+        { area: 'Task-Based Language Teaching', refs: ['Long, M. (1985). A role for instruction in second language acquisition. In K. Hyltenstam & M. Pienemann (Eds.), Modelling and Assessing SLA.', 'Ellis, R. (2003). Task-based Language Learning and Teaching. Oxford University Press.', 'Willis, D. & Willis, J. (2007). Doing Task-based Teaching. Oxford University Press.', 'Prabhu, N.S. (1987). Second Language Pedagogy. Oxford University Press.'] },
+        { area: 'Output Hypothesis', refs: ['Swain, M. (1985). Communicative competence: Some roles of comprehensible input and comprehensible output. In S. Gass & C. Madden (Eds.), Input in SLA.'] },
+        { area: 'Listening Comprehension', refs: ['Vandergrift, L. (2007). Recent developments in second and foreign language listening comprehension research. Language Teaching, 40, 191-210.', 'Rost, M. (2011). Teaching and Researching Listening. 2nd ed. Longman.'] },
+        { area: 'Motivation', refs: ['Dornyei, Z. (2009). The L2 Motivational Self System. In Z. Dornyei & E. Ushioda (Eds.), Motivation, Language Identity and the L2 Self.'] },
+      ],
+    }
+  }
+  </script>
+
+</body>
+</html>

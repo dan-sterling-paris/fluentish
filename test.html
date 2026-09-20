@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FluentISH Diagnostic Test</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Alpine.js for reactivity -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: '#003359',
+            rouge: '#C8102E',
+            cyan: '#4DD4F5',
+            sand: '#F7F4EF',
+            success: '#10B981',
+            warning: '#F59E0B',
+            danger: '#EF4444'
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'serif'],
+            body: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F7F4EF;
+      color: #1a1a2e;
+    }
+    h1, h2, h3, .font-display {
+      font-family: 'Playfair Display', serif;
+    }
+    
+    /* Custom Checkbox Styling */
+    .custom-checkbox {
+      appearance: none;
+      background-color: #fff;
+      margin: 0;
+      font: inherit;
+      color: currentColor;
+      width: 1.25em;
+      height: 1.25em;
+      border: 2px solid #cbd5e1;
+      border-radius: 0.25em;
+      display: grid;
+      place-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .custom-checkbox::before {
+      content: "";
+      width: 0.65em;
+      height: 0.65em;
+      transform: scale(0);
+      transition: 120ms transform ease-in-out;
+      box-shadow: inset 1em 1em white;
+      background-color: white;
+      transform-origin: center;
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    }
+
+    .custom-checkbox:checked {
+      border-color: var(--chk-color, #10B981);
+      background-color: var(--chk-color, #10B981);
+    }
+
+    .custom-checkbox:checked::before {
+      transform: scale(1);
+    }
+
+    .marker-success { --chk-color: #10B981; }
+    .marker-danger { --chk-color: #EF4444; }
+
+    [x-cloak] { display: none !important; }
+    
+    /* Smooth reveal animation */
+    .fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
+    .fade-enter-from, .fade-leave-to { opacity: 0; }
+  </style>
+</head>
+
+<body x-data="diagnosticTool()" class="min-h-screen pb-24" x-cloak>
+
+  <!-- Header -->
+  <header class="bg-navy text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 py-5 flex items-center justify-between">
+      <div>
+        <p class="text-cyan text-xs font-bold tracking-widest uppercase mb-1">Diagnostic Mode</p>
+        <h1 class="text-2xl sm:text-3xl font-display font-bold">The Sneaky Coffee Chat</h1>
+      </div>
+      <button @click="reset()" class="text-sm px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors font-medium">
+        Reset Test
+      </button>
+    </div>
+    
+    <!-- Phase Navigation -->
+    <div class="max-w-4xl mx-auto px-4 flex overflow-x-auto hide-scrollbar border-t border-white/10">
+      <template x-for="(phase, index) in phases" :key="index">
+        <button 
+          @click="activePhase = index"
+          class="flex-1 py-3 px-4 text-sm font-semibold tracking-wide whitespace-nowrap border-b-2 transition-all duration-200"
+          :class="activePhase === index ? 'border-cyan text-cyan' : 'border-transparent text-gray-400 hover:text-white'"
+          x-text="'Phase ' + (index + 1) + ': ' + phase.shortName">
+        </button>
+      </template>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="max-w-4xl mx-auto px-4 mt-8">
+    
+    <template x-for="(phase, index) in phases" :key="index">
+      <div x-show="activePhase === index" 
+           x-transition:enter="transition ease-out duration-300"
+           x-transition:enter-start="opacity-0 transform translate-y-4"
+           x-transition:enter-end="opacity-100 transform translate-y-0"
+           class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        
+        <!-- Phase Title & Description -->
+        <div class="px-6 py-5 border-b border-gray-100 bg-gray-50/50">
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 class="text-xl font-display font-bold text-navy" x-text="phase.title"></h2>
+              <p class="text-sm text-gray-500 mt-1 font-medium" x-text="phase.tests"></p>
+            </div>
+            <span class="px-3 py-1 bg-navy/5 text-navy text-xs font-bold uppercase tracking-wider rounded-full" x-text="'Phase ' + (index + 1)"></span>
+          </div>
+        </div>
+
+        <!-- Scenarios & Unified Checklists -->
+        <div class="px-6 py-6 space-y-8">
+          <template x-for="(scenario, sIdx) in phase.scenarios" :key="sIdx">
+            
+            <div class="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm">
+              
+              <!-- Prompt Section -->
+              <div class="bg-blue-50/60 p-5 border-b border-blue-100 relative">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="bg-cyan text-navy text-[10px] font-bold px-2 py-0.5 rounded shadow-sm tracking-wider uppercase" x-text="scenario.tag"></span>
+                  <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Teacher Prompt</span>
+                </div>
+                <p class="text-navy font-semibold text-lg mb-1 leading-snug" x-html="highlightFrench(scenario.fr)"></p>
+                <p class="text-gray-500 text-sm italic" x-text="scenario.en"></p>
+              </div>
+              
+              <!-- Observation Section -->
+              <div class="p-5 grid md:grid-cols-2 gap-6 bg-gray-50/30">
+                
+                <!-- Positive Markers -->
+                <div x-show="scenario.positiveMarkers && scenario.positiveMarkers.length > 0">
+                  <h4 class="text-xs font-bold uppercase tracking-wider text-success mb-3 flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> 
+                    What you want to hear
+                  </h4>
+                  <div class="space-y-3">
+                    <template x-for="(marker, mIdx) in scenario.positiveMarkers" :key="mIdx">
+                      <label class="flex items-start gap-3 p-3 rounded-lg border hover:bg-white cursor-pointer transition-colors"
+                             :class="marker.checked ? 'border-success/40 bg-emerald-50/30' : 'border-transparent hover:border-gray-200'">
+                        <input type="checkbox" class="custom-checkbox marker-success mt-0.5" x-model="marker.checked">
+                        <div>
+                          <span class="text-sm font-medium leading-relaxed block" :class="marker.checked ? 'text-gray-900' : 'text-gray-700'" x-html="formatCode(marker.text)"></span>
+                          <span class="text-[11px] leading-tight text-gray-500 bg-gray-100 px-2 py-1 rounded inline-block mt-1.5" x-show="marker.prompt">
+                            <strong class="text-navy">Tip:</strong> <span x-text="marker.prompt"></span>
+                          </span>
+                        </div>
+                      </label>
+                    </template>
+                  </div>
+                </div>
+
+                <!-- Red Flags -->
+                <div x-show="scenario.warningFlags && scenario.warningFlags.length > 0">
+                  <h4 class="text-xs font-bold uppercase tracking-wider text-danger mb-3 flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    Red Flags
+                  </h4>
+                  <div class="space-y-3">
+                    <template x-for="(flag, fIdx) in scenario.warningFlags" :key="fIdx">
+                      <label class="flex items-start gap-3 p-3 rounded-lg border hover:bg-white cursor-pointer transition-colors"
+                             :class="flag.checked ? 'border-danger/40 bg-rose-50' : 'border-transparent hover:border-gray-200'">
+                        <input type="checkbox" class="custom-checkbox marker-danger mt-0.5" x-model="flag.checked">
+                        <span class="text-sm leading-relaxed mt-0.5" :class="flag.checked ? 'text-gray-900 font-medium' : 'text-gray-600'" x-text="flag.text"></span>
+                      </label>
+                    </template>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-between items-center">
+          <button @click="activePhase = Math.max(0, activePhase - 1)" 
+                  class="text-sm font-semibold text-gray-500 hover:text-navy transition-colors px-4 py-2"
+                  :class="activePhase === 0 ? 'invisible' : ''">
+            &larr; Previous Phase
+          </button>
+          
+          <button x-show="activePhase < phases.length - 1" 
+                  @click="activePhase = Math.min(phases.length - 1, activePhase + 1); window.scrollTo(0,0);" 
+                  class="text-sm font-semibold bg-navy text-white px-6 py-2 rounded-lg shadow-sm hover:bg-rouge hover:-translate-y-0.5 transition-all">
+            Next Phase &rarr;
+          </button>
+          
+          <button x-show="activePhase === phases.length - 1" 
+                  @click="generateReport()" 
+                  class="text-sm font-semibold bg-rouge text-white px-6 py-2 rounded-lg shadow-sm hover:bg-red-800 hover:-translate-y-0.5 transition-all">
+            Analyze Results
+          </button>
+        </div>
+
+      </div>
+    </template>
+
+    <!-- Results Summary -->
+    <div x-show="showResults" 
+         x-transition.opacity
+         class="fixed inset-0 bg-navy/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 overflow-y-auto">
+      
+      <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8 relative my-8" @click.away="showResults = false">
+        <button @click="showResults = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        
+        <div class="text-center mb-8">
+          <p class="text-cyan font-bold tracking-widest uppercase text-xs mb-2">Diagnostic Complete</p>
+          <h2 class="text-3xl font-display font-bold text-navy">Recommended Re-entry Point</h2>
+        </div>
+        
+        <div class="bg-sand border-2 border-dashed border-gray-300 rounded-xl p-6 text-center mb-8">
+          <p class="text-gray-600 text-sm mb-2 uppercase font-semibold tracking-wider">The student belongs in</p>
+          <h3 class="text-4xl font-display font-bold text-rouge" x-text="resultTitle"></h3>
+          <p class="text-gray-800 mt-3 text-sm leading-relaxed max-w-md mx-auto" x-text="resultDescription"></p>
+        </div>
+
+        <div class="space-y-4">
+          <h4 class="font-bold text-sm text-gray-500 uppercase tracking-wide border-b pb-2">Phase Breakdown</h4>
+          <template x-for="(res, idx) in phaseResults" :key="idx">
+            <div class="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+              <span class="text-sm font-medium text-navy" x-text="res.name"></span>
+              <div class="flex gap-4 text-xs font-semibold">
+                <span :class="res.pass ? 'text-success' : 'text-gray-400'" x-text="'Found: ' + res.posScore + '/' + res.posTotal"></span>
+                <span :class="res.flags > 0 ? 'text-danger' : 'text-gray-400'" x-text="'Flags: ' + res.flags"></span>
+              </div>
+            </div>
+          </template>
+        </div>
+        
+        <div class="mt-8 flex flex-col sm:flex-row gap-4 items-center justify-center">
+          <button @click="exportCSV()" class="text-sm font-semibold bg-success text-white px-6 py-2 rounded-lg shadow-sm hover:bg-emerald-600 hover:-translate-y-0.5 transition-all">
+            Download CSV Report
+          </button>
+          <button @click="showResults = false; activePhase = 0; reset()" class="text-navy font-semibold hover:text-rouge transition-colors text-sm underline underline-offset-4">
+            Start a new diagnostic
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    function diagnosticTool() {
+      return {
+        activePhase: 0,
+        showResults: false,
+        resultTitle: '',
+        resultDescription: '',
+        phaseResults: [],
+        
+        highlightFrench(text) {
+          return text; 
+        },
+        
+        formatCode(text) {
+          return text.replace(/`([^`]+)`/g, '<code class="bg-gray-100 text-navy font-bold px-1.5 py-0.5 rounded border border-gray-200 font-mono text-[0.8em]">$1</code>');
+        },
+
+        reset() {
+          this.activePhase = 0;
+          this.showResults = false;
+          this.phases.forEach(p => {
+            p.scenarios.forEach(s => {
+              if (s.positiveMarkers) s.positiveMarkers.forEach(m => m.checked = false);
+              if (s.warningFlags) s.warningFlags.forEach(f => f.checked = false);
+            });
+          });
+        },
+
+        generateReport() {
+          this.phaseResults = this.phases.map(p => {
+            let posScore = 0;
+            let posTotal = 0;
+            let flags = 0;
+
+            p.scenarios.forEach(s => {
+              if (s.positiveMarkers) {
+                posTotal += s.positiveMarkers.length;
+                posScore += s.positiveMarkers.filter(m => m.checked).length;
+              }
+              if (s.warningFlags) {
+                flags += s.warningFlags.filter(f => f.checked).length;
+              }
+            });
+            
+            const passed = posScore >= Math.ceil(posTotal / 2) && flags === 0;
+            
+            return {
+              name: p.shortName,
+              posScore: posScore,
+              posTotal: posTotal,
+              flags: flags,
+              pass: passed
+            }
+          });
+
+          if (!this.phaseResults[0].pass) {
+            this.resultTitle = "Stage 1 & 2: Basics & Toolkit";
+            this.resultDescription = "The student stumbled on the fundamentals or froze when lacking vocabulary. Rebuild their confidence with basic frames and the Beermat grid. Teach them 'je sais pas' as a recovery tool.";
+          } 
+          else if (!this.phaseResults[1].pass) {
+            this.resultTitle = "Stage 3: The Weave";
+            this.resultDescription = "The student has the basic tools but struggles to connect them or speak in the past tense without translating English grammar. Re-enter at Stage 3 to focus on connectors (du coup, parce que) and past-tense chunks (je me suis).";
+          } 
+          else if (!this.phaseResults[2].pass) {
+            this.resultTitle = "Stage 4: The Ring";
+            this.resultDescription = "The student is fluent with facts and stories, but struggles to push back, debate, or use natural social signals. Re-enter at Stage 4 to teach disagreement (en fait, mais y a) and personal emphasis (moi je).";
+          } 
+          else if (!this.phaseResults[3].pass) {
+            this.resultTitle = "Stage 5: The Road";
+            this.resultDescription = "The student has strong conversational tools but struggles when visual cues are removed or situations become deliberately difficult. Re-enter at Stage 5 to focus on immersive simulations and resilience.";
+          } 
+          else {
+            this.resultTitle = "Stage 6: Freestyle Graduation";
+            this.resultDescription = "Incredible! The student navigated basics, past narratives, pushback, and blind constraints without freezing. They have mastered the 30 frames. They are ready for unscripted, real-world conversational practice.";
+          }
+
+          this.showResults = true;
+        },
+
+        exportCSV() {
+          let csvRows = [];
+          
+          csvRows.push(['Phase', 'Category', 'Prompt Tag', 'Marker', 'Trigger Prompt', 'Result'].join(','));
+          
+          this.phases.forEach(phase => {
+            phase.scenarios.forEach(scenario => {
+              
+              if (scenario.positiveMarkers) {
+                scenario.positiveMarkers.forEach(marker => {
+                  let cleanText = marker.text.replace(/`/g, '').replace(/"/g, '""');
+                  let cleanPrompt = (marker.prompt || '').replace(/"/g, '""');
+                  csvRows.push(`"${phase.shortName}","Positive","${scenario.tag}","${cleanText}","${cleanPrompt}","${marker.checked ? 'Found' : 'Missed'}"`);
+                });
+              }
+              
+              if (scenario.warningFlags) {
+                scenario.warningFlags.forEach(flag => {
+                  let cleanText = flag.text.replace(/`/g, '').replace(/"/g, '""');
+                  csvRows.push(`"${phase.shortName}","Red Flag","${scenario.tag}","${cleanText}","N/A","${flag.checked ? 'Triggered' : 'Clear'}"`);
+                });
+              }
+
+            });
+          });
+
+          const csvString = csvRows.join('\n');
+          const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+          const link = document.createElement("a");
+          const url = URL.createObjectURL(blob);
+          
+          link.setAttribute("href", url);
+          link.setAttribute("download", "diagnostic_results.csv");
+          link.style.visibility = 'hidden';
+          
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        },
+
+        phases: [
+          {
+            title: "Phase 1: The Setup",
+            shortName: "The Setup",
+            tests: "Tests Stages 1 & 2 (Basics & Modals)",
+            scenarios: [
+              { 
+                tag: "Identity", 
+                fr: "Salut ! Dis-moi, pour commencer, tu es d'où exactement et que fais-tu dans la vie ?", 
+                en: "(Hi! Tell me, to start, where exactly are you from and what do you do?)",
+                positiveMarkers: [
+                  { text: "`je suis ___` used naturally for identity.", prompt: "\"Que fais-tu dans la vie ?\"", checked: false },
+                  { text: "`je suis de ___` used naturally for origin.", prompt: "\"Tu es d'où exactement ?\"", checked: false }
+                ],
+                warningFlags: [
+                  { text: "English words dropped mid-sentence (e.g., 'Je suis, um, tired').", checked: false }
+                ]
+              },
+              { 
+                tag: "Description", 
+                fr: "Regarde autour de toi. Qu'est-ce qu'il y a dans cette pièce en ce moment ?", 
+                en: "(Look around you. What is in this room right now?)",
+                positiveMarkers: [
+                  { text: "`il y a ___` spoken as a single, fast chunk ('ee-ya').", prompt: "\"Qu'est-ce qu'il y a dans cette pièce en ce moment ?\"", checked: false }
+                ],
+                warningFlags: []
+              },
+              { 
+                tag: "Ordering", 
+                fr: "On est au café. Bonjour, vous désirez ?", 
+                en: "(We are at the cafe. Hello, what would you like?)",
+                positiveMarkers: [
+                  { text: "`je prends ___` used immediately to order their drink.", prompt: "\"Bonjour, vous désirez ?\"", checked: false }
+                ],
+                warningFlags: []
+              },
+              { 
+                tag: "Modals", 
+                fr: "Qu'est-ce que tu veux faire ce week-end ? Et qu'est-ce que tu dois faire ?", 
+                en: "(What do you want to do this weekend? And what must you do? Feel free to ask about 'peux' or 'vais' as well.)",
+                positiveMarkers: [
+                  { text: "`je veux ___` followed immediately by an infinitive.", prompt: "\"Qu'est-ce que tu veux faire ce week-end ?\"", checked: false },
+                  { text: "`je dois ___` followed immediately by an infinitive.", prompt: "\"Et qu'est-ce que tu dois faire ?\"", checked: false },
+                  { text: "`je vais ___` followed immediately by an infinitive.", prompt: "\"Qu'est-ce que tu vas faire plus tard ?\"", checked: false },
+                  { text: "`je peux ___` followed immediately by an infinitive.", prompt: "\"Est-ce que tu peux m'aider avec ça ?\"", checked: false }
+                ],
+                warningFlags: []
+              },
+              { 
+                tag: "Curveball", 
+                fr: "Quelle est la capitale de la Bretagne ?", 
+                en: "(Ask a trivia question they won't know to force a safety net response)",
+                positiveMarkers: [
+                  { text: "`je sais pas` deployed instantly as a genuine safety net.", prompt: "\"Quelle est la capitale de la Bretagne ?\"", checked: false }
+                ],
+                warningFlags: [
+                  { text: "The conversation dies entirely or they freeze when they don't know an answer.", checked: false },
+                  { text: "Using 'je sais pas' as a dead-end instead of opening a phrase (e.g., stopping completely instead of adding '...si' or '...pourquoi').", checked: false }
+                ]
+              }
+            ]
+          },
+          {
+            title: "Phase 2: The Alibi",
+            shortName: "The Alibi",
+            tests: "Tests Stage 3 (Narrative & Connection)",
+            scenarios: [
+              { 
+                tag: "Setup", 
+                fr: "Jouons à un jeu. Tu es le suspect principal d'un crime. Convaincs-moi de ton alibi. Raconte-moi exactement ce que tu as fait le week-end dernier, du début à la fin.", 
+                en: "(Let's play a game. You are the main suspect in a crime. Convince me of your alibi. Tell me exactly what you did last weekend, from start to finish.)",
+                positiveMarkers: [
+                  { text: "`je me suis ___` (e.g., dit, arrêté) delivered as one fluid chunk to describe past actions.", prompt: "\"Raconte-moi exactement ce que tu as fait le week-end dernier.\"", checked: false },
+                  { text: "`quand je suis ___` (e.g., arrivé, rentré) used to set the temporal scene.", prompt: "\"Raconte-moi ce qui s'est passé quand tu es rentré.\"", checked: false }
+                ],
+                warningFlags: [
+                  { text: "Word-by-word translations of the English past tense (e.g., 'j'ai dit à moi' instead of 'je me suis dit').", checked: false }
+                ]
+              },
+              { 
+                tag: "Nudge", 
+                fr: "Et après ? Pourquoi ?", 
+                en: "(And then? Why? - Use if they stall)",
+                positiveMarkers: [
+                  { text: "`du coup` (so then) used to link consecutive ideas.", prompt: "\"Et après ? Qu'est-ce qui s'est passé ?\"", checked: false },
+                  { text: "`parce que` (because) used to explain reasoning.", prompt: "\"Pourquoi as-tu fait ça ?\"", checked: false }
+                ],
+                warningFlags: [
+                  { text: "A robotic list of single, isolated sentences lacking glue/connectors.", checked: false },
+                  { text: "Long, awkward pauses immediately before dropping in a connector like 'du coup'.", checked: false }
+                ]
+              },
+              { 
+                tag: "Alt.", 
+                fr: "Raconte-moi la première fois que tu es allé en France.", 
+                en: "(Alternative: Tell me about the first time you went to France.)",
+                positiveMarkers: [
+                  { text: "`la première fois que` used to structure a story.", prompt: "\"Raconte-moi la première fois que tu es allé en France.\"", checked: false },
+                  { text: "`ce qui se passe` (what happens) used for storytelling setup.", prompt: "\"Explique-moi ce qui se passe quand tu fais ça.\"", checked: false }
+                ],
+                warningFlags: []
+              }
+            ]
+          },
+          {
+            title: "Phase 3: The Provocation",
+            shortName: "The Provocation",
+            tests: "Tests Stage 4 (Pushback & Stance)",
+            scenarios: [
+              { 
+                tag: "Wrong Fact", 
+                fr: "Au fait, tu habites sur un bateau et tu parles cinq langues, n'est-ce pas ?", 
+                en: "(By the way, you live on a boat and speak five languages, right?)",
+                positiveMarkers: [
+                  { text: "`en fait ___` (actually) used as a gentle, immediate correction.", prompt: "\"Au fait, tu habites sur un bateau, n'est-ce pas ?\"", checked: false }
+                ],
+                warningFlags: [
+                  { text: "Passive nodding or agreeing just to survive the interaction.", checked: false },
+                  { text: "Using 'en fait' randomly at the start of sentences where they aren't actually correcting anything.", checked: false },
+                  { text: "Pronouncing 'en fait' as two heavily stressed, separate words instead of a smooth 'on-FAY'.", checked: false }
+                ]
+              },
+              { 
+                tag: "Opinion", 
+                fr: "Personnellement, je pense que la cuisine française est horrible et que Paris est nul. Qu'en penses-tu ?", 
+                en: "(Personally, I think French food is horrible and Paris sucks. What do you think?)",
+                positiveMarkers: [
+                  { text: "`mais y a ___` (but there is) used to confidently introduce a counterpoint.", prompt: "\"Je pense que Paris est nul. Qu'en penses-tu ?\"", checked: false },
+                  { text: "`moi je ___` or `moi je pense que` used to add heavy personal emphasis and stance.", prompt: "\"Moi je déteste ça, et toi ?\"", checked: false }
+                ],
+                warningFlags: []
+              }
+            ]
+          },
+          {
+            title: "Phase 4: The Blindfold",
+            shortName: "The Blindfold",
+            tests: "Tests Stage 5 (Real-world Resilience)",
+            scenarios: [
+              { 
+                tag: "Constraint", 
+                fr: "Maintenant, on tourne les chaises dos à dos. On est au téléphone.", 
+                en: "(Now, we turn chairs back to back. We are on the phone.)",
+                positiveMarkers: [
+                  { text: "Talk Back Toolkit (`Pardon ?`, `Vous pouvez répéter ?`) deployed if they get lost.", prompt: "\"(Mumble rapidly or speak over them during the roleplay)\"", checked: false }
+                ],
+                warningFlags: [
+                  { text: "Total freezing or silence for more than 5 seconds when visual cues are removed.", checked: false }
+                ]
+              },
+              { 
+                tag: "Scenario", 
+                fr: "Dring dring ! Allô, l'Hôtel de Paris. Ah non, vous voulez changer la date ? C'est pas possible. C'est comme ça.", 
+                en: "(Ring ring! Hello, Hotel de Paris. Oh no, you want to change the date? That's not possible. That's just how it is. - Be extremely unhelpful!)",
+                positiveMarkers: [
+                  { text: "`ça ___ un peu` (e.g., ça dérange un peu) used to soften frustration politely but firmly.", prompt: "\"Ah non, vous voulez changer la date ? C'est pas possible.\"", checked: false },
+                  { text: "`tu peux pas` or `on peut pas` used to negotiate or push back against your character.", prompt: "\"C'est comme ça, on ne change pas les dates.\"", checked: false },
+                  { text: "Maintains polite persistence using previously learned frames to resolve the problem.", prompt: "\"(Continue to decline their requests unhelpfully)\"", checked: false }
+                ],
+                warningFlags: [
+                  { text: "Escalating to aggression or overt rudeness.", checked: false },
+                  { text: "Switching to English out of frustration.", checked: false }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  </script>
+</body>
+</html>

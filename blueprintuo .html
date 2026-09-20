@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>24-Lesson Blueprint | FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preload" as="font" href="fonts/playfair-display.woff2" type="font/woff2" crossorigin />
+  <link rel="preload" as="font" href="fonts/inter.woff2" type="font/woff2" crossorigin />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:   '#003359',
+            navyD:  '#002040',
+            rouge:  '#C8102E',
+            rougeH: '#A50D25',
+            cyan:   '#4DD4F5',
+            sand:   '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <style>
+    @font-face { font-family: 'Playfair Display'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(fonts/playfair-display.woff2) format('woff2'); }
+    @font-face { font-family: 'Inter'; font-style: normal; font-weight: 300 700; font-display: swap; src: url(fonts/inter.woff2) format('woff2'); }
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3, h4 { font-family: 'Playfair Display', Georgia, serif; }
+    [x-cloak] { display: none !important; }
+    .section-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #4DD4F5;
+      margin-bottom: 0;
+    }
+    .type-learn    { background: rgba(77,212,245,0.2); color: #003359; }
+    .type-practice { background: #FEF3C7; color: #92400E; }
+    .type-perform  { background: #C8102E; color: #fff; }
+    .frame-pill {
+      display: inline-block;
+      background: #fff;
+      border: 1px solid rgba(0,51,89,0.2);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.65rem;
+      font-family: 'Inter', monospace;
+      color: #003359;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .progress-seg {
+      flex: 1;
+      text-align: center;
+      padding: 8px 4px;
+      position: relative;
+    }
+    .progress-seg::after {
+      content: '\2192';
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #003359;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+    .progress-seg:last-child::after { content: ''; }
+
+    @media print {
+      body { background: #fff !important; font-size: 10px; }
+      .no-print { display: none !important; }
+      main { max-width: 100% !important; padding: 8px !important; }
+      .stage-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .type-learn, .type-practice, .type-perform { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .stage-section { page-break-inside: avoid; }
+      @page { size: landscape; margin: 10mm; }
+    }
+  </style>
+</head>
+
+<body class="bg-white" x-data="blueprint()" x-cloak>
+
+  <!-- ===== HEADER ===== -->
+  <header class="bg-navy text-white py-6">
+    <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
+      <div>
+        <p class="section-label">Teacher Reference</p>
+        <h1 class="font-display text-2xl sm:text-3xl font-bold leading-tight">
+          24-Lesson <em class="not-italic text-rouge">Blueprint</em>
+        </h1>
+      </div>
+      <div class="text-right">
+        <p class="text-blue-200 text-xs">30 frames, 5 stages</p>
+        <p class="text-blue-200 text-xs">Zero to FluentISH</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-8">
+
+    <!-- ===== FRAME ACCUMULATION STRIP ===== -->
+    <div class="flex mb-8 bg-sand rounded-xl border border-stone-200 overflow-hidden">
+      <template x-for="(s, i) in stages" :key="i">
+        <div class="progress-seg">
+          <p class="text-[0.6rem] font-bold text-navy uppercase tracking-wide" x-text="s.name"></p>
+          <p class="text-lg font-bold text-rouge mt-0.5" x-text="s.cumulativeFrames"></p>
+          <p class="text-[0.55rem] text-gray-400" x-text="'frames'"></p>
+        </div>
+      </template>
+    </div>
+
+    <!-- ===== STAGE SECTIONS ===== -->
+    <template x-for="(stage, si) in stages" :key="si">
+      <div class="stage-section mb-8">
+
+        <!-- Stage header -->
+        <div class="stage-header bg-navy rounded-t-xl px-5 py-4 text-white">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl font-bold text-rouge" x-text="'Stage ' + stage.num"></span>
+              <h2 class="font-display text-lg font-bold" x-text="stage.name"></h2>
+            </div>
+            <div class="flex items-center gap-4 text-xs">
+              <span class="text-blue-200" x-text="'Lessons ' + stage.sessions"></span>
+              <span class="bg-white/10 rounded-full px-3 py-1 font-bold" x-text="stage.cumulativeFrames + '/30 frames'"></span>
+            </div>
+          </div>
+          <p class="text-blue-200 text-xs mt-2 italic leading-relaxed" x-text="stage.milestone"></p>
+        </div>
+
+        <!-- Lesson table -->
+        <div class="overflow-x-auto">
+          <table class="w-full bg-white border-x border-stone-200">
+            <thead>
+              <tr class="text-[0.6rem] uppercase tracking-wider text-gray-400 border-b border-stone-200">
+                <th class="py-2 px-3 text-left w-10">#</th>
+                <th class="py-2 px-3 text-left w-40">Title</th>
+                <th class="py-2 px-3 text-left w-20">Type</th>
+                <th class="py-2 px-3 text-left w-48">New Frames</th>
+                <th class="py-2 px-3 text-left">Deliverable</th>
+                <th class="py-2 px-3 text-left">Personalise</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="lesson in lessonsFor(stage.num)" :key="lesson.num">
+                <tr class="border-b border-stone-100 hover:bg-sand/50 align-top">
+                  <!-- # -->
+                  <td class="py-3 px-3">
+                    <span class="text-lg font-bold text-navy" x-text="lesson.num"></span>
+                  </td>
+                  <!-- Title -->
+                  <td class="py-3 px-3">
+                    <span class="font-display text-sm font-bold text-navy leading-snug" x-text="lesson.title"></span>
+                  </td>
+                  <!-- Type -->
+                  <td class="py-3 px-3">
+                    <span class="inline-block rounded-full px-2.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wide"
+                          :class="lesson.type === 'Learn' ? 'type-learn' : lesson.type === 'Practice' ? 'type-practice' : 'type-perform'"
+                          x-text="lesson.type"></span>
+                  </td>
+                  <!-- New Frames -->
+                  <td class="py-3 px-3">
+                    <template x-if="lesson.newFrames.length > 0">
+                      <div class="flex flex-wrap gap-1">
+                        <template x-for="f in lesson.newFrames" :key="f">
+                          <span class="frame-pill" x-text="f"></span>
+                        </template>
+                      </div>
+                    </template>
+                    <template x-if="lesson.newFrames.length === 0">
+                      <span class="text-xs text-gray-300 italic">consolidation</span>
+                    </template>
+                    <p class="text-[0.55rem] text-gray-400 mt-1" x-text="lesson.cumulative + '/30 total'"></p>
+                  </td>
+                  <!-- Deliverable -->
+                  <td class="py-3 px-3">
+                    <p class="text-xs text-gray-700 leading-relaxed" x-text="lesson.deliverable"></p>
+                  </td>
+                  <!-- Personalise -->
+                  <td class="py-3 px-3">
+                    <p class="text-xs text-gray-500 italic leading-relaxed" x-text="lesson.personalise"></p>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Transition criteria -->
+        <div class="bg-sand rounded-b-xl border border-stone-200 border-t-0 px-5 py-3">
+          <p class="text-[0.6rem] font-bold text-rouge uppercase tracking-wider mb-1.5">Advance when</p>
+          <ul class="space-y-1">
+            <template x-for="c in stage.transition" :key="c">
+              <li class="text-xs text-gray-600 flex items-start gap-2">
+                <span class="text-green-600 mt-0.5 font-bold text-[0.6rem]">&#9632;</span>
+                <span x-text="c"></span>
+              </li>
+            </template>
+          </ul>
+        </div>
+
+      </div>
+    </template>
+
+    <!-- ===== LEGEND ===== -->
+    <div class="flex flex-wrap items-center gap-4 mt-4 mb-8 text-xs">
+      <span class="font-bold text-gray-400 uppercase tracking-wider text-[0.6rem]">Key:</span>
+      <span class="type-learn rounded-full px-2.5 py-0.5 font-bold uppercase text-[0.6rem] tracking-wide">Learn</span>
+      <span class="text-gray-400">New frames introduced, heavy input</span>
+      <span class="type-practice rounded-full px-2.5 py-0.5 font-bold uppercase text-[0.6rem] tracking-wide">Practice</span>
+      <span class="text-gray-400">Guided scenarios, mixed drilling</span>
+      <span class="type-perform rounded-full px-2.5 py-0.5 font-bold uppercase text-[0.6rem] tracking-wide">Perform</span>
+      <span class="text-gray-400">Less-structured output, real conversation</span>
+    </div>
+
+    <!-- ===== SHIFT VISUALISATION ===== -->
+    <div class="bg-sand rounded-xl border border-stone-200 p-5 mb-8">
+      <h3 class="font-display text-base font-bold text-navy mb-3">The Shift</h3>
+      <div class="grid grid-cols-5 gap-2 text-center text-[0.6rem]">
+        <template x-for="(s, i) in stages" :key="i">
+          <div>
+            <p class="font-bold text-navy mb-1" x-text="'Stage ' + s.num"></p>
+            <div class="flex h-6 rounded overflow-hidden">
+              <div class="type-learn" :style="'width:' + s.learnPct + '%'"></div>
+              <div class="type-practice" :style="'width:' + s.practicePct + '%'"></div>
+              <div class="type-perform" :style="'width:' + s.performPct + '%'"></div>
+            </div>
+            <p class="text-gray-400 mt-1" x-text="s.interleaving"></p>
+          </div>
+        </template>
+      </div>
+      <p class="text-xs text-gray-500 mt-3 text-center">From 100% scripted input to 100% free conversation. The bar fills with red.</p>
+    </div>
+
+  </main>
+
+  <script>
+    function blueprint() {
+      return {
+        stages: [
+          {
+            num: 1, name: 'The Ignition', sessions: '1-3',
+            milestone: "I can introduce myself in French, produce 5+ simple sentences, and French speakers don't immediately switch to English.",
+            cumulativeFrames: 4,
+            learnPct: 67, practicePct: 0, performPct: 33,
+            interleaving: '100% new',
+            transition: [
+              'Personal Script (5+ sentences) delivered with pauses under 2 seconds',
+              'Can produce at least 3 sentences for each of the 4 frames',
+              'Deploys at least 2 Talk Back Toolkit phrases unprompted when Dan speaks too fast',
+            ],
+          },
+          {
+            num: 2, name: 'The Toolkit', sessions: '4-7',
+            milestone: "I can handle a basic transactional conversation (ordering, asking directions, small talk) and recover when I don't understand.",
+            cumulativeFrames: 10,
+            learnPct: 50, practicePct: 25, performPct: 25,
+            interleaving: '70% new / 30% old',
+            transition: [
+              'Can construct sentences using 4 modal verbs + at least 10 infinitives without the Beermat grid',
+              'Can turn any statement into a question using "est-ce que"',
+              'Uses "je sais pas" with at least 3 different completions',
+              'Navigates a simulated transactional scenario lasting 2+ minutes with no English',
+            ],
+          },
+          {
+            num: 3, name: 'The Weave', sessions: '8-12',
+            milestone: 'I can link multiple ideas together, express past events, give opinions with reasons, and hold a conversation for 5+ minutes.',
+            cumulativeFrames: 18,
+            learnPct: 40, practicePct: 40, performPct: 20,
+            interleaving: '60% new / 40% old',
+            transition: [
+              'Can link 3+ frames in a single multi-clause sentence',
+              'Can tell a 5-sentence story about a past event',
+              'Can sustain 5 minutes of conversation with no English',
+              'Can express an opinion with a reason',
+            ],
+          },
+          {
+            num: 4, name: 'The Ring', sessions: '13-18',
+            milestone: 'I can have a real conversation with a French speaker on a familiar topic for 10+ minutes, navigate unexpected responses, and sound natural.',
+            cumulativeFrames: 24,
+            learnPct: 33, practicePct: 33, performPct: 34,
+            interleaving: '50% new / 50% old',
+            transition: [
+              'Can sustain 10+ minutes of French-only conversation',
+              'Can handle unexpected questions or topic changes without freezing',
+              'Uses at least 5 Natural Sound Kit items unprompted',
+              'French speakers respond in French (not switching to English)',
+            ],
+          },
+          {
+            num: 5, name: 'The Road', sessions: '19-24',
+            milestone: "I can operate independently in a French-speaking environment for an entire day: navigate transport, eat out, ask for help, make small talk, and recover from any misunderstanding.",
+            cumulativeFrames: 30,
+            learnPct: 0, practicePct: 33, performPct: 67,
+            interleaving: '40% new / 60% old',
+            transition: [
+              'Can navigate a simulated full day in French with no English',
+              'Can handle a problem scenario and reach a resolution',
+              'Has had at least one real-world French interaction and reports positive results',
+            ],
+          },
+        ],
+
+        lessons: [
+          // ── Stage 1: The Ignition ──
+          { num: 1, stage: 1, title: 'Accent Bootcamp + Personal Script', type: 'Learn',
+            newFrames: ['je suis ___', 'je suis de ___'], cumulative: 2,
+            deliverable: 'Can deliver a 3-5 sentence Personal Script about themselves in French with correct syllable-timed rhythm.',
+            personalise: "Personal Script uses student's real job, city, family. Their identity in French from sentence one.",
+          },
+          { num: 2, stage: 1, title: 'Il y a + Natural Sound Kit', type: 'Learn',
+            newFrames: ['il y a ___'], cumulative: 3,
+            deliverable: 'Can describe surroundings using "il y a" + 20 nouns. Can react naturally with the Natural Sound Kit (Ah bon? / Exactement!).',
+            personalise: "Noun Blast uses objects from student's world: lab specimens for a zoologist, flower varieties for a florist, stable gear for an equestrian.",
+          },
+          { num: 3, stage: 1, title: 'Vous avez + First Wow Exchange', type: 'Perform',
+            newFrames: ['vous avez ___ ?'], cumulative: 4,
+            deliverable: 'Can perform a rehearsed cafe/shop dialogue for friends. Has a concrete "party trick" in French.',
+            personalise: "Wow Exchange set in student's real context: the cafe near their house, the florist suppliers, the zoo gift shop.",
+          },
+
+          // ── Stage 2: The Toolkit ──
+          { num: 4, stage: 2, title: 'The Beermat Modals', type: 'Learn',
+            newFrames: ['je peux/veux/dois/vais ___', 'je prends ___'], cumulative: 6,
+            deliverable: 'Can build 80+ sentences from the Beermat grid (4 modals x 20 infinitives). Sentence production explodes.',
+            personalise: "Infinitives chosen from student's life: soigner (nurse), planter (gardener), observer (zoologist), livrer (courier).",
+          },
+          { num: 5, stage: 2, title: 'Est-ce que: The Question Machine', type: 'Learn',
+            newFrames: ['est-ce que ___ ?'], cumulative: 7,
+            deliverable: 'Can turn any statement into a question. Doubles their entire sentence repertoire overnight.',
+            personalise: "Questions the student actually needs to ask: about their relocation, their workplace, their holiday plans.",
+          },
+          { num: 6, stage: 2, title: 'Je sais pas + Je trouve ca', type: 'Practice',
+            newFrames: ['je sais pas ___', 'je trouve ca ___', "c'est ___"], cumulative: 10,
+            deliverable: 'Can express opinions ("je trouve ca magnifique") and uncertainty ("je sais pas pourquoi") naturally.',
+            personalise: "Opinion targets matched to student's interests: flowers, animals, neighbourhoods, food, their industry.",
+          },
+          { num: 7, stage: 2, title: 'Integration Scenario', type: 'Perform',
+            newFrames: [], cumulative: 10,
+            deliverable: 'Can navigate a 2+ minute transactional scenario (cafe, shop, hotel) entirely in French.',
+            personalise: "Scenario set in student's goal context: garden centre for a gardener, veterinary reception for a zoologist, boulangerie for a foodie.",
+          },
+
+          // ── Stage 3: The Weave ──
+          { num: 8, stage: 3, title: 'Past Tense Gateway: Je me suis', type: 'Learn',
+            newFrames: ['je me suis ___', 'quand je suis ___'], cumulative: 12,
+            deliverable: 'Can talk about past events using the reflexive past. Can set temporal scenes with "quand je suis".',
+            personalise: "Past-tense sentences about student's actual experiences: moved house, changed career, had a child, started a business.",
+          },
+          { num: 9, stage: 3, title: 'The Connectors: Du coup + Parce que', type: 'Learn',
+            newFrames: ['du coup ___', 'parce que ___'], cumulative: 14,
+            deliverable: 'Can link ideas with connectors. Sentences are now multi-clause for the first time.',
+            personalise: "Connector examples from student's real life: 'Je suis de Manchester, du coup je connais pas le sud de la France.'",
+          },
+          { num: 10, stage: 3, title: 'Narrative Construction', type: 'Practice',
+            newFrames: ['la premiere ___ que', 'ce qui se ___'], cumulative: 16,
+            deliverable: 'Can tell a 5-sentence story about a real experience in French. This is the emotional breakthrough session.',
+            personalise: "The story MUST be from the student's actual life. The emotional payoff depends on it being real.",
+          },
+          { num: 11, stage: 3, title: 'Opinion and Emphasis', type: 'Practice',
+            newFrames: ['moi je suis ___', 'je vais te ___'], cumulative: 18,
+            deliverable: 'Can express contrast ("moi je suis pas d\'accord") and signal intent ("je vais te raconter").',
+            personalise: "Debate topic matched to student's passions: animal welfare, garden design, military life, local politics.",
+          },
+          { num: 12, stage: 3, title: 'The Long Flight', type: 'Perform',
+            newFrames: [], cumulative: 18,
+            deliverable: 'Can sustain 5+ minutes of free conversation in French. First session where conversation outweighs drilling.',
+            personalise: "Student picks the conversation topic. Their world, their words, their 5 minutes.",
+          },
+
+          // ── Stage 4: The Ring ──
+          { num: 13, stage: 4, title: 'Disagreement and Correction', type: 'Learn',
+            newFrames: ['en fait ___', 'mais y a ___'], cumulative: 20,
+            deliverable: 'Can correct misunderstandings ("en fait, je suis pas de Londres") and introduce counterpoints.',
+            personalise: "Dan makes intentionally wrong statements about the student's real life. Student corrects with 'en fait'.",
+          },
+          { num: 14, stage: 4, title: 'Professional Register', type: 'Learn',
+            newFrames: ['en tant que ___', 'par rapport au ___', "ca c'est un ___"], cumulative: 23,
+            deliverable: 'Can describe work and life in professional register. Can compare things using "par rapport a".',
+            personalise: "Student's actual job title, industry, daily work context. 'En tant que zoologiste...' / 'En tant que fleuriste...'",
+          },
+          { num: 15, stage: 4, title: 'Scenario Escalation', type: 'Practice',
+            newFrames: ['ca fait ___ de'], cumulative: 24,
+            deliverable: 'Can navigate complex real-world scenarios (doctor, hotel problem, dietary requirements) using multiple frames.',
+            personalise: "Scenario matched to student's goal: flat hunt for relocators, vet consultation for zoologists, flower supplier negotiation for florists.",
+          },
+          { num: 16, stage: 4, title: 'The Curveball', type: 'Perform',
+            newFrames: [], cumulative: 24,
+            deliverable: 'Can survive unexpected topic changes and comprehension stress without freezing. Learns that failure is survivable.',
+            personalise: "Curveball topics from student's real life. Dan steers into what the student will actually need to handle.",
+          },
+          { num: 17, stage: 4, title: 'Cultural Fluency', type: 'Practice',
+            newFrames: [], cumulative: 24,
+            deliverable: 'Can use Parisian register: chais pas, bah non/si, the puff. Understands informal contractions.',
+            personalise: "Slang applied to student's real-world scenarios: their neighbourhood, their social circle, their daily routine.",
+          },
+          { num: 18, stage: 4, title: 'The Sparring Match', type: 'Perform',
+            newFrames: [], cumulative: 24,
+            deliverable: 'Can sustain a 15-minute conversation at near-natural speed on a topic of their choice.',
+            personalise: "Student picks the topic. Their passion, their 15 minutes in the ring.",
+          },
+
+          // ── Stage 5: The Road ──
+          { num: 19, stage: 5, title: 'Full Day: Morning + Midday', type: 'Practice',
+            newFrames: ['je viens de ___', 'au mois de ___'], cumulative: 26,
+            deliverable: 'Can navigate morning scenarios: hotel check-out, breakfast, directions, metro ticket, finding a restaurant.',
+            personalise: "Morning simulation uses student's actual travel plans or daily routine. Real hotels, real stations.",
+          },
+          { num: 20, stage: 5, title: 'Full Day: Afternoon + Evening', type: 'Practice',
+            newFrames: ['je fais des ___', 'tres ___ parce que'], cumulative: 28,
+            deliverable: 'Can navigate afternoon/evening scenarios: shopping, museum visit, restaurant reservation, taxi home.',
+            personalise: "Real places the student would visit. The market they'd browse, the restaurant they want to try.",
+          },
+          { num: 21, stage: 5, title: 'The Telephone Session', type: 'Perform',
+            newFrames: ['tu peux pas ___'], cumulative: 29,
+            deliverable: 'Can handle phone calls in French with no visual cues. Restaurant reservation, hotel booking, tourist office.',
+            personalise: "Phone calls the student will actually need to make. A real restaurant, a real hotel, a real office.",
+          },
+          { num: 22, stage: 5, title: 'The Difficult Conversation', type: 'Perform',
+            newFrames: ['ca ___ un peu'], cumulative: 30,
+            deliverable: 'Can resolve a problem politely but firmly: lost luggage, wrong order, overcharge.',
+            personalise: "Problem scenario the student might actually face based on their travel plans, work, or living situation.",
+          },
+          { num: 23, stage: 5, title: 'Extended Life Story', type: 'Perform',
+            newFrames: [], cumulative: 30,
+            deliverable: 'Can deliver a 5-minute life story monologue in French using all 30 frames. The evolved Personal Script.',
+            personalise: "This IS their life. No fiction. The full arc from where they started to where they are now.",
+          },
+          { num: 24, stage: 5, title: 'The Test Drive Debrief', type: 'Perform',
+            newFrames: [], cumulative: 30,
+            deliverable: 'Has survived a real-world French interaction and can debrief what worked and what to polish.',
+            personalise: "Debrief a real interaction, or simulate the exact scenario the student faces next (trip, meeting, move).",
+          },
+        ],
+
+        lessonsFor(stageNum) {
+          return this.lessons.filter(l => l.stage === stageNum);
+        },
+      };
+    }
+  </script>
+
+</body>
+</html>
