@@ -93,6 +93,15 @@
     .toolkit-row { display: grid; grid-template-columns: 1.2fr 1fr 1.4fr; gap: 0; border-bottom: 1px solid #f0f0f0; padding: 0.65rem 0; align-items: baseline; }
     .toolkit-row:last-child { border-bottom: none; }
 
+    /* Diagnostic scorecard */
+    .score-row { display: grid; grid-template-columns: 1.1fr 0.5fr 1.4fr; gap: 0; border-bottom: 1px solid #f0f0f0; padding: 0.65rem 0; align-items: baseline; }
+    .score-row:last-child { border-bottom: none; }
+    .score-fr   { font-weight: 600; color: #003359; }
+    .score-mark { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; }
+    .score-mark.got    { color: #1a7f4b; }
+    .score-mark.missed { color: #C8102E; }
+    .score-note { color: #6b7280; font-size: 0.85rem; }
+
     /* Lesson header strip */
     .lesson-strip { background: #003359; color: white; border-radius: 0.75rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
     .lesson-strip .num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #4DD4F5; }
@@ -119,8 +128,8 @@
         <h1 class="font-display text-2xl font-bold mt-1">Patricia's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">2 lessons</p>
-        <p class="text-xs text-blue-400 mt-0.5">Frames, fillers &amp; past tense</p>
+        <p class="text-sm text-blue-200 font-medium">3 lessons</p>
+        <p class="text-xs text-blue-400 mt-0.5">Frames, past tense &amp; core toolkit</p>
       </div>
     </div>
   </header>
@@ -131,6 +140,7 @@
       <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
       <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
       <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
+      <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
     </div>
   </div>
 
@@ -200,6 +210,67 @@
           <div class="phrase-fr">Il y a beaucoup de... <span class="text-gray-400 font-normal">(+ noun)</span></div>
           <div class="phrase-pron">eel ya boh-koo duh</div>
           <div class="phrase-en">There are a lot of...</div>
+        </div>
+      </div>
+
+      <!-- Core Toolkit -->
+      <div class="card" style="border-color: #003359; border-width: 2px;">
+        <span class="section-label">Your Core Toolkit &mdash; The Nine</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+          These are the nine things Dan listens for in the diagnostic. They're not vocabulary &mdash; they're the load-bearing bits of a conversation. Between them they let you say who you are, where you're from, what's around you, what you'd like, what you want, must, will and can do, and what you don't know. Everything else is filler.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Identity</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis... <span class="text-gray-400 font-normal">(+ job or description)</span></div>
+          <div class="phrase-pron">zhuh swee</div>
+          <div class="phrase-en">I am...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis de... / Je viens de... <span class="text-gray-400 font-normal">(+ place)</span></div>
+          <div class="phrase-pron">zhuh swee duh / zhuh vyan duh</div>
+          <div class="phrase-en">I'm from... / I come from...</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Describing &amp; ordering</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a... <span class="text-gray-400 font-normal">(+ noun)</span></div>
+          <div class="phrase-pron">eel ya &mdash; one fast chunk, almost "ya"</div>
+          <div class="phrase-en">There is / there are...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je prends... <span class="text-gray-400 font-normal">(+ what you want)</span></div>
+          <div class="phrase-pron">zhuh pron</div>
+          <div class="phrase-en">I'll have... (ordering)</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The four modals (+ infinitive)</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je veux...</div>
+          <div class="phrase-pron">zhuh vuh</div>
+          <div class="phrase-en">I want to...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je dois...</div>
+          <div class="phrase-pron">zhuh dwah</div>
+          <div class="phrase-en">I have to / I must...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais...</div>
+          <div class="phrase-pron">zhuh vay</div>
+          <div class="phrase-en">I'm going to / I will...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je peux... / Je peux pas...</div>
+          <div class="phrase-pron">zhuh puh / zhuh puh pah</div>
+          <div class="phrase-en">I can... / I can't...</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The safety net</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je sais pas...</div>
+          <div class="phrase-pron">zhuh say pah</div>
+          <div class="phrase-en">I don't know... (and then keep going)</div>
         </div>
       </div>
 
@@ -465,6 +536,67 @@
           <div class="phrase-pron">zhuh swee za-lay na-zhay don la ree-vyair, zhuh swee ron-tray shay mon-a-mee, ay zhuh monzh a-vek may za-mee suh swar</div>
           <div class="phrase-en">I went swimming in the river, I came back to my friend's place, and I'm eating with my friends this evening.</div>
         </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Saying who you are and where you're from</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis infirmi&egrave;re.</div>
+          <div class="phrase-pron">zhuh swee an-feer-myair</div>
+          <div class="phrase-en">I'm a nurse. (no "a" in French &mdash; just je suis + the job)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis entrepreneur.</div>
+          <div class="phrase-pron">zhuh swee on-truh-pruh-nur</div>
+          <div class="phrase-en">I'm an entrepreneur.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis de Liverpool.</div>
+          <div class="phrase-pron">zhuh swee duh lee-vair-pool</div>
+          <div class="phrase-en">I'm from Liverpool.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je viens de Liverpool, mais j'habite au pays de Galles.</div>
+          <div class="phrase-pron">zhuh vyan duh lee-vair-pool, may zha-beet oh pay-ee duh gal</div>
+          <div class="phrase-en">I come from Liverpool, but I live in Wales.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The four modals in action</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je veux parler fran&ccedil;ais.</div>
+          <div class="phrase-pron">zhuh vuh par-lay fron-say</div>
+          <div class="phrase-en">I want to speak French.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je dois rentrer samedi.</div>
+          <div class="phrase-pron">zhuh dwah ron-tray sam-dee</div>
+          <div class="phrase-en">I have to go back on Saturday.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais prendre l'avion.</div>
+          <div class="phrase-pron">zhuh vay prondr la-vyon</div>
+          <div class="phrase-en">I'm going to take the plane.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je peux pas prendre un vol direct.</div>
+          <div class="phrase-pron">zhuh puh pah prondr un vol dee-rekt</div>
+          <div class="phrase-en">I can't take a direct flight.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais conduire jusqu'au village.</div>
+          <div class="phrase-pron">zhuh vay kon-dweer zhoos-koh vee-lazh</div>
+          <div class="phrase-en">I'm going to drive to the village.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Not knowing, without stopping</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je sais pas, mais je pense que c'est loin.</div>
+          <div class="phrase-pron">zhuh say pah, may zhuh ponss kuh say lwan</div>
+          <div class="phrase-en">I don't know, but I think it's far.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je sais pas pourquoi.</div>
+          <div class="phrase-pron">zhuh say pah poor-kwah</div>
+          <div class="phrase-en">I don't know why.</div>
+        </div>
       </div>
 
       <!-- Tips -->
@@ -519,6 +651,21 @@
         <div class="tip-card">
           <div class="tip-title">Beaucoup, carefully</div>
           <p>It's <em>boh-<strong>koo</strong></em>, with a full round "oo" at the end. Clip it to <em>boh-kuh</em> and you've said <em>beau cul</em> &mdash; "nice bum". So <em>merci beaucoup</em> said carelessly becomes "thanks, nice bum". Worth a laugh with Catherine and Cynthia, and worth getting right with everyone else.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Je suis de vs je viens de</div>
+          <p>Both answer "where are you from". <strong>Je suis de Liverpool</strong> is literally "I am of Liverpool"; <strong>je viens de Liverpool</strong> is "I come from Liverpool". Same job, and only one word changes. Pick whichever falls out of your mouth faster and make it automatic &mdash; this is a question you will be asked every single time you meet someone.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">The first-letter problem</div>
+          <p>You reliably get the first letter of a verb and then it goes haywire after that &mdash; <em>n...</em> for <em>nager</em>, <em>r...</em> for <em>rentrer</em>, <em>c...</em> for <em>conduire</em>, <em>c...</em> for <em>commencer</em>. That's not a memory failure, it's a half-installed word. The fix isn't more vocabulary, it's saying the few you actually use out loud until the whole word arrives with the letter.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Je sais pas is a door, not a wall</div>
+          <p>"I don't know" should buy you time and keep the conversation alive, not end it. Say it and keep going: <em>je sais pas, mais...</em>, <em>je sais pas pourquoi</em>, <em>je sais pas si c'est possible</em>. Used as a full stop it's a dead end; used as an opening it's one of the most useful things in your toolkit.</p>
         </div>
 
         <div class="tip-card">
@@ -716,6 +863,65 @@
           <span class="vocab-fr">Un peu de</span>
           <span class="vocab-pron">un puh duh</span>
           <span class="vocab-en">A bit of</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Describing Where You Are</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">La cuisine</span>
+          <span class="vocab-pron">la kwee-zeen</span>
+          <span class="vocab-en">The kitchen</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Le coin cuisine</span>
+          <span class="vocab-pron">luh kwan kwee-zeen</span>
+          <span class="vocab-en">The corner kitchen / kitchenette</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Le lave-vaisselle</span>
+          <span class="vocab-pron">luh lav-vess-el</span>
+          <span class="vocab-en">The dishwasher (literally "washes-crockery")</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un hamac</span>
+          <span class="vocab-pron">un a-mak</span>
+          <span class="vocab-en">A hammock</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un patio</span>
+          <span class="vocab-pron">un pa-tyoh</span>
+          <span class="vocab-en">A patio</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Verbs Worth Nailing</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Conduire</span>
+          <span class="vocab-pron">kon-dweer</span>
+          <span class="vocab-en">To drive</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Commencer</span>
+          <span class="vocab-pron">ko-mon-say</span>
+          <span class="vocab-en">To start / begin</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">R&eacute;cup&eacute;rer</span>
+          <span class="vocab-pron">ray-koo-pay-ray</span>
+          <span class="vocab-en">To pick up / collect</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Prendre</span>
+          <span class="vocab-pron">prondr</span>
+          <span class="vocab-en">To take / to have (ordering) &rarr; je prends</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un vol direct</span>
+          <span class="vocab-pron">un vol dee-rekt</span>
+          <span class="vocab-en">A direct flight</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Infirmi&egrave;re</span>
+          <span class="vocab-pron">an-feer-myair</span>
+          <span class="vocab-en">Nurse</span>
         </div>
       </div>
 
@@ -1350,6 +1556,254 @@
       </div>
 
     </div><!-- /l2 -->
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 3                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l3'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 3 &middot; 23 September 2026</div>
+        <h2>The Window Pane Test</h2>
+        <div class="meta">Diagnostic &middot; 6 out of 9 &middot; No red flags &middot; Je suis / Je viens de</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          A different kind of lesson: instead of teaching, Dan spent the first half listening. You'd said yourself that you know an awful lot of words but can't string them together, so rather than take that on trust he ran a diagnostic to find out exactly which structural pieces you already own and which ones aren't there yet.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          He asked you questions in French, then in English, across five areas &mdash; who you are and where you're from, describing the room around you, ordering in a caf&eacute;, your plans for the weekend, and a deliberately unanswerable trivia question. He wasn't correcting; he was ticking off nine specific items. <strong>You got six of the nine, and tripped none of the three red flags.</strong> The back half of the lesson went on drilling the biggest gap: saying where you're from.
+        </p>
+      </div>
+
+      <!-- The premise -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Why a Diagnostic</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          It comes from baking. The <strong>window pane test</strong> is where you stretch a piece of dough thinner and thinner until you can see light through it &mdash; and wherever it tears, that's the bit that needs more kneading. Same idea here: stretch your French until holes appear, note where they are, then go back and work those spots so the whole thing can stretch further next time.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          There were no wrong answers, and the non-French parts (what the capital of Mongolia is, what Dan's middle name is &mdash; Christopher, for the record) were never the point. He wanted to hear whether a specific phrase came out of you on its own, without being asked for.
+        </p>
+      </div>
+
+      <!-- Scorecard -->
+      <div class="card">
+        <span class="section-label">The Nine Things He Was Listening For</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          Six found, three missing. The three missing ones are your work for this week &mdash; nothing else on this list needs attention.
+        </p>
+
+        <div class="score-row">
+          <span class="score-fr">Je suis...</span>
+          <span class="score-mark got">FOUND</span>
+          <span class="score-note">Who you are. <em>Infirmi&egrave;re</em>, <em>entrepreneur</em> &mdash; both arrived almost immediately.</span>
+        </div>
+        <div class="score-row">
+          <span class="score-fr">Je suis de... / Je viens de...</span>
+          <span class="score-mark missed">MISSING</span>
+          <span class="score-note">Where you're from. You had <em>originaire</em>, Liverpool, the family in Wales &mdash; but not the frame itself.</span>
+        </div>
+        <div class="score-row">
+          <span class="score-fr">Il y a...</span>
+          <span class="score-mark got">FOUND</span>
+          <span class="score-note">Describing the room. It took a moment, but it came without being prompted.</span>
+        </div>
+        <div class="score-row">
+          <span class="score-fr">Je prends...</span>
+          <span class="score-mark got">FOUND</span>
+          <span class="score-note">Ordering in the caf&eacute;. Buried under a few other <em>p</em> words, but it was in there. Dan gave you the full mark.</span>
+        </div>
+        <div class="score-row">
+          <span class="score-fr">Je veux...</span>
+          <span class="score-mark got">FOUND</span>
+          <span class="score-note">What you want to do this weekend.</span>
+        </div>
+        <div class="score-row">
+          <span class="score-fr">Je dois...</span>
+          <span class="score-mark got">FOUND</span>
+          <span class="score-note">What you have to do. Used correctly straight off the back of hearing it.</span>
+        </div>
+        <div class="score-row">
+          <span class="score-fr">Je vais...</span>
+          <span class="score-mark missed">MISSING</span>
+          <span class="score-note">What you're going to do. This is the one that turns a plan into a sentence.</span>
+        </div>
+        <div class="score-row">
+          <span class="score-fr">Je peux pas...</span>
+          <span class="score-mark missed">MISSING</span>
+          <span class="score-note">What you can't do. Asked about a direct flight home, the "no" arrived but the frame didn't.</span>
+        </div>
+        <div class="score-row">
+          <span class="score-fr">Je sais pas...</span>
+          <span class="score-mark got">FOUND</span>
+          <span class="score-note">Your safety net. Deployed instantly on the Mongolia question, exactly as it should be.</span>
+        </div>
+      </div>
+
+      <!-- Red flags -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">The Three Red Flags &mdash; None Tripped</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+          This is the part worth taking seriously. The missing frames are easy to teach; the habits below are hard to undo, and you don't have any of them.
+        </p>
+        <div class="tip-card">
+          <div class="tip-title">English words dropped mid-sentence &mdash; no</div>
+          <p>Not once, in the whole exercise. When you couldn't find a word you said so in French, or you had a go at what you thought it might be, and moved on. You never gave up on the French and filled the hole with an English word.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-title">The conversation freezing &mdash; no</div>
+          <p>You never dried up. You muddled forward, which is the correct response and a surprisingly rare one.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-title">Je sais pas used as a dead end &mdash; no</div>
+          <p>You only used it where you genuinely didn't know, on a ridiculous question, and it didn't kill the exchange.</p>
+        </div>
+        <p class="text-sm text-gray-600 leading-relaxed mt-4">
+          What that adds up to: the raw material is there, and your instincts under pressure are good. The gap is structural, not vocabulary, and structure is the easy half to fix.
+        </p>
+      </div>
+
+      <!-- The drill -->
+      <div class="card">
+        <span class="section-label">The Drill &mdash; Where Are You From</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+          The biggest hole was the one you'll get asked about most. Two ways to fill it, and only one word changes between them:
+        </p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis de... <span class="text-gray-400 font-normal">(literally "I am of")</span></div>
+          <div class="phrase-pron">zhuh swee duh</div>
+          <div class="phrase-en">I'm from...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je viens de... <span class="text-gray-400 font-normal">(from venir, to come)</span></div>
+          <div class="phrase-pron">zhuh vyan duh</div>
+          <div class="phrase-en">I come from...</div>
+        </div>
+        <p class="text-sm text-gray-600 leading-relaxed mt-4 mb-4">
+          And the two questions that trigger them &mdash; if you hear either one, the answer is one of the above:
+        </p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Tu es d'o&ugrave;&nbsp;?</div>
+          <div class="phrase-pron">too ay doo</div>
+          <div class="phrase-en">Where are you from?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Tu viens d'o&ugrave;&nbsp;?</div>
+          <div class="phrase-pron">too vyan doo</div>
+          <div class="phrase-en">Where do you come from?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis de Liverpool, mais je viens du pays de Galles maintenant.</div>
+          <div class="phrase-pron">zhuh swee duh lee-vair-pool, may zhuh vyan doo pay-ee duh gal man-tuh-non</div>
+          <div class="phrase-en">I'm from Liverpool, but I come from Wales now.</div>
+        </div>
+        <p class="text-sm text-gray-600 leading-relaxed mt-4">
+          You ran this rapid-fire: Dan fires the question, you answer without thinking. Your mind went blank once in the middle of it, which is exactly what the drill is for &mdash; the whole point is to get it below the level where thinking is involved. (The Wi-Fi also gave up briefly. Not your fault.)
+        </p>
+      </div>
+
+      <!-- Diagnosis -->
+      <div class="card">
+        <span class="section-label">What the Test Showed</span>
+
+        <div class="tip-card">
+          <div class="tip-title">You were right about yourself</div>
+          <p>Lots of words, not enough glue. Your vocabulary came through clearly across the whole exercise &mdash; <em>cuisine</em>, <em>hamac</em>, <em>patio</em>, <em>infirmi&egrave;re</em>, <em>entrepreneur</em>, <em>village</em>. What's missing is the small set of structures that join them up, and there are only about nine of those that matter.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">The first-letter pattern</div>
+          <p>This was the clearest single finding. You get the first letter of a verb and then it scatters: <em>n</em> for <em>nager</em>, <em>r</em> for <em>rentrer</em>, <em>c</em> for <em>conduire</em>, <em>c</em> for <em>commencer</em>. You're close, every time. It means the words are half-installed rather than absent, so the fix is repetition of a small number of verbs, not learning more of them.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Comprehension is ahead of production</div>
+          <p>You understood every question &mdash; that you were being asked to describe the room, that Dan was playing the waiter, that one question was about what you <em>want</em> to do and the next about what you <em>must</em>. Understanding was never the bottleneck. Getting it back out is.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">On not having done last week's task</div>
+          <p>Noted, and genuinely not a problem &mdash; zero judgment. It's on this week's list below, unchanged.</p>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div class="card">
+        <span class="section-label">Vocabulary from the Diagnostic</span>
+        <div class="vocab-row">
+          <span class="vocab-fr">Infirmi&egrave;re</span>
+          <span class="vocab-pron">an-feer-myair</span>
+          <span class="vocab-en">Nurse (je suis infirmi&egrave;re &mdash; no "a" in French)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Entrepreneur</span>
+          <span class="vocab-pron">on-truh-pruh-nur</span>
+          <span class="vocab-en">Entrepreneur (a French word already &mdash; it counts)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Le coin cuisine</span>
+          <span class="vocab-pron">luh kwan kwee-zeen</span>
+          <span class="vocab-en">The corner kitchen / kitchenette</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Le lave-vaisselle</span>
+          <span class="vocab-pron">luh lav-vess-el</span>
+          <span class="vocab-en">The dishwasher</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un hamac</span>
+          <span class="vocab-pron">un a-mak</span>
+          <span class="vocab-en">A hammock</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Conduire</span>
+          <span class="vocab-pron">kon-dweer</span>
+          <span class="vocab-en">To drive</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">R&eacute;cup&eacute;rer</span>
+          <span class="vocab-pron">ray-koo-pay-ray</span>
+          <span class="vocab-en">To pick up / collect</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Commencer</span>
+          <span class="vocab-pron">ko-mon-say</span>
+          <span class="vocab-en">To start</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un vol direct</span>
+          <span class="vocab-pron">un vol dee-rekt</span>
+          <span class="vocab-en">A direct flight</span>
+        </div>
+      </div>
+
+      <!-- Homework -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          Three missing frames. That's the whole list.
+        </p>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Je suis de... / je viens de...</strong> Answer the question out loud every time it crosses your mind. It should arrive before you've decided to say it.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Je vais...</strong> + a verb. <em>Je vais prendre l'avion, je vais conduire, je vais rentrer samedi.</em> You have a journey home this week &mdash; narrate it.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Je peux pas...</strong> + a verb. The everyday spoken form drops the <em>ne</em>, so <em>je peux pas</em> is what you'll actually hear and say.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Still carried over from last week, unchanged: <em>je suis all&eacute;e / je suis rentr&eacute;e</em> with the seesaw, and <em>il y a beaucoup de</em>.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>For the first-letter problem: pick the four verbs above and say the whole word, out loud, whenever the first letter turns up. Don't add new vocabulary this week.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label" style="color: #4DD4F5;">Coming Up</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          You cleared the first phase of the diagnostic, so the next one is waiting: <strong>the alibi</strong>. You're the prime suspect in a crime and you have to talk Dan through your entire last weekend, start to finish, convincingly. It's built to test the things you've already started &mdash; <em>je me suis...</em> and <em>quand je suis...</em> from your first two lessons &mdash; plus the connectors that stop a story sounding like a list: <em>du coup</em> (so then) and <em>parce que</em> (because).
+        </p>
+      </div>
+
+    </div><!-- /l3 -->
+
 
 
   </main>
