@@ -119,7 +119,7 @@
         <h1 class="font-display text-2xl font-bold mt-1">Patricia's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">2 lessons</p>
+        <p class="text-sm text-blue-200 font-medium">3 lessons</p>
         <p class="text-xs text-blue-400 mt-0.5">Frames, fillers &amp; past tense</p>
       </div>
     </div>
@@ -131,6 +131,7 @@
       <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
       <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
       <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
+      <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
     </div>
   </div>
 
@@ -1350,6 +1351,150 @@
       </div>
 
     </div><!-- /l2 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 3                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l3'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 3 &middot; 29 September 2026</div>
+        <h2>The Beer Mat Framework</h2>
+        <div class="meta">Modal verbs · Identity phrases · The affective filter</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          A dense, high-energy session with Lyon in December firmly in your sights. Dan introduced the "affective filter" — the brain's stress response when it panics about looking foolish — and explained how using a mini-persona in French sidesteps it. You drilled core identity phrases and rapid-fire question-and-answer patterns, then moved on to the centrepiece of the lesson: the beer mat framework, four core modal verbs (<em>je peux, je veux, je dois, je vais</em>) paired with infinitives to generate 160 different sentences from just 52 items. You finished with a blindfold test, visualised the grid, and nailed it — and ended the lesson feeling, in your own words, on the brink of a breakthrough.
+        </p>
+      </div>
+
+      <!-- KEY PHRASES -->
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Identity &amp; Introduction</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis... <span class="text-gray-400 font-normal">(+ job or identity)</span></div>
+          <div class="phrase-pron">zhuh swee</div>
+          <div class="phrase-en">I am...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je viens de... <span class="text-gray-400 font-normal">(+ place)</span></div>
+          <div class="phrase-pron">zhuh vyan duh</div>
+          <div class="phrase-en">I come from...</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Questions to Expect</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Qu'est-ce que tu fais dans la vie&nbsp;?</div>
+          <div class="phrase-pron">kess-kuh too fay don la vee</div>
+          <div class="phrase-en">What do you do for a living?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">D'o&ugrave; viens-tu&nbsp;?</div>
+          <div class="phrase-pron">doo vyan-too</div>
+          <div class="phrase-en">Where are you from?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Qu'est-ce qu'il y a&nbsp;?</div>
+          <div class="phrase-pron">kess-keel ya</div>
+          <div class="phrase-en">What is there? / What's there?</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The Four Modal Verbs (Beer Mat)</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je peux... <span class="text-gray-400 font-normal">(+ infinitive)</span></div>
+          <div class="phrase-pron">zhuh puh</div>
+          <div class="phrase-en">I can...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je veux... <span class="text-gray-400 font-normal">(+ infinitive)</span></div>
+          <div class="phrase-pron">zhuh vuh</div>
+          <div class="phrase-en">I want to...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je dois... <span class="text-gray-400 font-normal">(+ infinitive)</span></div>
+          <div class="phrase-pron">zhuh dwah</div>
+          <div class="phrase-en">I must / I have to...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais... <span class="text-gray-400 font-normal">(+ infinitive)</span></div>
+          <div class="phrase-pron">zhuh vay</div>
+          <div class="phrase-en">I'm going to...</div>
+        </div>
+      </div>
+
+      <!-- VOCABULARY -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Identity Fillers (for <em>je suis</em>)</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Infirmi&egrave;re</span>
+          <span class="vocab-pron">an-feer-myair</span>
+          <span class="vocab-en">Nurse (feminine)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Entrepreneur</span>
+          <span class="vocab-pron">on-truh-pruh-nur</span>
+          <span class="vocab-en">Entrepreneur</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Galloise</span>
+          <span class="vocab-pron">gal-wahz</span>
+          <span class="vocab-en">Welsh (feminine)</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Things in the Room</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un ordinateur</span>
+          <span class="vocab-pron">un or-dee-na-tur</span>
+          <span class="vocab-en">A computer</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Des livres</span>
+          <span class="vocab-pron">day leevr</span>
+          <span class="vocab-en">Books</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Une tablette</span>
+          <span class="vocab-pron">oon tab-let</span>
+          <span class="vocab-en">A tablet</span>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Absurdity Training</h3>
+        <div class="vocab-row">
+          <span class="vocab-fr">Une bagarre</span>
+          <span class="vocab-pron">oon bag-ar</span>
+          <span class="vocab-en">A fight / brawl (warrior on Mars vocabulary)</span>
+        </div>
+      </div>
+
+      <!-- WOW EXCHANGE -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Wow Moment</span>
+        <p class="text-sm text-gray-400 italic mb-4">After the blindfold test, with 160 sentence combinations unlocked and Lyon on the horizon...</p>
+        <p class="text-sm text-gray-600 leading-relaxed font-medium">
+          "I feel on the brink of a breakthrough."
+        </p>
+        <p class="text-sm text-gray-400 mt-2">— Patricia, end of Lesson 3</p>
+      </div>
+
+      <!-- PRACTICE GOALS -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Beer mat drill.</strong> Take each of the four modal verbs (<em>je peux, je veux, je dois, je vais</em>) and pair it with five different infinitives, out loud, from memory. Aim for fluency over accuracy &mdash; stumbling is fine, stopping is not.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Print the materials.</strong> Print the grammar and vocabulary sheet Dan sends on WhatsApp. Visible paper on the desk lowers your cognitive load mid-conversation.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Watch The Village.</strong> French audio, English subtitles &mdash; not the other way round. You're training your ears to short-circuit straight to meaning, not to read translations.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Book your next session.</strong> Every 5 days is the sweet spot for the forgetting curve. Three weeks before your Lyon trip is not the time to let the gap grow.</li>
+        </ul>
+      </div>
+
+    </div><!-- /l3 -->
 
 
   </main>
