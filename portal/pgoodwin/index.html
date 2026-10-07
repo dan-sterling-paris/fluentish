@@ -128,8 +128,8 @@
         <h1 class="font-display text-2xl font-bold mt-1">Patricia's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">3 lessons</p>
-        <p class="text-xs text-blue-400 mt-0.5">Frames, past tense &amp; core toolkit</p>
+        <p class="text-sm text-blue-200 font-medium">4 lessons</p>
+        <p class="text-xs text-blue-400 mt-0.5">Frames, script &amp; pronunciation</p>
       </div>
     </div>
   </header>
@@ -141,6 +141,7 @@
       <button @click="tab = 'l1'"   :class="tab === 'l1'   ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
       <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
       <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
+      <button @click="tab = 'l4'"   :class="tab === 'l4'   ? 'tab-btn active' : 'tab-btn'">Lesson 4</button>
     </div>
   </div>
 
@@ -210,6 +211,43 @@
           <div class="phrase-fr">Il y a beaucoup de... <span class="text-gray-400 font-normal">(+ noun)</span></div>
           <div class="phrase-pron">eel ya boh-koo duh</div>
           <div class="phrase-en">There are a lot of...</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">From Lesson 4</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je m'appelle... <span class="text-gray-400 font-normal">(+ name)</span></div>
+          <div class="phrase-pron">zhuh ma-pel</div>
+          <div class="phrase-en">I'm called... / My name is...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">&Agrave; l'origine, je viens de... <span class="text-gray-400 font-normal">(+ place)</span></div>
+          <div class="phrase-pron">a lo-ree-zheen zhuh vyan duh</div>
+          <div class="phrase-en">Originally, I'm from...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'habite maintenant dans... <span class="text-gray-400 font-normal">(+ place)</span></div>
+          <div class="phrase-pron">zha-beet man-tuh-non don</div>
+          <div class="phrase-en">I live now in...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je travaille comme... <span class="text-gray-400 font-normal">(+ job)</span></div>
+          <div class="phrase-pron">zhuh tra-vye kom</div>
+          <div class="phrase-en">I work as...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Par le pass&eacute;, je faisais... <span class="text-gray-400 font-normal">(+ activity)</span></div>
+          <div class="phrase-pron">par luh pa-say, zhuh fuh-zay</div>
+          <div class="phrase-en">In the past, I used to...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai &eacute;crit un livre sur... <span class="text-gray-400 font-normal">(+ topic)</span></div>
+          <div class="phrase-pron">zhay ay-kree un leevr soor</div>
+          <div class="phrase-en">I wrote a book about...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">&Agrave; ton tour, parle-moi de toi&nbsp;!</div>
+          <div class="phrase-pron">a ton toor, parl-mwa duh twa</div>
+          <div class="phrase-en">Your turn, tell me about yourself!</div>
         </div>
       </div>
 
@@ -1948,6 +1986,143 @@
       </div>
 
     </div><!-- /l3 -->
+
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 4                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l4'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 4 &middot; 6 October 2026</div>
+        <h2>Je m'appelle Patricia</h2>
+        <div class="meta">The speed dating script &middot; Pronunciation &middot; Anti-fossilisation</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          You started the call speaking French. That alone was a milestone Dan hadn't seen coming, and it changed the tone of the whole session. He ran a quick modal verb recall test &mdash; eyes closed, no notes &mdash; and you produced all four (<em>je peux, je veux, je dois, je vais</em>) without hesitation. You drilled the V-vs-D distinction that had been causing confusion (<em>veux</em> vs <em>dois</em>), then built a sentence about visiting Lyon for the Michelin-starred restaurants, picking up <em>une &eacute;toile</em> and <em>&eacute;toil&eacute;(e)</em> along the way.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          The second half was the big one. Dan played the role of Jean and interviewed you in a mix of French and English, gathering the raw material of your life story: the Welsh village, the wellness clinic, the Alps, Africa, the book. He then read it back to you in grammatically perfect French &mdash; your story, in the voice you're working towards. The session ended with a strict line-by-line pronunciation drill on paragraph one, focused entirely on accuracy and preventing fossilisation.
+        </p>
+      </div>
+
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">The Premise</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Most fluency work teaches you to understand French, or to build sentences slowly from parts. The script method does something different: it gives your brain a sonic target. When you memorise a grammatically perfect script about yourself and can deliver it without pausing, your brain hears what fluent French sounds like <em>coming out of your mouth</em>, and it starts racing you towards that level.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          The script isn't about impressing anyone. It's a training tool. The more precisely you drill it now &mdash; including the sounds, not just the words &mdash; the faster your vocabulary expands, because every sentence you've memorised becomes a new frame to slot other words into.
+        </p>
+      </div>
+
+      <!-- THE SCRIPT -->
+      <div class="card">
+        <span class="section-label">Your Script</span>
+        <p class="text-xs text-gray-400 italic mb-4">The phonetic guides are written to be read exactly as they look &mdash; don't translate them back into English spelling rules.</p>
+
+        <div class="mb-5">
+          <p class="text-sm font-semibold text-navy mb-1">Je m'appelle Patricia. &Agrave; l'origine, je viens de Liverpool, mais j'habite maintenant dans un petit village au nord du pays de Galles.</p>
+          <p class="text-xs text-gray-400 italic">ZHuh ma-PEL Pa-tree-SYA. A lo-ree-ZHEEN, zhuh VYAN duh Lee-vair-POOL, may ZHA-beet man-tuh-NON donZ un puh-tee vee-LAZH oh nor doo pay-EE duh GAL.</p>
+          <p class="text-sm font-semibold text-navy mt-3 mb-1">C'est magnifique, entre la mer et les montagnes. Le village est situ&eacute; dans la vall&eacute;e de Clwyd.</p>
+          <p class="text-xs text-gray-400 italic">Say man-YA-FEEK, ON-truh la mair ay lay mon-TAN-yuh. Luh vee-LAZH ay see-tu-AY don la val-AY duh Kloo-ID.</p>
+        </div>
+
+        <div class="mb-5">
+          <p class="text-sm font-semibold text-navy mb-1">Actuellement, je suis en semi-retraite, mais je travaille toujours comme infirmi&egrave;re dans une clinique.</p>
+          <p class="text-xs text-gray-400 italic">Ak-tu-el-MON, zhuh swee on suh-mee ruh-TRAYT, may zhuh tra-VYE too-ZHOOR kom an-feer-MYAIR donz oon klee-NEEK.</p>
+          <p class="text-sm font-semibold text-navy mt-3 mb-1">Ma journ&eacute;e type commence &agrave; 8 h, mais je d&eacute;bute mes consultations &agrave; 10 h. Je re&ccedil;ois mes patients pour des rendez-vous de trente minutes &agrave; une heure.</p>
+          <p class="text-xs text-gray-400 italic">Ma zhoor-NAY teep ko-MONS a weet ur, may zhuh day-BOOT may kon-sul-ta-SYON a deez ur. Zhuh ruh-SWA may pa-SYON poor day ron-day-VOO duh tront mee-NOOT a oon ur.</p>
+          <p class="text-sm font-semibold text-navy mt-3 mb-1">Je traite toutes sortes de pathologies, mais je me concentre principalement sur la pr&eacute;vention et la gestion des maladies chroniques.</p>
+          <p class="text-xs text-gray-400 italic">Zhuh TRAYT toot sort duh pa-to-lo-ZHEE, may zhuh muh kon-SON-truh pran-see-pal-MON soor la pray-von-SYON ay la zhes-TYON day ma-la-DEE kro-NEEK.</p>
+        </div>
+
+        <div class="mb-5">
+          <p class="text-sm font-semibold text-navy mb-1">J'ai de nombreux centres d'int&eacute;r&ecirc;t, en particulier la nature. Par le pass&eacute;, je faisais de l'alpinisme.</p>
+          <p class="text-xs text-gray-400 italic">Zhay duh nom-BRUH SON-truh dan-tay-RAY, on par-tee-kul-YAY la na-TOOR. Par luh pa-SAY, zhuh fuh-ZAY duh lal-pee-NEEZM.</p>
+          <p class="text-sm font-semibold text-navy mt-3 mb-1">Ces vingt derni&egrave;res ann&eacute;es, j'ai beaucoup voyag&eacute; en Afrique&nbsp;; j'y suis all&eacute;e d'abord comme &eacute;tudiante, et je suis aujourd'hui guide de safari exp&eacute;riment&eacute;e et formatrice.</p>
+          <p class="text-xs text-gray-400 italic">Say VAN dair-NYAIR za-NAY, zhay boh-KOO vwa-ya-ZHAY on a-FREEK. Zhee swee za-LAY da-BOR kom ay-tu-DYONT, ay zhuh swee oh-zhoor-DWEE geed duh sa-fa-REE ek-spay-ree-mon-TAY ay for-ma-TREES.</p>
+          <p class="text-sm font-semibold text-navy mt-3 mb-1">De plus, j'ai &eacute;crit un livre sur les 8 animaux d'Afrique les plus dangereux&nbsp;: le lion, l'&eacute;l&eacute;phant, le buffle, le crocodile, l'hippopotame, la hy&egrave;ne, le rhinoc&eacute;ros et le l&eacute;opard.</p>
+          <p class="text-xs text-gray-400 italic">Duh ploos, zhay ay-KREE un leevr soor lay weet a-nee-MOH da-FREEK lay ploo don-zhuh-RUH: luh lee-ON, lay-lay-FON, luh BOO-fluh, luh kro-ko-DEEL, lee-po-po-TAM, la YEN, luh ree-no-say-ROS ay luh lay-o-PAR.</p>
+          <p class="text-sm font-semibold text-navy mt-3 mb-1">Aujourd'hui, la principale association de guides de safari utilise mon livre comme ouvrage de r&eacute;f&eacute;rence pour former les nouveaux guides.</p>
+          <p class="text-xs text-gray-400 italic">Oh-zhoor-DWEE, la pran-see-PAL a-so-sya-SYON duh geed duh sa-fa-REE oo-tee-LEEZ mon leevr kom oov-RAZH duh ray-fay-RONS poor for-MAY lay noo-VOH geed.</p>
+        </div>
+
+        <div>
+          <p class="text-sm font-semibold text-navy mb-1">&Agrave; ton tour, parle-moi un peu de toi&nbsp;!</p>
+          <p class="text-xs text-gray-400 italic">A ton TOOR, parl-MWA un puh duh TWA!</p>
+        </div>
+      </div>
+
+      <!-- KEY VOCABULARY -->
+      <div class="card">
+        <span class="section-label">New Words from This Lesson</span>
+
+        <div class="vocab-row">
+          <span class="vocab-fr">Une &eacute;toile</span>
+          <span class="vocab-pron">oon ay-twal</span>
+          <span class="vocab-en">A star (Michelin)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">&Eacute;toil&eacute;(e)</span>
+          <span class="vocab-pron">ay-twa-lay</span>
+          <span class="vocab-en">Starred / Michelin-rated</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Une alpiniste</span>
+          <span class="vocab-pron">oon al-pee-neest</span>
+          <span class="vocab-en">A mountaineer</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Une formatrice</span>
+          <span class="vocab-pron">oon for-ma-trees</span>
+          <span class="vocab-en">A trainer (vocational, feminine)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Une formation</span>
+          <span class="vocab-pron">oon for-ma-syon</span>
+          <span class="vocab-en">A training course</span>
+        </div>
+
+        <div class="tip-card mt-4" style="border-left: 3px solid #C8102E;">
+          <div class="tip-title">&#9888; False Friend: <em>Excitant</em></div>
+          <p>Don't say <em>c'est excitant</em> to mean "it's exciting" &mdash; in French it means something is sexually arousing. Use <strong>super</strong>, <strong>chouette</strong>, <strong>g&eacute;nial</strong>, or <strong>formidable</strong> instead.</p>
+        </div>
+      </div>
+
+      <!-- ANTI-FOSSILISATION -->
+      <div class="tip-card">
+        <div class="tip-title">On Fossilisation</div>
+        <p>If you repeat a mispronunciation enough times, it fossilises &mdash; it becomes a permanent habit that's almost impossible to undo. That's why this lesson was strict about pronunciation from the start, before any muscle memory could set in wrong. The rule: if it doesn't sound right, stop and go back. Stumbling is fine. Ploughing through a mistake is not.</p>
+        <p class="mt-2">Drilling sequence: <strong>read aloud</strong> &rarr; <strong>eyes closed</strong> &rarr; <strong>no aids at all</strong>. Same method as the modal verbs.</p>
+      </div>
+
+      <!-- PRACTICE GOALS -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Drill paragraph one of the script.</strong> Read it aloud slowly every day. When it flows, try it with eyes closed. Don't add paragraph two until paragraph one is effortless.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Use the phonetic version Dan sent.</strong> Read it exactly as written &mdash; don't apply English spelling rules to the phonetics. Trust what's on the page.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Keep up the daily French.</strong> Listening counts. You're already doing this &mdash; keep it going. The modal verbs staying in place through a dense session is proof it's working.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Friday: next session.</strong> Dan will extend the script and start building your "get out of jail free" toolkit &mdash; the fallback phrases for when the script runs out.</li>
+        </ul>
+      </div>
+
+      <!-- WOW MOMENT -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Wow Moment</span>
+        <p class="text-sm text-gray-400 italic mb-4">After noting that Patricia had opened the call speaking French, unprompted...</p>
+        <p class="text-sm text-gray-600 leading-relaxed font-medium">
+          "You're making massive strides forwards. The fact that when I answered the phone and we just started speaking in French today was huge."
+        </p>
+        <p class="text-sm text-gray-400 mt-2">&mdash; Dan, end of Lesson 4</p>
+      </div>
+
+    </div><!-- /l4 -->
 
 
   </main>
