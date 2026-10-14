@@ -1,9 +1,9 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Word Highways</title>
+<title>Word Highways | FluentISH</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&family=Overpass+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&family=Overpass+Mono:wght@400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600;700&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <style>
 /* Layout: road-map stage with timeline, sat-nav junction panel beneath it; directions, transcript and source text in a side column that stacks below on phones */
@@ -152,7 +152,108 @@ textarea{width:100%;min-height:170px;resize:vertical;font:inherit;font-size:14px
 .ring{fill:none;stroke:var(--accent);stroke-width:3}
 @keyframes drive{to{stroke-dashoffset:-13}}
 @media (prefers-reduced-motion: reduce){.trip{animation:none}.w{transition:none}}
+
+/* ── Hide original tool header (replaced by fl-hero) ── */
+.wrap > header { display: none !important; }
+
+/* ── Fluentish chrome ── */
+.fl-nav,.fl-hero,.fl-cta,.fl-footer { color-scheme: light; font-family: 'Inter', system-ui, sans-serif; }
+
+/* Nav */
+.fl-nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.97); backdrop-filter: blur(8px); border-bottom: 1px solid #f0f0f0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.fl-nav-inner { max-width: 1120px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.fl-logo { font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 700; color: #003359; text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+.fl-logo span { color: #C8102E; }
+.fl-nav-links { display: flex; align-items: center; gap: 28px; margin: 0; padding: 0; list-style: none; }
+.fl-nav-links a { font-size: 14px; font-weight: 500; color: #6b7280; text-decoration: none; transition: color 0.2s; }
+.fl-nav-links a:hover { color: #C8102E; }
+.fl-nav-links a.fl-active { color: #C8102E; font-weight: 600; }
+.fl-book-btn { background: #C8102E; color: #fff; font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 9999px; text-decoration: none; white-space: nowrap; flex-shrink: 0; transition: background 0.2s; border: none; cursor: pointer; }
+.fl-book-btn:hover { background: #A50D25; }
+.fl-menu-btn { display: none; background: none; border: 1px solid #e5e7eb; padding: 8px; border-radius: 8px; cursor: pointer; color: #003359; line-height: 1; }
+.fl-menu-btn:hover { background: #f3f4f6; }
+.fl-mobile-menu { display: none; border-top: 1px solid #f0f0f0; background: #fff; padding: 20px 24px; flex-direction: column; gap: 14px; }
+.fl-mobile-menu.open { display: flex; }
+.fl-mobile-menu a { font-size: 14px; font-weight: 500; color: #374151; text-decoration: none; padding: 3px 0; transition: color 0.2s; }
+.fl-mobile-menu a:hover { color: #C8102E; }
+.fl-mobile-menu a.fl-active { color: #C8102E; font-weight: 600; }
+.fl-mobile-book { margin-top: 6px; background: #C8102E; color: #fff !important; text-align: center; padding: 12px; border-radius: 9999px; font-weight: 600; text-decoration: none; transition: background 0.2s; }
+.fl-mobile-book:hover { background: #A50D25 !important; }
+@media (max-width: 768px) {
+  .fl-nav-links, .fl-book-btn { display: none; }
+  .fl-menu-btn { display: block; }
+}
+
+/* Hero */
+.fl-hero { background: #003359; color: #fff; padding: 56px 24px 60px; text-align: center; }
+.fl-hero-inner { max-width: 720px; margin: 0 auto; }
+.fl-label { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #4DD4F5; margin: 0 0 18px; }
+.fl-hero h2 { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(32px, 5vw, 48px); font-weight: 700; line-height: 1.1; margin: 0 0 18px; color: #fff; display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; text-wrap: balance; }
+.fl-sign-badge { display: inline-grid; place-items: center; font-family: 'Playfair Display', Georgia, serif; font-size: 16px; font-weight: 700; color: #fff; background: #1D5BA6; border: 2px solid #fff; outline: 2px solid #1D5BA6; border-radius: 5px; padding: 2px 8px 0; line-height: 1.4; flex-shrink: 0; }
+.fl-hero p { font-size: 16px; line-height: 1.75; color: rgba(191,219,254,0.9); margin: 0 auto; max-width: 62ch; }
+
+/* CTA */
+.fl-cta { background: #C8102E; color: #fff; padding: 72px 24px; text-align: center; }
+.fl-cta-inner { max-width: 600px; margin: 0 auto; }
+.fl-cta h2 { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(24px, 4vw, 34px); font-weight: 700; margin: 0 0 18px; color: #fff; }
+.fl-cta p { font-size: 16px; line-height: 1.75; color: rgba(255,255,255,0.82); margin: 0 0 30px; }
+.fl-cta-btn { display: inline-block; background: #fff; color: #C8102E; font-weight: 600; font-size: 15px; padding: 15px 40px; border-radius: 9999px; text-decoration: none; transition: background 0.2s; }
+.fl-cta-btn:hover { background: #F7F4EF; }
+
+/* Footer */
+.fl-footer { background: #002040; color: #fff; padding: 60px 24px 28px; }
+.fl-footer-inner { max-width: 1120px; margin: 0 auto; }
+.fl-footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; margin-bottom: 48px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+@media (max-width: 768px) { .fl-footer-grid { grid-template-columns: 1fr; gap: 32px; } }
+.fl-footer-logo { font-family: 'Playfair Display', Georgia, serif; font-size: 20px; font-weight: 700; color: #fff; text-decoration: none; }
+.fl-footer-logo span { color: #C8102E; }
+.fl-footer-tagline { margin-top: 14px; color: #93c5fd; font-size: 13px; line-height: 1.65; max-width: 240px; }
+.fl-footer-sub { margin-top: 6px; color: #60a5fa; font-size: 12px; line-height: 1.5; }
+.fl-footer-heading { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #60a5fa; margin: 0 0 18px; }
+.fl-footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.fl-footer ul a { font-size: 13px; color: #93c5fd; text-decoration: none; transition: color 0.2s; }
+.fl-footer ul a:hover { color: #fff; }
+.fl-footer-book { display: inline-block; background: #C8102E; color: #fff; font-size: 12px; font-weight: 600; padding: 8px 18px; border-radius: 9999px; text-decoration: none; transition: background 0.2s; margin-top: 4px; }
+.fl-footer-book:hover { background: #A50D25; }
+.fl-footer-bottom { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 12px; color: #60a5fa; flex-wrap: wrap; }
+.fl-footer-bottom a { color: #60a5fa; text-decoration: none; transition: color 0.2s; }
+.fl-footer-bottom a:hover { color: #93c5fd; }
 </style>
+
+<!-- Fluentish Nav -->
+<header class="fl-nav">
+  <div class="fl-nav-inner">
+    <a href="index.html" class="fl-logo">Fluent<span>ISH</span></a>
+    <nav class="fl-nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Dan</a>
+      <a href="method.html">How It Works</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="tools.html" class="fl-active">Tools</a>
+    </nav>
+    <a href="pricing.html#booking" class="fl-book-btn">Book Free Chat</a>
+    <button class="fl-menu-btn" id="fl-menu-toggle" aria-label="Open menu">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div class="fl-mobile-menu" id="fl-mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Dan</a>
+    <a href="method.html">How It Works</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="tools.html" class="fl-active">Tools</a>
+    <a href="pricing.html#booking" class="fl-mobile-book">Book Free Chat</a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="fl-hero">
+  <div class="fl-hero-inner">
+    <p class="fl-label">Interactive tool</p>
+    <h2><span class="fl-sign-badge" aria-hidden="true">M1</span> Word Highways</h2>
+    <p>Each phrase is a town and each sentence is a numbered route. Every time the text moves from one town to the next, that road gets used, and roads travelled again and again widen into highways. The sat-nav follows the exact route of the text and only announces a turn where the text genuinely repeats itself and could have gone another way.</p>
+  </div>
+</section>
 
 <div class="wrap">
   <header>
@@ -234,6 +335,51 @@ textarea{width:100%;min-height:170px;resize:vertical;font:inherit;font-size:14px
     </aside>
   </div>
 </div>
+
+<!-- CTA -->
+<section class="fl-cta">
+  <div class="fl-cta-inner">
+    <h2>Patterns are a start. Using them is the thing.</h2>
+    <p>Knowing the structures is step one. Speaking them with confidence takes practice. Book a free call and find out how lessons work.</p>
+    <a href="pricing.html#booking" class="fl-cta-btn">Book a Free 15-Min Chat</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="fl-footer">
+  <div class="fl-footer-inner">
+    <div class="fl-footer-grid">
+      <div>
+        <a href="index.html" class="fl-footer-logo">Fluent<span>ISH</span></a>
+        <p class="fl-footer-tagline">Bespoke 1-on-1 conversational French coaching for adults. Online, UK-wide.</p>
+        <p class="fl-footer-sub">Based in Greater Manchester and Paris. In-person sessions available locally.</p>
+        <p class="fl-footer-sub">Best learnt over a coffee. Or a glass of something.</p>
+      </div>
+      <div>
+        <h4 class="fl-footer-heading">Pages</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Dan</a></li>
+          <li><a href="method.html">How It Works</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="tools.html">Tools</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="fl-footer-heading">Get in Touch</h4>
+        <ul>
+          <li><a href="mailto:bonjour@fluentish.co.uk">bonjour@fluentish.co.uk</a></li>
+          <li style="color:#60a5fa;font-size:12px">Based in Greater Manchester</li>
+          <li><a href="pricing.html#booking" class="fl-footer-book">Book Free Chat</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fl-footer-bottom">
+      <p>&copy; 2026 FluentISH &middot; All rights reserved</p>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
 
 <script>
 const SAMPLE = `Speaker 1: I would like a beer.
@@ -971,4 +1117,9 @@ $('cross').checked = load('wh-cross') === '1';
 rebuild();
 </script>
 
+<script>
+document.getElementById('fl-menu-toggle').addEventListener('click', function() {
+  document.getElementById('fl-mobile-menu').classList.toggle('open');
+});
+</script>
 </body></html>
