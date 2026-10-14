@@ -1,0 +1,974 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Word Highways</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;600;800&family=Overpass+Mono:wght@400;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+/* Layout: road-map stage with timeline, sat-nav junction panel beneath it; directions, transcript and source text in a side column that stacks below on phones */
+:root{
+  --ground:#E7ECEA; --panel:#F7F9F8; --map:#EEF2F0; --ink:#17201E; --muted:#5B6866; --line:#CBD3D1;
+  --casing:#7F8C89; --lane:#FFFFFF; --node:#FFFFFF; --trackbg:#D3DAD8;
+  --accent:#D9930B; --shared:#D9930B; --route:#C2246F; --route-soft:#F6DCE8;
+  --s1:#1D5BA6; --s2:#1B6A45; --s3:#7A4A23; --s4:#B12A22; --s5:#673E96;
+  --display:'Overpass', 'Helvetica Neue', Arial, sans-serif;
+  --body:'Overpass', 'Helvetica Neue', Arial, sans-serif;
+  --mono:'Overpass Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0F1514; --panel:#161E1D; --map:#121A19; --ink:#E4EBE9; --muted:#8E9C99; --line:#2A3533;
+    --casing:#3E4B49; --lane:#0F1514; --node:#1C2524; --trackbg:#2A3533;
+    --accent:#F0B238; --shared:#F0B238; --route:#FF6FAE; --route-soft:#3A1A2A;
+    --s1:#5E9BE4; --s2:#4DB283; --s3:#C48D5C; --s4:#E46A60; --s5:#A985D8;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0F1514; --panel:#161E1D; --map:#121A19; --ink:#E4EBE9; --muted:#8E9C99; --line:#2A3533;
+  --casing:#3E4B49; --lane:#0F1514; --node:#1C2524; --trackbg:#2A3533;
+  --accent:#F0B238; --shared:#F0B238; --route:#FF6FAE; --route-soft:#3A1A2A;
+  --s1:#5E9BE4; --s2:#4DB283; --s3:#C48D5C; --s4:#E46A60; --s5:#A985D8;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1360px;margin:0 auto;padding-block:22px 36px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:grid;gap:16px}
+header{display:grid;gap:4px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(26px,4vw,38px);line-height:1.05;letter-spacing:-0.01em;margin:0;text-wrap:balance;display:flex;align-items:center;gap:12px}
+.sign{display:inline-grid;place-items:center;font-family:var(--display);font-weight:800;font-size:13px;letter-spacing:.04em;color:#fff;background:var(--s1);border:2px solid #fff;outline:2px solid var(--s1);border-radius:5px;padding:2px 7px 0;line-height:1.4}
+header p{margin:0;color:var(--muted);max-width:76ch}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+@media (max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}}
+.maincol,.side{display:grid;gap:16px;min-width:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;min-width:0}
+.stage{display:flex;flex-direction:column;overflow:hidden}
+.bar{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line)}
+.stats{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px}
+.stat{display:flex;gap:6px;align-items:baseline;white-space:nowrap}
+.stat b{font-family:var(--mono);font-weight:600;font-variant-numeric:tabular-nums}
+.label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted)}
+.key{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.sw{width:18px;height:5px;border-radius:3px;display:inline-block}
+.sw.dash{background:repeating-linear-gradient(90deg,var(--accent) 0 5px,transparent 5px 9px);height:3px}
+.mapbox{position:relative;background:var(--map)}
+#map{display:block;width:100%;height:min(60vh,620px);min-height:340px;touch-action:none;cursor:grab}
+#map:active{cursor:grabbing}
+.empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:14px;pointer-events:none}
+.mapbtn{position:absolute;top:10px;right:10px}
+button,select{font:inherit;font-size:13px;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 11px;cursor:pointer}
+button:hover,select:hover{border-color:var(--muted)}
+button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--ink);color:var(--panel);border-color:var(--ink);font-weight:600;min-width:84px}
+.mapbtn[aria-pressed="false"]{color:var(--muted)}
+.timeline{border-top:1px solid var(--line);padding:12px 14px 14px;display:grid;gap:8px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.readout{margin-left:auto;display:flex;gap:10px;align-items:baseline;font-size:13px;min-width:0}
+.readout .pos{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--muted)}
+.readout .now{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;cursor:pointer;margin:0}
+input[type=range]::-webkit-slider-runnable-track{height:12px;border-radius:6px;background:linear-gradient(var(--accent),var(--accent)) 0 0/var(--pct,100%) 100% no-repeat,var(--trackbg)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--panel);border:3px solid var(--ink);margin-top:-6px}
+input[type=range]::-moz-range-track{height:12px;border-radius:6px;background:var(--trackbg)}
+input[type=range]::-moz-range-progress{height:12px;border-radius:6px;background:var(--accent)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--panel);border:3px solid var(--ink)}
+.ribbon{display:flex;gap:2px;height:8px;padding-inline:12px}
+.ribbon span{flex-grow:1;flex-basis:0;border-radius:2px;opacity:.85;cursor:pointer;min-width:2px}
+.ribbon span:hover{opacity:1}
+
+/* sat-nav */
+.navpanel{overflow:hidden}
+.navbanner{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;background:var(--ink);color:var(--panel);padding:12px 16px}
+.navbanner .label{color:var(--panel);opacity:.7}
+.navnow{display:grid;min-width:0}
+.navword{font-family:var(--display);font-weight:800;font-size:clamp(20px,3.2vw,28px);line-height:1.15;overflow-wrap:anywhere}
+.navnext{display:flex;gap:12px;align-items:center;min-width:0;flex:1 1 280px;justify-content:flex-end}
+.navarrow{flex:none;display:grid;place-items:center;width:48px;height:48px;border-radius:9px;background:var(--route);color:#fff;font-size:28px;font-weight:800;line-height:1}
+.navinstr{display:grid;min-width:0;text-align:right}
+.navinstr > span:first-child{font-weight:800;font-size:17px;line-height:1.25;overflow-wrap:anywhere}
+.navsub{font-size:12.5px;opacity:.78;font-variant-numeric:tabular-nums}
+.navbar{padding:8px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.navbar b{color:var(--ink)}
+.navbox{overflow-x:auto;background:var(--map)}
+#nav{display:block;width:100%;min-width:620px;height:auto}
+.navnote{padding:10px 14px 12px;border-top:1px solid var(--line)}
+.nroad{fill:none;stroke-linecap:round}
+.nexit{cursor:pointer}
+.nexit:focus{outline:none}
+.nexit circle{fill:var(--node);stroke:var(--ink);stroke-width:2}
+.nexit:hover circle,.nexit:focus-visible circle{fill:var(--accent);stroke:var(--accent)}
+.nexit.route circle{fill:var(--route);stroke:var(--route)}
+.nexit.later{opacity:.6}
+.nexit text.f{font:700 17px var(--display);fill:var(--ink);paint-order:stroke;stroke:var(--map);stroke-width:4px;stroke-linejoin:round}
+.nexit text.m{font:500 11.5px var(--mono);fill:var(--muted)}
+.ncur circle{fill:var(--accent);stroke:var(--map);stroke-width:4}
+.ncur text{font:800 24px var(--display);fill:var(--ink);paint-order:stroke;stroke:var(--map);stroke-width:5px;stroke-linejoin:round}
+.ntrail text{font:700 15px var(--display);fill:var(--muted);paint-order:stroke;stroke:var(--map);stroke-width:4px;stroke-linejoin:round}
+.nend{font:600 13px var(--body);fill:var(--muted)}
+
+/* side panels */
+.side .panel{padding:14px;display:grid;gap:10px}
+.side h2{font-family:var(--display);font-size:16px;font-weight:800;margin:0}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+#dirs{max-height:380px;overflow-y:auto;display:grid;gap:12px;padding-right:4px}
+.dsent{display:grid;gap:2px}
+.dhead{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);padding:0 8px 2px}
+.shield{font-family:var(--display);font-weight:800;font-size:12px;color:#FFD200;background:#0F6B3E;border:1.5px solid #fff;outline:1.5px solid #0F6B3E;border-radius:4px;padding:1px 6px 0;line-height:1.35}
+.step{display:grid;grid-template-columns:22px minmax(0,1fr);gap:6px;align-items:start;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:13.5px;line-height:1.4}
+.step:hover{background:var(--map)}
+.step .ic{font-weight:800;text-align:center;color:var(--muted)}
+.step.turn .ic{color:var(--route)}
+.step.fork .ic{color:var(--route)}
+.step .alts{display:block;font-size:12px;color:var(--muted)}
+.step.done{opacity:.5}
+.step.cur{background:var(--route-soft);opacity:1}
+#transcript{max-height:300px;overflow-y:auto;display:grid;gap:8px;font-size:14.5px;line-height:1.6;padding-right:4px}
+.turn{min-width:0}
+.who{font-size:11px;letter-spacing:.07em;text-transform:uppercase;font-weight:800;display:block}
+.w{cursor:pointer;border-radius:3px;transition:color .15s,background-color .15s}
+.phrases .w{box-shadow:inset 0 -1.5px 0 var(--line)}
+.w.future{color:var(--muted);opacity:.45}
+.w.cur{background:var(--accent);color:#17201E;padding:0 2px;box-shadow:none}
+.w:hover{text-decoration:underline}
+textarea{width:100%;min-height:170px;resize:vertical;font:inherit;font-size:14px;line-height:1.5;color:var(--ink);background:var(--map);border:1px solid var(--line);border-radius:7px;padding:10px}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;padding:3px;gap:3px;background:var(--map)}
+.seg label{flex:1;position:relative}
+.seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.seg span{display:block;text-align:center;font-size:13px;font-weight:600;padding:6px 8px;border-radius:6px;color:var(--muted)}
+.seg input:checked + span{background:var(--ink);color:var(--panel)}
+.seg input:focus-visible + span{outline:2px solid var(--accent);outline-offset:1px}
+.segrow{display:grid;gap:4px}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:13.5px}
+.check input{margin-top:3px;accent-color:var(--accent)}
+
+/* map svg */
+.nodeLabel{font-family:var(--body);fill:var(--ink);paint-order:stroke;stroke:var(--map);stroke-width:4px;stroke-linejoin:round;pointer-events:none}
+.ghost circle{fill:var(--map);stroke:var(--route);stroke-width:1.6;stroke-dasharray:2 2}
+.ghost text{font-family:var(--body);font-size:11.5px;fill:var(--muted);paint-order:stroke;stroke:var(--map);stroke-width:3px;stroke-linejoin:round}
+.routeline{stroke:var(--route);stroke-width:5;stroke-linecap:round;fill:none;pointer-events:none}
+.trip{stroke:var(--accent);stroke-width:3;stroke-dasharray:7 6;fill:none;animation:drive .6s linear infinite}
+.ring{fill:none;stroke:var(--accent);stroke-width:3}
+@keyframes drive{to{stroke-dashoffset:-13}}
+@media (prefers-reduced-motion: reduce){.trip{animation:none}.w{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1><span class="sign" aria-hidden="true">M1</span>Word Highways</h1>
+    <p>Each phrase is a town and each sentence is a numbered route. Every time the text moves from one town to the next, that road gets used, and roads travelled again and again widen into highways. The sat-nav follows the exact route of the text and only announces a turn where the text genuinely repeats itself and could have gone another way.</p>
+  </header>
+
+  <div class="grid">
+    <div class="maincol">
+      <section class="panel stage" aria-label="Word map">
+        <div class="bar">
+          <div class="stats" id="stats"></div>
+          <div class="legend" id="legend"></div>
+        </div>
+        <div class="mapbox">
+          <svg id="map" role="img" aria-label="Network of phrases connected in the order they appear"></svg>
+          <div class="empty" id="empty" hidden>Press Play or drag the slider to start.</div>
+          <button class="mapbtn" id="frame" type="button" aria-pressed="true">Auto-frame on</button>
+        </div>
+        <div class="timeline">
+          <div class="controls">
+            <button class="primary" id="play" type="button" aria-pressed="false">Play</button>
+            <button id="back" type="button" aria-label="Previous town">◀</button>
+            <button id="fwd" type="button" aria-label="Next town">▶</button>
+            <label class="label" for="speed" style="margin-left:4px">Speed</label>
+            <select id="speed">
+              <option value="900">Slow</option>
+              <option value="450" selected>Normal</option>
+              <option value="150">Fast</option>
+            </select>
+            <div class="readout"><span class="pos" id="pos"></span><span class="now" id="now"></span></div>
+          </div>
+          <input type="range" id="slider" min="0" max="0" value="0" aria-label="Position in the text">
+          <div class="ribbon" id="ribbon" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <section class="panel navpanel" aria-label="Sat-nav">
+        <div class="navbanner" aria-live="polite">
+          <div class="navnow"><span class="label" id="navWho">Start</span><span class="navword" id="navNow">Start</span></div>
+          <div class="navnext"><span class="navarrow" id="navArrow" aria-hidden="true">↑</span>
+            <div class="navinstr"><span id="navInstr"></span><span class="navsub" id="navSub"></span></div></div>
+        </div>
+        <div class="navbar" id="navCtx"></div>
+        <div class="navbox"><svg id="nav" viewBox="0 0 900 400" role="img" aria-label="Junction view of the current town and the roads out of it"></svg></div>
+        <p class="hint navnote">The pink road is the route the text takes. Other roads only appear where the text repeats the same run of phrases somewhere else, using the longest repeat it can find, so every option really happens in the text. Solid roads have been travelled already; dashed ones come up later. Click another road to leave the route: the sat-nav recalculates and carries on from where the text takes that road.</p>
+      </section>
+    </div>
+
+    <aside class="side">
+      <section class="panel">
+        <h2>Directions</h2>
+        <p class="hint">The whole route, turn by turn. Like a real sat-nav it stays quiet while the text follows the main road, and speaks up at forks (equally used roads) and turns (where the text leaves a busier road). Click a step to go there.</p>
+        <div id="dirs"></div>
+      </section>
+      <section class="panel">
+        <h2>Transcript</h2>
+        <p class="hint">Underlines show where the text was cut into towns. Click any town to jump there.</p>
+        <div id="transcript"></div>
+      </section>
+      <section class="panel">
+        <h2>Your text</h2>
+        <div class="seg" role="radiogroup" aria-label="Text type">
+          <label><input type="radio" name="mode" value="plain" id="modePlain"><span>Plain text</span></label>
+          <label><input type="radio" name="mode" value="dialogue" id="modeDialogue"><span>Dialogue</span></label>
+        </div>
+        <p class="hint" id="modeHint"></p>
+        <textarea id="src" aria-label="Text to map" spellcheck="false"></textarea>
+        <div class="segrow">
+          <span class="label">Towns are</span>
+          <div class="seg" role="radiogroup" aria-label="Town size">
+            <label><input type="radio" name="units" value="phrase" id="unitPhrase"><span>Phrases</span></label>
+            <label><input type="radio" name="units" value="word" id="unitWord"><span>Single words</span></label>
+          </div>
+        </div>
+        <label class="check" id="crossWrap"><input type="checkbox" id="cross"> <span>Link the end of each turn to the start of the next, so the conversation is one continuous road</span></label>
+        <button id="sample" type="button" style="justify-self:start">Load example</button>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<script>
+const SAMPLE = `Speaker 1: I would like a beer.
+Speaker 2: What beer would you like?
+Speaker 1: I would like a pale ale, please.
+Speaker 2: We have a pale ale and a dark ale. Which ale would you like?
+Speaker 1: The pale ale. Would you like a beer too?
+Speaker 2: I would like a beer, but I am working.
+Speaker 1: Then I would like two beers. One for me and one for later.
+Speaker 2: Two pale ales. Would you like anything else?
+Speaker 1: No thanks. I would like to pay.`;
+
+const PROSE = `The road to the sea was long. The road was dusty and the sea was far away.
+Every morning the boy walked the road to the sea, and every evening he walked the road home.
+One day the road to the sea was closed, so the boy walked to the sea across the fields.
+The fields were green and the sea was blue, and the boy never walked the road again.`;
+
+const WORD_RE = /[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)*/gu;
+const SPEAKER_RE = /^\s*([^:]{1,40}?)\s*:\s*(.*)$/;
+const END = '\u0000end';
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+function store(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+function load(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+
+const state = { tokens: [], lines: [], speakers: [], pos: new Map(), step: 0, N: 0, spans: [], mode: 'dialogue', units: 'phrase',
+  lang: 'en', junc: [], nextOf: null, byWord: new Map(), dirSteps: [], navGroups: new Map(), navNext: null, navStep: -1, recalc: null };
+
+/* ---------- Phrase cutting: plain word lists, no models ----------
+   C conjunctions and relatives stand alone; P prepositions open a phrase that takes in the noun after them;
+   D determiners open a noun phrase; PR pronouns stand alone; V auxiliaries, ADV and past-tense verbs open a verb phrase
+   that takes in what follows it until the next marker or any punctuation. */
+const LEX = {
+  en: {
+    C: 'and but or nor so yet because if when while that who whom where though although as since unless until whether than then',
+    P: 'to of in on at for with from across into onto over under by about after before through without around between towards toward up down off out near behind beyond during against among upon inside outside along past',
+    D: 'the a an this these those my your his her its our their some any every each no all both either neither another what which whose one two three four five six seven eight nine ten hundred thousand anything something nothing everything',
+    PR: "i you he she it we they me him us them myself yourself himself herself itself ourselves themselves i'm you're he's she's it's we're they're i've you've we've they've i'd you'd he'd she'd we'd they'd i'll you'll he'll she'll we'll they'll",
+    V: "am is are was were be been being have has had having do does did will would can could shall should may might must don't doesn't didn't won't wouldn't can't couldn't isn't aren't wasn't weren't hasn't haven't hadn't shouldn't",
+    ADV: 'not never always also just still often really already ever only even soon'
+  },
+  fr: {
+    C: 'et mais ou donc car ni or que qui quand si comme lorsque puisque où quoi dont',
+    P: 'à de en dans sur sous pour par avec sans chez vers entre contre depuis pendant après avant au aux du près',
+    D: 'le la les un une des ce cet cette ces mon ma mes ton ta tes son sa ses notre nos votre vos leur leurs quel quelle quels quelles chaque plusieurs aucun aucune deux trois quatre cinq six sept huit neuf dix cent mille',
+    PR: 'je tu il elle on nous vous ils elles me te se moi toi lui eux y',
+    V: 'suis es est sommes êtes sont était étais étaient été être ai as a avons avez ont avait avais avaient eu avoir vais vas va allons allez vont fait fais faire peux peut pouvons pouvez peuvent veux veut voulons voulez veulent voudrais voudrait pourrait doit dois devons',
+    ADV: 'ne pas jamais toujours aussi déjà encore souvent vraiment très bien'
+  }
+};
+const LEXMAP = {};
+for(const [lang, cats] of Object.entries(LEX)){
+  const m = new Map();
+  for(const [cat, list] of Object.entries(cats)) list.split(/\s+/).forEach(w => { if(!m.has(w)) m.set(w, cat); });
+  LEXMAP[lang] = m;
+}
+const FR_MARK = new Set('le la les et est une des je de du que qui pas il elle nous vous dans pour avec sur'.split(' '));
+const EN_MARK = new Set('the and is of to i you it was a in that he she with for on'.split(' '));
+function detectLang(text){
+  let fr = 0, en = 0;
+  for(const m of text.toLowerCase().matchAll(WORD_RE)){ if(FR_MARK.has(m[0])) fr++; if(EN_MARK.has(m[0])) en++; }
+  return fr > en ? 'fr' : 'en';
+}
+function classify(w, lang){
+  const m = LEXMAP[lang];
+  if(m.has(w)) return m.get(w);
+  if(lang === 'fr'){
+    const e = w.match(/^(jusqu|lorsqu|puisqu|qu|l|d|j|c|n|s|m|t)'/);
+    if(e) return ({ l: 'D', d: 'P', j: 'PR', qu: 'C', c: 'PR', n: 'ADV', s: 'PR', m: 'PR', t: 'PR', jusqu: 'P', lorsqu: 'C', puisqu: 'C' })[e[1]];
+  }
+  if(lang === 'en' && w.length > 4 && /ed$/.test(w)) return 'Ved';
+  return 'W';
+}
+const OPENS = { P: 'PP', D: 'NP', C: 'C', PR: 'PR', V: 'VP', Ved: 'VP', ADV: 'VP', W: 'X' };
+function chunk(words, gaps, lang, phrase){
+  const units = []; let cur = null;
+  words.forEach((w, i) => {
+    const cat = classify(w.lower, lang);
+    let brk = !cur || !phrase || /[^\s'’]/.test(gaps[i]);
+    if(!brk){
+      const t = cur.type;
+      if(t === 'C' || t === 'PR') brk = true;
+      else switch(cat){
+        case 'P': brk = !(t === 'PP' && cur.last === 'P'); break;
+        case 'D': brk = !((t === 'PP' || t === 'NP') && !cur.hasHead); break;
+        case 'C': brk = true; break;
+        case 'PR': brk = !(t === 'PP' && !cur.hasHead); break;
+        case 'V': case 'ADV': brk = t !== 'VP'; break;
+        case 'Ved': brk = !(t === 'VP' || ((t === 'NP' || t === 'PP') && !cur.hasHead)); break;
+        default: brk = false;
+      }
+    }
+    if(brk){ cur = { type: OPENS[cat], from: i, to: i, hasHead: false, last: null }; units.push(cur); }
+    else cur.to = i;
+    if(cat === 'W' || cat === 'Ved' || cat === 'PR') cur.hasHead = true;
+    cur.last = cat;
+  });
+  return units;
+}
+
+function looksLikeDialogue(text){
+  const ls = text.split(/\r?\n/).filter(l => l.trim());
+  const hits = ls.filter(l => { const m = l.match(SPEAKER_RE); return m && !/^https?$/i.test(m[1]); }).length;
+  return ls.length >= 2 && hits / ls.length >= 0.5;
+}
+
+function parse(text, mode, crossTurns, unitMode){
+  const lang = detectLang(text);
+  const lines = [], speakers = [], tokens = [];
+  const plain = mode === 'plain', cross = plain || crossTurns, phrase = unitMode === 'phrase';
+  let lastSpeaker = 'Text', pendingBreak = false, sent = -1;
+  text.split(/\r?\n/).forEach(raw => {
+    if(!raw.trim()) return;
+    const m = plain ? null : raw.match(SPEAKER_RE);
+    let speaker, body;
+    if(m && !/^https?$/i.test(m[1])){ speaker = m[1].trim(); body = m[2]; }
+    else { speaker = lastSpeaker; body = raw.trim(); }
+    lastSpeaker = speaker;
+    if(!speakers.includes(speaker)) speakers.push(speaker);
+    const words = [];
+    for(const mm of body.matchAll(WORD_RE)) words.push({ lower: mm[0].toLowerCase().replace(/’/g, "'"), start: mm.index, end: mm.index + mm[0].length });
+    const gaps = words.map((w, i) => body.slice(i ? words[i - 1].end : 0, w.start));
+    const line = { speaker, parts: [], start: tokens.length };
+    let last = 0, prevInLine = null;
+    chunk(words, gaps, lang, phrase).forEach(ch => {
+      const s = words[ch.from].start, e = words[ch.to].end;
+      const gap = body.slice(last, s);
+      if(gap) line.parts.push({ text: gap });
+      if(/[.!?…]/.test(gap)) pendingBreak = true;
+      const i = tokens.length;
+      const prev = prevInLine !== null ? prevInLine : (cross && i > 0 ? i - 1 : null);
+      const sb = pendingBreak || prev === null;
+      if(sb) sent++;
+      tokens.push({ i, word: words.slice(ch.from, ch.to + 1).map(w => w.lower).join(' '), speaker, line: lines.length, prev, sb, sent });
+      pendingBreak = false;
+      line.parts.push({ text: body.slice(s, e), tok: i });
+      prevInLine = i; last = e;
+    });
+    if(last < body.length){ const tail = body.slice(last); line.parts.push({ text: tail }); if(/[.!?…]/.test(tail)) pendingBreak = true; }
+    if(!plain) pendingBreak = true;
+    line.count = tokens.length - line.start;
+    lines.push(line);
+  });
+  return { lines, speakers, tokens, lang };
+}
+
+const nodeR = c => 3.5 + 2.4 * Math.sqrt(c);
+const roadW = c => 2 + 3 * Math.sqrt(c - 1);
+const edgeKey = (a, b) => a < b ? a + '\u0001' + b : b + '\u0001' + a;
+const spColor = name => `var(--s${(state.speakers.indexOf(name) % 5) + 1})`;
+const routeName = tok => 'A' + (tok.sent + 1);
+const unitName = n => (state.units === 'phrase' ? 'phrase' : 'word') + (n === 1 ? '' : 's');
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const listOf = arr => arr.length <= 4 ? arr.join(', ') : arr.slice(0, 4).join(', ') + ` and ${arr.length - 4} more`;
+
+function computeLayout(tokens){
+  const nodes = new Map(), links = new Map();
+  tokens.forEach(t => {
+    const n = nodes.get(t.word) || { id: t.word, count: 0 };
+    n.count++; nodes.set(t.word, n);
+    if(t.prev === null) return;
+    const a = tokens[t.prev].word, b = t.word;
+    if(a === b) return;
+    const k = edgeKey(a, b);
+    const l = links.get(k) || { source: a < b ? a : b, target: a < b ? b : a, weight: 0 };
+    l.weight++; links.set(k, l);
+  });
+  const ns = [...nodes.values()], ls = [...links.values()];
+  const sim = d3.forceSimulation(ns)
+    .force('link', d3.forceLink(ls).id(d => d.id).distance(l => Math.max(48, 105 - l.weight * 9)).strength(l => Math.min(1, 0.3 + l.weight * 0.12)))
+    .force('charge', d3.forceManyBody().strength(-320))
+    .force('collide', d3.forceCollide(d => nodeR(d.count) + d.id.length * 3.3 + 8))
+    .force('x', d3.forceX(0).strength(0.06))
+    .force('y', d3.forceY(0).strength(0.09))
+    .stop();
+  for(let i = 0; i < 450; i++) sim.tick();
+  return new Map(ns.map(n => [n.id, { x: n.x, y: n.y, total: n.count }]));
+}
+
+/* ---------- Junctions: longest real match ----------
+   For each position, compare it with every other place the same town appears, walking back
+   town by town until the two stop agreeing or either reaches the start of its sentence.
+   Only the places with the longest agreement count as the same junction, and their next towns are the roads out. */
+function backMatch(a, b){
+  const T = state.tokens; let L = 0, p = a, q = b;
+  while(p !== null && q !== null && T[p].word === T[q].word && L < 16){
+    L++;
+    if(T[p].sb || T[q].sb) break;
+    p = T[p].prev; q = T[q].prev;
+  }
+  return L;
+}
+function buildJunctions(){
+  const T = state.tokens, N = state.N;
+  state.junc = new Array(N);
+  for(let j = 0; j < N; j++){
+    const occ = state.byWord.get(T[j].word);
+    let Lmax = 0; const Ls = [];
+    occ.forEach(k => { if(k === j) return; const L = backMatch(j, k); Ls.push([k, L]); if(L > Lmax) Lmax = L; });
+    const cands = [j]; Ls.forEach(([k, L]) => { if(L === Lmax) cands.push(k); });
+    const groups = new Map();
+    cands.forEach(k => {
+      const f = state.nextOf[k], road = f >= 0 && !T[f].sb;
+      const key = road ? T[f].word : END;
+      const g = groups.get(key) || { key, count: 0, idx: [] };
+      g.count++; g.idx.push(road ? f : k); groups.set(key, g);
+    });
+    groups.forEach(g => g.idx.sort((a, b) => a - b));
+    const f0 = state.nextOf[j];
+    const taken = f0 >= 0 && !T[f0].sb ? T[f0].word : END;
+    let kind = 'straight';
+    // keep: the text stays on the clear main road (not announced); fork: equally used roads; turn: it leaves a busier road
+    if(groups.size > 1){
+      const counts = [...groups.values()].map(g => g.count), max = Math.max(...counts);
+      const tc = groups.get(taken).count, nMax = counts.filter(x => x === max).length;
+      kind = tc < max ? 'turn' : nMax > 1 ? 'fork' : 'keep';
+    }
+    state.junc[j] = { L: Lmax, cands, groups, taken, kind };
+  }
+}
+function sharedStretch(j, L){
+  const T = state.tokens, out = []; let p = j;
+  while(p !== null && out.length < Math.max(1, L)){ out.unshift(T[p].word); if(T[p].sb) break; p = T[p].prev; }
+  return out.join(' · ');
+}
+
+/* ---------- Map ---------- */
+const svg = d3.select('#map');
+const zoomG = svg.append('g');
+const gCase = zoomG.append('g'), gRoad = zoomG.append('g'), gArrow = zoomG.append('g'), gLane = zoomG.append('g'),
+      gRoute = zoomG.append('g'), gTrip = zoomG.append('g'), gGhost = zoomG.append('g'), gNode = zoomG.append('g'),
+      gRing = zoomG.append('g'), gLabel = zoomG.append('g');
+svg.attr('preserveAspectRatio', 'xMidYMid meet');
+
+let autoFrame = true, curVB = null;
+const MIN_W = 480, MIN_H = 330, PAD = 34, AHEAD = 6;
+const zoom = d3.zoom().scaleExtent([0.25, 8]).on('zoom', e => {
+  zoomG.attr('transform', e.transform);
+  if(e.sourceEvent && autoFrame) setAutoFrame(false);
+});
+svg.call(zoom).on('dblclick.zoom', null);
+
+function boundsFor(t){
+  const words = new Set();
+  for(let i = 0; i < Math.min(state.N, t + AHEAD); i++) words.add(state.tokens[i].word);
+  if(!words.size) return [-MIN_W / 2, -MIN_H / 2, MIN_W, MIN_H];
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  words.forEach(w => {
+    const p = state.pos.get(w), r = nodeR(p.total);
+    x0 = Math.min(x0, p.x - r - 6); x1 = Math.max(x1, p.x + r + 10 + w.length * 8.5);
+    y0 = Math.min(y0, p.y - r - 14); y1 = Math.max(y1, p.y + r + 16);
+  });
+  const w = Math.max(MIN_W, x1 - x0 + PAD * 2), h = Math.max(MIN_H, y1 - y0 + PAD * 2);
+  const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  return [cx - w / 2, cy - h / 2, w, h];
+}
+function frameTo(t, instant){
+  if(!autoFrame) return;
+  const target = boundsFor(t);
+  if(instant || reduced || !curVB){ svg.interrupt('frame'); curVB = target; svg.attr('viewBox', target.join(' ')); return; }
+  const interp = d3.interpolateArray(curVB.slice(), target);
+  svg.transition('frame').duration(520).ease(d3.easeCubicOut)
+    .tween('viewBox', () => u => { curVB = interp(u); svg.attr('viewBox', curVB.join(' ')); });
+}
+function setAutoFrame(on){
+  autoFrame = on;
+  const b = $('frame');
+  b.textContent = on ? 'Auto-frame on' : 'Auto-frame off';
+  b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  if(on){ svg.call(zoom.transform, d3.zoomIdentity); frameTo(state.step); }
+}
+
+function snapshot(t){
+  const nodeC = new Map(), edges = new Map(), T = state.tokens;
+  for(let i = 0; i < t; i++){
+    const tok = T[i];
+    nodeC.set(tok.word, (nodeC.get(tok.word) || 0) + 1);
+    if(tok.prev === null) continue;
+    const a = T[tok.prev].word, b = tok.word;
+    if(a === b) continue;
+    const k = a + '\u0001' + b;
+    const e = edges.get(k) || { k, a, b, count: 0, sp: new Map(), routes: new Set() };
+    e.count++; e.sp.set(tok.speaker, (e.sp.get(tok.speaker) || 0) + 1); e.routes.add(tok.sent);
+    edges.set(k, e);
+  }
+  return { nodeC, edges };
+}
+const edgeColor = e => e.sp.size > 1 ? 'var(--shared)' : spColor([...e.sp.keys()][0]);
+
+function render(){
+  const t = state.step, P = state.pos, T = state.tokens, dur = reduced ? 0 : 160;
+  const { nodeC, edges } = snapshot(t);
+  const E = [...edges.values()].sort((x, y) => x.count - y.count);
+  E.forEach(e => {
+    const pa = P.get(e.a), pb = P.get(e.b);
+    let dx = pb.x - pa.x, dy = pb.y - pa.y; const len = Math.hypot(dx, dy) || 1; dx /= len; dy /= len;
+    const w = roadW(e.count), nx = dy, ny = -dx;
+    const off = edges.has(e.b + '\u0001' + e.a) ? w / 2 + 1.5 : 0;
+    const ra = nodeR(nodeC.get(e.a)) + 2, rb = nodeR(nodeC.get(e.b)) + 2;
+    const ah = Math.max(9, w * 1.5), hw = Math.max(5, w * 0.95);
+    const tx = pb.x - dx * rb + nx * off, ty = pb.y - dy * rb + ny * off;
+    const bx = tx - dx * ah, by = ty - dy * ah;
+    e.g = { sx: pa.x + dx * ra + nx * off, sy: pa.y + dy * ra + ny * off, ex: bx + dx, ey: by + dy, w,
+      arrow: `M${tx},${ty}L${bx + nx * hw},${by + ny * hw}L${bx - nx * hw},${by - ny * hw}Z` };
+  });
+  const geo = sel => sel.attr('x1', d => d.g.sx).attr('y1', d => d.g.sy).attr('x2', d => d.g.ex).attr('y2', d => d.g.ey);
+  const tip = d => {
+    const r = [...d.routes].map(s => 'A' + (s + 1));
+    return `${d.a} → ${d.b}: travelled ${d.count} time${d.count > 1 ? 's' : ''}, on ${listOf(r)}`;
+  };
+
+  gCase.selectAll('line').data(E.filter(e => e.count > 1), d => d.k)
+    .join(en => geo(en.append('line').attr('stroke', 'var(--casing)').attr('stroke-width', 0)))
+    .order().transition().duration(dur).call(geo).attr('stroke-width', d => d.g.w + 4);
+
+  gRoad.selectAll('line').data(E, d => d.k)
+    .join(en => { const l = geo(en.append('line').attr('stroke-width', 0)); l.append('title'); return l; })
+    .order().attr('stroke', edgeColor)
+    .call(s => s.select('title').text(tip))
+    .transition().duration(dur).call(geo).attr('stroke-width', d => d.g.w);
+
+  gArrow.selectAll('path').data(E, d => d.k)
+    .join(en => { const p = en.append('path').attr('d', d => d.g.arrow); p.append('title'); return p; })
+    .order().attr('fill', edgeColor)
+    .call(s => s.select('title').text(tip))
+    .transition().duration(dur).attr('d', d => d.g.arrow);
+
+  gLane.selectAll('line').data(E.filter(e => e.count >= 4), d => d.k)
+    .join(en => geo(en.append('line').attr('stroke', 'var(--lane)').attr('stroke-width', 1.2).attr('stroke-dasharray', '5 6').attr('pointer-events', 'none')))
+    .transition().duration(dur).call(geo);
+
+  // the route ahead, as a sat-nav draws it, running into towns not built yet
+  const segs = [], start = Math.max(0, t - 1);
+  for(let j = start; j < Math.min(state.N - 1, start + 12); j++){
+    if(T[j + 1].prev !== j) break;
+    if(T[j].word !== T[j + 1].word) segs.push({ k: j, a: T[j].word, b: T[j + 1].word, n: segs.length });
+  }
+  gRoute.selectAll('line').data(segs, d => d.k)
+    .join('line').attr('class', 'routeline')
+    .attr('x1', d => P.get(d.a).x).attr('y1', d => P.get(d.a).y).attr('x2', d => P.get(d.b).x).attr('y2', d => P.get(d.b).y)
+    .attr('opacity', d => Math.max(0.18, 0.9 - d.n * 0.07));
+  const ghosts = new Set();
+  if(t === 0 && state.N) ghosts.add(T[0].word);
+  segs.forEach(s => { if(!nodeC.has(s.b)) ghosts.add(s.b); });
+  gGhost.selectAll('g').data([...ghosts], d => d)
+    .join(en => { const g = en.append('g').attr('class', 'ghost'); g.append('circle').attr('r', 4.5); g.append('text').attr('dx', 8).attr('dy', 4); return g; })
+    .attr('transform', d => `translate(${P.get(d).x},${P.get(d).y})`)
+    .call(s => s.select('text').text(d => d));
+
+  const NODES = [...nodeC.entries()].map(([id, c]) => ({ id, c }));
+  gNode.selectAll('circle').data(NODES, d => d.id)
+    .join(en => { const c = en.append('circle').attr('cx', d => P.get(d.id).x).attr('cy', d => P.get(d.id).y).attr('r', 0)
+        .attr('fill', 'var(--node)').attr('stroke', 'var(--ink)').attr('stroke-width', 1.6).style('cursor', 'pointer');
+        c.append('title'); return c; })
+    .on('click', (ev, d) => { const i = T.findIndex(tk => tk.word === d.id); if(i >= 0){ pause(); setStep(i + 1); } })
+    .call(s => s.select('title').text(d => `“${d.id}” reached ${d.c} time${d.c > 1 ? 's' : ''} so far. Click to jump to its first appearance.`))
+    .transition().duration(dur).attr('r', d => nodeR(d.c));
+
+  gLabel.selectAll('text').data(NODES, d => d.id)
+    .join(en => en.append('text').attr('class', 'nodeLabel').attr('x', d => P.get(d.id).x).attr('y', d => P.get(d.id).y).text(d => d.id))
+    .attr('dx', d => nodeR(d.c) + 4).attr('dy', 4)
+    .attr('font-size', d => Math.min(21, 11.5 + 1.5 * Math.sqrt(d.c)))
+    .attr('font-weight', d => d.c >= 3 ? 800 : 600);
+
+  const cur = t > 0 ? T[t - 1] : null;
+  gRing.selectAll('circle').data(cur ? [cur] : [])
+    .join('circle').attr('class', 'ring')
+    .attr('cx', d => P.get(d.word).x).attr('cy', d => P.get(d.word).y)
+    .attr('r', d => nodeR(nodeC.get(d.word)) + 5);
+
+  const tripEdge = cur && cur.prev !== null ? edges.get(T[cur.prev].word + '\u0001' + cur.word) : null;
+  gTrip.selectAll('line').data(tripEdge ? [tripEdge] : []).join('line').attr('class', 'trip').call(geo);
+
+  $('empty').hidden = t > 0;
+
+  let busiest = null;
+  E.forEach(e => { if(!busiest || e.count > busiest.count) busiest = e; });
+  const S = $('stats'); S.innerHTML = '';
+  const stat = (label, val) => { const d = document.createElement('div'); d.className = 'stat';
+    const l = document.createElement('span'); l.className = 'label'; l.textContent = label;
+    const b = document.createElement('b'); b.textContent = val; d.append(l, b); S.append(d); };
+  stat(cap(unitName(2)), `${t}/${state.N}`);
+  stat('Towns', nodeC.size);
+  stat('Roads', edges.size);
+  stat('Route', cur ? `${routeName(cur)} of ${state.N ? T[state.N - 1].sent + 1 : 0}` : 'not started');
+  stat('Busiest', busiest && busiest.count > 1 ? `${busiest.a} → ${busiest.b} ×${busiest.count}` : 'none yet');
+}
+
+/* ---------- Sat-nav ---------- */
+const NC = { x: 330, y: 200 };
+let navGlideFrom = null;
+
+function nextManoeuvre(t){
+  const T = state.tokens, N = state.N;
+  if(t >= N) return { type: 'arrive' };
+  if(t === 0) return { type: 'join' };
+  for(let j = t - 1; j < N; j++){
+    const d = j - (t - 1);
+    if(j + 1 >= N) return { type: 'dest', d: N - t };
+    if(T[j + 1].sb) return { type: 'waypoint', d, j, next: j + 1 };
+    const J = state.junc[j];
+    if(J.kind === 'turn' || J.kind === 'fork') return { type: J.kind, d, j, onto: T[j + 1].word };
+  }
+  return { type: 'arrive' };
+}
+
+function updateBanner(){
+  const T = state.tokens, t = state.step, N = state.N, cur = t ? T[t - 1] : null;
+  $('navWho').textContent = cur ? (state.mode !== 'plain' ? `On ${routeName(cur)} · ${cur.speaker}` : `On ${routeName(cur)}`) : 'Start';
+  $('navNow').textContent = cur ? cur.word : (N ? 'Ready to set off' : 'No text yet');
+  const m = nextManoeuvre(t);
+  const inN = d => d === 0 ? '' : `In ${d} ${unitName(d)}, `;
+  let instr, arrow;
+  switch(m.type){
+    case 'arrive': instr = N ? 'You have arrived' : 'Add some text to plan a route'; arrow = '⚑'; break;
+    case 'join': instr = `Join ${routeName(T[0])} at “${T[0].word}”`; arrow = '↑'; break;
+    case 'turn': instr = cap(`${inN(m.d)}turn onto “${m.onto}”`); arrow = '↱'; break;
+    case 'fork': instr = cap(`${inN(m.d)}at the fork, take “${m.onto}”`); arrow = '↗'; break;
+    case 'waypoint': {
+      const a = T[m.j], b = T[m.next];
+      const who = state.mode !== 'plain' && b.speaker !== a.speaker ? `${b.speaker} joins` : 'join';
+      instr = m.d === 0 ? `End of ${routeName(a)}, then ${who} ${routeName(b)} at “${b.word}”` : `In ${m.d} ${unitName(m.d)}, end of ${routeName(a)}`;
+      arrow = m.d === 0 ? '↩' : '↑'; break;
+    }
+    case 'dest': instr = `In ${m.d} ${unitName(m.d)}, you arrive`; arrow = '↑'; break;
+  }
+  let sub;
+  if(state.recalc){ sub = state.recalc; state.recalc = null; }
+  else if(N && t < N){
+    const left = N - t, routesLeft = T[N - 1].sent - (cur ? cur.sent : -1);
+    const secs = Math.round(left * +$('speed').value / 1000);
+    sub = `${left} ${unitName(left)} to go · ${routesLeft} more route${routesLeft === 1 ? '' : 's'} · arriving in ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
+  } else sub = N ? `${N} ${unitName(N)} on ${T[N - 1].sent + 1} routes` : '';
+  $('navInstr').textContent = instr; $('navSub').textContent = sub; $('navArrow').textContent = arrow;
+}
+
+function jumpVia(key, from){
+  const g = state.navGroups.get(key);
+  if(!g) return;
+  const T = state.tokens, t = state.step;
+  let j = g.idx.find(i => i >= t); if(j === undefined) j = g.idx[0];
+  const taken = t ? state.junc[t - 1].taken : (state.N ? T[0].word : null);
+  pause();
+  if(key === END){ state.recalc = `Recalculating. Now at the end of ${routeName(T[j])}`; setStep(j + 1); return; }
+  if(!(key === taken && j === t)) state.recalc = `Recalculating. Now on ${routeName(T[j])}, ${T[j].sent === T[Math.max(0, t - 1)].sent ? 'same route' : 'which shares this stretch'}`;
+  navGlideFrom = from; setStep(j + 1);
+}
+
+function renderNav(){
+  const T = state.tokens, t = state.step, N = state.N;
+  const cur = t ? T[t - 1] : null, c = t - 1;
+  const J = cur ? state.junc[c] : null;
+  const groups = cur ? J.groups : (N ? new Map([[T[0].word, { key: T[0].word, count: 1, idx: [0] }]]) : new Map());
+  const taken = cur ? J.taken : (N ? T[0].word : null);
+  state.navGroups = groups;
+
+  const opts = [...groups.values()].filter(g => g.key !== END)
+    .map(g => ({ w: g.key, c: g.count, s: g.idx.filter(i => i < t).length })).sort((a, b) => b.c - a.c);
+  const endG = groups.get(END);
+  let top = opts.slice(0, 9);
+  if(taken && taken !== END && !top.some(o => o.w === taken)){ top[top.length - 1] = opts.find(o => o.w === taken); top.sort((a, b) => b.c - a.c); }
+  const order = []; top.forEach((x, i) => { if(i % 2) order.push(x); else order.unshift(x); });
+  const maxC = Math.max(1, ...top.map(x => x.c)), n = order.length, span = Math.min(140, 26 * (n - 1));
+  order.forEach((x, i) => { x.a = (n === 1 ? 0 : -span / 2 + span * i / (n - 1)) * Math.PI / 180; x.X = NC.x + 280 * Math.cos(x.a); x.Y = NC.y + 165 * Math.sin(x.a); });
+
+  // context line
+  if(!cur) $('navCtx').innerHTML = N ? `The route starts on <b>${routeName(T[0])}</b>.` : 'No route yet.';
+  else {
+    const others = J.cands.filter(k => k !== c);
+    const routes = [...new Set(others.map(k => routeName(T[k])))];
+    const shared = sharedStretch(c, J.L);
+    if(groups.size > 1) $('navCtx').innerHTML = `<b>Junction.</b> “${esc(shared)}” also appears on ${esc(listOf(routes))}, and the text carries on ${groups.size} different ways from here.`;
+    else if(others.length) $('navCtx').innerHTML = `“${esc(shared)}” also appears on ${esc(listOf(routes))}, and always carries on the same way. No junction.`;
+    else $('navCtx').innerHTML = `“${esc(cur.word)}” only appears here, so there is one way on.`;
+  }
+
+  let glide = navGlideFrom;
+  if(!glide && state.navNext && cur && t === state.navStep + 1 && state.navNext.word === cur.word) glide = state.navNext;
+  navGlideFrom = null;
+
+  let s = '<g id="navWorld">';
+  const trail = []; let p = cur ? cur.prev : null;
+  while(p !== null && trail.length < 3){ trail.push(p); if(T[p].sb) { p = null; break; } p = T[p].prev; }
+  let prev = NC, mover = cur;
+  trail.forEach((ti, i) => {
+    const pt = { x: NC.x - 112 * (i + 1), y: NC.y + 16 * (i + 1) * (i % 2 ? -1 : 1) };
+    s += `<line class="nroad" x1="${prev.x}" y1="${prev.y}" x2="${pt.x}" y2="${pt.y}" stroke="${spColor(mover.speaker)}" stroke-width="7" opacity="${(0.85 - i * 0.2).toFixed(2)}"/>`;
+    s += `<g class="ntrail" opacity="${(1 - i * 0.25).toFixed(2)}"><circle cx="${pt.x}" cy="${pt.y}" r="8" fill="${spColor(T[ti].speaker)}"/><text x="${pt.x}" y="${pt.y - 16}" text-anchor="middle">${esc(T[ti].word)}</text></g>`;
+    prev = pt; mover = T[ti];
+  });
+  if(cur){
+    const atStart = cur.sb || (trail.length && T[trail[trail.length - 1]].sb);
+    s += `<text class="nend" x="${prev.x - 22}" y="${prev.y + 5}" text-anchor="end">${atStart ? 'start of ' + routeName(cur) : '…'}</text>`;
+  }
+
+  order.forEach(x => {
+    const isR = x.w === taken, w = 2 + 10 * x.c / maxC;
+    s += `<path class="nroad" d="M ${NC.x} ${NC.y} C ${NC.x + 115} ${NC.y}, ${x.X - 135} ${x.Y}, ${x.X - 22} ${x.Y}" stroke="${isR ? 'var(--route)' : 'var(--muted)'}" stroke-opacity="${isR ? 0.95 : 0.45}" stroke-width="${(isR ? Math.max(w, 6) : w).toFixed(1)}"${x.s || isR ? '' : ' stroke-dasharray="2 9"'}/>`;
+  });
+  if(endG){
+    const isR = taken === END;
+    s += `<g class="${isR ? 'nendroute' : 'nexit'}"${isR ? '' : ` data-end="1" data-x="${NC.x}" data-y="${NC.y + 110}" tabindex="0" role="button" aria-label="Jump to where this stretch ends a sentence"`}>`
+      + `<line x1="${NC.x}" y1="${NC.y + 18}" x2="${NC.x}" y2="${NC.y + 110}" stroke="${isR ? 'var(--route)' : 'var(--muted)'}" stroke-width="${isR ? 6 : 2}" stroke-linecap="round"${isR ? '' : ' stroke-dasharray="4 4"'}/>`
+      + `<text class="nend" x="${NC.x}" y="${NC.y + 132}" text-anchor="middle">${isR ? (t >= N ? 'destination' : 'end of ' + routeName(cur)) : 'ends the sentence'}${endG.count > 1 ? ` · ${endG.count}×` : ''}</text></g>`;
+  }
+  order.forEach(x => {
+    const isR = x.w === taken;
+    s += `<g class="nexit${isR ? ' route' : ''}${!x.s && !isR ? ' later' : ''}" data-w="${esc(x.w)}" data-x="${x.X.toFixed(1)}" data-y="${x.Y.toFixed(1)}" tabindex="0" role="button" aria-label="${isR ? 'Continue to' : 'Recalculate via'} ${esc(x.w)}">`
+      + `<circle cx="${x.X}" cy="${x.Y}" r="${(8 + 8 * x.c / maxC).toFixed(1)}"/>`
+      + `<text class="f" x="${x.X + 24}" y="${x.Y + 2}">${esc(x.w)}${isR ? '  ◀ route' : ''}</text>`
+      + `<text class="m" x="${x.X + 24}" y="${x.Y + 18}">${x.c}×${x.s ? ` · ${x.s} so far` : ' · not yet'}</text></g>`;
+  });
+  s += `<g class="ncur"><circle cx="${NC.x}" cy="${NC.y}" r="${cur ? 16 : 10}"/><text x="${NC.x}" y="${NC.y - 28}" text-anchor="middle">${cur ? esc(cur.word) : 'start'}</text></g>`;
+  if(opts.length > top.length) s += `<text class="nend" x="886" y="390" text-anchor="end" style="font:500 11px var(--mono)">+ ${opts.length - top.length} rarer roads not shown</text>`;
+  s += '</g>';
+  const navSvg = $('nav');
+  navSvg.innerHTML = s;
+
+  const world = document.getElementById('navWorld');
+  if(glide && !reduced){
+    const d = timer ? Math.min(420, +$('speed').value * 0.85) : 420;
+    world.style.transition = 'none';
+    world.style.transform = `translate(${glide.x - NC.x}px, ${glide.y - NC.y}px)`;
+    world.getBoundingClientRect();
+    world.style.transition = `transform ${d}ms cubic-bezier(.2,.7,.3,1)`;
+    world.style.transform = 'translate(0px, 0px)';
+  }
+  navSvg.querySelectorAll('.nexit').forEach(g => {
+    const go = () => jumpVia(g.dataset.end ? END : g.dataset.w, { x: +g.dataset.x, y: +g.dataset.y });
+    g.addEventListener('click', go);
+    g.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); e.stopPropagation(); go(); } });
+  });
+  const nx = order.find(o => o.w === taken);
+  state.navNext = nx ? { word: nx.w, x: nx.X, y: nx.Y } : null;
+  state.navStep = t;
+  updateBanner();
+}
+
+/* ---------- Directions ---------- */
+function buildDirections(){
+  const T = state.tokens, N = state.N, box = $('dirs');
+  box.innerHTML = ''; state.dirSteps = [];
+  const icon = { join: '●', straight: '↑', fork: '↗', turn: '↱', end: '■', dest: '⚑' };
+  const add = (sec, at, kind, text, alts) => {
+    const el = document.createElement('div'); el.className = 'step ' + kind; el.tabIndex = 0;
+    const ic = document.createElement('span'); ic.className = 'ic'; ic.textContent = icon[kind];
+    const tx = document.createElement('span'); tx.textContent = text;
+    if(alts){ const a = document.createElement('span'); a.className = 'alts'; a.textContent = alts; tx.append(a); }
+    el.append(ic, tx);
+    const go = () => { pause(); setStep(at + 1); };
+    el.addEventListener('click', go);
+    el.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); e.stopPropagation(); go(); } });
+    sec.append(el); state.dirSteps.push({ at, el });
+  };
+  const altText = J => {
+    const a = [...J.groups.keys()].filter(k => k !== J.taken).map(k => k === END ? 'ending here' : `“${k}”`);
+    return a.length ? `Other ways: ${listOf(a)}` : null;
+  };
+  let j = 0;
+  while(j < N){
+    const s0 = j; let e = j;
+    while(e + 1 < N && T[e + 1].sent === T[s0].sent) e++;
+    const sec = document.createElement('div'); sec.className = 'dsent';
+    const head = document.createElement('div'); head.className = 'dhead';
+    const sh = document.createElement('span'); sh.className = 'shield'; sh.textContent = routeName(T[s0]);
+    head.append(sh);
+    if(state.mode !== 'plain'){ const sp = document.createElement('span'); sp.textContent = T[s0].speaker; sp.style.color = spColor(T[s0].speaker); sp.style.fontWeight = 700; head.append(sp); }
+    sec.append(head);
+    add(sec, s0, 'join', `Join at “${T[s0].word}”`);
+    let run = 0, rs = 0, passed = 0;
+    const flush = () => {
+      if(!run) return;
+      add(sec, rs, 'straight', `Continue ${run} ${unitName(run)} to “${T[rs + run - 1].word}”`,
+        passed ? `Staying on the main road past ${passed} junction${passed > 1 ? 's' : ''}` : null);
+      run = 0; passed = 0;
+    };
+    for(let k = s0; k < e; k++){
+      const J = state.junc[k];
+      if(J.kind === 'straight' || J.kind === 'keep'){ if(!run) rs = k + 1; run++; if(J.kind === 'keep') passed++; continue; }
+      flush();
+      add(sec, k + 1, J.kind, J.kind === 'turn' ? `Turn onto “${T[k + 1].word}”` : `At the fork, take “${T[k + 1].word}”`, altText(J));
+    }
+    flush();
+    const Je = state.junc[e], others = [...Je.groups.keys()].filter(k => k !== END).map(k => `“${k}”`);
+    add(sec, e, e === N - 1 ? 'dest' : 'end', e === N - 1 ? 'Arrive at your destination' : `End of ${routeName(T[e])}`,
+      others.length ? `Elsewhere this carries on to ${listOf(others)}` : null);
+    box.append(sec);
+    j = e + 1;
+  }
+}
+function updateDirections(){
+  const c = state.step - 1; let curI = -1;
+  state.dirSteps.forEach((s, i) => { if(s.at <= c) curI = i; });
+  state.dirSteps.forEach((s, i) => { s.el.classList.toggle('cur', i === curI); s.el.classList.toggle('done', i < curI); });
+  const el = curI >= 0 ? state.dirSteps[curI].el : null, box = $('dirs');
+  if(el){
+    const top = el.offsetTop - box.offsetTop, bottom = top + el.offsetHeight;
+    if(top < box.scrollTop + 10 || bottom > box.scrollTop + box.clientHeight - 10) box.scrollTop = top - box.clientHeight / 3;
+  } else box.scrollTop = 0;
+}
+
+/* ---------- Legend, transcript, ribbon ---------- */
+function buildLegend(){
+  const L = $('legend'); L.innerHTML = '';
+  const key = (bg, text, cls) => { const k = document.createElement('span'); k.className = 'key';
+    const s = document.createElement('span'); s.className = 'sw' + (cls ? ' ' + cls : ''); if(bg) s.style.background = bg;
+    k.append(s, document.createTextNode(text)); L.append(k); };
+  if(state.mode === 'plain') key(spColor(state.speakers[0]), 'Road');
+  else state.speakers.forEach(sp => key(spColor(sp), sp));
+  if(state.speakers.length > 1) key('var(--shared)', 'Shared road');
+  key('var(--route)', 'Route ahead');
+  key(null, 'Last move', 'dash');
+}
+function buildTranscript(){
+  const box = $('transcript'); box.innerHTML = ''; state.spans = [];
+  box.classList.toggle('phrases', state.units === 'phrase');
+  state.lines.forEach(line => {
+    const div = document.createElement('div'); div.className = 'turn';
+    if(state.mode !== 'plain'){
+      const who = document.createElement('span'); who.className = 'who'; who.style.color = spColor(line.speaker); who.textContent = line.speaker;
+      div.append(who);
+    }
+    line.parts.forEach(p => {
+      if(p.tok === undefined){ div.append(document.createTextNode(p.text)); return; }
+      const s = document.createElement('span'); s.className = 'w'; s.textContent = p.text;
+      s.title = routeName(state.tokens[p.tok]);
+      s.addEventListener('click', () => { pause(); setStep(p.tok + 1); });
+      state.spans[p.tok] = s; div.append(s);
+    });
+    box.append(div);
+  });
+}
+function buildRibbon(){
+  const R = $('ribbon'); R.innerHTML = '';
+  const plain = state.mode === 'plain';
+  state.lines.forEach((line, n) => {
+    if(!line.count) return;
+    const s = document.createElement('span'); s.style.flexGrow = line.count; s.style.background = spColor(line.speaker);
+    if(plain && n % 2) s.style.opacity = '.5';
+    s.title = `${plain ? 'Line ' + (n + 1) : line.speaker}: ${unitName(2)} ${line.start + 1} to ${line.start + line.count}`;
+    s.addEventListener('click', () => { pause(); setStep(line.start + line.count); });
+    R.append(s);
+  });
+}
+function updateTranscript(){
+  const t = state.step;
+  state.spans.forEach((s, i) => { s.className = 'w' + (i === t - 1 ? ' cur' : i >= t ? ' future' : ''); });
+  const cur = state.spans[t - 1], box = $('transcript');
+  if(cur){
+    const top = cur.offsetTop - box.offsetTop, bottom = top + cur.offsetHeight;
+    if(top < box.scrollTop + 10 || bottom > box.scrollTop + box.clientHeight - 10) box.scrollTop = top - box.clientHeight / 2;
+  }
+}
+
+/* ---------- Step, build, controls ---------- */
+function setStep(t, instantFrame){
+  state.step = Math.max(0, Math.min(state.N, t));
+  const sl = $('slider'); sl.value = state.step;
+  sl.style.setProperty('--pct', (state.N ? state.step / state.N * 100 : 0) + '%');
+  const cur = state.step ? state.tokens[state.step - 1] : null;
+  $('pos').textContent = `${cap(unitName(1))} ${state.step} of ${state.N}`;
+  $('now').textContent = cur ? (state.mode === 'plain' ? `“${cur.word}”` : `${cur.speaker}: “${cur.word}”`) : 'Start';
+  $('now').style.color = cur ? spColor(cur.speaker) : '';
+  render(); renderNav(); updateTranscript(); updateDirections(); frameTo(state.step, instantFrame);
+}
+
+function applyModeUI(){
+  const plain = state.mode === 'plain';
+  $('modePlain').checked = plain; $('modeDialogue').checked = !plain;
+  $('unitPhrase').checked = state.units === 'phrase'; $('unitWord').checked = state.units !== 'phrase';
+  $('crossWrap').hidden = plain;
+  $('modeHint').innerHTML = plain
+    ? 'Paste any text: a poem, a speech, a scene description. Each sentence becomes a numbered route. The map rebuilds as you type.'
+    : 'One turn per line, written as <b>Name: what they said</b>. Use as many speakers as you like. Each sentence becomes a numbered route.';
+}
+
+function rebuild(){
+  const parsed = parse($('src').value, state.mode, $('cross').checked, state.units);
+  Object.assign(state, parsed, { N: parsed.tokens.length });
+  state.pos = computeLayout(state.tokens);
+  state.navNext = null; state.navStep = -1; state.recalc = null;
+  state.nextOf = new Int32Array(state.N).fill(-1); state.byWord = new Map();
+  state.tokens.forEach(tk => {
+    if(tk.prev !== null) state.nextOf[tk.prev] = tk.i;
+    const l = state.byWord.get(tk.word) || []; l.push(tk.i); state.byWord.set(tk.word, l);
+  });
+  buildJunctions();
+  [gCase, gRoad, gArrow, gLane, gRoute, gTrip, gGhost, gNode, gRing, gLabel].forEach(g => g.selectAll('*').remove());
+  $('slider').max = state.N;
+  applyModeUI(); buildLegend(); buildTranscript(); buildRibbon(); buildDirections();
+  svg.call(zoom.transform, d3.zoomIdentity);
+  setStep(state.N, true);
+}
+
+let timer = null;
+function pause(){ if(timer){ clearInterval(timer); timer = null; } $('play').textContent = 'Play'; $('play').setAttribute('aria-pressed', 'false'); }
+function play(){
+  if(state.step >= state.N) setStep(0);
+  clearInterval(timer);
+  timer = setInterval(() => { if(state.step >= state.N){ pause(); return; } setStep(state.step + 1); }, +$('speed').value);
+  $('play').textContent = 'Pause'; $('play').setAttribute('aria-pressed', 'true');
+}
+$('play').addEventListener('click', () => timer ? pause() : play());
+$('speed').addEventListener('change', () => { if(timer) play(); else updateBanner(); });
+$('back').addEventListener('click', () => { pause(); setStep(state.step - 1); });
+$('fwd').addEventListener('click', () => { pause(); setStep(state.step + 1); });
+$('slider').addEventListener('input', e => { pause(); setStep(+e.target.value); });
+$('frame').addEventListener('click', () => setAutoFrame(!autoFrame));
+document.addEventListener('keydown', e => {
+  if(e.target.matches('textarea, input, select, button')) return;
+  if(e.code === 'Space'){ e.preventDefault(); timer ? pause() : play(); }
+  if(e.key === 'ArrowRight'){ pause(); setStep(state.step + 1); }
+  if(e.key === 'ArrowLeft'){ pause(); setStep(state.step - 1); }
+});
+
+let deb = null;
+$('src').addEventListener('input', () => { store('wh-src', $('src').value); clearTimeout(deb); deb = setTimeout(() => { pause(); rebuild(); }, 500); });
+$('src').addEventListener('paste', () => setTimeout(() => {
+  const m = looksLikeDialogue($('src').value) ? 'dialogue' : 'plain';
+  if(m !== state.mode){ state.mode = m; store('wh-mode', m); applyModeUI(); }
+}, 0));
+$('cross').addEventListener('change', () => { store('wh-cross', $('cross').checked ? '1' : '0'); pause(); rebuild(); });
+document.querySelectorAll('input[name="mode"]').forEach(r => r.addEventListener('change', e => { state.mode = e.target.value; store('wh-mode', state.mode); pause(); rebuild(); }));
+document.querySelectorAll('input[name="units"]').forEach(r => r.addEventListener('change', e => { state.units = e.target.value; store('wh-units', state.units); pause(); rebuild(); }));
+$('sample').addEventListener('click', () => {
+  const txt = state.mode === 'plain' ? PROSE : SAMPLE;
+  $('src').value = txt; store('wh-src', txt); pause(); rebuild();
+});
+
+$('src').value = load('wh-src') || SAMPLE;
+state.mode = load('wh-mode') || (looksLikeDialogue($('src').value) ? 'dialogue' : 'plain');
+state.units = load('wh-units') || 'phrase';
+$('cross').checked = load('wh-cross') === '1';
+rebuild();
+</script>
+
+</body></html>
