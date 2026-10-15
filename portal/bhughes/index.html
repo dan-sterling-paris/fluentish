@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beth Hughes – FluentISH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script defer src="https://unpkg.com/alpinejs@3.14.1/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:  '#003359',
+            navyD: '#002040',
+            rouge: '#C8102E',
+            cyan:  '#4DD4F5',
+            sand:  '#F7F4EF',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            body:    ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; color: #1a1a2e; }
+    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; }
+    [x-cloak] { display: none !important; }
+
+    .tab-btn {
+      padding: 0.9rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-bottom: 3px solid transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
+      color: #6b7280;
+    }
+    .tab-btn:hover { color: #003359; }
+    .tab-btn.active { color: #003359; border-bottom-color: #003359; }
+
+    /* Vocab table rows */
+    .vocab-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.6rem 0;
+      align-items: baseline;
+    }
+    .vocab-row:last-child { border-bottom: none; }
+    .vocab-fr   { font-weight: 600; color: #003359; }
+    .vocab-pron { font-style: italic; color: #8a9ab0; font-size: 0.8rem; padding: 0 0.5rem; }
+    .vocab-en   { color: #6b7280; font-size: 0.85rem; }
+
+    /* Phrase rows */
+    .phrase-row {
+      border-bottom: 1px solid #f0f0f0;
+      padding: 0.75rem 0;
+    }
+    .phrase-row:last-child { border-bottom: none; }
+    .phrase-fr   { font-weight: 600; color: #003359; font-size: 0.95rem; }
+    .phrase-pron { font-style: italic; color: #8a9ab0; font-size: 0.78rem; margin-top: 1px; }
+    .phrase-en   { color: #6b7280; font-size: 0.85rem; margin-top: 2px; }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #C8102E; margin-bottom: 0.75rem; display: block;
+    }
+
+    /* Pill */
+    .sound-pill {
+      display: inline-flex; flex-direction: column; align-items: center;
+      background: #f8f9fb; border: 1px solid #e5e9ef; border-radius: 10px;
+      padding: 0.5rem 0.85rem; text-align: center;
+    }
+    .sound-pill .fr   { font-weight: 700; color: #003359; font-size: 0.9rem; }
+    .sound-pill .pron { font-style: italic; color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+    .sound-pill .en   { color: #8a9ab0; font-size: 0.72rem; margin-top: 1px; }
+
+    /* Card */
+    .card { background: white; border: 1px solid #e8ecf0; border-radius: 1rem; padding: 1.5rem; }
+
+    /* Toolkit table */
+    .toolkit-row { display: grid; grid-template-columns: 1.2fr 1fr 1.4fr; gap: 0; border-bottom: 1px solid #f0f0f0; padding: 0.65rem 0; align-items: baseline; }
+    .toolkit-row:last-child { border-bottom: none; }
+
+    /* Diagnostic scorecard */
+    .score-row { display: grid; grid-template-columns: 1.1fr 0.5fr 1.4fr; gap: 0; border-bottom: 1px solid #f0f0f0; padding: 0.65rem 0; align-items: baseline; }
+    .score-row:last-child { border-bottom: none; }
+    .score-fr   { font-weight: 600; color: #003359; }
+    .score-mark { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; }
+    .score-mark.got    { color: #1a7f4b; }
+    .score-mark.missed { color: #C8102E; }
+    .score-note { color: #6b7280; font-size: 0.85rem; }
+
+    /* Lesson header strip */
+    .lesson-strip { background: #003359; color: white; border-radius: 0.75rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem; }
+    .lesson-strip .num { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #4DD4F5; }
+    .lesson-strip h2 { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; margin-top: 2px; }
+    .lesson-strip .meta { font-size: 0.78rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
+
+    /* Tip cards */
+    .tip-card {
+      background: #f8f9fb; border: 1px solid #e5e9ef; border-radius: 0.75rem;
+      padding: 1rem 1.25rem; margin-top: 0.5rem;
+    }
+    .tip-card .tip-title { font-weight: 700; color: #003359; font-size: 0.85rem; margin-bottom: 0.25rem; }
+    .tip-card p { font-size: 0.82rem; color: #6b7280; line-height: 1.5; }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen" x-data="{ tab: 'all' }" x-cloak>
+
+  <!-- Header -->
+  <header class="bg-navy text-white">
+    <div class="max-w-4xl mx-auto px-6 py-6 flex items-end justify-between gap-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest" style="color:#4DD4F5;">FluentISH</p>
+        <h1 class="font-display text-2xl font-bold mt-1">Beth's Course</h1>
+      </div>
+      <div class="text-right">
+        <p class="text-sm text-blue-200 font-medium">2 lessons</p>
+        <p class="text-xs text-blue-400 mt-0.5">Coffee, food, travel &amp; film</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Tab nav -->
+  <div class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-4xl mx-auto px-6 flex overflow-x-auto">
+      <button @click="tab = 'all'"  :class="tab === 'all'  ? 'tab-btn active' : 'tab-btn'">Everything</button>
+      <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2 &#10022;</button>
+    </div>
+  </div>
+
+  <main class="max-w-4xl mx-auto px-6 py-8 space-y-6">
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: EVERYTHING                           -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'all'" class="space-y-6">
+
+      <!-- Survival kit -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Your Get-Out-of-Jail-Free Cards</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+          These three matter more than anything else on this page. They let you <strong>speak around</strong> a word you don't know instead of freezing. That's called <em>circumlocution</em>: <em>circum</em> = around, <em>locution</em> = speaking. You could know almost no French and still keep a conversation going with these three.
+        </p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Comment dire... <span class="text-gray-400 font-normal">(+ the English word)</span></div>
+          <div class="phrase-pron">ko-mon deer &mdash; "common deer"</div>
+          <div class="phrase-en">How do you say...?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je veux dire...</div>
+          <div class="phrase-pron">zhuh vuh deer &mdash; "je vuh deer"</div>
+          <div class="phrase-en">I want to say... / I mean...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">R&eacute;p&eacute;tez, s'il vous pla&icirc;t.</div>
+          <div class="phrase-pron">ray-pay-tay, see voo play</div>
+          <div class="phrase-en">Repeat, please.</div>
+        </div>
+
+        <p class="text-sm text-gray-400 italic mt-4">
+          Use them without apology. <em>Comment dire &ldquo;hot milk&rdquo;?</em> is a perfectly good French sentence.
+        </p>
+      </div>
+
+      <!-- Dolly script -->
+      <div class="card">
+        <span class="section-label">Talking About Dolly</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          The sentences you built in your ten-minute chat. Say them out loud. Don't memorise them off the page.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Dolly est... (Dolly is...)</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Dolly est marron et blanc.</div>
+          <div class="phrase-pron">do-lee ay ma-ron ay blon</div>
+          <div class="phrase-en">Dolly is brown and white.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Dolly est en Angleterre.</div>
+          <div class="phrase-pron">do-lee ay on on-gluh-tair</div>
+          <div class="phrase-en">Dolly is in England.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Dolly est un shih tzu.</div>
+          <div class="phrase-pron">do-lee ay un shee-tsoo</div>
+          <div class="phrase-en">Dolly is a Shih Tzu.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Dolly a... (Dolly has...)</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Dolly a onze ans.</div>
+          <div class="phrase-pron">do-lee a onz on</div>
+          <div class="phrase-en">Dolly is eleven. (literally: Dolly has eleven years)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Dolly a un meilleur ami.</div>
+          <div class="phrase-pron">do-lee a un may-yuh ra-mee</div>
+          <div class="phrase-en">Dolly has a best friend.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Best friends</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Mon meilleur ami s'appelle Nono.</div>
+          <div class="phrase-pron">mon may-yuh ra-mee sa-pel no-no</div>
+          <div class="phrase-en">My best friend is called Nono (Arnaud).</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Ma maman est ma meilleure amie.</div>
+          <div class="phrase-pron">ma ma-mon ay ma may-yuh ra-mee</div>
+          <div class="phrase-en">My mum is my best friend.</div>
+        </div>
+      </div>
+
+      <!-- Hinge verbs -->
+      <div class="card" style="border-color: #003359; border-width: 2px;">
+        <span class="section-label">Your First Hinge Verbs &mdash; &Ecirc;tre &amp; Avoir</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+          There are <strong>11 hinge verbs</strong> that hold spoken French together, and <em>&ecirc;tre</em> (to be) and <em>avoir</em> (to have) come first by a long way. We're learning French by <strong>sound, not spelling</strong>, so each verb is just two sounds: the <em>je</em> form, and one sound that covers <em>tu, il, elle</em> and <em>on</em>. Two sounds give you five sentences. Across all 11 verbs, 22 sounds give you 55.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">&Ecirc;tre &mdash; to be</h3>
+        <div class="flex flex-wrap gap-2 mb-2">
+          <div class="sound-pill"><span class="fr">Je suis</span><span class="pron">zhuh swee</span><span class="en">I am</span></div>
+          <div class="sound-pill"><span class="fr">Tu es</span><span class="pron">too ay</span><span class="en">you are</span></div>
+          <div class="sound-pill"><span class="fr">Il est</span><span class="pron">eel ay</span><span class="en">he is</span></div>
+          <div class="sound-pill"><span class="fr">Elle est</span><span class="pron">el ay</span><span class="en">she is</span></div>
+          <div class="sound-pill"><span class="fr">On est</span><span class="pron">on-nay</span><span class="en">we are</span></div>
+        </div>
+        <p class="text-xs text-gray-400 mb-5">Learn <strong>swee</strong> and <strong>ay</strong>. That's the whole verb.</p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Avoir &mdash; to have</h3>
+        <div class="flex flex-wrap gap-2 mb-2">
+          <div class="sound-pill"><span class="fr">J'ai</span><span class="pron">zhay</span><span class="en">I have</span></div>
+          <div class="sound-pill"><span class="fr">Tu as</span><span class="pron">too a</span><span class="en">you have</span></div>
+          <div class="sound-pill"><span class="fr">Il a</span><span class="pron">eel a</span><span class="en">he has</span></div>
+          <div class="sound-pill"><span class="fr">Elle a</span><span class="pron">el a</span><span class="en">she has</span></div>
+          <div class="sound-pill"><span class="fr">On a</span><span class="pron">on-na</span><span class="en">we have</span></div>
+        </div>
+        <p class="text-xs text-gray-400">Learn <strong>zhay</strong> and <strong>a</strong>. That's the whole verb.</p>
+      </div>
+
+      <!-- Beer Mat -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">The Beer Mat &mdash; Four Modals</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+          Dan used to draw this grid on the back of beer mats in the pub when people asked how he learned French. Memorise the four modals, then drop any verb in after them. No conjugation needed: the second verb never changes. That's <strong>160 sentences</strong> from one small grid.
+        </p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Je peux... / Tu peux...</div>
+          <div class="phrase-pron">zhuh puh / too puh</div>
+          <div class="phrase-en">I can... / You can...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je veux... / Tu veux...</div>
+          <div class="phrase-pron">zhuh vuh / too vuh</div>
+          <div class="phrase-en">I want to... / You want to...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je dois... / Tu dois...</div>
+          <div class="phrase-pron">zhuh dwah / too dwah</div>
+          <div class="phrase-en">I must... / You must...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais... / Tu vas...</div>
+          <div class="phrase-pron">zhuh vay / too va</div>
+          <div class="phrase-en">I'm going to... / You're going to...</div>
+        </div>
+
+        <p class="text-xs text-gray-400 mt-3 mb-5">The only one that changes is <em>vais</em> &rarr; <em>vas</em> with <em>tu</em>. Everything else stays the same.</p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">The Beer Mat in action</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je peux parler.</div>
+          <div class="phrase-pron">zhuh puh par-lay</div>
+          <div class="phrase-en">I can speak.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je veux voir un film.</div>
+          <div class="phrase-pron">zhuh vuh vwar un feelm</div>
+          <div class="phrase-en">I want to see a film.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais manger.</div>
+          <div class="phrase-pron">zhuh vay mon-zhay</div>
+          <div class="phrase-en">I'm going to eat.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je dois partir.</div>
+          <div class="phrase-pron">zhuh dwah par-teer</div>
+          <div class="phrase-en">I have to go.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Est-ce que tu veux sortir&nbsp;?</div>
+          <div class="phrase-pron">ess-kuh too vuh sor-teer</div>
+          <div class="phrase-en">Do you want to go out?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Qu'est-ce que tu veux faire&nbsp;?</div>
+          <div class="phrase-pron">kess-kuh too vuh fair</div>
+          <div class="phrase-en">What do you want to do?</div>
+        </div>
+
+        <p class="text-sm mt-4"><a href="https://fluentish.co.uk/beer-mat.html" target="_blank" class="text-rouge font-semibold underline">Open the Beer Mat tool &rarr;</a></p>
+      </div>
+
+      <!-- Ordering -->
+      <div class="card">
+        <span class="section-label">Ordering a Cappuccino &mdash; the French Way</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+          Forget the GCSE version. This is how people actually order. Walk in, say <em>bonjour</em>, then:
+        </p>
+
+        <div class="phrase-row">
+          <div class="phrase-fr">Bonjour&nbsp;! Je prends un cappuccino, s'il vous pla&icirc;t.</div>
+          <div class="phrase-pron">bon-zhoor ! zhuh pron un ka-poo-chee-no, see voo play</div>
+          <div class="phrase-en">Hello! I'll have a cappuccino, please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais prendre un cappuccino, s'il vous pla&icirc;t.</div>
+          <div class="phrase-pron">zhuh vay prondr un ka-poo-chee-no, see voo play</div>
+          <div class="phrase-en">I'm going to have a cappuccino, please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je peux prendre un cappuccino, s'il vous pla&icirc;t&nbsp;?</div>
+          <div class="phrase-pron">zhuh puh prondr un ka-poo-chee-no, see voo play</div>
+          <div class="phrase-en">Can I have a cappuccino, please?</div>
+        </div>
+
+        <div class="tip-card mt-4" style="border-left: 3px solid #C8102E;">
+          <div class="tip-title">Big, broad, confident</div>
+          <p>Staff switch to English when you whisper or shrink yourself, not because of your accent. Say it out loud, say it like you mean it, and they won't blink. Think of a French person in London saying &ldquo;Hiya mate, how's it going?&rdquo; in a thick French accent. Nobody switches to French on them. Rehearse it in your head on the way in, then deliver it.</p>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="card">
+        <span class="section-label">Tips &amp; Notes</span>
+
+        <div class="tip-card">
+          <div class="tip-title">Sound, not spelling</div>
+          <p>A baby says &ldquo;more juice&rdquo; long before they know how to spell it. We're doing French the same way round. <em>Il est</em> is just <strong>ay</strong>. There's no t on the end, and you don't need to know whether there's a silent s or t. Spelling comes later, once you start noticing the words you already say.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Use <em>on</em> for &ldquo;we&rdquo;</div>
+          <p>You'll have learned <em>nous</em> at school. In spoken French almost everyone says <strong>on</strong>, and it's easier because it takes the same sound as <em>il</em> and <em>elle</em>: <em>on est, on a, on doit</em>. You already know it from <strong>on y va</strong> (let's go). Keep <em>nous</em> for writing.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Don't worry about <em>tu</em> vs <em>vous</em></div>
+          <p>Stay with <strong>tu</strong> for now. It's simpler. As a Brit you'll be let off if you use it with a waiter. A French person might come across as a bit rude; you won't.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Open your mouth</div>
+          <p>English speakers tighten their mouths and clip their words. French is the opposite: relaxed and open, almost as if you're talking with something in your mouth. Let <em>peux</em>, <em>veux</em> and <em>vais</em> stay loose.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Marron or marrant?</div>
+          <p><strong>Marron</strong> (ma-ron) = brown. <strong>Marrant</strong> (ma-ron) = funny. They sound almost identical. Context does the work: <em>Dolly est marron</em> (Dolly is brown), <em>Dolly est marrante</em> (Dolly is funny).</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Meilleur(e): &ldquo;may-yuh&rdquo;</div>
+          <p>The tricky one. Think <strong>MAY-YUHH</strong>. <em>Meilleur</em> and <em>meilleure</em> sound the same, so <em>mon meilleur ami</em> (a male best friend) and <em>ma meilleure amie</em> (a female best friend) only differ in the <em>mon/ma</em> at the front.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Ma maman / ta maman</div>
+          <p><strong>Ma</strong> = my, <strong>ta</strong> = your. <em>Ma maman</em> = my mum, <em>ta maman</em> = your mum.</p>
+        </div>
+      </div>
+
+      <!-- Vocabulary -->
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+        <div class="vocab-row">
+          <span class="vocab-fr">Marron</span>
+          <span class="vocab-pron">ma-ron</span>
+          <span class="vocab-en">Brown</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Blanc</span>
+          <span class="vocab-pron">blon</span>
+          <span class="vocab-en">White</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Marrant(e)</span>
+          <span class="vocab-pron">ma-ron(t)</span>
+          <span class="vocab-en">Funny</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">En Angleterre</span>
+          <span class="vocab-pron">on on-gluh-tair</span>
+          <span class="vocab-en">In England</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Onze ans</span>
+          <span class="vocab-pron">onz on</span>
+          <span class="vocab-en">Eleven years (old)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Un meilleur ami</span>
+          <span class="vocab-pron">un may-yuh ra-mee</span>
+          <span class="vocab-en">A best friend (male)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Une meilleure amie</span>
+          <span class="vocab-pron">oon may-yuh ra-mee</span>
+          <span class="vocab-en">A best friend (female)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Ma maman / ta maman</span>
+          <span class="vocab-pron">ma ma-mon / ta ma-mon</span>
+          <span class="vocab-en">My mum / your mum</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">S'appelle</span>
+          <span class="vocab-pron">sa-pel</span>
+          <span class="vocab-en">Is called</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Prendre / je prends</span>
+          <span class="vocab-pron">prondr / zhuh pron</span>
+          <span class="vocab-en">To take / I'll have (ordering)</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">S'il vous pla&icirc;t</span>
+          <span class="vocab-pron">see voo play</span>
+          <span class="vocab-en">Please</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">On y va</span>
+          <span class="vocab-pron">on-nee-va</span>
+          <span class="vocab-en">Let's go</span>
+        </div>
+      </div>
+
+    </div><!-- /all -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 2                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l2'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 2 &middot; 14 October 2026</div>
+        <h2>Get-Out-of-Jail-Free Cards</h2>
+        <div class="meta">Circumlocution &middot; Dolly &middot; &Ecirc;tre &amp; avoir &middot; The Beer Mat &middot; Ordering a cappuccino</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          We started from your list of interests (coffee, food, travel and film) and Dan gave you three survival phrases: <strong>comment dire</strong>, <strong>je veux dire</strong> and <strong>r&eacute;p&eacute;tez, s'il vous pla&icirc;t</strong>. With those on screen you spoke French for ten minutes about Dolly and never fell back on English. From that chat came your first two hinge verbs, <em>&ecirc;tre</em> and <em>avoir</em>, learned as sounds rather than written conjugations. Then the Beer Mat: four modals plus any verb, drilled for rhythm until you could cycle through them with your eyes shut. We finished with a real-world fix for ordering coffee in France without being answered in English.
+        </p>
+      </div>
+
+      <!-- Survival kit -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">The Three Phrases</span>
+        <div class="phrase-row">
+          <div class="phrase-fr">Comment dire...</div>
+          <div class="phrase-pron">ko-mon deer</div>
+          <div class="phrase-en">How do you say...?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je veux dire...</div>
+          <div class="phrase-pron">zhuh vuh deer</div>
+          <div class="phrase-en">I want to say... / I mean...</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">R&eacute;p&eacute;tez, s'il vous pla&icirc;t.</div>
+          <div class="phrase-pron">ray-pay-tay, see voo play</div>
+          <div class="phrase-en">Repeat, please.</div>
+        </div>
+        <p class="text-sm text-gray-400 italic mt-4">
+          Comprehension and production are two very different skills. You'll often understand far more than you can say. These three phrases fill the gap while your speaking catches up.
+        </p>
+      </div>
+
+      <!-- Dolly -->
+      <div class="card">
+        <span class="section-label">What You Said About Dolly</span>
+        <div class="phrase-row">
+          <div class="phrase-fr">Dolly est marron et blanc.</div>
+          <div class="phrase-pron">do-lee ay ma-ron ay blon</div>
+          <div class="phrase-en">Dolly is brown and white.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Dolly est en Angleterre.</div>
+          <div class="phrase-pron">do-lee ay on on-gluh-tair</div>
+          <div class="phrase-en">Dolly is in England.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Dolly est un shih tzu.</div>
+          <div class="phrase-pron">do-lee ay un shee-tsoo</div>
+          <div class="phrase-en">Dolly is a Shih Tzu.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Dolly a onze ans.</div>
+          <div class="phrase-pron">do-lee a onz on</div>
+          <div class="phrase-en">Dolly is eleven.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Dolly a un meilleur ami.</div>
+          <div class="phrase-pron">do-lee a un may-yuh ra-mee</div>
+          <div class="phrase-en">Dolly has a best friend.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Mon meilleur ami s'appelle Nono.</div>
+          <div class="phrase-pron">mon may-yuh ra-mee sa-pel no-no</div>
+          <div class="phrase-en">My best friend is called Nono.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Ma maman est ma meilleure amie.</div>
+          <div class="phrase-pron">ma ma-mon ay ma may-yuh ra-mee</div>
+          <div class="phrase-en">My mum is my best friend.</div>
+        </div>
+      </div>
+
+      <!-- Hinge verbs -->
+      <div class="card" style="border-color: #003359; border-width: 2px;">
+        <span class="section-label">Hinge Verbs: Two Sounds Each</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+          You used two structures with Dolly: <em>Dolly <strong>est</strong>...</em> (is) and <em>Dolly <strong>a</strong>...</em> (has). Those are your first two hinge verbs, and learning them as sounds gives you all five people at once.
+        </p>
+        <div class="toolkit-row">
+          <span class="vocab-fr">Je suis</span>
+          <span class="vocab-pron">zhuh swee</span>
+          <span class="vocab-en">I am</span>
+        </div>
+        <div class="toolkit-row">
+          <span class="vocab-fr">Tu es / il est / elle est / on est</span>
+          <span class="vocab-pron">ay</span>
+          <span class="vocab-en">You are / he is / she is / we are</span>
+        </div>
+        <div class="toolkit-row">
+          <span class="vocab-fr">J'ai</span>
+          <span class="vocab-pron">zhay</span>
+          <span class="vocab-en">I have</span>
+        </div>
+        <div class="toolkit-row">
+          <span class="vocab-fr">Tu as / il a / elle a / on a</span>
+          <span class="vocab-pron">a</span>
+          <span class="vocab-en">You have / he has / she has / we have</span>
+        </div>
+        <div class="toolkit-row">
+          <span class="vocab-fr">Tu dois / il doit / on doit</span>
+          <span class="vocab-pron">dwah</span>
+          <span class="vocab-en">You must / he must / we must (same idea, same sound)</span>
+        </div>
+      </div>
+
+      <!-- Beer Mat -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">The Beer Mat</span>
+        <p class="text-sm text-gray-400 italic mb-4">
+          Learn the four modals as a rhythm, like a song: <em>peux, veux, dois, vais</em>. Then any verb from the second line slots in after them.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-5">
+          <div class="sound-pill"><span class="fr">Je peux</span><span class="pron">zhuh puh</span><span class="en">I can</span></div>
+          <div class="sound-pill"><span class="fr">Je veux</span><span class="pron">zhuh vuh</span><span class="en">I want</span></div>
+          <div class="sound-pill"><span class="fr">Je dois</span><span class="pron">zhuh dwah</span><span class="en">I must</span></div>
+          <div class="sound-pill"><span class="fr">Je vais</span><span class="pron">zhuh vay</span><span class="en">I'm going to</span></div>
+          <div class="sound-pill"><span class="fr">Tu vas</span><span class="pron">too va</span><span class="en">you're going to</span></div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je peux faire / aller / voir / venir.</div>
+          <div class="phrase-pron">zhuh puh fair / a-lay / vwar / vuh-neer</div>
+          <div class="phrase-en">I can do / go / see / come.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je veux voir un film.</div>
+          <div class="phrase-pron">zhuh vuh vwar un feelm</div>
+          <div class="phrase-en">I want to see a film.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais manger.</div>
+          <div class="phrase-pron">zhuh vay mon-zhay</div>
+          <div class="phrase-en">I'm going to eat. (an easy way into the future tense)</div>
+        </div>
+        <p class="text-sm mt-4"><a href="https://fluentish.co.uk/beer-mat.html" target="_blank" class="text-rouge font-semibold underline">Open the Beer Mat tool &rarr;</a></p>
+      </div>
+
+      <!-- Ordering -->
+      <div class="card">
+        <span class="section-label">Ordering Like You Mean It</span>
+        <div class="phrase-row">
+          <div class="phrase-fr">Bonjour&nbsp;! Je prends un cappuccino, s'il vous pla&icirc;t.</div>
+          <div class="phrase-pron">bon-zhoor ! zhuh pron un ka-poo-chee-no, see voo play</div>
+          <div class="phrase-en">Hello! I'll have a cappuccino, please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais prendre un cappuccino, s'il vous pla&icirc;t.</div>
+          <div class="phrase-pron">zhuh vay prondr un ka-poo-chee-no, see voo play</div>
+          <div class="phrase-en">I'm going to have a cappuccino, please.</div>
+        </div>
+        <div class="tip-card mt-4">
+          <div class="tip-title">Why it works</div>
+          <p>It's built from your Beer Mat: <em>je vais</em> + <em>prendre</em>. Add <em>s'il vous pla&icirc;t</em> on the end and you've got a properly French order. When you practised it, you sounded French.</p>
+        </div>
+      </div>
+
+      <!-- Drills -->
+      <div class="card">
+        <span class="section-label">The Drills We Used</span>
+
+        <div class="tip-card">
+          <div class="tip-title">Ten minutes, no English</div>
+          <p>One topic (Dolly), three survival phrases on screen, and permission to be bumpy. The aim wasn't vocabulary. It was getting those three phrases so deep in that you use them without thinking.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Rhythm cycling</div>
+          <p>Dan clicked through the Beer Mat and you repeated what was highlighted, faster each round. You're a singer, so treat it as rhythm. Then: <strong>read it</strong> &rarr; <strong>eyes closed, screen still up</strong> &rarr; <strong>no screen at all</strong>. Swapping the order around doesn't matter, as long as you know what each one is.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Don't translate</div>
+          <p>You said you weren't thinking about the English, just looking at the frame. That's exactly the goal. <em>Je peux</em> should simply <em>mean</em> &ldquo;I can&rdquo;. Working out &ldquo;je = I, peux = can&rdquo; every time is too slow for a conversation.</p>
+        </div>
+      </div>
+
+      <!-- Homework -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Order a cappuccino in French before Friday.</strong> Walk in, <em>bonjour</em>, <em>je prends un cappuccino, s'il vous pla&icirc;t</em>. Big, broad, confident. Then send Dan a voice note about how it went.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Play with the Beer Mat tool.</strong> Memorise the four modals (<em>peux, veux, dois, vais</em>), then piece together sentences with the verbs underneath. Don't learn each sentence individually. Learn the pieces.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Use the three phrases.</strong> <em>Comment dire, je veux dire, r&eacute;p&eacute;tez s'il vous pla&icirc;t</em>. Any time you're stuck, reach for these before you reach for English.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Ten minutes of French speaking</strong> on one of your topics: coffee, food, travel or film. Use your family's French-speaking visitor if you get the chance.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label" style="color: #4DD4F5;">Coming Up</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          More hinge verbs. There are 11 in all, and each one adds five more sentences. Dan is away Wednesday to Friday next week, so the next session will be Monday morning (before 1pm) or the week after. We'll confirm once your voice note is in.
+        </p>
+      </div>
+
+      <!-- Wow Moment -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Wow Moment</span>
+        <p class="text-sm text-gray-400 italic mb-4">At the end of the Dolly conversation...</p>
+        <p class="text-sm text-gray-600 leading-relaxed font-medium">
+          &ldquo;Beth, I just want to say you just spoke for 10 minutes in French.&rdquo;
+        </p>
+        <p class="text-sm text-gray-400 mt-2">&mdash; Dan, Lesson 2</p>
+      </div>
+
+    </div><!-- /l2 -->
+
+
+  </main>
+
+  <footer class="max-w-4xl mx-auto px-6 py-8 text-center text-xs text-gray-400">
+    &copy; FluentISH &middot; Beth Hughes
+  </footer>
+
+</body>
+</html>
