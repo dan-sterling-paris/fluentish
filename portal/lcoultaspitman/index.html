@@ -87,6 +87,34 @@
     }
     .modifier-pill .fr { font-weight: 700; color: #4DD4F5; font-size: 0.82rem; white-space: nowrap; }
     .modifier-pill .en { color: rgba(255,255,255,0.6); font-size: 0.68rem; margin-top: 1px; }
+
+    /* Verb table */
+    .verb-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .verb-table th { background: #003359; color: #4DD4F5; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.6rem 0.75rem; text-align: left; }
+    .verb-table td { padding: 0.7rem 0.75rem; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+    .verb-table tr:last-child td { border-bottom: none; }
+    .verb-table .verb-name { font-weight: 700; color: #003359; }
+    .verb-table .verb-meaning { color: #8a9ab0; font-size: 0.75rem; font-style: italic; }
+    .verb-table .conj { font-weight: 600; color: #003359; }
+    .verb-table .pron { color: #8a9ab0; font-size: 0.75rem; font-style: italic; }
+
+    /* Monologue line */
+    .mono-line { padding: 1rem 0; border-bottom: 1px solid #f0f0f0; }
+    .mono-line:last-child { border-bottom: none; }
+    .mono-fr { font-size: 1.1rem; font-weight: 700; color: #003359; line-height: 1.4; }
+    .mono-pron { font-style: italic; color: #8a9ab0; font-size: 0.82rem; margin-top: 4px; }
+    .mono-en { color: #6b7280; font-size: 0.85rem; margin-top: 3px; }
+
+    /* Threshold badge */
+    .threshold-badge { display: inline-block; background: #C8102E; color: white; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 999px; margin-bottom: 0.75rem; }
+
+    /* Timeline */
+    .timeline-row { display: flex; align-items: flex-start; gap: 1rem; padding: 0.85rem 0; border-bottom: 1px solid #f0f0f0; }
+    .timeline-row:last-child { border-bottom: none; }
+    .timeline-dot { width: 0.6rem; height: 0.6rem; border-radius: 999px; background: #4DD4F5; flex-shrink: 0; margin-top: 0.35rem; }
+    .timeline-date { font-size: 0.72rem; color: #8a9ab0; width: 5rem; flex-shrink: 0; padding-top: 0.05rem; }
+    .timeline-title { font-weight: 700; color: #003359; font-size: 0.9rem; }
+    .timeline-desc { color: #6b7280; font-size: 0.8rem; margin-top: 1px; }
   </style>
 </head>
 
@@ -100,8 +128,8 @@
         <h1 class="font-display text-2xl font-bold mt-1">Louise's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">1 lesson</p>
-        <p class="text-xs text-blue-400 mt-0.5">Florist, flowers &amp; frames</p>
+        <p class="text-sm text-blue-200 font-medium">3 lessons</p>
+        <p class="text-xs text-blue-400 mt-0.5">Monologue, beer mat &amp; frames</p>
       </div>
     </div>
   </header>
@@ -111,97 +139,70 @@
     <div class="max-w-4xl mx-auto px-6 flex overflow-x-auto">
       <button @click="tab = 'all'" :class="tab === 'all' ? 'tab-btn active' : 'tab-btn'">Everything</button>
       <button @click="tab = 'l1'" :class="tab === 'l1' ? 'tab-btn active' : 'tab-btn'">Lesson 1</button>
+      <button @click="tab = 'l2'" :class="tab === 'l2' ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
+      <button @click="tab = 'l3'" :class="tab === 'l3' ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
     </div>
   </div>
 
   <main class="max-w-4xl mx-auto px-6 py-8 space-y-6">
+
 
     <!-- ══════════════════════════════════════════ -->
     <!-- TAB: EVERYTHING                           -->
     <!-- ══════════════════════════════════════════ -->
     <div x-show="tab === 'all'" class="space-y-6">
 
-      <!-- FRAME 1 -->
-      <div class="card" style="border-color: #C8102E; border-width: 2px;">
-        <span class="section-label">Frame 1</span>
-        <h3 class="font-display text-lg font-bold text-navy mb-1">Il y a des ___ </h3>
-        <p class="text-sm text-gray-500 mb-4">There are some ___. Pick any filler word below and stick it on the end.</p>
+      <!-- Timeline -->
+      <div class="card">
+        <span class="section-label">Your Lessons So Far</span>
+        <div class="timeline-row">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">15 Sep 2026</div>
+          <div>
+            <div class="timeline-title">Frames &amp; Fillers</div>
+            <div class="timeline-desc">Il y a des ___, je pense que c'est ___, 8 modifiers &times; 21 fillers = 168 sentences</div>
+          </div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">5 Oct 2026</div>
+          <div>
+            <div class="timeline-title">The Beer Mat</div>
+            <div class="timeline-desc">&Ecirc;tre, avoir, aller conjugated &mdash; plus the future shortcut: je vais + infinitive</div>
+          </div>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-dot" style="background:#C8102E;"></div>
+          <div class="timeline-date">29 Oct 2026</div>
+          <div>
+            <div class="timeline-title">The Frequency Monologue</div>
+            <div class="timeline-desc">AI-generated script covering the 10%, 15% and 20% most-used words in French</div>
+          </div>
+        </div>
+      </div>
 
-        <p class="pill-label">Swap in any of these fillers</p>
+      <!-- Frame 1 quick ref -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Frame 1 &mdash; Lesson 1</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">Il y a des ___</h3>
+        <p class="text-sm text-gray-500 mb-3">There are some ___. Pick any filler.</p>
         <div class="pill-grid">
           <div class="filler-pill"><span class="fr">bonbons</span><span class="en">sweets</span></div>
           <div class="filler-pill"><span class="fr">g&acirc;teaux</span><span class="en">cakes</span></div>
-          <div class="filler-pill"><span class="fr">tables</span><span class="en">tables</span></div>
           <div class="filler-pill"><span class="fr">parcs</span><span class="en">parks</span></div>
-          <div class="filler-pill"><span class="fr">saucisses</span><span class="en">sausages</span></div>
-          <div class="filler-pill"><span class="fr">lampes</span><span class="en">lamps</span></div>
-          <div class="filler-pill"><span class="fr">livres</span><span class="en">books</span></div>
-          <div class="filler-pill"><span class="fr">r&egrave;gles</span><span class="en">rulers</span></div>
-          <div class="filler-pill"><span class="fr">&eacute;crans</span><span class="en">screens</span></div>
           <div class="filler-pill"><span class="fr">nuages</span><span class="en">clouds</span></div>
-          <div class="filler-pill"><span class="fr">lumi&egrave;res</span><span class="en">lights</span></div>
-          <div class="filler-pill"><span class="fr">plantes</span><span class="en">plants</span></div>
           <div class="filler-pill"><span class="fr">fleurs</span><span class="en">flowers</span></div>
-          <div class="filler-pill"><span class="fr">stylos</span><span class="en">pens</span></div>
-          <div class="filler-pill"><span class="fr">cartes</span><span class="en">maps</span></div>
-          <div class="filler-pill"><span class="fr">&eacute;motions</span><span class="en">emotions</span></div>
-          <div class="filler-pill"><span class="fr">sentiments</span><span class="en">feelings</span></div>
-          <div class="filler-pill"><span class="fr">gar&ccedil;ons</span><span class="en">boys</span></div>
-          <div class="filler-pill"><span class="fr">filles</span><span class="en">girls</span></div>
+          <div class="filler-pill"><span class="fr">saucisses</span><span class="en">sausages</span></div>
           <div class="filler-pill"><span class="fr">animaux</span><span class="en">animals</span></div>
-        </div>
-
-        <p class="pill-label">So you get sentences like</p>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des <strong>fleurs</strong></div>
-          <div class="phrase-pron">ee-lee-ah day flur</div>
-          <div class="phrase-en">There are some flowers</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des <strong>saucisses</strong></div>
-          <div class="phrase-pron">ee-lee-ah day so-sees</div>
-          <div class="phrase-en">There are some sausages</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des <strong>nuages</strong></div>
-          <div class="phrase-pron">ee-lee-ah day noo-azh</div>
-          <div class="phrase-en">There are some clouds</div>
-        </div>
-
-        <p class="text-xs text-gray-400 italic mt-3">Also works singular: il y a un ___ (masc) / il y a une ___ (fem) / il y a du ___ (uncountable, e.g. de la neige = snow)</p>
-      </div>
-
-      <!-- FRAME 2 -->
-      <div class="card" style="border-color: #C8102E; border-width: 2px;">
-        <span class="section-label">Frame 2</span>
-        <h3 class="font-display text-lg font-bold text-navy mb-1">Je pense que c'est ___</h3>
-        <p class="text-sm text-gray-500 mb-4">I think it's ___. Slot any adjective on the end.</p>
-
-        <p class="pill-label">Example fillers</p>
-        <div class="pill-grid">
-          <div class="filler-pill"><span class="fr">difficile</span><span class="en">difficult</span></div>
-          <div class="filler-pill"><span class="fr">fun</span><span class="en">fun</span></div>
-          <div class="filler-pill"><span class="fr">int&eacute;ressant</span><span class="en">interesting</span></div>
-          <div class="filler-pill"><span class="fr">bien</span><span class="en">good</span></div>
-          <div class="filler-pill"><span class="fr">bizarre</span><span class="en">weird</span></div>
-          <div class="filler-pill"><span class="fr">super</span><span class="en">great</span></div>
-        </div>
-
-        <p class="pill-label">Chain it with Frame 1 or 3</p>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je pense que c'est <strong>difficile</strong> parce qu'il y a beaucoup de probl&egrave;mes</div>
-          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel parss kee-lee-ah bo-koo duh pro-blem</div>
-          <div class="phrase-en">I think it's difficult because there are a lot of problems</div>
+          <div class="filler-pill"><span class="fr">sentiments</span><span class="en">feelings</span></div>
         </div>
       </div>
 
-      <!-- FRAME 3 -->
+      <!-- Frame 3 + modifiers quick ref -->
       <div class="card" style="border-color: #C8102E; border-width: 2px;">
-        <span class="section-label">Frame 3</span>
+        <span class="section-label">Frame 3 &mdash; Lesson 1</span>
         <h3 class="font-display text-lg font-bold text-navy mb-1">Il y a ___ de ___</h3>
-        <p class="text-sm text-gray-500 mb-4">Two slots to fill. Pick a modifier to say how many, then pick a filler to say of what.</p>
-
-        <p class="pill-label">Slot 1: Pick a modifier</p>
+        <p class="text-sm text-gray-500 mb-3">8 modifiers &times; 21 fillers = 168 sentences.</p>
         <div class="pill-grid">
           <div class="modifier-pill"><span class="fr">beaucoup</span><span class="en">a lot</span></div>
           <div class="modifier-pill"><span class="fr">trop</span><span class="en">too many</span></div>
@@ -212,80 +213,83 @@
           <div class="modifier-pill"><span class="fr">toujours</span><span class="en">always</span></div>
           <div class="modifier-pill"><span class="fr">jamais</span><span class="en">never</span></div>
         </div>
-
-        <p class="pill-label">Slot 2: Pick a filler (same 21 words from Frame 1)</p>
-        <div class="pill-grid">
-          <div class="filler-pill"><span class="fr">bonbons</span><span class="en">sweets</span></div>
-          <div class="filler-pill"><span class="fr">g&acirc;teaux</span><span class="en">cakes</span></div>
-          <div class="filler-pill"><span class="fr">tables</span><span class="en">tables</span></div>
-          <div class="filler-pill"><span class="fr">parcs</span><span class="en">parks</span></div>
-          <div class="filler-pill"><span class="fr">saucisses</span><span class="en">sausages</span></div>
-          <div class="filler-pill"><span class="fr">lampes</span><span class="en">lamps</span></div>
-          <div class="filler-pill"><span class="fr">livres</span><span class="en">books</span></div>
-          <div class="filler-pill"><span class="fr">r&egrave;gles</span><span class="en">rulers</span></div>
-          <div class="filler-pill"><span class="fr">&eacute;crans</span><span class="en">screens</span></div>
-          <div class="filler-pill"><span class="fr">nuages</span><span class="en">clouds</span></div>
-          <div class="filler-pill"><span class="fr">lumi&egrave;res</span><span class="en">lights</span></div>
-          <div class="filler-pill"><span class="fr">plantes</span><span class="en">plants</span></div>
-          <div class="filler-pill"><span class="fr">fleurs</span><span class="en">flowers</span></div>
-          <div class="filler-pill"><span class="fr">stylos</span><span class="en">pens</span></div>
-          <div class="filler-pill"><span class="fr">cartes</span><span class="en">maps</span></div>
-          <div class="filler-pill"><span class="fr">&eacute;motions</span><span class="en">emotions</span></div>
-          <div class="filler-pill"><span class="fr">sentiments</span><span class="en">feelings</span></div>
-          <div class="filler-pill"><span class="fr">gar&ccedil;ons</span><span class="en">boys</span></div>
-          <div class="filler-pill"><span class="fr">filles</span><span class="en">girls</span></div>
-          <div class="filler-pill"><span class="fr">animaux</span><span class="en">animals</span></div>
-        </div>
-
-        <p class="pill-label">So you get sentences like</p>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a <strong>trop</strong> de <strong>nuages</strong></div>
-          <div class="phrase-pron">ee-lee-ah tro duh noo-azh</div>
-          <div class="phrase-en">There are too many clouds</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a <strong>plein</strong> de <strong>fleurs</strong></div>
-          <div class="phrase-pron">ee-lee-ah plan duh flur</div>
-          <div class="phrase-en">There are loads of flowers</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a <strong>jamais</strong> de <strong>bonbons</strong></div>
-          <div class="phrase-pron">ee-lee-ah zhah-may duh bon-bon</div>
-          <div class="phrase-en">There are never any sweets</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a <strong>pas assez</strong> de <strong>g&acirc;teaux</strong></div>
-          <div class="phrase-pron">ee-lee-ah pah-zah-say duh gah-toh</div>
-          <div class="phrase-en">There aren't enough cakes</div>
-        </div>
-
-        <p class="text-sm text-gray-500 mt-3"><strong>8 modifiers x 21 fillers = 168 sentences</strong> from this one frame alone.</p>
       </div>
 
-      <!-- Bonus Frame -->
-      <div class="card">
-        <span class="section-label">Bonus Frame</span>
-        <h3 class="font-display text-lg font-bold text-navy mb-1">Je me suis dit qu'on pourrait ___</h3>
-        <p class="text-sm text-gray-500 mb-4">I was thinking we could ___. Way more natural than the textbook "j'ai pens&eacute;".</p>
+      <!-- Beer mat quick ref -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">Beer Mat &mdash; Lesson 2</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-3">The Three Core Verbs</h3>
+        <table class="verb-table">
+          <thead>
+            <tr>
+              <th>Verb</th>
+              <th>Je</th>
+              <th>Tu / Il / Elle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="verb-name">&Ecirc;tre</span><br><span class="verb-meaning">to be</span></td>
+              <td><span class="conj">suis</span><br><span class="pron">swee</span></td>
+              <td><span class="conj">es / est</span><br><span class="pron">ay / ay</span></td>
+            </tr>
+            <tr>
+              <td><span class="verb-name">Avoir</span><br><span class="verb-meaning">to have</span></td>
+              <td><span class="conj">ai</span><br><span class="pron">ay</span></td>
+              <td><span class="conj">as / a</span><br><span class="pron">ah / ah</span></td>
+            </tr>
+            <tr>
+              <td><span class="verb-name">Aller</span><br><span class="verb-meaning">to go</span></td>
+              <td><span class="conj">vais</span><br><span class="pron">vay</span></td>
+              <td><span class="conj">vas / va</span><br><span class="pron">vah / vah</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="text-xs text-gray-400 italic mt-3">Future shortcut: <strong>je vais + infinitive</strong> &mdash; je vais manger, je vais aller, je vais faire&hellip;</p>
+      </div>
 
-        <div class="phrase-row">
-          <div class="phrase-fr">Je me suis dit qu'on pourrait aller au parc</div>
-          <div class="phrase-pron">zhuh muh swee dee kon poo-ray ah-lay oh park</div>
-          <div class="phrase-en">I was thinking we could go to the park</div>
+      <!-- Monologue quick ref -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">The Monologue &mdash; Lesson 3</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-3">Your Script</h3>
+        <div class="mono-line">
+          <div class="mono-fr">Bonjour ! Je suis Louise, je suis anglaise.</div>
+          <div class="mono-pron">bon-zhoor &middot; zhuh swee loo-eez &middot; zhuh swee on-glez</div>
+          <div class="mono-en">Hello! I'm Louise, I'm English.</div>
         </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je me suis dit qu'on pourrait aller au pub</div>
-          <div class="phrase-pron">zhuh muh swee dee kon poo-ray ah-lay oh pub</div>
-          <div class="phrase-en">I was thinking we could go to the pub</div>
+        <div class="mono-line">
+          <div class="mono-fr">Le fran&ccedil;ais est pas parfait, mais pas de panique !</div>
+          <div class="mono-pron">luh fron-say ay pah par-fay &middot; may pah duh pah-neek</div>
+          <div class="mono-en">My French isn't perfect, but don't panic!</div>
         </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Je me suis dit qu'on pourrait d&icirc;ner</div>
-          <div class="phrase-pron">zhuh muh swee dee kon poo-ray dee-nay</div>
-          <div class="phrase-en">I was thinking we could have dinner</div>
+        <div class="mono-line">
+          <div class="mono-fr">Vous &ecirc;tes de la r&eacute;gion ?</div>
+          <div class="mono-pron">voo-zet duh lah ray-zhyon</div>
+          <div class="mono-en">Are you from around here?</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">Je pense que vous avez de la chance : je parle lentement.</div>
+          <div class="mono-pron">zhuh ponss kuh voo-za-vay duh lah shonss &middot; zhuh parl lont-mon</div>
+          <div class="mono-en">I think you're lucky: I speak slowly.</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">Vous pouvez me dire tu, c'est plus simple.</div>
+          <div class="mono-pron">voo poo-vay muh deer too &middot; say ploo sam-pluh</div>
+          <div class="mono-en">You can use "tu" with me, it's simpler.</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">Moi, je suis &agrave; Ealing, &agrave; c&ocirc;t&eacute; de Londres.</div>
+          <div class="mono-pron">mwah &middot; zhuh swee ah ee-ling &middot; ah koh-tay duh lond-ruh</div>
+          <div class="mono-en">I'm in Ealing, near London.</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">C'est un coin calme, c'est pas Paris.</div>
+          <div class="mono-pron">say-tan kwan kalm &middot; say pah pa-ree</div>
+          <div class="mono-en">It's a quiet little spot, it's no Paris.</div>
         </div>
       </div>
 
-      <!-- Get out of jail cards -->
+      <!-- Get-out-of-jail -->
       <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
         <span class="section-label">Get-Out-of-Jail Cards</span>
         <p class="text-sm text-gray-400 mb-4 italic">Keep these loaded. When you're stuck mid-conversation, reach for one instead of freezing up.</p>
@@ -310,89 +314,6 @@
           <div class="vocab-pron">sa vuh deer</div>
           <div class="vocab-en">That means&hellip; (clarify what you just said)</div>
         </div>
-      </div>
-
-      <!-- Key Concepts -->
-      <div class="card">
-        <span class="section-label">Key Concepts</span>
-
-        <h3 class="font-display text-base font-bold text-navy mb-3">The Past Tense Shortcut</h3>
-        <p class="text-sm text-gray-600 mb-3">Add an "&eacute;" sound to make most verbs past tense. Don't overthink conjugation.</p>
-        <div class="vocab-row">
-          <span class="vocab-fr">Je pense &rarr; J'ai pens&eacute;</span>
-          <span class="vocab-pron">zhuh ponss &rarr; zhay pon-say</span>
-          <span class="vocab-en">I think &rarr; I thought</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Je mange &rarr; J'ai mang&eacute;</span>
-          <span class="vocab-pron">zhuh monzh &rarr; zhay mon-zhay</span>
-          <span class="vocab-en">I eat &rarr; I ate</span>
-        </div>
-
-        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Making "Il y a" Singular</h3>
-        <p class="text-sm text-gray-600 mb-3">Replace "des" with "un" (masculine), "une" (feminine), or "du/de la" (uncountable).</p>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a des fleurs &rarr; Il y a une fleur</div>
-          <div class="phrase-pron">ee-lee-ah day flur &rarr; ee-lee-ah oon flur</div>
-          <div class="phrase-en">There are flowers &rarr; There is a flower</div>
-        </div>
-        <div class="phrase-row">
-          <div class="phrase-fr">Il y a de la neige</div>
-          <div class="phrase-pron">ee-lee-ah duh la nezh</div>
-          <div class="phrase-en">There is some snow</div>
-        </div>
-
-        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The Canada Story</h3>
-        <p class="text-sm text-gray-600">
-          You say "en France" (feminine country) but "au Canada" (masculine country). There's no intuitive rule. The French prioritise how things sound over strict logic. Keep this anecdote locked and loaded for when anyone criticises your French.
-        </p>
-      </div>
-
-      <!-- Sounding Natural -->
-      <div class="card">
-        <span class="section-label">Sounding Natural</span>
-        <div class="vocab-row">
-          <span class="vocab-fr">T&ecirc;te dans les nuages</span>
-          <span class="vocab-pron">tet don lay noo-azh</span>
-          <span class="vocab-en">Head in the clouds</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">En plein hiver</span>
-          <span class="vocab-pron">on plan ee-vair</span>
-          <span class="vocab-en">In the middle of winter</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">En plein &eacute;t&eacute;</span>
-          <span class="vocab-pron">on plan ay-tay</span>
-          <span class="vocab-en">In the middle of summer</span>
-        </div>
-        <div class="vocab-row">
-          <span class="vocab-fr">Pas mal de</span>
-          <span class="vocab-pron">pah mal duh</span>
-          <span class="vocab-en">Not a bad amount of / quite a lot of</span>
-        </div>
-      </div>
-
-      <!-- Before Next Lesson -->
-      <div class="card">
-        <span class="section-label">Before Next Lesson</span>
-        <div class="technique-step">
-          <span class="technique-num">1</span>
-          <p class="text-sm text-gray-600"><strong>Don't cram.</strong> Have a good sleep and let it settle.</p>
-        </div>
-        <div class="technique-step">
-          <span class="technique-num">2</span>
-          <p class="text-sm text-gray-600"><strong>Play with the frames.</strong> Pick a modifier from the dark pills, pick a filler from the light pills, say the sentence out loud. No wrong answers.</p>
-        </div>
-        <div class="technique-step">
-          <span class="technique-num">3</span>
-          <p class="text-sm text-gray-600"><strong>Try "je me suis dit".</strong> Think of something you'd like to do and say "Je me suis dit qu'on pourrait&hellip;" followed by whatever comes to mind.</p>
-        </div>
-        <div class="technique-step">
-          <span class="technique-num">4</span>
-          <p class="text-sm text-gray-600"><strong>Zero pressure.</strong> This isn't homework. Just enjoy creating sentences.</p>
-        </div>
-        <p class="text-xs text-gray-400 italic mt-3">Next lesson: we'll start building your "speed dating" mini script, introducing yourself using the frames and vocab from today.</p>
       </div>
 
     </div>
@@ -454,6 +375,23 @@
           <div class="filler-pill"><span class="fr">animaux</span><span class="en">animals</span></div>
         </div>
 
+        <p class="pill-label">So you get sentences like</p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des <strong>fleurs</strong></div>
+          <div class="phrase-pron">ee-lee-ah day flur</div>
+          <div class="phrase-en">There are some flowers</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des <strong>saucisses</strong></div>
+          <div class="phrase-pron">ee-lee-ah day so-sees</div>
+          <div class="phrase-en">There are some sausages</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des <strong>nuages</strong></div>
+          <div class="phrase-pron">ee-lee-ah day noo-azh</div>
+          <div class="phrase-en">There are some clouds</div>
+        </div>
+
         <p class="text-xs text-gray-400 italic mt-4">Also works singular: il y a un ___ (masc) / il y a une ___ (fem) / il y a de la neige (snow, uncountable)</p>
       </div>
 
@@ -471,6 +409,13 @@
           <div class="filler-pill"><span class="fr">bien</span><span class="en">good</span></div>
           <div class="filler-pill"><span class="fr">bizarre</span><span class="en">weird</span></div>
           <div class="filler-pill"><span class="fr">super</span><span class="en">great</span></div>
+        </div>
+
+        <p class="pill-label">Chain it with Frame 1 or 3</p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je pense que c'est <strong>difficile</strong> parce qu'il y a beaucoup de probl&egrave;mes</div>
+          <div class="phrase-pron">zhuh ponss kuh say dee-fee-seel parss kee-lee-ah bo-koo duh pro-blem</div>
+          <div class="phrase-en">I think it's difficult because there are a lot of problems</div>
         </div>
       </div>
 
@@ -538,7 +483,7 @@
           <div class="phrase-en">There aren't enough cakes</div>
         </div>
 
-        <p class="text-sm text-gray-500 mt-3"><strong>8 modifiers x 21 fillers = 168 sentences</strong> from this one frame alone.</p>
+        <p class="text-sm text-gray-500 mt-3"><strong>8 modifiers &times; 21 fillers = 168 sentences</strong> from this one frame alone.</p>
       </div>
 
       <!-- Bonus Frame -->
@@ -564,6 +509,33 @@
         </div>
       </div>
 
+      <!-- Get-out-of-jail -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">Get-Out-of-Jail Cards</span>
+        <p class="text-sm text-gray-400 mb-4 italic">Keep these loaded. When you're stuck mid-conversation, reach for one instead of freezing up.</p>
+
+        <div class="toolkit-row">
+          <div class="vocab-fr">Comment dire&hellip;</div>
+          <div class="vocab-pron">ko-mon deer</div>
+          <div class="vocab-en">How can I say this&hellip; (buys you time)</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Pardon ?</div>
+          <div class="vocab-pron">par-don</div>
+          <div class="vocab-en">Sorry? / I didn't catch that</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">C'est-&agrave;-dire&hellip;</div>
+          <div class="vocab-pron">set-ah-deer</div>
+          <div class="vocab-en">That is to say&hellip; (regroup mid-sentence)</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">&Ccedil;a veut dire&hellip;</div>
+          <div class="vocab-pron">sa vuh deer</div>
+          <div class="vocab-en">That means&hellip; (clarify what you just said)</div>
+        </div>
+      </div>
+
       <!-- Key Concepts -->
       <div class="card">
         <span class="section-label">Key Concepts</span>
@@ -581,10 +553,48 @@
           <span class="vocab-en">I eat &rarr; I ate</span>
         </div>
 
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Making "Il y a" Singular</h3>
+        <p class="text-sm text-gray-600 mb-3">Replace "des" with "un" (masculine), "une" (feminine), or "du/de la" (uncountable).</p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a des fleurs &rarr; Il y a une fleur</div>
+          <div class="phrase-pron">ee-lee-ah day flur &rarr; ee-lee-ah oon flur</div>
+          <div class="phrase-en">There are flowers &rarr; There is a flower</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il y a de la neige</div>
+          <div class="phrase-pron">ee-lee-ah duh la nezh</div>
+          <div class="phrase-en">There is some snow</div>
+        </div>
+
         <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The Canada Story</h3>
         <p class="text-sm text-gray-600">
           You say "en France" (feminine country) but "au Canada" (masculine country). There's no intuitive rule. Keep this locked and loaded for when anyone criticises your French.
         </p>
+      </div>
+
+      <!-- Sounding Natural -->
+      <div class="card">
+        <span class="section-label">Sounding Natural</span>
+        <div class="vocab-row">
+          <span class="vocab-fr">T&ecirc;te dans les nuages</span>
+          <span class="vocab-pron">tet don lay noo-azh</span>
+          <span class="vocab-en">Head in the clouds</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">En plein hiver</span>
+          <span class="vocab-pron">on plan ee-vair</span>
+          <span class="vocab-en">In the middle of winter</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">En plein &eacute;t&eacute;</span>
+          <span class="vocab-pron">on plan ay-tay</span>
+          <span class="vocab-en">In the middle of summer</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">Pas mal de</span>
+          <span class="vocab-pron">pah mal duh</span>
+          <span class="vocab-en">Quite a lot of</span>
+        </div>
       </div>
 
       <!-- Before Next Lesson -->
@@ -606,11 +616,406 @@
           <span class="technique-num">4</span>
           <p class="text-sm text-gray-600"><strong>Zero pressure.</strong> This isn't homework. Just enjoy creating sentences.</p>
         </div>
-        <p class="text-xs text-gray-400 italic mt-3">Next lesson: we'll start building your "speed dating" mini script.</p>
       </div>
 
     </div>
     <!-- end Lesson 1 tab -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 2                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l2'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 2</div>
+        <h2>The Beer Mat</h2>
+        <div class="meta">5 Oct 2026 &middot; 3 core verbs &middot; future shortcut &middot; gender &amp; destinations</div>
+      </div>
+
+      <!-- What You Covered -->
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 mb-2">
+          Three foundational verbs &mdash; &ecirc;tre, avoir, aller &mdash; are the engine behind most of French. You can write them on a beer mat and they'll get you surprisingly far.
+        </p>
+        <p class="text-sm text-gray-600 mb-2">
+          You also learned the future shortcut: <strong>je vais + any infinitive</strong>. No complex conjugation needed &mdash; just "I'm going to [verb]" and slot in whatever you want to do.
+        </p>
+        <p class="text-sm text-gray-600">
+          Plus: the gender rule for destinations (au for masculine, &agrave; la for feminine), and the circumlocution toolkit for when the right word won't come.
+        </p>
+      </div>
+
+      <!-- Verb table -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">The Three Core Verbs</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-4">Your beer mat</h3>
+        <table class="verb-table">
+          <thead>
+            <tr>
+              <th>Verb</th>
+              <th>Je</th>
+              <th>Tu / Il / Elle / On</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <span class="verb-name">&Ecirc;tre</span><br>
+                <span class="verb-meaning">to be</span>
+              </td>
+              <td>
+                <span class="conj">suis</span><br>
+                <span class="pron">swee</span>
+              </td>
+              <td>
+                <span class="conj">es / est</span><br>
+                <span class="pron">ay / ay</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="verb-name">Avoir</span><br>
+                <span class="verb-meaning">to have</span>
+              </td>
+              <td>
+                <span class="conj">ai</span><br>
+                <span class="pron">ay</span>
+              </td>
+              <td>
+                <span class="conj">as / a</span><br>
+                <span class="pron">ah / ah</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="verb-name">Aller</span><br>
+                <span class="verb-meaning">to go</span>
+              </td>
+              <td>
+                <span class="conj">vais</span><br>
+                <span class="pron">vay</span>
+              </td>
+              <td>
+                <span class="conj">vas / va</span><br>
+                <span class="pron">vah / vah</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="pill-label">Example sentences</p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis anglaise</div>
+          <div class="phrase-pron">zhuh swee on-glez</div>
+          <div class="phrase-en">I'm English</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Tu es de la r&eacute;gion ?</div>
+          <div class="phrase-pron">too ay duh lah ray-zhyon</div>
+          <div class="phrase-en">Are you from around here?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">J'ai une question</div>
+          <div class="phrase-pron">zhay oon kess-tyon</div>
+          <div class="phrase-en">I have a question</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais au march&eacute;</div>
+          <div class="phrase-pron">zhuh vay oh mar-shay</div>
+          <div class="phrase-en">I'm going to the market</div>
+        </div>
+      </div>
+
+      <!-- Future shortcut -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">The Future Shortcut</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">Je vais + infinitive</h3>
+        <p class="text-sm text-gray-500 mb-4">No conjugation tables. Just "I'm going to" + any verb in its plain form.</p>
+
+        <p class="pill-label">Infinitives to know</p>
+        <div class="pill-grid">
+          <div class="filler-pill"><span class="fr">aller</span><span class="en">to go</span></div>
+          <div class="filler-pill"><span class="fr">manger</span><span class="en">to eat</span></div>
+          <div class="filler-pill"><span class="fr">faire</span><span class="en">to do / make</span></div>
+          <div class="filler-pill"><span class="fr">&eacute;tudier</span><span class="en">to study</span></div>
+          <div class="filler-pill"><span class="fr">parler</span><span class="en">to speak</span></div>
+          <div class="filler-pill"><span class="fr">rentrer</span><span class="en">to go home</span></div>
+          <div class="filler-pill"><span class="fr">regarder</span><span class="en">to watch</span></div>
+          <div class="filler-pill"><span class="fr">travailler</span><span class="en">to work</span></div>
+        </div>
+
+        <p class="pill-label">So you get sentences like</p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais <strong>manger</strong></div>
+          <div class="phrase-pron">zhuh vay mon-zhay</div>
+          <div class="phrase-en">I'm going to eat</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais <strong>faire</strong> du shopping</div>
+          <div class="phrase-pron">zhuh vay fair doo sho-ping</div>
+          <div class="phrase-en">I'm going to do some shopping</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais <strong>rentrer</strong></div>
+          <div class="phrase-pron">zhuh vay ron-tray</div>
+          <div class="phrase-en">I'm going to head home</div>
+        </div>
+        <p class="text-xs text-gray-400 italic mt-3">Add re- to the front of most verbs to mean "again" &mdash; refaire = to redo, retourner = to go back.</p>
+      </div>
+
+      <!-- Destinations -->
+      <div class="card">
+        <span class="section-label">Getting Around: Au vs &Agrave; la</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">Gender decides the preposition</h3>
+        <p class="text-sm text-gray-500 mb-4">Masculine places take <strong>au</strong>. Feminine places take <strong>&agrave; la</strong>. Countries follow the same rule.</p>
+
+        <div class="vocab-row">
+          <span class="vocab-fr">au + masculine</span>
+          <span class="vocab-pron">oh</span>
+          <span class="vocab-en">au cin&eacute;ma, au Canada, au march&eacute;</span>
+        </div>
+        <div class="vocab-row">
+          <span class="vocab-fr">&agrave; la + feminine</span>
+          <span class="vocab-pron">ah lah</span>
+          <span class="vocab-en">&agrave; la piscine, en France, &agrave; la maison</span>
+        </div>
+
+        <p class="pill-label">Masculine (au)</p>
+        <div class="pill-grid">
+          <div class="filler-pill"><span class="fr">cin&eacute;ma (m.)</span><span class="en">cinema</span></div>
+          <div class="filler-pill"><span class="fr">Canada (m.)</span><span class="en">Canada</span></div>
+          <div class="filler-pill"><span class="fr">march&eacute; (m.)</span><span class="en">market</span></div>
+          <div class="filler-pill"><span class="fr">pub (m.)</span><span class="en">pub</span></div>
+        </div>
+
+        <p class="pill-label">Feminine (&agrave; la / en)</p>
+        <div class="pill-grid">
+          <div class="filler-pill"><span class="fr">piscine (f.)</span><span class="en">swimming pool</span></div>
+          <div class="filler-pill"><span class="fr">France (f.)</span><span class="en">France</span></div>
+          <div class="filler-pill"><span class="fr">maison (f.)</span><span class="en">home</span></div>
+          <div class="filler-pill"><span class="fr">gare (f.)</span><span class="en">station</span></div>
+        </div>
+      </div>
+
+      <!-- Circumlocution -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">Circumlocution Rescue Kit</span>
+        <p class="text-sm text-gray-400 mb-4 italic">When the exact word won't come, talk your way around it.</p>
+
+        <div class="toolkit-row">
+          <div class="vocab-fr">C'est-&agrave;-dire&hellip;</div>
+          <div class="vocab-pron">set-ah-deer</div>
+          <div class="vocab-en">That is to say&hellip; (regroup mid-sentence)</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">&Ccedil;a veut dire&hellip;</div>
+          <div class="vocab-pron">sa vuh deer</div>
+          <div class="vocab-en">That means&hellip; (clarify what you just said)</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">C'est une chose pour&hellip;</div>
+          <div class="vocab-pron">say-toon shohz poor</div>
+          <div class="vocab-en">It's a thing for&hellip; (describe rather than name)</div>
+        </div>
+        <div class="toolkit-row">
+          <div class="vocab-fr">Je ne sais pas comment dire&hellip;</div>
+          <div class="vocab-pron">zhuh nuh say pah ko-mon deer</div>
+          <div class="vocab-en">I don't know how to say&hellip; (honest fallback)</div>
+        </div>
+      </div>
+
+      <!-- The maths -->
+      <div class="card">
+        <span class="section-label">The Maths</span>
+        <p class="text-sm text-gray-600 mb-2">
+          With just the 3 beer mat verbs and a modest list of infinitives, you're already generating dozens of distinct sentences. Combine them with the frames from Lesson 1 and you have real conversations within reach.
+        </p>
+        <p class="text-sm font-semibold text-navy">3 verbs &times; 2 tenses (present + future) &times; a handful of nouns = conversational French.</p>
+      </div>
+
+    </div>
+    <!-- end Lesson 2 tab -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 3                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l3'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 3</div>
+        <h2>The Frequency Monologue</h2>
+        <div class="meta">29 Oct 2026 &middot; 7 lines &middot; 10% &rarr; 15% &rarr; 20% frequency thresholds</div>
+      </div>
+
+      <!-- What is this -->
+      <div class="card">
+        <span class="section-label">What Is Frequency Training?</span>
+        <p class="text-sm text-gray-600 mb-3">
+          The most common 10% of French words account for roughly half of everything a native speaker says. The top 20% covers the vast majority of everyday conversation. This script was generated using those exact frequency rankings.
+        </p>
+        <p class="text-sm text-gray-600 mb-3">
+          By memorising this monologue you're not just learning 7 sentences &mdash; you're internalising the most statistically useful sounds, rhythms, and liaisons in the language.
+        </p>
+        <p class="text-sm text-gray-600">
+          Each section builds on the previous one. Start at 10%, get it solid, then extend to 15%, then 20%.
+        </p>
+      </div>
+
+      <!-- How to practise -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">How to Practise</span>
+        <div class="technique-step">
+          <span class="technique-num">1</span>
+          <p class="text-sm text-gray-600"><strong>Read it aloud.</strong> Don't mumble it in your head &mdash; say it properly, every time.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">2</span>
+          <p class="text-sm text-gray-600"><strong>Look away.</strong> Close this page and try to say the line from memory.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">3</span>
+          <p class="text-sm text-gray-600"><strong>Check and repeat.</strong> Open it back up, correct anything, and say it again.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">4</span>
+          <p class="text-sm text-gray-600"><strong>Sleep on it.</strong> Don't cram. A short session today and tomorrow beats two hours in one go.</p>
+        </div>
+      </div>
+
+      <!-- 10% threshold -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="threshold-badge">10% threshold</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">Your Opening Lines</h3>
+        <p class="text-sm text-gray-500 mb-4">Start here. These two lines alone will open almost any conversation in France.</p>
+
+        <div class="mono-line">
+          <div class="mono-fr">Bonjour ! Je suis Louise, je suis anglaise.</div>
+          <div class="mono-pron">bon-zhoor &middot; zhuh swee loo-eez &middot; zhuh swee on-glez</div>
+          <div class="mono-en">Hello! I'm Louise, I'm English.</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">Le fran&ccedil;ais est pas parfait, mais pas de panique !</div>
+          <div class="mono-pron">luh fron-say ay pah par-fay &middot; may pah duh pah-neek</div>
+          <div class="mono-en">My French isn't perfect, but don't panic!</div>
+        </div>
+
+        <div class="mt-4 p-3 rounded-lg" style="background:#fff5f5;">
+          <p class="text-xs text-rouge font-semibold mb-1">Pronunciation note</p>
+          <p class="text-xs text-gray-600"><strong>Je suis</strong> often becomes "chui" at native speed (shwee). Either version is fine. <strong>est pas</strong> (ay pah) drops the "ne" &mdash; this is normal spoken French, not sloppy.</p>
+        </div>
+      </div>
+
+      <!-- 15% threshold -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="threshold-badge">15% threshold</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">The Warmup Questions</h3>
+        <p class="text-sm text-gray-500 mb-4">Once the opener is solid, add these two lines.</p>
+
+        <div class="mono-line">
+          <div class="mono-fr">Vous &ecirc;tes de la r&eacute;gion ?</div>
+          <div class="mono-pron">voo-<strong>z</strong>et duh lah ray-zhyon</div>
+          <div class="mono-en">Are you from around here?</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">Je pense que vous avez de la chance : je parle lentement.</div>
+          <div class="mono-pron">zhuh ponss kuh voo-<strong>z</strong>a-vay duh lah shonss &middot; zhuh parl lont-mon</div>
+          <div class="mono-en">I think you're lucky: I speak slowly.</div>
+        </div>
+
+        <div class="mt-4 p-3 rounded-lg" style="background:#fff5f5;">
+          <p class="text-xs text-rouge font-semibold mb-1">Pronunciation note</p>
+          <p class="text-xs text-gray-600"><strong>Vous &ecirc;tes</strong> &mdash; the s links to the &ecirc;, giving "voo-<em>z</em>et". <strong>vous avez</strong> &mdash; same liaison, "voo-<em>z</em>a-vay". These links are what make French sound French.</p>
+        </div>
+      </div>
+
+      <!-- 20% threshold -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="threshold-badge">20% threshold</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">The Full Monologue</h3>
+        <p class="text-sm text-gray-500 mb-4">Add these three lines to complete the script.</p>
+
+        <div class="mono-line">
+          <div class="mono-fr">Vous pouvez me dire tu, c'est plus simple.</div>
+          <div class="mono-pron">voo poo-vay muh deer too &middot; say ploo sam-pluh</div>
+          <div class="mono-en">You can use "tu" with me, it's simpler.</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">Tu es &agrave; c&ocirc;t&eacute; de Londres ? Moi, je suis &agrave; Ealing, &agrave; c&ocirc;t&eacute; de Londres.</div>
+          <div class="mono-pron">too ay ah koh-tay duh lond-ruh &middot; mwah &middot; zhuh swee ah ee-ling &middot; ah koh-tay duh lond-ruh</div>
+          <div class="mono-en">Are you near London? I'm in Ealing, near London.</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">C'est un coin calme, c'est pas Paris.</div>
+          <div class="mono-pron">say-tan kwan kalm &middot; say pah pa-ree</div>
+          <div class="mono-en">It's a quiet little spot, it's no Paris.</div>
+        </div>
+
+        <div class="mt-4 p-3 rounded-lg" style="background:#fff5f5;">
+          <p class="text-xs text-rouge font-semibold mb-1">Pronunciation note</p>
+          <p class="text-xs text-gray-600"><strong>C'est un</strong> links into "say-<em>t</em>an". <strong>c'est pas</strong> &mdash; the t is silent, so "say pah". <strong>&agrave; c&ocirc;t&eacute; de</strong> = "ah koh-tay duh" &mdash; the accent on the &eacute; keeps it clean and open.</p>
+        </div>
+      </div>
+
+      <!-- Full script in one view -->
+      <div class="card">
+        <span class="section-label">The Full Script</span>
+        <p class="text-sm text-gray-400 italic mb-4">All 7 lines together. Use this when you're ready to practise end-to-end.</p>
+
+        <div class="mono-line">
+          <div class="mono-fr">Bonjour ! Je suis Louise, je suis anglaise.</div>
+          <div class="mono-en">Hello! I'm Louise, I'm English.</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">Le fran&ccedil;ais est pas parfait, mais pas de panique !</div>
+          <div class="mono-en">My French isn't perfect, but don't panic!</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">Vous &ecirc;tes de la r&eacute;gion ?</div>
+          <div class="mono-en">Are you from around here?</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">Je pense que vous avez de la chance : je parle lentement.</div>
+          <div class="mono-en">I think you're lucky: I speak slowly.</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">Vous pouvez me dire tu, c'est plus simple.</div>
+          <div class="mono-en">You can use "tu" with me, it's simpler.</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">Tu es &agrave; c&ocirc;t&eacute; de Londres ? Moi, je suis &agrave; Ealing, &agrave; c&ocirc;t&eacute; de Londres.</div>
+          <div class="mono-en">Are you near London? I'm in Ealing, near London.</div>
+        </div>
+        <div class="mono-line">
+          <div class="mono-fr">C'est un coin calme, c'est pas Paris.</div>
+          <div class="mono-en">It's a quiet little spot, it's no Paris.</div>
+        </div>
+      </div>
+
+      <!-- What's next -->
+      <div class="card">
+        <span class="section-label">What's Next</span>
+        <p class="text-sm text-gray-600 mb-3">
+          Next session Dan will start throwing interruptions at you mid-monologue to practise holding your thread under pressure. The goal is that this script becomes automatic, so your brain has spare capacity to actually listen and respond.
+        </p>
+        <div class="technique-step">
+          <span class="technique-num">1</span>
+          <p class="text-sm text-gray-600">Get the 10% block automatic before the next lesson.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">2</span>
+          <p class="text-sm text-gray-600">Try saying it in the car, in the shower, making coffee &mdash; anywhere low-stakes.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">3</span>
+          <p class="text-sm text-gray-600">Don't worry about perfection. Speed and flow matter more than exact pronunciation at this stage.</p>
+        </div>
+      </div>
+
+    </div>
+    <!-- end Lesson 3 tab -->
 
   </main>
 
