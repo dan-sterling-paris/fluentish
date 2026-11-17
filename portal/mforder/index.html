@@ -116,6 +116,31 @@
     }
     .tip-card .tip-title { font-weight: 700; color: #003359; font-size: 0.85rem; margin-bottom: 0.25rem; }
     .tip-card p { font-size: 0.82rem; color: #6b7280; line-height: 1.5; }
+
+    /* Monologue blocks */
+    .mono-line { padding: 1rem 0; border-bottom: 1px solid #f0f0f0; }
+    .mono-line:last-child { border-bottom: none; }
+    .mono-fr { font-size: 1.1rem; font-weight: 700; color: #003359; line-height: 1.4; }
+    .mono-pron { font-style: italic; color: #8a9ab0; font-size: 0.82rem; margin-top: 4px; }
+    .mono-en { color: #6b7280; font-size: 0.85rem; margin-top: 3px; }
+
+    .threshold-badge { display: inline-block; background: #C8102E; color: white; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 999px; margin-bottom: 0.75rem; }
+
+    .technique-step { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.5rem 0; }
+    .technique-num { display: inline-flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; border-radius: 999px; background: #4DD4F5; color: #003359; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
+
+    /* Metric tiles */
+    .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; }
+    .metric { background: #f8f9fb; border: 1px solid #e5e9ef; border-radius: 0.75rem; padding: 0.85rem 1rem; }
+    .metric .val { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: #003359; line-height: 1; }
+    .metric .lbl { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #8a9ab0; margin-top: 5px; }
+
+    /* Priority rows */
+    .prio { display: flex; gap: 0.75rem; align-items: baseline; padding: 0.55rem 0; border-bottom: 1px solid #f0f0f0; }
+    .prio:last-child { border-bottom: none; }
+    .prio-tag { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
+    .prio-hi { background: #C8102E; color: white; }
+    .prio-lo { background: #e5e9ef; color: #8a9ab0; }
   </style>
 </head>
 
@@ -129,8 +154,8 @@
         <h1 class="font-display text-2xl font-bold mt-1">Maria's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">6 lessons</p>
-        <p class="text-xs text-blue-400 mt-0.5">Moving to France</p>
+        <p class="text-sm text-blue-200 font-medium">11 lessons</p>
+        <p class="text-xs text-blue-400 mt-0.5">Frequency monologue &middot; 35% &rarr; 50%</p>
       </div>
     </div>
   </header>
@@ -148,6 +173,8 @@
       <button @click="tab = 'l7'"   :class="tab === 'l7'   ? 'tab-btn active' : 'tab-btn'">Lesson 7</button>
       <button @click="tab = 'l8'"   :class="tab === 'l8'   ? 'tab-btn active' : 'tab-btn'">Lesson 8</button>
       <button @click="tab = 'l9'"   :class="tab === 'l9'   ? 'tab-btn active' : 'tab-btn'">Lesson 9</button>
+      <button @click="tab = 'l10'"  :class="tab === 'l10'  ? 'tab-btn active' : 'tab-btn'">Lesson 10</button>
+      <button @click="tab = 'l11'"  :class="tab === 'l11'  ? 'tab-btn active' : 'tab-btn'" style="color: #C8102E;">Lesson 11 (latest)</button>
     </div>
   </div>
 
@@ -158,6 +185,85 @@
     <!-- TAB: EVERYTHING                           -->
     <!-- ══════════════════════════════════════════ -->
     <div x-show="tab === 'all'" class="space-y-6">
+
+      <!-- WHERE YOU ARE NOW -->
+      <div class="card" style="background: #003359; color: white;">
+        <span class="section-label" style="color: #4DD4F5;">Where You Are Now &mdash; November 2026</span>
+        <h3 class="font-display text-xl font-bold mb-2" style="color: white;">The Frequency Monologue</h3>
+        <p class="text-sm mb-4" style="color: rgba(255,255,255,0.75);">
+          You've moved on from scripts and frames into memorising a frequency-ranked monologue &mdash; a text built
+          from the statistically most common words in spoken French. The aim is no longer "can I say this?"
+          but "can I say it at native speed, without thinking?"
+        </p>
+
+        <div class="metric-grid mb-4">
+          <div class="metric" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15);">
+            <div class="val" style="color: white;">35%</div>
+            <div class="lbl" style="color: #4DD4F5;">Memorised</div>
+          </div>
+          <div class="metric" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15);">
+            <div class="val" style="color: white;">100</div>
+            <div class="lbl" style="color: #4DD4F5;">Your words/min</div>
+          </div>
+          <div class="metric" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15);">
+            <div class="val" style="color: white;">170</div>
+            <div class="lbl" style="color: #4DD4F5;">Target words/min</div>
+          </div>
+          <div class="metric" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15);">
+            <div class="val" style="color: white;">50%</div>
+            <div class="lbl" style="color: #4DD4F5;">Next threshold</div>
+          </div>
+        </div>
+
+        <div class="pt-3" style="border-top: 1px solid rgba(255,255,255,0.15);">
+          <p class="text-xs font-semibold uppercase tracking-wider" style="color: #4DD4F5;">For scale</p>
+          <p class="text-sm mt-1" style="color: rgba(255,255,255,0.75);">
+            Spoken English runs at 130&ndash;150 words per minute. Native spoken French runs at
+            <strong style="color: white;">170&ndash;220</strong>. At 100 you are comfortably understandable &mdash;
+            the remaining work is speed and flow, not vocabulary.
+          </p>
+        </div>
+      </div>
+
+      <!-- HOW TO PRACTISE THE MONOLOGUE -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">How to Practise the Monologue</span>
+        <p class="text-sm text-gray-500 mb-3">The actor's method Dan uses. Brute force, but it works.</p>
+
+        <div class="technique-step">
+          <span class="technique-num">1</span>
+          <p class="text-sm text-gray-600"><strong>Read one line aloud.</strong> Properly out loud, not mumbled in your head.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">2</span>
+          <p class="text-sm text-gray-600"><strong>Take a beat. Close your eyes. Repeat it.</strong> Eyes shut removes the visual crutch and forces real recall.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">3</span>
+          <p class="text-sm text-gray-600"><strong>Run the line before it, then both together.</strong> Joins are where blocks happen, so rehearse the transition, not just the line.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">4</span>
+          <p class="text-sm text-gray-600"><strong>Isolate the hard sound and drill it alone.</strong> Don't let one awkward word hold up the whole passage.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">5</span>
+          <p class="text-sm text-gray-600"><strong>Attach an image and a physical action.</strong> Not a translation &mdash; a picture. This is what glues it together.</p>
+        </div>
+
+        <div class="tip-card mt-3">
+          <div class="tip-title">Stop translating</div>
+          <p>Translating back to English mid-sentence is too slow to ever reach speed. Replace the English with a
+          vivid mental picture &mdash; Dan's example: a cat in a bow tie flying business class. Recall becomes instant.
+          Notice how the sections you picture (Frank) come out faster than the ones you translate.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Expect to get worse before better</div>
+          <p>Pronunciation regularly regresses while you're memorising &mdash; your brain is spending its budget on
+          recall instead of sound. This is normal and temporary. It is not a sign you're going backwards.</p>
+        </div>
+      </div>
 
       <!-- Your Introductory Script -->
       <div class="card" style="border-color: #C8102E; border-width: 2px;">
@@ -865,6 +971,163 @@
           <div class="sound-pill"><span class="fr">Comment dire...</span><span class="en">How do I say...</span></div>
           <div class="sound-pill"><span class="fr">Je ne connais pas le mot</span><span class="en">I don't know the word</span></div>
         </div>
+      </div>
+
+      <!-- ACCENT PRIORITIES -->
+      <div class="card">
+        <span class="section-label">Accent Priorities &mdash; What Actually Matters</span>
+        <p class="text-sm text-gray-500 mb-4">
+          Not all pronunciation errors cost you the same. Spend your effort where it changes whether
+          you're understood, and let the rest go.
+        </p>
+
+        <div class="prio">
+          <span class="prio-tag prio-hi">High</span>
+          <div>
+            <p class="text-sm font-semibold text-navy">Liaisons</p>
+            <p class="text-xs text-gray-500">The links between words. Getting these wrong breaks the rhythm and makes you hard to follow. This is what makes French sound French.</p>
+          </div>
+        </div>
+        <div class="prio">
+          <span class="prio-tag prio-hi">High</span>
+          <div>
+            <p class="text-sm font-semibold text-navy">Vowels</p>
+            <p class="text-xs text-gray-500">Wrong vowel, wrong word. This is where real misunderstandings come from.</p>
+          </div>
+        </div>
+        <div class="prio">
+          <span class="prio-tag prio-hi">High</span>
+          <div>
+            <p class="text-sm font-semibold text-navy">Acute accents (&eacute;)</p>
+            <p class="text-xs text-gray-500">&Eacute; sounds like "ay". Keep it clean and open &mdash; don't let it collapse into a flat English "e".</p>
+          </div>
+        </div>
+        <div class="prio">
+          <span class="prio-tag prio-lo">Low</span>
+          <div>
+            <p class="text-sm font-semibold text-navy">The French R</p>
+            <p class="text-xs text-gray-500">Low leverage. A soft throat-clearing placement is plenty &mdash; a bad R almost never stops you being understood. Don't burn practice time here. Dan has been mistaken for Belgian and Canadian and it has never mattered.</p>
+          </div>
+        </div>
+
+        <div class="tip-card mt-3">
+          <div class="tip-title">The "ou" sound</div>
+          <p>The vowel in <strong>fou</strong>, <strong>foule</strong>, <strong>doux</strong> &mdash; the "oo" that still
+          trips you up. Round the lips hard and push the sound forward; tongue sits behind the front teeth.
+          Think of the face you make reacting to food that's too hot.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Nasal "n"</div>
+          <p>Let it resonate rather than pronouncing a hard English N. The sound goes up and back into the nose,
+          not out through the tongue.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Careful: fouler vs fouiller</div>
+          <p><strong>Fouler</strong> said loosely comes out as <strong>fouiller</strong> (to rummage around),
+          which derails the sentence. If a word is this risky, go around it &mdash; say the simpler thing you
+          can already say cleanly. Circumlocution beats a word that lands wrong.</p>
+        </div>
+      </div>
+
+      <!-- GRAMMAR WATCH -->
+      <div class="card">
+        <span class="section-label">Grammar Watch</span>
+
+        <div class="tip-card">
+          <div class="tip-title">Plural subjects take -ent</div>
+          <p>Two or more things doing the verb means a plural verb ending, even when it feels like you're
+          describing one group. Two subjects joined by <strong>et</strong> are plural &mdash; the verb takes
+          <strong>-ent</strong>. This came up twice in the same translation, so it's worth a deliberate check
+          when you write.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Spoken French drops the "ne"</div>
+          <p>Written French says <em>je ne sais pas</em>. Spoken French says <strong>je sais pas</strong>.
+          Dropping the "ne" isn't sloppy &mdash; it's what people actually do.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">"Qu" is always a hard K</div>
+          <p><strong>Qui</strong>, <strong>que</strong>, <strong>quoi</strong>, <strong>quand</strong> &mdash;
+          never a "kw" sound as in English "queen". Just K.</p>
+        </div>
+      </div>
+
+      <!-- WOOD & ORDERING -->
+      <div class="card">
+        <span class="section-label">Buying Firewood &mdash; Vocabulary</span>
+        <p class="text-sm text-gray-500 mb-4">
+          For ordering from a French wood merchant. Wood is sold by volume, not weight, which is
+          where the confusion usually starts.
+        </p>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">The units</h3>
+        <div class="vocab-row"><span class="vocab-fr">Un st&egrave;re</span><span class="vocab-pron">stair</span><span class="vocab-en">1 cubic metre of stacked wood &mdash; the "1m cube" on the site</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un m&egrave;tre cube</span><span class="vocab-pron">metr koob</span><span class="vocab-en">a cubic metre</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une corde</span><span class="vocab-pron">kord</span><span class="vocab-en">a cord (varies by region &mdash; always ask how many st&egrave;res)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La longueur</span><span class="vocab-pron">lon-guhr</span><span class="vocab-en">the length (logs usually come cut to 33cm or 50cm)</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The wood</h3>
+        <div class="vocab-row"><span class="vocab-fr">Le bois de chauffage</span><span class="vocab-pron">bwah duh shoh-fahzh</span><span class="vocab-en">firewood</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le bois sec</span><span class="vocab-pron">bwah sek</span><span class="vocab-en">seasoned / dry wood (what you want)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le bois vert</span><span class="vocab-pron">bwah vair</span><span class="vocab-en">green wood (won't burn properly yet)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Les b&ucirc;ches</span><span class="vocab-pron">boosh</span><span class="vocab-en">logs</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le ch&ecirc;ne</span><span class="vocab-pron">shen</span><span class="vocab-en">oak</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le h&ecirc;tre</span><span class="vocab-pron">etr</span><span class="vocab-en">beech</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le charme</span><span class="vocab-pron">sharm</span><span class="vocab-en">hornbeam</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">The order</h3>
+        <div class="vocab-row"><span class="vocab-fr">Un devis</span><span class="vocab-pron">duh-vee</span><span class="vocab-en">a quote</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La livraison</span><span class="vocab-pron">lee-vray-zon</span><span class="vocab-en">delivery</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Les frais de livraison</span><span class="vocab-pron">fray duh lee-vray-zon</span><span class="vocab-en">delivery charge</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le d&eacute;lai</span><span class="vocab-pron">day-lay</span><span class="vocab-en">lead time / how long until it arrives</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La commande</span><span class="vocab-pron">ko-mond</span><span class="vocab-en">the order</span></div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Phrases for the call</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je voudrais commander du bois de chauffage.</div>
+          <div class="phrase-pron">zhe voo-dray ko-mon-day doo bwah duh shoh-fahzh</div>
+          <div class="phrase-en">I'd like to order some firewood.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">&Ccedil;a fait combien de st&egrave;res ?</div>
+          <div class="phrase-pron">sa fay kom-byan duh stair</div>
+          <div class="phrase-en">How many st&egrave;res is that?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Est-ce que le bois est sec ?</div>
+          <div class="phrase-pron">ess kuh luh bwah ay sek</div>
+          <div class="phrase-en">Is the wood seasoned?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Vous livrez jusqu'o&ugrave; ?</div>
+          <div class="phrase-pron">voo lee-vray zhoos-koo</div>
+          <div class="phrase-en">How far do you deliver?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Vous pouvez m'envoyer un devis ?</div>
+          <div class="phrase-pron">voo poo-vay mon-vwa-yay uhn duh-vee</div>
+          <div class="phrase-en">Can you send me a quote?</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je ne suis pas s&ucirc;re d'avoir bien compris &mdash; vous pouvez r&eacute;p&eacute;ter ?</div>
+          <div class="phrase-pron">zhe nuh swee pah soor da-vwar byan kom-pree &mdash; voo poo-vay ray-pay-tay</div>
+          <div class="phrase-en">I'm not sure I understood &mdash; could you repeat that?</div>
+        </div>
+      </div>
+
+      <!-- WRITE-UP STATUS -->
+      <div class="card" style="background: #f8f9fb;">
+        <span class="section-label">A Note on These Notes</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Written-up lessons currently run 1&ndash;9 (21 July &ndash; 16 September) plus 10 and 11
+          (10 and 12 November). The sessions in between &mdash; late September through October &mdash; happened
+          but aren't written up here yet. The vocabulary and grammar from them is folded into this
+          Everything tab where it came up, so nothing is lost; it's the per-lesson write-ups that are missing.
+        </p>
       </div>
 
     </div><!-- /all -->
@@ -2555,15 +2818,319 @@
 
       <!-- COMING UP -->
       <div class="card" style="background: #003359; color: white;">
-        <span class="section-label" style="color: #4DD4F5;">Coming Up - Lesson 10</span>
-        <h3 class="font-display text-lg font-bold mb-2" style="color: white;">TBC</h3>
+        <span class="section-label" style="color: #4DD4F5;">What Came Next</span>
+        <h3 class="font-display text-lg font-bold mb-2" style="color: white;">Into the monologue</h3>
         <p class="text-sm" style="color: rgba(255,255,255,0.7);">
-          More frame drilling and real-world practice. Dan will review your "il faut" and "il me faut"
-          usage from the week and continue building your active frame repertoire.
+          Over the following weeks the frames work gave way to the frequency monologue &mdash; a memorised
+          text built from the most common words in spoken French. See Lessons 10 and 11.
         </p>
       </div>
 
     </div><!-- /l9 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 10                            -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l10'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 10 - 10 November 2026</div>
+        <h2>Sound Mechanics &amp; Memory Images</h2>
+        <div class="meta">Phonetic coaching &middot; The "ou" vowel &middot; Nasal n &middot; Imagery over translation</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          A session split between talking and mechanics. You opened by discussing the Harry Potter
+          production you'd seen &mdash; which doubled as a comprehension check, with Dan asking you to
+          report back on the conversation in French. Then straight into detailed phonetic work on the
+          monologue: mouth placement, tongue position and resonance, focused on the two sounds giving you
+          the most trouble. You read a portion aloud from your notes while Dan monitored. The session
+          closed on memory technique: stop translating, start picturing.
+        </p>
+      </div>
+
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="threshold-badge">Progress check</span>
+        <h3 class="font-display text-lg font-bold text-navy mb-1">30&ndash;35% from memory</h3>
+        <p class="text-sm text-gray-600">
+          You estimated you could recite 30&ndash;35% of the monologue accurately from memory, with some
+          small slips and the occasional missed line. Dan's verdict: good enough to stop extending and
+          start consolidating.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Pronunciation Work</span>
+
+        <div class="tip-card">
+          <div class="tip-title">The "ou" sound</div>
+          <p>The vowel in <strong>fou</strong> / <strong>foule</strong>. Lips rounded hard, sound pushed
+          forward, tongue behind the front teeth. Dan used the image of reacting to food that's too hot to
+          get the mouth into the right shape. Still the stubborn one &mdash; worth drilling in isolation.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Nasal "n"</div>
+          <p>Resonance, not a hard English N. The sound travels up and back rather than out through the tongue.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Fouler sounds like fouiller</div>
+          <p>Your <strong>fouler</strong> was landing close to <strong>fouiller</strong> (to rummage around),
+          which confuses the sentence. Rather than fight it, you decided to go around it &mdash; saying that
+          the character is scared of the stairs instead. That's the right call: circumlocution is a tool,
+          not a retreat.</p>
+        </div>
+
+        <div class="tip-card">
+          <div class="tip-title">Why pronunciation slips while memorising</div>
+          <p>Your accent regressed slightly during recitation. That's cognitive load &mdash; the brain
+          prioritises recall over sound. It comes back once the text is automatic. Expected, not a problem.</p>
+        </div>
+      </div>
+
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">The Big Idea &mdash; Images, Not Translations</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-3">
+          You mentioned that you remember the section about the cat by translating it into English first,
+          whereas the section about Frank comes naturally. That difference is the whole lesson: the parts you
+          picture are fast, the parts you translate are slow.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mb-3">
+          Translation can't survive at speed. Replace it with something vivid and slightly absurd &mdash;
+          Dan's suggestion for the cat section was a cat in a bow tie flying business class. Absurd images
+          stick harder than sensible ones.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Dan's own example: learning Greek phonetically in Santorini &mdash; ordering an
+          <em>americano</em> and asking for <em>pagaki</em> (an ice cube) with no idea of the grammar
+          behind either. Phonetic memory plus meaning works; translation doesn't scale.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Also Covered</span>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est bien fait.</div>
+          <div class="phrase-pron">say byan fay</div>
+          <div class="phrase-en">It's well done / nicely made &mdash; works for artwork or renovation work alike.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Heads Up for Next Time</span>
+        <p class="text-sm text-gray-600 mb-2">Dan flagged two upcoming trouble spots in the text ahead:</p>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>va</strong> &mdash; the vowel and the glide into the following word</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Liam</strong> &mdash; a name is no easier than a word; it needs its own drilling</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Memorise up to the end of the <strong>35% mark</strong> &mdash; and no further</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Work on <strong>fluidity and expression</strong>, not more text. Prove the fundamentals before moving down the page</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Attach a mental image and a physical action to each chunk &mdash; especially the cat section</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Drill the "ou" sound on its own, away from the text</li>
+        </ul>
+      </div>
+
+    </div><!-- /l10 -->
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 11                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l11'" class="space-y-6">
+
+      <div class="lesson-strip" style="background: linear-gradient(135deg, #003359 60%, #C8102E);">
+        <div class="num">Lesson 11 - 12 November 2026</div>
+        <h2>Blind Test, Speed &amp; Liaisons</h2>
+        <div class="meta">Blind recitation &middot; Echo &amp; handback &middot; Words per minute &middot; Accent pass</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          The first session run on the full structure Dan now uses for monologue work: blind test, speed
+          read, accent pass, then breaking the text apart for question-and-answer. You recited from memory
+          without notes, were tested on out-of-order recall, had your speaking speed measured for the first
+          time, then worked through the 35% section for accent. Closed on a translation you'd written
+          independently and a real-world favour.
+        </p>
+      </div>
+
+      <!-- THE SESSION STRUCTURE -->
+      <div class="card" style="border-color: #4DD4F5; border-width: 2px;">
+        <span class="section-label">The Lesson Structure &mdash; Learn the Shape</span>
+        <p class="text-sm text-gray-500 mb-3">This is now the standard running order. Knowing it helps you prepare.</p>
+        <div class="technique-step">
+          <span class="technique-num">1</span>
+          <p class="text-sm text-gray-600"><strong>Blind test.</strong> Recite from memory, no notes, no screen.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">2</span>
+          <p class="text-sm text-gray-600"><strong>Speed read.</strong> Read fast, accuracy deliberately ignored, to measure words per minute.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">3</span>
+          <p class="text-sm text-gray-600"><strong>Accent pass.</strong> Slow work on a defined portion &mdash; vowels, liaisons, contractions.</p>
+        </div>
+        <div class="technique-step">
+          <span class="technique-num">4</span>
+          <p class="text-sm text-gray-600"><strong>Break it apart.</strong> Dan asks questions; you answer using pieces of the memorised text.</p>
+        </div>
+      </div>
+
+      <!-- THE BLIND TEST -->
+      <div class="card">
+        <span class="section-label">The Blind Test</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          You recited the first portion without notes. Dan's feedback: flow and pronunciation both clearly
+          improved on last time, with only minor errors. (A cat walking across your laptop closed the window
+          mid-session and lost your place &mdash; which, given the subject matter, is almost too fitting.)
+        </p>
+      </div>
+
+      <!-- ECHO AND HANDBACK -->
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Echo &amp; Handback &mdash; The Real Test</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-3">
+          Dan prompted you with questions and fragments designed to trigger memorised chunks
+          <strong>out of order</strong>, with no screen in front of you. This is harder than reciting
+          start-to-finish, and much closer to how a real conversation behaves.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          Verdict: it worked. You achieved a genuinely natural conversational feel &mdash; the text starting
+          to function as language rather than as a recital.
+        </p>
+      </div>
+
+      <!-- SPEED -->
+      <div class="card">
+        <span class="section-label">Your Speed &mdash; Measured</span>
+        <div class="metric-grid mb-4">
+          <div class="metric">
+            <div class="val">100</div>
+            <div class="lbl">You, now</div>
+          </div>
+          <div class="metric">
+            <div class="val">130&ndash;150</div>
+            <div class="lbl">Spoken English</div>
+          </div>
+          <div class="metric">
+            <div class="val">170&ndash;220</div>
+            <div class="lbl">Native French</div>
+          </div>
+          <div class="metric">
+            <div class="val">170</div>
+            <div class="lbl">Your target</div>
+          </div>
+        </div>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          All figures in words per minute, measured on a short speed read where accuracy was deliberately
+          set aside. Dan's assessment: your conversational skill and circumlocution are already strong &mdash;
+          speed is the gap. This will now be checked at regular intervals, so it's a number you can watch move.
+        </p>
+      </div>
+
+      <!-- ACCENT PASS -->
+      <div class="card">
+        <span class="section-label">Accent Pass &mdash; The 35% Section</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-3">
+          Worked slowly through the 35% portion focusing on three things, in priority order.
+        </p>
+
+        <div class="prio">
+          <span class="prio-tag prio-hi">High</span>
+          <div>
+            <p class="text-sm font-semibold text-navy">Liaisons</p>
+            <p class="text-xs text-gray-500">The links between words. Critical &mdash; this is the rhythm of the language.</p>
+          </div>
+        </div>
+        <div class="prio">
+          <span class="prio-tag prio-hi">High</span>
+          <div>
+            <p class="text-sm font-semibold text-navy">Acute accents</p>
+            <p class="text-xs text-gray-500">&Eacute; sounds like "ay". Practised across the passage along with the trickier contractions.</p>
+          </div>
+        </div>
+        <div class="prio">
+          <span class="prio-tag prio-lo">Low</span>
+          <div>
+            <p class="text-sm font-semibold text-navy">The French R</p>
+            <p class="text-xs text-gray-500">Throat-clearing placement, but explicitly deprioritised &mdash; a rough R doesn't impede comprehension.</p>
+          </div>
+        </div>
+
+        <div class="tip-card mt-3">
+          <div class="tip-title">Don't chase the R</div>
+          <p>You mentioned your family find the French R easier than you do. It doesn't matter. Dan has been
+          taken for Belgian and for Canadian by native speakers and it has never once caused a problem.
+          Vowels and liaisons are where the marks are.</p>
+        </div>
+      </div>
+
+      <!-- GRAMMAR -->
+      <div class="card">
+        <span class="section-label">Your Translation &mdash; Reviewed</span>
+        <p class="text-sm text-gray-600 leading-relaxed mb-3">
+          Dan confirmed you'd written it yourself rather than running it through a translator, which is
+          exactly why it was worth marking. Two errors &mdash; and the same error twice.
+        </p>
+        <div class="tip-card">
+          <div class="tip-title">Plural subjects need -ent</div>
+          <p>Two subjects joined by <strong>et</strong> make a plural, so the verb takes the
+          <strong>-ent</strong> ending &mdash; even though you're describing what feels like a single group.
+          You'd deliberated over this one before committing, which is the right instinct; the rule just
+          lands on the plural side. Keep sending written work.</p>
+        </div>
+      </div>
+
+      <!-- CHUNKING -->
+      <div class="card">
+        <span class="section-label">Notes on Method</span>
+        <div class="tip-card">
+          <div class="tip-title">Chunking, and a little pressure</div>
+          <p>Group the text into chunks rather than lines, and accept a bit of psychological pressure while
+          reciting &mdash; it's what stops you forgetting under real conditions. The goal is fluency,
+          not perfection.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-title">50% first, then 80%</div>
+          <p>You're pushing to get the 50% version solid before moving to 80%. The 80% text is noticeably
+          longer and brings markedly more complex vocabulary, so the 50% has to be genuinely automatic first.</p>
+        </div>
+      </div>
+
+      <!-- BEFORE NEXT LESSON -->
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Consolidate the 35% until it's automatic, then extend toward <strong>50%</strong></li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Practise reciting <strong>out of order</strong> &mdash; pick a chunk at random and start there</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Keep an eye on pace. Push slightly faster than feels comfortable</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Send Dan the <strong>wood merchant's website</strong> and a note on what you need to order, so he can call them if necessary</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span>Keep writing translations by hand and sending them over</li>
+        </ul>
+      </div>
+
+      <!-- SCHEDULE -->
+      <div class="card" style="background: #003359; color: white;">
+        <span class="section-label" style="color: #4DD4F5;">Schedule</span>
+        <h3 class="font-display text-lg font-bold mb-2" style="color: white;">Two lessons this week, then a break</h3>
+        <p class="text-sm" style="color: rgba(255,255,255,0.7);">
+          Tuesday 17 November, 2:30pm and Thursday 19 November, 2:00pm &mdash; doubled up to get ahead of
+          your holiday. You're away from 24 November and back on 6 December, so these two sessions need to
+          leave you with enough to practise on your own over the gap.
+        </p>
+      </div>
+
+    </div><!-- /l11 -->
 
 
   </main>
