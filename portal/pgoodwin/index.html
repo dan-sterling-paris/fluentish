@@ -128,7 +128,7 @@
         <h1 class="font-display text-2xl font-bold mt-1">Patricia's Course</h1>
       </div>
       <div class="text-right">
-        <p class="text-sm text-blue-200 font-medium">4 lessons</p>
+        <p class="text-sm text-blue-200 font-medium">9 lessons</p>
         <p class="text-xs text-blue-400 mt-0.5">Frames, script &amp; pronunciation</p>
       </div>
     </div>
@@ -142,6 +142,11 @@
       <button @click="tab = 'l2'"   :class="tab === 'l2'   ? 'tab-btn active' : 'tab-btn'">Lesson 2</button>
       <button @click="tab = 'l3'"   :class="tab === 'l3'   ? 'tab-btn active' : 'tab-btn'">Lesson 3</button>
       <button @click="tab = 'l4'"   :class="tab === 'l4'   ? 'tab-btn active' : 'tab-btn'">Lesson 4</button>
+      <button @click="tab = 'l5'"   :class="tab === 'l5'   ? 'tab-btn active' : 'tab-btn'">Lesson 5</button>
+      <button @click="tab = 'l6'"   :class="tab === 'l6'   ? 'tab-btn active' : 'tab-btn'">Lesson 6</button>
+      <button @click="tab = 'l7'"   :class="tab === 'l7'   ? 'tab-btn active' : 'tab-btn'">Lesson 7</button>
+      <button @click="tab = 'l8'"   :class="tab === 'l8'   ? 'tab-btn active' : 'tab-btn'">Lesson 8</button>
+      <button @click="tab = 'l9'"   :class="tab === 'l9'   ? 'tab-btn active' : 'tab-btn'">Lesson 9</button>
     </div>
   </div>
 
@@ -2159,6 +2164,521 @@
       </div>
 
     </div><!-- /l4 -->
+
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 5                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l5'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 5 &middot; 9 October 2026</div>
+        <h2>Absurdity Training: Here Be Dragons</h2>
+        <div class="meta">Script read-through &middot; Absurdity training &middot; You ask the questions &middot; Donc, not "so"</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          You opened the call in French again. You'd read the script aloud to your husband during the week and said that, although the phonetics took a few goes, the meaning was completely clear by the end. Dan ran through the opening lines with you and tidied up a few sounds (<em>Liverpool</em>, <em>village</em>), then explained why the session would move beyond drilling: noticing the gap between how fluently you read and how you improvise is deliberate. It's the gap we're closing.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          Then came <strong>absurdity training</strong>. Your task: explain dragons in French, as if to an alien. You kept going for twenty minutes &mdash; scaly skin, four legs, breathing fire, and the battle between the red dragon and the white dragon in the mountains &mdash; and you never once needed to fall back on <em>r&eacute;p&eacute;tez</em>. In the second exercise you drove the conversation, quizzing Dan in French about three facts: he played ice hockey for years (Cambridge, Ohio and York University in Canada), he's scared of balloons (the Bolton Food Festival hot-coffee incident), and he cries at any film with a dog in it (<em>Homeward Bound</em>). Afterwards you recalled every detail correctly. The session closed back on the script, down to <em>chroniques</em>, with corrections on <em>retraite</em>, <em>clinique</em>, <em>consultations</em> and <em>pathologies</em>.
+        </p>
+      </div>
+
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">The Idea: Absurdity Training</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          When you're asked to describe something ridiculous, your brain is busy with the content, not the French. That's the point. You stop policing every word and start communicating, and you find routes around words you don't have. Nobody learns the French for "scales" or "spines" before they need them, and native speakers grew up with words you'll have to work around. Getting the idea across beats grammatical perfection every time. As the lessons go on, Dan will gradually be less helpful, so that describing your way round a gap becomes second nature.
+        </p>
+      </div>
+
+      <!-- TOOLKIT -->
+      <div class="card">
+        <span class="section-label">Your Get Out of Jail Toolkit</span>
+        <p class="text-xs text-gray-400 italic mb-4">The phrases that keep you in French when you get stuck. The rule: stay in French.</p>
+        <div class="phrase-row">
+          <div class="phrase-fr">Comment dire&nbsp;?</div>
+          <div class="phrase-pron">COMMON DEER</div>
+          <div class="phrase-en">How do you say...? (picture a common deer)</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">R&eacute;p&eacute;tez, s'il vous pla&icirc;t.</div>
+          <div class="phrase-pron">REPETAY SEE VOO PLAY</div>
+          <div class="phrase-en">Repeat, please.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je ne comprends pas.</div>
+          <div class="phrase-pron">zhuh nuh kom-PRON pah</div>
+          <div class="phrase-en">I don't understand.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Donc...</div>
+          <div class="phrase-pron">donk</div>
+          <div class="phrase-en">So... (use this instead of the English "so" to start a thought)</div>
+        </div>
+      </div>
+
+      <!-- VOCAB -->
+      <div class="card">
+        <span class="section-label">Dragon Vocabulary</span>
+        <p class="text-xs text-gray-400 italic mb-4">The words you worked around today. Now you have them.</p>
+        <div class="vocab-row"><span class="vocab-fr">Un dragon</span><span class="vocab-pron">un dra-GON</span><span class="vocab-en">A dragon</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Cracher du feu</span><span class="vocab-pron">kra-SHAY doo fuh</span><span class="vocab-en">To breathe (spit) fire</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Les &eacute;cailles</span><span class="vocab-pron">layz ay-KYE</span><span class="vocab-en">Scales</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Les &eacute;pines</span><span class="vocab-pron">layz ay-PEEN</span><span class="vocab-en">Spines</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Quatre pattes</span><span class="vocab-pron">KA-truh PAT</span><span class="vocab-en">Four legs (animal legs)</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Les ailes</span><span class="vocab-pron">layz EL</span><span class="vocab-en">Wings</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le dragon rouge / le dragon blanc</span><span class="vocab-pron">luh dra-GON roozh / luh dra-GON blon</span><span class="vocab-en">The red dragon / the white dragon</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le hockey sur glace</span><span class="vocab-pron">luh o-KAY soor GLASS</span><span class="vocab-en">Ice hockey</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un ballon</span><span class="vocab-pron">un ba-LON</span><span class="vocab-en">A balloon</span></div>
+      </div>
+
+      <!-- TIPS -->
+      <div class="card">
+        <span class="section-label">Tips &amp; Notes from This Lesson</span>
+        <div class="tip-card">
+          <div class="tip-title">Your ears are ahead of your mouth</div>
+          <p>You followed fast French well enough to recall three hockey locations, the festival story and the film. Your comprehension is well ahead of what you can say yet. That's normal, and it means the vocabulary is already in there. The speaking is what we're unlocking.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-title">Swap "so" for <em>donc</em></div>
+          <p>You tend to start a French sentence with the English "so". It's a tiny habit, but it pulls you back into English mid-thought. Replace it with <strong>donc</strong> (donk) and you stay in French from the first word.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-title">The actor's method</div>
+          <p>Start at the very beginning of the script. When you stumble, go back to the start of that section and run it again. Keep going until you get through clean, then add the next bit. It's how actors learn lines, and fixing one word tends to fix the sounds around it too.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Run the script with the actor's method</strong> several times. Focus on accurate sounds before speed.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Catch yourself saying "so".</strong> Say <em>donc</em> instead.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Keep the toolkit at the front of your mind:</strong> <em>comment dire</em>, <em>r&eacute;p&eacute;tez s'il vous pla&icirc;t</em>, <em>je ne comprends pas</em>.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Wow Moment</span>
+        <p class="text-sm text-gray-600 leading-relaxed font-medium">
+          Twenty minutes of French about dragons, with no script and no safety net. Then, after a fast-paced conversation, you recalled every detail Dan had thrown at you. You can already hold a real conversation. Now we make it sound the way it does in your head.
+        </p>
+      </div>
+
+    </div><!-- /l5 -->
+
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 6                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l6'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 6 &middot; 13 October 2026</div>
+        <h2>Dressed in the Dark</h2>
+        <div class="meta">Script rhythm &middot; 15-minute improv blocks &middot; Food &amp; French regions &middot; Paragraph three</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          You'd read the script twice during the week and felt your pronunciation was more encouraging. Dan took you through it again, this time asking for <strong>rhythm over accuracy</strong>: he modelled each line and you matched his speed and bounce without stopping. He worked on <em>actuellement</em> and <em>retraite</em> in particular.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          Then the timer came out: <strong>15 minutes, in French, no English</strong>. The scenario was that you got dressed in the dark so as not to wake anyone, and the whole day went wrong from there. You invented hitting your head, the wrong trainers (<em>baskets</em>), a mix-up in the bathroom, and a trip to the Blue Planet Aquarium at Cheshire Oaks full of sharks, stingrays, piranhas and Finding Nemo, ending in Marks &amp; Spencer. You hit fifteen minutes on the dot.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          The second 15-minute block was about food. You told Dan your daughter-in-law Quinn won Bake Off, Dan shared his deconstructed beef bourguignon and brined Sunday-roast chicken, and you quizzed him in French about which regions to visit for food: Lyon, Bordeaux and more. You said afterwards that you'd understood almost everything. The session ended on the hardest part of the script so far, paragraph three: <em>faisais</em>, <em>alpinisme</em>, <em>ces vingt derni&egrave;res ann&eacute;es</em>, <em>exp&eacute;riment&eacute;e</em>.
+        </p>
+      </div>
+
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Your Lesson Structure</span>
+        <p class="text-sm text-gray-600 leading-relaxed">From here on, lessons follow a clear pattern:</p>
+        <ul class="space-y-2 mt-3">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">1</span><strong>Script.</strong> Warm up and tighten the sounds.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">2</span><strong>You drive.</strong> An absurd scenario you have to talk your way through. It takes the pressure off and proves the vocabulary is there.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">3</span><strong>Dan drives.</strong> You grill him in French while he answers at full speed. This is your comprehension workout.</li>
+        </ul>
+      </div>
+
+      <!-- SCRIPT PARAGRAPH 3 -->
+      <div class="card">
+        <span class="section-label">Paragraph Three: The Tricky Bits</span>
+        <p class="text-xs text-gray-400 italic mb-4">Start slow. Once the paragraph is built, you'll drill it line by line until you can't get it wrong.</p>
+        <p class="text-sm font-semibold text-navy mb-1">J'ai de nomb-<span class="text-rouge font-bold underline">RUH</span> cent<span class="text-rouge font-bold underline">RUH</span> d'int-<span class="text-rouge font-bold underline">AY-RAY</span>, en particulier <span class="text-rouge font-bold underline">LAH</span> nature. Par le pass&eacute;, je <span class="text-rouge font-bold underline">FEH-ZAY</span> de l'<span class="text-rouge font-bold underline">ALPA-KNEE-SM</span>. Ces <span class="text-rouge font-bold underline">VAN</span> <span class="text-rouge font-bold underline">DEHR-NIA-HREZ</span> ann-<span class="text-rouge font-bold underline">AY</span>, j'ai beaucoup voyag<span class="text-rouge font-bold underline">AY</span> en Afrique&nbsp;; j'y <span class="text-rouge font-bold underline">SWEE</span> all&eacute;e d'abord comme &eacute;tudiante, et je suis <span class="text-rouge font-bold underline">O-JOR-DWEE</span> guide de safari exp-<span class="text-rouge font-bold underline">AY-REE-MENTAY</span> et formatrice.</p>
+        <div class="tip-card mt-4">
+          <div class="tip-title">Je faisais = past habit</div>
+          <p><em>Je faisais de l'alpinisme</em>: "I used to do mountaineering". The <em>-ais</em> ending tells you it's something you did regularly in the past. Say it <strong>fuh-ZAY</strong>. The spelling looks like "fay", but it isn't pronounced that way.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-title">Silent endings</div>
+          <p><em>Dangereux</em>, <em>nombreux</em>, <em>ann&eacute;es</em>: the final letters stay silent. The vowel is the last thing you hear.</p>
+        </div>
+      </div>
+
+      <!-- VOCAB -->
+      <div class="card">
+        <span class="section-label">Words from Today's Disasters</span>
+        <div class="vocab-row"><span class="vocab-fr">S'habiller dans le noir</span><span class="vocab-pron">sa-bee-YAY don luh NWAR</span><span class="vocab-en">To get dressed in the dark</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Les baskets</span><span class="vocab-pron">lay bas-KET</span><span class="vocab-en">Trainers</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La poign&eacute;e de porte</span><span class="vocab-pron">la pwan-YAY duh PORT</span><span class="vocab-en">Door handle</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le dentifrice</span><span class="vocab-pron">luh don-tee-FREESS</span><span class="vocab-en">Toothpaste</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un aquarium</span><span class="vocab-pron">un a-kwa-RYOM</span><span class="vocab-en">An aquarium</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un requin</span><span class="vocab-pron">un ruh-KAN</span><span class="vocab-en">A shark</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une raie</span><span class="vocab-pron">oon RAY</span><span class="vocab-en">A stingray</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une pieuvre</span><span class="vocab-pron">oon PYUH-vruh</span><span class="vocab-en">An octopus</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un piranha</span><span class="vocab-pron">un pee-ra-NA</span><span class="vocab-en">A piranha</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La p&acirc;tisserie</span><span class="vocab-pron">la pa-tee-SREE</span><span class="vocab-en">Pastry / cake shop</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Ma belle-fille</span><span class="vocab-pron">ma bel-FEE</span><span class="vocab-en">My daughter-in-law</span></div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Print the script</strong> and read it from the top down off the paper copy.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Rhythm first.</strong> Bounce through each line at Dan's pace and don't stop to fix things. Accuracy comes with the repetitions.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Go slowly on paragraph three.</strong> <em>Faisais</em>, <em>alpinisme</em>, <em>vingt derni&egrave;res ann&eacute;es</em>, <em>exp&eacute;riment&eacute;e</em>.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Next session: Monday 19 October at 10:00</strong> (moved from the afternoon).</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Wow Moment</span>
+        <p class="text-sm text-gray-600 leading-relaxed font-medium">
+          Two separate 15-minute blocks of French, back to back, with an aquarium, a bake-off champion and a tour of France's food regions. A few weeks ago it took a whole lesson to get two phrases consistent. Once the pressure was off, it all came out.
+        </p>
+      </div>
+
+    </div><!-- /l6 -->
+
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 7                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l7'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 7 &middot; 19 October 2026</div>
+        <h2>Copains, Telescopes &amp; History</h2>
+        <div class="meta">Petit d&eacute;jeuner &middot; Ami vs copain &middot; Je vais + infinitive &middot; 50 minutes of French</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          You started by chatting about breakfasts and outings, and Dan unpacked where <em>petit d&eacute;jeuner</em> comes from: <em>d&eacute;-jeuner</em> means to un-fast, to break the morning fast. That led into the French words for friends. <em>Ami</em> is always safe. <em>Copain</em> and <em>copine</em> depend on context and can mean boyfriend or girlfriend (you'd first heard it used about someone's mistress). The root makes it stick: <em>co</em> + <em>pain</em>, someone you break bread with.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          You talked through your week, including a hospital speech therapist and a friend teaching you to use your new telescope. Dan broke that down into one long sentence and you built it piece by piece. After 25 minutes of unbroken French, the conversation moved to history: history versus prehistory (the invention of writing), the Barack Obama talk you attended in Manchester and the Manchester cotton workers who wrote to Abraham Lincoln, Dan's family history, Bill Bryson, and what <em>profond</em> means. By the end you'd spoken French for nearly <strong>50 minutes</strong>, on exactly the kind of topics you want to be able to discuss.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Your sentence of the day</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je vais voir un ami et apprendre comment utiliser un nouveau t&eacute;lescope.</div>
+          <div class="phrase-pron">zhuh VAY vwar un a-MEE ay a-PRON-druh ko-MON oo-tee-lee-ZAY un noo-VOH tay-lay-SKOP</div>
+          <div class="phrase-en">I'm going to see a friend and learn how to use a new telescope.</div>
+        </div>
+        <p class="text-xs text-gray-400 italic mt-2 mb-4">One <em>je vais</em> carries both verbs: <em>voir</em> and <em>apprendre</em>. Say every word, slowly and clearly. Don't rush it.</p>
+
+        <h3 class="font-display text-base font-bold text-navy mt-4 mb-3">Friends</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Un ami / une amie</div>
+          <div class="phrase-pron">un a-MEE / oon a-MEE</div>
+          <div class="phrase-en">A friend. Always safe.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Un copain / une copine</div>
+          <div class="phrase-pron">un ko-PAN / oon ko-PEEN</div>
+          <div class="phrase-en">A mate, or a boyfriend/girlfriend, depending on context</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Mon meilleur ami</div>
+          <div class="phrase-pron">mon may-YUR a-MEE</div>
+          <div class="phrase-en">My best friend</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+        <div class="vocab-row"><span class="vocab-fr">Le petit d&eacute;jeuner</span><span class="vocab-pron">luh puh-TEE day-zhuh-NAY</span><span class="vocab-en">Breakfast (the little "un-fasting")</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le d&eacute;jeuner</span><span class="vocab-pron">luh day-zhuh-NAY</span><span class="vocab-en">Lunch</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Un t&eacute;lescope</span><span class="vocab-pron">un tay-lay-SKOP</span><span class="vocab-en">A telescope</span></div>
+        <div class="vocab-row"><span class="vocab-fr">L'histoire / la pr&eacute;histoire</span><span class="vocab-pron">lee-STWAR / la pray-ee-STWAR</span><span class="vocab-en">History (also "story") / prehistory</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Profond(e)</span><span class="vocab-pron">pro-FON(D)</span><span class="vocab-en">Deep (water) <em>and</em> profound (ideas). One word covers both.</span></div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Tips &amp; Notes from This Lesson</span>
+        <div class="tip-card">
+          <div class="tip-title">Copain = co + pain</div>
+          <p>A <em>copain</em> is literally someone you share bread with (it's the same root as the English "companion"). It's a lovely way to remember the word, and a reminder that a lot of French makes sense once you see where it comes from.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-title">Zipf's law and your script</div>
+          <p>A small number of words make up most of what people actually say. A well-built script packs those high-frequency words into sentences about <em>you</em>, so memorising it gives you a big share of everyday French in a form you'll use. Dan is using the same method for his Italian before February.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-title">History = story</div>
+          <p><em>L'histoire</em> means both "history" and "story", which fits what you took from Obama's talk about the power of storytelling.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Practice Menu: Pick One</span>
+        <p class="text-xs text-gray-400 italic mb-4">From Dan's lesson plan. Choose whichever fits your week to build muscle memory for the script.</p>
+        <div class="toolkit-row"><span class="vocab-fr">The Chef's Recital</span><span class="vocab-en" style="grid-column: span 2;">Recite the script aloud while chopping vegetables or cooking. Focus on flow while distracted.</span></div>
+        <div class="toolkit-row"><span class="vocab-fr">The Pacing Walk</span><span class="vocab-en" style="grid-column: span 2;">Walk around the house or garden, taking one step per word, to lock in the rhythm.</span></div>
+        <div class="toolkit-row"><span class="vocab-fr">The Shower Soliloquy</span><span class="vocab-en" style="grid-column: span 2;">Practise the hardest sections where the acoustics are best, focusing entirely on vowel sounds.</span></div>
+        <div class="toolkit-row"><span class="vocab-fr">The Mirror Challenge</span><span class="vocab-en" style="grid-column: span 2;">Deliver the whole biography to yourself in the mirror without breaking eye contact.</span></div>
+      </div>
+
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Wow Moment</span>
+        <p class="text-sm text-gray-600 leading-relaxed font-medium">
+          Nearly fifty minutes in French, and not about the weather: history, politics, storytelling, family legacies. That's the conversation you told Dan you wanted to be able to have, and you were already having it.
+        </p>
+      </div>
+
+    </div><!-- /l7 -->
+
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 8                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l8'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 8 &middot; 20 November 2026</div>
+        <h2>Back from India</h2>
+        <div class="meta">Liaisons &middot; The Taj Mahal story &middot; Beaucoup de &middot; Avenir = what's coming</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">What You Covered</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          This was your first session in over a month, and the vocabulary was still there. Dan was impressed. You started with jet lag and travel delays, and Dan used a phrase about imagination to show how <strong>liaisons</strong> work: words run together, and a consonant like the <em>n</em> gets voiced when the next word starts with a vowel.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          Then you told the story of your trip in French: New Delhi and Agra, the Red Fort, and the Mughal emperor imprisoned there by his own son, allowed only a view of the Taj Mahal. You moved on to the Ganges, the spiritual ceremonies and Ayurvedic treatments, Jaipur and Rishikesh, India as a mixing bowl of humanity, the caste system, and the difference between Western and Indian astrology. Dan corrected a few things along the way (<em>apr&egrave;s</em>, <em>gens</em>, <em>beaucoup de</em>) without stopping the flow. You also talked about how your dyslexia helps here: you learn by listening, rhythm and immersion rather than by grammar rules.
+        </p>
+        <p class="text-sm text-gray-600 leading-relaxed mt-3">
+          You agreed a rule together: <strong>chat freely, for hours</strong>. Don't get bogged down in grammar, and don't be embarrassed to use an English word in a French accent. Bold learners who guess and experiment get the best results. You're off to <strong>Lyon on 9 December</strong> for about five days, which is a perfect chance to introduce yourself for real.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Key Phrases &amp; Corrections</span>
+        <div class="phrase-row">
+          <div class="phrase-fr">Apr&egrave;s</div>
+          <div class="phrase-pron">a-PRAY (the start of "apron")</div>
+          <div class="phrase-en">After. Keep the open "ay" at the end.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Les gens</div>
+          <div class="phrase-pron">lay ZHON</div>
+          <div class="phrase-en">People. Soft "zh", nasal ending, silent "s".</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Beaucoup <strong>de</strong> gens / beaucoup <strong>de</strong> livres</div>
+          <div class="phrase-pron">boh-KOO duh ZHON / boh-KOO duh LEEVR</div>
+          <div class="phrase-en">Lots of people / lots of books. Always <em>de</em>, never <em>le</em>.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">La sant&eacute;, c'est la richesse.</div>
+          <div class="phrase-pron">la son-TAY, say la ree-SHESS</div>
+          <div class="phrase-en">Health is wealth (the message you brought back from India).</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je suis en retard.</div>
+          <div class="phrase-pron">zhuh swee on ruh-TAR</div>
+          <div class="phrase-en">I'm late / delayed.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est chouette&nbsp;!</div>
+          <div class="phrase-pron">say SHWET</div>
+          <div class="phrase-en">That's great! (<em>une chouette</em> is also an owl)</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Vocabulary</span>
+        <div class="vocab-row"><span class="vocab-fr">L'avenir (m.)</span><span class="vocab-pron">lav-NEER</span><span class="vocab-en">The future (literally "what is to come")</span></div>
+        <div class="vocab-row"><span class="vocab-fr">&Agrave; venir</span><span class="vocab-pron">a vuh-NEER</span><span class="vocab-en">Coming up / to come</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Devenir</span><span class="vocab-pron">duh-vuh-NEER</span><span class="vocab-en">To become</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La richesse</span><span class="vocab-pron">la ree-SHESS</span><span class="vocab-en">Wealth / richness</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Le melting-pot</span><span class="vocab-pron">luh mel-TEENG POT</span><span class="vocab-en">Melting pot. French borrows the English!</span></div>
+        <div class="vocab-row"><span class="vocab-fr">La der des ders</span><span class="vocab-pron">la DAIR day DAIR</span><span class="vocab-en">"The last of the last". What the French called WWI.</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Une chouette</span><span class="vocab-pron">oon SHWET</span><span class="vocab-en">An owl (and also "great!")</span></div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Tips &amp; Notes from This Lesson</span>
+        <div class="tip-card">
+          <div class="tip-title">Avenir = &agrave; + venir</div>
+          <p>The French future is literally "what's coming". Once you see <em>venir</em> (to come) inside <em>avenir</em>, <em>&agrave; venir</em> and <em>devenir</em>, you've learned a whole family of words at once. Guessing from roots like this is how Dan picked up Italian. Trust your intuition.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-title">Turn the sentence around</div>
+          <p>Some English phrases don't translate word for word. "A film about..." is a good example. French often comes at it from another angle, like <em>l'histoire d'un film sur...</em>. When a direct translation won't come, rephrase the idea instead of hunting for the missing word.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-title">For Lyon: be loud and confident</div>
+          <p>Speak up and project. People understand a confident speaker with an accent far better than a mumbled, perfect sentence. Use your script to introduce yourself, and keep <em>comment dire</em> in your back pocket.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Keep translating your day in your head.</strong> Narrate everyday thoughts in French and don't worry about mistakes.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Beaucoup de</strong>, every time.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Next sessions: 24 and 26 November</strong> (the 26th at 12:00). Tell Dan if the calendar invite doesn't arrive.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-color: #C8102E; border-width: 2px;">
+        <span class="section-label">Wow Moment</span>
+        <p class="text-sm text-gray-600 leading-relaxed font-medium">
+          After a month away you came straight back and talked about Mughal emperors, the Ganges, the caste system and astrology, in French and without fear. Dan put the progress down to confidence, and it showed.
+        </p>
+      </div>
+
+    </div><!-- /l8 -->
+
+
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- TAB: LESSON 9                             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div x-show="tab === 'l9'" class="space-y-6">
+
+      <div class="lesson-strip">
+        <div class="num">Lesson 9 &middot; 24 November 2026</div>
+        <h2>La femme qui ne s'arr&ecirc;te jamais</h2>
+        <div class="meta">Dire &middot; Aller in every tense &middot; Your script, latest version</div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">From Today's Notes</span>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          These are the phrases Dan added to your script document during today's session. They cover telling people things (<em>dire</em>), a busy period ahead, and a tense map of <em>aller</em> showing how one verb covers the past, present and future.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Key Phrases</span>
+
+        <h3 class="font-display text-base font-bold text-navy mb-3">Dire: to say / to tell</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">Je te dis</div>
+          <div class="phrase-pron">zhuh tuh DEE</div>
+          <div class="phrase-en">I say to you / I'm telling you</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Tu me dis</div>
+          <div class="phrase-pron">too muh DEE</div>
+          <div class="phrase-en">You say to me / you're telling me</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Il me dit / Elle me dit / On me dit</div>
+          <div class="phrase-pron">eel muh DEE / el muh DEE / on muh DEE</div>
+          <div class="phrase-en">He tells me / she tells me / people tell me</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Tu lui dis que la com&eacute;die musicale, c'est pas si facile que &ccedil;a.</div>
+          <div class="phrase-pron">too lwee DEE kuh la ko-may-DEE moo-zee-KAL, say pah see fa-SEEL kuh SA</div>
+          <div class="phrase-en">You tell him/her that musical theatre isn't as easy as all that.</div>
+        </div>
+
+        <h3 class="font-display text-base font-bold text-navy mt-6 mb-3">Everyday phrases</h3>
+        <div class="phrase-row">
+          <div class="phrase-fr">C'est pas si facile que &ccedil;a.</div>
+          <div class="phrase-pron">say pah see fa-SEEL kuh SA</div>
+          <div class="phrase-en">It's not as easy as all that.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Tu veux qu'elle soit ce qu'elle veut.</div>
+          <div class="phrase-pron">too VUH kel SWA suh kel VUH</div>
+          <div class="phrase-en">You want her to be whatever she wants to be.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Elle adore lire beaucoup de livres.</div>
+          <div class="phrase-pron">el a-DOR leer boh-KOO duh LEEVR</div>
+          <div class="phrase-en">She loves reading lots of books.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">L'ann&eacute;e prochaine</div>
+          <div class="phrase-pron">la-NAY pro-SHEN</div>
+          <div class="phrase-en">Next year</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Une p&eacute;riode charg&eacute;e</div>
+          <div class="phrase-pron">oon pay-RYOD shar-ZHAY</div>
+          <div class="phrase-en">A busy period</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Patricia. La femme qui ne s'arr&ecirc;te jamais.</div>
+          <div class="phrase-pron">pa-tree-SYA. la FAM kee nuh sa-RET zha-MAY</div>
+          <div class="phrase-en">Patricia. The woman who never stops.</div>
+        </div>
+        <div class="phrase-row">
+          <div class="phrase-fr">Tu peux juste dormir&nbsp;! Tu sais&nbsp;?</div>
+          <div class="phrase-pron">too puh zhoost dor-MEER! too SAY?</div>
+          <div class="phrase-en">You can just sleep! You know?</div>
+        </div>
+      </div>
+
+      <!-- ALLER TENSES -->
+      <div class="card">
+        <span class="section-label">Aller (to go) Across Time</span>
+        <h3 class="font-display text-base font-bold text-navy mb-3">Past</h3>
+        <div class="vocab-row"><span class="vocab-fr">J'allais</span><span class="vocab-pron">zha-LAY</span><span class="vocab-en">I was going / I used to go</span></div>
+        <div class="vocab-row"><span class="vocab-fr">Je suis all&eacute;e</span><span class="vocab-pron">zhuh swee za-LAY</span><span class="vocab-en">I went</span></div>
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Present</h3>
+        <div class="vocab-row"><span class="vocab-fr">Je vais</span><span class="vocab-pron">zhuh VAY</span><span class="vocab-en">I am going (now)</span></div>
+        <h3 class="font-display text-base font-bold text-navy mt-5 mb-3">Future</h3>
+        <div class="vocab-row"><span class="vocab-fr">Je vais aller</span><span class="vocab-pron">zhuh VAY za-LAY</span><span class="vocab-en">I am going to go</span></div>
+        <div class="vocab-row"><span class="vocab-fr">J'irai</span><span class="vocab-pron">zhee-RAY</span><span class="vocab-en">I will go (more distant, unspecified or open-ended)</span></div>
+        <div class="tip-card mt-4">
+          <div class="tip-title">Which future?</div>
+          <p><strong>Je vais aller</strong> is your everyday, near future ("I'm going to go to Lyon in December"). <strong>J'irai</strong> is for the further-off or open-ended ("I'll go one day"). If in doubt, <em>je vais + infinitive</em> is never wrong in conversation.</p>
+        </div>
+      </div>
+
+      <!-- LATEST SCRIPT -->
+      <div class="card">
+        <span class="section-label">Your Script: Latest Phonetic Version</span>
+        <p class="text-xs text-gray-400 italic mb-4">The stressed sounds are in red. Read them exactly as they look.</p>
+        <p class="text-sm font-semibold text-navy mb-4">Je m'appelle Patricia. &Agrave; l'ori<span class="text-rouge font-bold underline">JEEN</span>, je viens de Liverpool, mais <span class="text-rouge font-bold underline">ZHA</span>-b<span class="text-rouge font-bold underline">EE</span>te maintenant dan<span class="text-rouge font-bold underline">Z</span> un petit vill<span class="text-rouge font-bold underline">AAA</span>ge <span class="text-rouge font-bold underline">O</span> nord du pays de Galles. C'est ma-<span class="text-rouge font-bold underline">NYA</span>-<span class="text-rouge font-bold underline">FEEK</span>, entr<span class="text-rouge font-bold underline">UH</span> la mer et les monta<span class="text-rouge font-bold underline">NYUHS</span>. Le vill<span class="text-rouge font-bold underline">AAA</span>ge est situ<span class="text-rouge font-bold underline">AY</span> dans la vall<span class="text-rouge font-bold underline">AY</span> de Clwyd.</p>
+        <p class="text-sm font-semibold text-navy mb-4">Ac-<span class="text-rouge font-bold underline">CHEW</span>-<span class="text-rouge font-bold underline">ELLE</span>-ment, je suis en semi-retr<span class="text-rouge font-bold underline">ETTE</span>, mais je trav-<span class="text-rouge font-bold underline">EYE</span> toujours comme infirmi&egrave;re dan<span class="text-rouge font-bold underline">Z</span> <span class="text-rouge font-bold underline">OON</span> clinique. Ma journ&eacute;e type commence &agrave; 8 h, mais je <span class="text-rouge font-bold underline">DEH-BOOT</span> mes cons<span class="text-rouge font-bold underline">OOL-TASS-IONS</span> &agrave; 10 h. Je <span class="text-rouge font-bold underline">RE-SWAH</span> mes pah-<span class="text-rouge font-bold underline">SS-ION</span> pour des rendez-vous de trente minutes &agrave; une heure. Je <span class="text-rouge font-bold underline">TRET</span> <span class="text-rouge font-bold underline">TOOT</span> sortes de pathologies, mais je me con-<span class="text-rouge font-bold underline">SONT</span> principalement sur la pr&eacute;vention et la <span class="text-rouge font-bold underline">JEH</span>-stion des maladies chron-<span class="text-rouge font-bold underline">EEK</span>.</p>
+        <p class="text-sm font-semibold text-navy mb-4">J'ai de nomb-<span class="text-rouge font-bold underline">RUH</span> cent<span class="text-rouge font-bold underline">RUH</span> d'int-<span class="text-rouge font-bold underline">AY-RAY</span>, en particulier <span class="text-rouge font-bold underline">LAH</span> nature. Par le pass&eacute;, je <span class="text-rouge font-bold underline">FEH-ZAY</span> de l'<span class="text-rouge font-bold underline">ALPA-KNEE-SM</span>. Ces <span class="text-rouge font-bold underline">VAN</span> <span class="text-rouge font-bold underline">DEHR-NIA-HREZ</span> ann-<span class="text-rouge font-bold underline">AY</span>, j'ai beaucoup voyag<span class="text-rouge font-bold underline">AY</span> en Afrique&nbsp;; j'y <span class="text-rouge font-bold underline">SWEE</span> all&eacute;e d'abord comme &eacute;tudiante, et je suis <span class="text-rouge font-bold underline">O-JOR-DWEE</span> guide de safari exp-<span class="text-rouge font-bold underline">AY-REE-MENTAY</span> et formatrice.</p>
+        <p class="text-sm font-semibold text-navy mb-4">De plus, j'ai &eacute;crit un livre sur les 8 animaux d'Afrique les plus dangereux&nbsp;: le lion, l'&eacute;l&eacute;phant, le buffle, le crocodile, l'hippopotame, la hy&egrave;ne, le rhinoc&eacute;ros et le l&eacute;opard. Aujourd'hui, la principale association de guides de safari utilise mon livre comme ouvrage de r&eacute;f&eacute;rence pour former les nouveaux guides.</p>
+        <p class="text-sm font-semibold text-navy">&Agrave; ton tour, parle-moi un peu de toi&nbsp;!</p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Before Next Lesson</span>
+        <ul class="space-y-2">
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Say the <em>aller</em> map out loud</strong> (past, present, future), then make one sentence about your Lyon trip with each.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Use <em>c'est pas si facile que &ccedil;a</em></strong> at least once this week. It's a very natural, very French phrase.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Keep running the script</strong> from the top, using the latest phonetic version above.</li>
+          <li class="flex gap-3 text-sm text-gray-600"><span class="text-rouge font-bold mt-0.5">&rarr;</span><strong>Next session: Thursday 26 November, 12:00.</strong></li>
+        </ul>
+      </div>
+
+    </div><!-- /l9 -->
 
 
   </main>
